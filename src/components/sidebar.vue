@@ -6,6 +6,35 @@
   <router-link to='/mycourses'>My Courses</router-link>
   <router-link to='/searchcourses'>Search Courses</router-link>
   <router-link to='/observelog'>Observe Log</router-link>
+  <br/>
+   <br/>
+    <br/>
+     <br/>
+      <br/>
+       <br/>
+         <br/>
+   <br/>
+    <br/>
+     <br/>
+      <br/>
+       <br/>
+                <br/>
+   <br/>
+    <br/>
+     <br/>
+      <br/>
+       <br/>
+                <br/>
+   <br/>
+    <br/>
+     <br/>
+      <br/>
+       <br/>
+        <br/>
+      <br/>
+  
+         <router-link to='/profile'>FAQ</router-link>
+  <router-link to='/mycourses'>Feedback</router-link>
 
 </div>
   

@@ -4,25 +4,30 @@
      <h1>
     My Observe Log
   </h1>
+  <br />
+  <h2>My Observation requests</h2>
   <a-table :columns="columns" :data-source="data" :scroll="{ x: 1500, y: 300 }">
+    <a slot="action" slot-scope="">action</a>
+  </a-table>
+  <br />
+<h2>Incoming Observation Requests</h2>
+   <a-table :columns="columns" :data-source="data" :scroll="{ x: 1500, y: 300 }">
     <a slot="action" slot-scope="">action</a>
   </a-table>
   </div>
 </template>
 <script>
 const columns = [
-  { title: 'Full Name', width: 100, dataIndex: 'name', key: 'name', fixed: 'left' },
-  { title: 'Age', width: 100, dataIndex: 'age', key: 'age', fixed: 'left' },
-  { title: 'Column 1', dataIndex: 'address', key: '1', width: 150 },
-  { title: 'Column 2', dataIndex: 'address', key: '2', width: 150 },
-  { title: 'Column 3', dataIndex: 'address', key: '3', width: 150 },
-  { title: 'Column 4', dataIndex: 'address', key: '4', width: 150 },
-  { title: 'Column 5', dataIndex: 'address', key: '5', width: 150 },
-  { title: 'Column 6', dataIndex: 'address', key: '6', width: 150 },
-  { title: 'Column 7', dataIndex: 'address', key: '7', width: 150 },
-  { title: 'Column 8', dataIndex: 'address', key: '8' },
+  { title: 'Professor', dataIndex: 'name', key: 'name', fixed: 'left' },
+  { title: 'Course Title',  dataIndex: 'age', key: 'age', fixed: 'left' },
+  { title: 'Code', dataIndex: 'address', key: '1', width: 150 },
+  { title: 'Date', dataIndex: 'address', key: '2', width: 150 },
+  { title: 'Start', dataIndex: 'address', key: '3', width: 150 },
+  { title: 'End', dataIndex: 'address', key: '4', width: 150 },
+  { title: 'Day', dataIndex: 'address', key: '5', width: 150 },
+  { title: 'Room', dataIndex: 'address', key: '6', width: 150 },
   {
-    title: 'Action',
+    title: 'Status',
     key: 'operation',
     fixed: 'right',
     width: 100,

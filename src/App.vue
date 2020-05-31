@@ -1,21 +1,26 @@
 <template>
-  <div id="app">
   
-     <router-view />
+  
    
-     <sidebar />
-  </div>
+  
+  <sidebartwo /> 
+ <!-- <Login /> -->
+  
 </template>
 
 <script>
 
-import sidebar from './components/sidebar'
+//import sidebar from './components/sidebar'
+import sidebartwo from './components/sidebartwo'
+//import Login from './components/login'
 
 
 export default {
   name: 'App',
   components: {
-    sidebar
+  //  sidebar
+  //Login
+  sidebartwo
   }
 }
 </script>
