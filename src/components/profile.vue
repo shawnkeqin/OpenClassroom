@@ -1,26 +1,17 @@
 <template>
  
-    <div>
+    <div id="parent">
       <a-card title="My Profile" style="width: 1400px">
       <a-avatar shape="square" :size="64" icon="user" />
        <a-descriptions title="User Info">
     <a-descriptions-item label="UserName">
-      Zhou Maomao
+     <a-input placeholder="Basic usage" />
     </a-descriptions-item>
-    <a-descriptions-item label="Telephone">
-      1810000000
+    <a-descriptions-item label="Staff ID">
+     <a-input placeholder="Basic usage" />
     </a-descriptions-item>
-    <a-descriptions-item label="Live">
-      Hangzhou, Zhejiang
-    </a-descriptions-item>
-    <a-descriptions-item label="Remark">
-      empty
-    </a-descriptions-item>
-    <a-descriptions-item label="Faculty">
-      Literature
-    </a-descriptions-item>
-      <a-descriptions-item label="Age">
-     32
+    <a-descriptions-item label="Email Address">
+    <a-input placeholder="Basic usage" />
     </a-descriptions-item>
   </a-descriptions>
     <a-popover title="Title" trigger="hover">
@@ -73,3 +64,14 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#parent{
+text-align: center;
+}
+.center {
+    margin:auto;
+
+}
+</style>
+

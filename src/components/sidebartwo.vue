@@ -38,9 +38,9 @@
             :default-open-keys="['sub1']"
             style="height: 100%"
           >
-          
+       
            <a-avatar shape="square" :size="64" :style="{ margin: 40, verticalAlign: 'middle' }"   icon="user"  />
-         
+        
            
                <a-menu-item key="1">
           <a-icon type="user" />
@@ -95,6 +95,9 @@
   margin: 16px 28px 16px 0;
   float: left;
 }
+
+
+
 
 
 </style>
