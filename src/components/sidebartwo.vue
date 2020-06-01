@@ -48,28 +48,28 @@
             <router-link to='/profile'>Profile</router-link>
         </a-menu-item>
           <a-menu-item key="2">
-          <a-icon type="video-camera" />
+          <a-icon type="container" />
           <span class="nav-text">My Courses</span>
             <router-link to='/mycourses'>My Courses</router-link>
         </a-menu-item>
           <a-menu-item key="3">
-          <a-icon type="upload" />
+          <a-icon type="file-search" />
           <span class="nav-text">Search Courses</span>
            <router-link to='/searchcourses'>Search Courses</router-link>
         </a-menu-item>
            <a-menu-item key="4">
-          <a-icon type="upload" />
+          <a-icon type="calendar" />
           <span class="nav-text">Observe Log</span>
   <router-link to='/observelog'>Observe Log</router-link>
         </a-menu-item>
  
            <a-menu-item key="5">
-          <a-icon type="upload" />
+          <a-icon type="solution" />
           <span class="nav-text">FAQ</span>
  <!-- <router-link to='/observelog'>Observe Log</router-link> -->
         </a-menu-item>
            <a-menu-item key="6">
-          <a-icon type="upload" />
+          <a-icon type="message" />
           <span class="nav-text">Feedback</span>
   <!--  <router-link to='/observelog'>Observe Log</router-link> -->
         </a-menu-item>

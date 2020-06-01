@@ -10,9 +10,9 @@
       Group 1
     </p>
   <h2>Module Description: </h2>
-  <p>This module targets students who have completed the Beginning Spanish sequence or have had significant experience with the language (e.g., Study Abroad during their first summer at Yale-NUS or studied Spanish in high school). It offers a combination of listening and speaking practice with a review of key concepts of Spanish grammar via targeted reading and writing activities. This module continues to incorporate Hispanic cultural elements through representative texts and audiovisual materials from the Spanish-speaking world.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
    <h2>Schedule Description:</h2>
-  <p>This course meets for seminars Mondays and Thursdays in LT1, 230-4pm.</p>
+  <p>This course meets for seminars {} and {} in {}, {}.</p>
      <h2>Module Syllabus:</h2>
   <a-textarea placeholder="This syllabus will be visible to all potential observers" :rows="4" />
   <h2>Additional Notes for Observers:</h2>
@@ -34,9 +34,39 @@
 
     <a-card size="small" title="Small size card" style="width: 1400px">
       <a slot="extra" href="#">more</a>
-      <p>card content</p>
-      <p>card content</p>
-      <p>card content</p>
+     <a-form-model :model="form" :label-col="labelCol" :wrapper-col="wrapperCol">  
+    <a-form-model-item label="Date">
+      <a-date-picker
+        v-model="form.date1"
+        show-time
+        type="date"
+        placeholder="Pick a date"
+        style="width: 100%;"
+      />
+      <br />
+       <a-range-picker label="Time"
+      :show-time="{ format: 'HH:mm' }"
+      format="YYYY-MM-DD HH:mm"
+      :placeholder="['Start Time', 'End Time']"
+      @change="onChange"
+      @ok="onOk"
+    />
+    </a-form-model-item>
+  <a-input placeholder="Sminar Title (Optional)" />
+<br />
+<br />
+    <a-input size="large" placeholder="Seminar Description (Optional)" />
+    <br />
+      <br />
+    <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
+      <a-button type="primary" @click="onSubmit">
+        Create
+      </a-button>
+      <a-button style="margin-left: 10px;">
+        Cancel
+      </a-button>
+    </a-form-model-item>
+  </a-form-model>
     </a-card>
   </a-card>
     </a-tab-pane>
@@ -46,9 +76,9 @@
       Group 1
     </p>
      <h2>Module Description: </h2>
-  <p>This module targets students who have completed the Beginning Spanish sequence or have had significant experience with the language (e.g., Study Abroad during their first summer at Yale-NUS or studied Spanish in high school). It offers a combination of listening and speaking practice with a review of key concepts of Spanish grammar via targeted reading and writing activities. This module continues to incorporate Hispanic cultural elements through representative texts and audiovisual materials from the Spanish-speaking world.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
    <h2>Schedule Description:</h2>
-  <p>This course meets for seminars Mondays and Thursdays in LT1, 230-4pm.</p>
+  <p>This course meets for seminars {} and {} in {}, {}.</p>
      <h2>Module Syllabus:</h2>
   <a-textarea placeholder="This syllabus will be visible to all potential observers" :rows="4" />
   <h2>Additional Notes for Observers:</h2>
@@ -70,9 +100,39 @@
 
     <a-card size="small" title="Small size card" style="width: 1400px">
       <a slot="extra" href="#">more</a>
-      <p>card content</p>
-      <p>card content</p>
-      <p>card content</p>
+       <a-form-model :model="form" :label-col="labelCol" :wrapper-col="wrapperCol">  
+    <a-form-model-item label="Date">
+      <a-date-picker
+        v-model="form.date1"
+        show-time
+        type="date"
+        placeholder="Pick a date"
+        style="width: 100%;"
+      />
+      <br />
+       <a-range-picker label="Time"
+      :show-time="{ format: 'HH:mm' }"
+      format="YYYY-MM-DD HH:mm"
+      :placeholder="['Start Time', 'End Time']"
+      @change="onChange"
+      @ok="onOk"
+    />
+    </a-form-model-item>
+  <a-input placeholder="Sminar Title (Optional)" />
+<br />
+<br />
+    <a-input size="large" placeholder="Seminar Description (Optional)" />
+    <br />
+      <br />
+    <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
+      <a-button type="primary" @click="onSubmit">
+        Create
+      </a-button>
+      <a-button style="margin-left: 10px;">
+        Cancel
+      </a-button>
+    </a-form-model-item>
+  </a-form-model>
     </a-card>
   </a-card>
     </a-tab-pane>
@@ -82,9 +142,9 @@
       Group 2
     </p>
   <h2>Module Description: </h2>
-  <p>This module targets students who have completed the Beginning Spanish sequence or have had significant experience with the language (e.g., Study Abroad during their first summer at Yale-NUS or studied Spanish in high school). It offers a combination of listening and speaking practice with a review of key concepts of Spanish grammar via targeted reading and writing activities. This module continues to incorporate Hispanic cultural elements through representative texts and audiovisual materials from the Spanish-speaking world.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
    <h2>Schedule Description:</h2>
-  <p>This course meets for seminars Mondays and Thursdays in LT1, 230-4pm.</p>
+  <p>This course meets for seminars {} and {} in {}, {}.</p>
      <h2>Module Syllabus:</h2>
   <a-textarea placeholder="This syllabus will be visible to all potential observers" :rows="4" />
   <h2>Additional Notes for Observers:</h2>
@@ -106,9 +166,39 @@
 
     <a-card size="small" title="Small size card" style="width: 1400px">
       <a slot="extra" href="#">more</a>
-      <p>card content</p>
-      <p>card content</p>
-      <p>card content</p>
+        <a-form-model :model="form" :label-col="labelCol" :wrapper-col="wrapperCol">  
+    <a-form-model-item label="Date">
+      <a-date-picker
+        v-model="form.date1"
+        show-time
+        type="date"
+        placeholder="Pick a date"
+        style="width: 100%;"
+      />
+      <br />
+       <a-range-picker label="Time"
+      :show-time="{ format: 'HH:mm' }"
+      format="YYYY-MM-DD HH:mm"
+      :placeholder="['Start Time', 'End Time']"
+      @change="onChange"
+      @ok="onOk"
+    />
+    </a-form-model-item>
+  <a-input placeholder="Sminar Title (Optional)" />
+<br />
+<br />
+    <a-input size="large" placeholder="Seminar Description (Optional)" />
+    <br />
+      <br />
+    <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
+      <a-button type="primary" @click="onSubmit">
+        Create
+      </a-button>
+      <a-button style="margin-left: 10px;">
+        Cancel
+      </a-button>
+    </a-form-model-item>
+  </a-form-model>
     </a-card>
   </a-card>
 
@@ -120,5 +210,26 @@
   </div>
 </template>
 <script>
-
+export default {
+  data() {
+    return {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 14 },
+      form: {
+        name: '',
+        region: undefined,
+        date1: undefined,
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: '',
+      },
+    };
+  },
+  methods: {
+    onSubmit() {
+      console.log('submit!', this.form);
+    },
+  },
+};
 </script>

@@ -1,57 +1,81 @@
 <template>
 
 <div>
-     <h1>
-    My Observe Log
-  </h1>
+  <h1>Upcoming Observations</h1> 
+ <a-card style="width: 1400px">
+    <p>You have an upcoming observation of {} by {} on {} from {} in {}</p>
+
+  <p>View course and seminar details </p> 
+
+ <a-button type="danger">
+     Cancel
+    </a-button>
+<br /> 
+<br /> 
+     <a-button type="primary">
+     Accepted
+    </a-button>
+  </a-card>
+    
+    <br /> 
+<a-button type="link" block>
+     View all completed observations
+    </a-button>
+
   <br />
-  <h2>My Observation requests</h2>
-  <a-table :columns="columns" :data-source="data" :scroll="{ x: 1500, y: 300 }">
-    <a slot="action" slot-scope="">action</a>
-  </a-table>
-  <br />
-<h2>Incoming Observation Requests</h2>
-   <a-table :columns="columns" :data-source="data" :scroll="{ x: 1500, y: 300 }">
-    <a slot="action" slot-scope="">action</a>
-  </a-table>
-  </div>
+    <h1>My Requests</h1> 
+ <a-card style="width: 1400px">
+     <p>You requested to observe {} by {} on {} from {} in {}</p>
+
+  <p>View course and seminar details </p> 
+
+ <a-button type="danger">
+     View all previous outgoing requests
+    </a-button>
+<br /> 
+<br /> 
+     <a-button type="primary">
+     Accept
+    </a-button>
+  </a-card>
+      
+    <br /> 
+<a-button type="link" block>
+    View all previous outgoing requests
+    </a-button>
+      <br />
+        <h1>Incoming Requests</h1> 
+ <a-card style="width: 1400px">
+    <p>{} requested to observe your course {} on {} from {} in {}.</p>
+
+  <p>View course and seminar details </p> 
+
+   <a-button  shape="circle" icon="close" />
+     <br />
+       <br />
+
+  <a-button type="primary" shape="circle" icon="check" />
+        
+<br /> 
+<br /> 
+
+  </a-card>
+    
+    <br /> 
+<a-button type="link" block>
+       View all previous incoming requests
+    </a-button>
+    <br />
+
+
+</div>
 </template>
 <script>
-const columns = [
-  { title: 'Professor', dataIndex: 'name', key: 'name', fixed: 'left' },
-  { title: 'Course Title',  dataIndex: 'age', key: 'age', fixed: 'left' },
-  { title: 'Code', dataIndex: 'address', key: '1', width: 150 },
-  { title: 'Date', dataIndex: 'address', key: '2', width: 150 },
-  { title: 'Start', dataIndex: 'address', key: '3', width: 150 },
-  { title: 'End', dataIndex: 'address', key: '4', width: 150 },
-  { title: 'Day', dataIndex: 'address', key: '5', width: 150 },
-  { title: 'Room', dataIndex: 'address', key: '6', width: 150 },
-  {
-    title: 'Status',
-    key: 'operation',
-    fixed: 'right',
-    width: 100,
-    scopedSlots: { customRender: 'action' },
-  },
-];
-
-const data = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i,
-    name: `Edrward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-  });
-}
-
 export default {
-    name: 'observelog',
-  data() {
-    return {
-      data,
-      columns,
-    };
+  methods: {
+    handleMenuClick(e) {
+      console.log('click', e);
+    },
   },
 };
 </script>
