@@ -1,28 +1,23 @@
 <template>
-  
-  
-   
-  
-  <sidebartwo /> 
- <!-- <Login /> -->
-  
+  <sidebartwo />
+
+  <!-- <Login /> -->
 </template>
 
 <script>
-
 //import sidebar from './components/sidebar'
-import sidebartwo from './components/sidebartwo'
+import sidebartwo from "./components/sidebartwo";
 //import Login from './components/login'
 
-
 export default {
-  name: 'App',
+  name: "App",
   components: {
-  //  sidebar
-  //Login
-  sidebartwo
+    //  sidebar
+    //Login
+
+    sidebartwo
   }
-}
+};
 </script>
 
 <style>

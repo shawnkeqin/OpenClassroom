@@ -1,0 +1,20 @@
+   <h2>Module Description: </h2>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+   <h2>Schedule Description:</h2>
+  <p>This course meets for seminars {} and {} in {}, {}.</p>
+     <h2>Module Syllabus:</h2>
+  <a-textarea placeholder="This syllabus will be visible to all potential observers" :rows="4" />
+  <h2>Additional Notes for Observers:</h2>
+  <a-textarea placeholder="Please use this space for notes or announcements relevant to all potential observers of this course. For notes specific to individual sessions or observers, please use the chat functions. " :rows="4" />
+    <br />
+  <br />
+    <a-popover trigger="hover">
+      <template slot="content">
+        <p>Edit Module</p>
+      </template>
+      <a-button type="primary">
+        Edit
+      </a-button>
+    </a-popover>
+       <br />
+    <br />
