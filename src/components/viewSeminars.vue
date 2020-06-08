@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-card title="Search Courses" style="width: 1400px">
-      <form @submit.prevent="submit">
+    <!--  <form @submit.prevent="submit">
         <fieldset>
           <input type="text" placeholder="Seminar ID" v-model="seminar_id" />
           <input
@@ -15,13 +15,14 @@
           <input type="text" placeholder="Location" v-model="location" />
         </fieldset>
         <input class="button-primary" type="submit" value="Send" />
-      </form>
-
+      </form> -->
+ <input v-model="seminar_id" placeholder="Seminar ID"  />
+  <input v-model="course_title" placeholder="Course Title" />
       <br />
       <br />
       <br />
       <h2>Results</h2>
-      <div class="list-of-seminars">
+  <!--    <div class="list-of-seminars">
         <seminar-item
           v-for="seminartest in seminartest"
           :key="seminartest.seminar_id"
@@ -29,16 +30,17 @@
           class="seminar-item"
         >
         </seminar-item>
-      </div>
+      </div> -->
+      <p>{{seminartest}} </p>
     </a-card>
   </div>
 </template>
 
 <script>
-import seminarItem from "./seminarItem";
+//import seminarItem from "./seminarItem";
 import gql from "graphql-tag";
 
-const GET_SEMINARS = gql`
+/*const GET_SEMINARS = gql`
   query getSeminars {
     seminartest {
       course_title
@@ -49,22 +51,60 @@ const GET_SEMINARS = gql`
       start
     }
   }
-`;
+`; */
 export default {
   name: "viewSeminars",
-  components: { seminarItem },
+  components: {  },
   data() {
     return {
-      seminar_id: "",
-      seminartest: []
+     seminar_id: "",
+     // seminartest: [], 
+    //  course_title: "",
+    //  seminartest: []
     };
   },
   apollo: {
+  //  seminartest: {
+  //    query: GET_SEMINARS
+  //  },
     seminartest: {
-      query: GET_SEMINARS
-    }
-  },
-  methods: {
+     query: gql`
+query findSeminar($seminar_id: String! ) {
+   	seminartest(seminar_id: $seminar_id){
+       course_title
+       seminar_id
+        date
+        end
+        location
+        start
+     }
+  }
+`, 
+/*
+query: gql`
+query findSeminar($seminar_id: String!, $course_title: String! ) {
+   	seminartest(where: {seminar_id: {_eq: $seminar_id}, course_title: {_eq:$course_title}}){
+       course_title
+       seminar_id
+        date
+        end
+        location
+        start
+     }
+  }
+`, 
+*/
+variables() {
+  return {
+    seminar_id: this.seminar_id,
+  //  course_title: this.course_title
+
+  }
+}
+}
+
+  }
+ /* methods: {
     submit() {
       const { seminar_id } = this.$data;
       this.$apollo.query({
@@ -87,7 +127,7 @@ export default {
       this.date = "";
       this.location = "";
     }
-  }
+  } */
 };
 </script>
 

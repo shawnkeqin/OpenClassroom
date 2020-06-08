@@ -1,46 +1,23 @@
 <template>
   <div>
-    <table id="firstTable">
-      <thead>
-        <tr>
-          <th>Seminar ID</th>
-          <th>Course Title</th>
-          <th>Start</th>
-          <th>End</th>
-          <th>Date</th>
-          <th>Location</th>
-          <th>Request Observation</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr :key="seminartest.seminar_id">
-          <td>{{ seminartest.seminar_id }}</td>
-          <td>{{ seminartest.course_title }}</td>
-          <td>{{ seminartest.start }}</td>
-          <td>{{ seminartest.end }}</td>
-          <td>{{ seminartest.date }}</td>
-          <td>{{ seminartest.location }}</td>
-          <td>
-            <div>
-              <b-button v-b-toggle.collapse-1 variant="primary"
-                >Toggle Collapse</b-button
-              >
-              <b-collapse id="collapse-1" class="mt-2">
-                <b-card>
-                  <p class="card-text">Collapse contents Here</p>
-                </b-card>
-              </b-collapse>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <a-card size="small" title="Small size card" style="width: 1100px" :key="seminartest.seminar_id">
+      <a slot="extra" href="#">more</a>
+      <p>{{seminartest.course_title}}</p>
+      <p>{{seminartest.location}}</p>
+      <deleteSeminarModal /> 
+      <p align="right">
+      <updateSeminarModal />
+      </p>
+    </a-card>
   </div>
 </template>
 
 <script>
+import deleteSeminarModal from './deleteSeminarModal'
+import updateSeminarModal from './updateSeminarModal'
 export default {
   name: "seminarItem",
+  components: { deleteSeminarModal, updateSeminarModal },
   props: ["seminartest"]
 };
 </script>

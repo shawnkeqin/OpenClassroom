@@ -1,9 +1,10 @@
 <template>
-  <a-form
+<div>
+  <a-form v-if="!isAuthenticated"
     id="components-form-demo-normal-login"
     :form="form"
     class="login-form"
-    @submit="handleSubmit"
+    @submit="handleLoginEvent"
   >
     <a-form-item>
       <a-input
@@ -36,11 +37,12 @@
       <a class="login-form-forgot" href="">
         Forgot password
       </a>
-      <a-button type="primary" html-type="submit" class="login-form-button">
+      <a-button type="primary" html-type="submit" class="login-form-button" @click.prevent="login">
         Log in
       </a-button>
     </a-form-item>
   </a-form>
+  </div> 
 </template>
 
 <script>
@@ -48,6 +50,7 @@ export default {
   name: "Login",
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "normal_login" });
+   // this.$auth.renewTokens();
   },
   methods: {
     handleSubmit(e) {
@@ -58,7 +61,25 @@ export default {
         }
         window.location.href = "http://localhost:8080/#/profile";
       });
+    },
+    login() {
+      this.$auth.login();
+     // this.$router.push({ path: "/" });
+    },
+    logout() {
+      this.$auth.logOut();
+   //   this.$router.push({ path: "/login" });
+    },
+    handleLoginEvent(data) {
+      this.isAuthenticated = data.loggedIn;
+      this.profile = data.profile;
     }
+  },
+  data() {
+    return {
+      isAuthenticated: false,
+      profile: {}
+    };
   }
 };
 </script>

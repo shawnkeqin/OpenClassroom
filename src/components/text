@@ -18,3 +18,24 @@
     </a-popover>
        <br />
     <br />
+
+
+
+      /*  "rules": {
+      "graphql/template-strings": [
+        "error",
+        {
+          "env": "literal",
+          "projectName": "app",
+          "schemaJsonFilepath": "node_modules/.temp/graphql/schema.json"
+        },
+        {
+          "env": "literal",
+          "projectName": "app",
+          "schemaJsonFilepath": "node_modules/.temp/graphql/schema.json"
+        }
+      ]
+    },
+    "plugins": [
+      "graphql"
+    ] */
