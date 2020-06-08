@@ -15,6 +15,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import VueApollo from "vue-apollo";
+import { createProvider } from './vue-apollo'
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
@@ -44,5 +45,6 @@ new Vue({
   router,
   apolloProvider,
   render: h => h(App),
+  apolloProvider: createProvider(),
   store
 }).$mount("#app");

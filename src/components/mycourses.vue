@@ -3,7 +3,7 @@
     <h1>
       My Courses
     </h1>
-    <a-tabs>
+  <!--  <a-tabs>
       <a-tab-pane key="2" tab="Current">
         <a-card title="Manage Course Information">
           <p
@@ -20,9 +20,9 @@
           <br />
           <deleteFacultyModal />
           <br />
-          <updateFacultyModal />
+          <updateFacultyModal /> -->
 
-          <coursesList />
+       
 
            
 
@@ -46,32 +46,35 @@
         <updateSeminarModal />
       </a-button> 
     </a-form-model-item>
-  </a-form-model> -->
-        </a-card>
+  </a-form-model> 
+        </a-card> 
       </a-tab-pane>
 
       <a-button slot="tabBarExtraContent">
         Extra Action
       </a-button>
-    </a-tabs>
+    </a-tabs> -->
+       <coursesList />
   </div>
 </template>
 <script>
-import addNewFacultyModal from "./addNewFacultyModal";
+//import addNewFacultyModal from "./addNewFacultyModal";
 //import updateSeminarModal from './updateSeminarModal'
 //import addNewSeminar from './addNewSeminar'
 import { mapGetters, mapActions } from "vuex";
 //import facultiesList from './facultiesList'
-import deleteFacultyModal from "./deleteFacultyModal";
-import updateFacultyModal from "./updateFacultyModal";
-import coursesList from "./coursesList";
+//import deleteFacultyModal from "./deleteFacultyModal";
+//import updateFacultyModal from "./updateFacultyModal";
+//import coursesList from "./coursesList";
+import coursesList from './modulesList'
 export default {
   components: {
-    addNewFacultyModal,
+     coursesList
+    //addNewFacultyModal,
     //   facultiesList,
-    deleteFacultyModal,
-    updateFacultyModal,
-    coursesList
+   // deleteFacultyModal,
+   // updateFacultyModal,
+   // coursesList
     //  updateSeminarModal,
     //  addNewSeminar
   },
@@ -86,8 +89,10 @@ export default {
         delivery: false,
         type: [],
         resource: "",
-        desc: ""
-      }
+        desc: "",
+      },
+      isAuthenticated: false,
+      isLoading: true
     };
   },
   methods: {
@@ -101,8 +106,20 @@ export default {
     },
     onSubmit() {
       console.log("submit!", this.form);
+    },
+      handleLoginEvent(data) {
+      this.isAuthenticated = data.loggedIn;
+      this.isLoading = false;
     }
+    
   },
+  beforeCreate() {
+    this.isLoading = true;
+  },
+  mounted() {
+    this.isLoading = false;
+  },
+
   computed: mapGetters(["allSeminars"]),
   created() {
     this.fetchSeminars();
