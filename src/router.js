@@ -14,6 +14,8 @@ import Callback from "./components/Callback.vue";
 Vue.use(Router);
 
 const router = new Router({
+  mode: "history",
+  // See https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode. 
   routes: [
     {
       path: "/",
@@ -55,21 +57,18 @@ const router = new Router({
       path: "/callback",
       name: "callback",
       component: Callback
-    }
+    },
+    // See https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode. 
+    // { path: '*', component: NotFound }
   ]
 });
 
 router.beforeEach((to, from, next) => {
-  console.log('x');
-
-  if (to.path === "/login" || to.path === "/callback"  || auth.isAuthenticated()){
-    console.log('y');
-    return next();
+  if (to.path == "/callback" || auth.isAuthenticated()) {
+    next();
+  } else {
+    auth.login({ target: to.path });
   }
-  console.log( auth.isAuthenticated()); 
-  console.log('z');
-
-  auth.login({ target: to.path });
 });
 
 export default router;

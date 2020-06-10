@@ -1,34 +1,26 @@
 <template>
-<div>
-  <!-- <sidebartwo /> -->
+  <div>
+    <!-- <sidebartwo /> -->
 
- <Login />
- </div> 
+    <router-view />
+  </div>
 </template>
 
 <script>
 //import sidebar from './components/sidebar'
 //import sidebartwo from "./components/sidebartwo";
-import Login from './components/login'
-
 export default {
   name: "App",
   components: {
-    //  sidebar
-    Login
-
-    //sidebartwo
   },
-    async created() {
+  async created() {
     try {
-      console.log('123');
       await this.$auth.renewTokens();
     } catch {
       // Supress the 'not logged in' error as we can illegitimately get that
       // when processing the callback url
     }
   }
-
 };
 </script>
 

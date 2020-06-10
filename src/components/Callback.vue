@@ -1,8 +1,8 @@
   
 <template>
   <div class="spinner">
- <!--   <img src="../assets/loading.svg" alt="Loading"> -->
- <p>Loading... </p>
+    <!--   <img src="../assets/loading.svg" alt="Loading"> -->
+    <p>Loading...</p>
   </div>
 </template>
 
@@ -10,12 +10,11 @@
 export default {
   methods: {
     handleLoginEvent(data) {
-      // this.$router.push(data.state.target || "/");
-      window.location.href = data.state.target || "/";
+      this.$router.push(data.state.target || "/");
+      // window.location.href = data.state.target || "/";
     }
   },
   created() {
-    console.log('12345');
     this.$auth.handleAuthentication();
   }
 };
