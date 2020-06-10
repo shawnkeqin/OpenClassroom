@@ -1,0 +1,188 @@
+<!-- Test components with dummy props
+  <seminar-card-request :seminar="{module_code: 'YSC4211B', title: 'Adv Topics Molecular, Cell & Developmental Bio: Stem Cells', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremipsum1', tags: ['TAG1', 'TAG2', 'TAG3'], instructor: {name: 'Matthew Stamp', profilePic: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1627&q=80'} }" :requestStatus="''"/>
+  <seminar-card-request :seminar="{module_code: 'YSC3237', title: 'Introduction to Modern Algebra', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremipsum2', tags: ['TAG1', 'TAG2', 'TAG3'], instructor: {name: 'Matthew Stamp', profilePic: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1627&q=80'} }" :requestStatus="'pending'"/>
+  <seminar-card-request :seminar="{module_code: 'YSC2222', title: 'Organic Chemistry Laboratory', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremipsum3', tags: ['TAG3', 'TAG4', 'TAG5'], instructor: {name: 'NAME HERE'} }" :requestStatus="'accepted'"/>
+  <seminar-card-request :seminar="{module_code: 'YSC3253', title: 'Coral Reef Ecology and Environmental Change', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremupsum4', tags: ['TAG6', 'TAG7', 'TAG8'], instructor: {name: 'NAME HERE'} }" :requestStatus="'declined'"/>
+-->
+
+<template>
+  <div style="padding: 10px">
+    <div>
+      <img
+        class="avatar"
+        :src="instructor.profilePic"
+        style="background-color: grey"
+      />
+      <span style="padding-right: 10px">{{
+        instructor.name + "'s class"
+      }}</span>
+      <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag>
+    </div>
+    <a-card hoverable style="width: 600px" bodyStyle="padding: 10px">
+      <a-col :span="4">
+        <div>{{ new Date(seminar.date).toDateString().slice(0, 10) }}</div>
+        <div>{{ seminar.start + " - " + seminar.end }}</div>
+        <div>{{ seminar.location_code }}</div>
+      </a-col>
+      <a-col :span="14" style="padding-right: 10px">
+        <a-row type="flex" style="align-items: center">
+          <span class="module-code">{{ seminar.module_code }}</span>
+          <template v-if="requestStatus === 'pending'">
+            <a-icon type="clock-circle" theme="filled" class="pending" />
+            <span class="request-status pending">Request pending</span>
+          </template>
+          <template v-else-if="requestStatus === 'accepted'">
+            <a-icon type="check-circle" theme="filled" class="accepted" />
+            <span class="request-status accepted">Request accepted</span>
+            <a @click="handleAddToCalendar">Add to calendar</a>
+          </template>
+          <template v-else-if="requestStatus === 'declined'">
+            <a-icon type="close-circle" theme="filled" class="declined" />
+            <span class="request-status declined">Request declined</span>
+          </template>
+          <template v-else />
+        </a-row>
+        <div class="seminar-title">{{ seminar.title }}</div>
+        <a @click="handleOpenDescModal"
+          >View course description and seminar details</a
+        >
+        <a-modal
+          v-model="isDescModalOn"
+          title="Course description and seminar details"
+          @ok="handleCloseDescModal"
+        >
+          <template slot="footer">
+            <a-button @click="handleCloseDescModal">Close</a-button>
+          </template>
+          <p>{{ seminar.desc }}</p>
+        </a-modal>
+      </a-col>
+      <a-col :span="6">
+        <a-button block style="margin-bottom: 2px" type="primary" ghost
+          >Share</a-button
+        >
+        <template v-if="!requestStatus">
+          <a-popover
+            v-model="isRequestPopoverOn"
+            placement="bottomLeft"
+            trigger="click"
+          >
+            <template slot="content">
+              <div @click="handleRequestNow"><a>Request now</a></div>
+              <div @click="handleOpenMessageModal">
+                <a>Request with a message</a>
+              </div>
+              <a-modal v-model="isMessageModalOn" @ok="handleSubmitMessage">
+                <template slot="footer">
+                  <a-button key="cancel" @click="handleCancelMessage"
+                    >Cancel</a-button
+                  >
+                  <a-button key="submit" @click="handleSubmitMessage"
+                    >Submit</a-button
+                  >
+                </template>
+                <a-form-model-item label="Your message">
+                  <a-input v-model="message" type="textarea" />
+                </a-form-model-item>
+              </a-modal>
+            </template>
+            <a-button block type="primary">Request</a-button>
+          </a-popover>
+        </template>
+        <template v-else>
+          <a-button @click="handleCancelRequest" block type="primary" ghost
+            >Cancel request</a-button
+          >
+        </template>
+      </a-col>
+    </a-card>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "seminar-card-request",
+  props: {
+    seminar: Object, // assuming that seminar has fields module_code, title, date, start, end, location_code, is_open, desc, instructor
+    requestStatus: String
+  },
+  data: function() {
+    return {
+      isRequestPopoverOn: false,
+      isDescModalOn: false,
+      isMessageModalOn: false,
+      message: ""
+    };
+  },
+  computed: {
+    instructor: function() {
+      return this.seminar.instructor;
+    }
+  },
+  methods: {
+    handleOpenDescModal() {
+      this.isDescModalOn = true;
+    },
+    handleCloseDescModal() {
+      this.isDescModalOn = false;
+    },
+    handleRequestNow() {
+      this.isRequestPopoverOn = false;
+    },
+    handleOpenMessageModal() {
+      this.isRequestPopoverOn = false;
+      this.isMessageModalOn = true;
+    },
+    handleSubmitMessage() {
+      this.isMessageModalOn = false;
+    },
+    handleCancelMessage() {
+      this.message = "";
+      this.isMessageModalOn = false;
+    },
+    handleDeleteRequest() {},
+    handleAddToCalendar() {}
+  }
+};
+</script>
+
+<style scoped>
+a {
+  font-size: 12px;
+}
+.ant-card-body {
+  padding: 10px;
+}
+.ant-card-hoverable {
+  cursor: default;
+}
+.avatar {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  margin: 5px;
+}
+.module-code {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.54);
+  padding-right: 10px;
+}
+.seminar-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+.request-status {
+  font-size: 12px;
+  padding-left: 5px;
+  padding-right: 10px;
+}
+.pending {
+  color: #ffb74d;
+}
+.accepted {
+  color: #81c784;
+}
+.declined {
+  color: #e57373;
+}
+</style>
