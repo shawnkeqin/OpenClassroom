@@ -19,7 +19,9 @@ import gql from "graphql-tag";
 
 const GET_MODULES = gql`
 query getModules {
-  course(limit:5) {
+   course(where: {id: {_eq: 1}}) {
+    desc
+    id
     title
     module_code
   }
@@ -49,7 +51,7 @@ export default {
 
   justify-content: center;
 }
-.-item {
+.course-item {
   margin: 0 10px;
 }
 </style>

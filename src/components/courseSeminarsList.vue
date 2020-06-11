@@ -17,14 +17,12 @@
 import seminarItem from "./seminarItem";
 import gql from "graphql-tag";
 const GET_MY_SEMINARS = gql`
-query findSeminar{
-   	seminartest(limit: 3){
+query getSeminars{
+   	seminartest{
        course_title
        seminar_id
-        date
-        end
         location
-        start
+        id
      }
   }`
   ;
