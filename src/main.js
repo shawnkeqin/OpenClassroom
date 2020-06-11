@@ -15,12 +15,8 @@ import AuthPlugin from "./plugins/auth";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import VueApollo from "vue-apollo";
-<<<<<<< HEAD
-
-=======
 //import { createProvider } from './vue-apollo'
 Vue.use(AuthPlugin);
->>>>>>> 316eff4ed58163f2af7272ebc93e6fd50234064b
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 Vue.config.productionTip = false;
@@ -53,9 +49,6 @@ new Vue({
   router,
   apolloProvider,
   render: h => h(App),
-<<<<<<< HEAD
-=======
   //apolloProvider: createProvider(),
->>>>>>> 316eff4ed58163f2af7272ebc93e6fd50234064b
   store
 }).$mount("#app");
