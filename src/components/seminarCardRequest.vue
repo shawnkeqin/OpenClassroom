@@ -1,32 +1,26 @@
-<!-- Test components with dummy props
-  <seminar-card-request :seminar="{module_code: 'YSC4211B', title: 'Adv Topics Molecular, Cell & Developmental Bio: Stem Cells', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremipsum1', tags: ['TAG1', 'TAG2', 'TAG3'], instructor: {name: 'Matthew Stamp', profilePic: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1627&q=80'} }" :requestStatus="''"/>
-  <seminar-card-request :seminar="{module_code: 'YSC3237', title: 'Introduction to Modern Algebra', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremipsum2', tags: ['TAG1', 'TAG2', 'TAG3'], instructor: {name: 'Matthew Stamp', profilePic: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1627&q=80'} }" :requestStatus="'pending'"/>
-  <seminar-card-request :seminar="{module_code: 'YSC2222', title: 'Organic Chemistry Laboratory', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremipsum3', tags: ['TAG3', 'TAG4', 'TAG5'], instructor: {name: 'NAME HERE'} }" :requestStatus="'accepted'"/>
-  <seminar-card-request :seminar="{module_code: 'YSC3253', title: 'Coral Reef Ecology and Environmental Change', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremupsum4', tags: ['TAG6', 'TAG7', 'TAG8'], instructor: {name: 'NAME HERE'} }" :requestStatus="'declined'"/>
--->
 
 <template>
   <div style="padding: 10px">
     <div>
-      <img
+ <!--     <img
         class="avatar"
         :src="instructor.profilePic"
         style="background-color: grey"
-      />
-      <span style="padding-right: 10px">{{
+      /> -->
+   <!--   <span style="padding-right: 10px">{{
         instructor.name + "'s class"
-      }}</span>
-      <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag>
+      }}</span> -->
+  <!--    <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag> -->
     </div>
     <a-card hoverable style="width: 600px" bodyStyle="padding: 10px">
       <a-col :span="4">
-        <div>{{ new Date(seminar.date).toDateString().slice(0, 10) }}</div>
-        <div>{{ seminar.start + " - " + seminar.end }}</div>
-        <div>{{ seminar.location_code }}</div>
+      <!--  <div>{{ new Date(seminar.date).toDateString().slice(0, 10) }}</div>
+        <div>{{ seminar.start + " - " + seminar.end }}</div> -->
+        <div>{{ seminartest.location }}</div>
       </a-col>
       <a-col :span="14" style="padding-right: 10px">
         <a-row type="flex" style="align-items: center">
-          <span class="module-code">{{ seminar.module_code }}</span>
+          <span class="module-code">{{ seminartest.seminar_id }}</span>
           <template v-if="requestStatus === 'pending'">
             <a-icon type="clock-circle" theme="filled" class="pending" />
             <span class="request-status pending">Request pending</span>
@@ -42,7 +36,7 @@
           </template>
           <template v-else />
         </a-row>
-        <div class="seminar-title">{{ seminar.title }}</div>
+        <div class="seminar-title">{{ seminartest.course_title }}</div>
         <a @click="handleOpenDescModal"
           >View course description and seminar details</a
         >
@@ -54,7 +48,7 @@
           <template slot="footer">
             <a-button @click="handleCloseDescModal">Close</a-button>
           </template>
-          <p>{{ seminar.desc }}</p>
+         <p>{{ seminartest.date }}</p> 
         </a-modal>
       </a-col>
       <a-col :span="6">
@@ -101,11 +95,11 @@
 
 <script>
 export default {
-  name: "seminar-card-request",
-  props: {
-    seminar: Object, // assuming that seminar has fields module_code, title, date, start, end, location_code, is_open, desc, instructor
-    requestStatus: String
-  },
+  name: "seminarCardRequest",
+  props: 
+ //   seminar: Object, // assuming that seminar has fields module_code, title, date, start, end, location_code, is_open, desc, instructor
+  //  requestStatus: String,
+    ["seminartest"],
   data: function() {
     return {
       isRequestPopoverOn: false,
@@ -114,11 +108,11 @@ export default {
       message: ""
     };
   },
-  computed: {
+/*  computed: {
     instructor: function() {
       return this.seminar.instructor;
     }
-  },
+  }, */
   methods: {
     handleOpenDescModal() {
       this.isDescModalOn = true;

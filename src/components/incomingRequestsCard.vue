@@ -1,7 +1,3 @@
-<!-- Test components with dummy props
-  <incoming-requests-card v-bind="{seminar: {module_code: 'YSC3237', title: 'Introduction to Modern Calculus', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremipsum1', visitor_capacity: 5 }, requests: [{name: 'Mira Seo', status: 'pending', profilePic: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1627&q=80'}, {id: 1, name: 'Matthew Stamp A', status: 'pending', requestMessage: 'Hello! '}, {id: 2, name: 'Matthew Stamp B', status: 'accepted', requestMessage: 'testing message feature'}, {id: 3, name: 'Somone cool', status: 'declined'}]}" />
--->
-
 <template>
   <div style="padding: 10px">
     <a-card hoverable style="width: 600px" bodyStyle="padding: 10px">
@@ -114,7 +110,7 @@
 
 <script>
 export default {
-  name: "incoming-requests-card",
+  name: "incomingRequestsCard",
   props: {
     seminar: Object, // assuming that seminar has fields title, module_code, time, date
     requests: Array // assuming that requests is an array of objects, each of which has the following fields: id, name, profilePic, status, and message

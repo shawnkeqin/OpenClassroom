@@ -12,11 +12,10 @@ import { ApolloClient } from "apollo-client";
 import { HttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import AuthPlugin from "./plugins/auth";
-
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import VueApollo from "vue-apollo";
-
+//import { createProvider } from './vue-apollo'
 Vue.use(AuthPlugin);
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
@@ -29,7 +28,11 @@ Vue.use(VueApollo);
 Vue.config.productionTip = false;
 
 const httpLink = new HttpLink({
-  uri: "https://open-classroom-hasura-test.herokuapp.com/v1/graphql"
+  
+  uri: "https://open-classroom-hasura-test.herokuapp.com/v1/graphql",
+  headers: {
+    'x-hasura-admin-secret': 'openclassroom'
+  }
 });
 
 const apolloClient = new ApolloClient({
@@ -46,5 +49,6 @@ new Vue({
   router,
   apolloProvider,
   render: h => h(App),
+  //apolloProvider: createProvider(),
   store
 }).$mount("#app");

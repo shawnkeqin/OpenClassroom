@@ -1,10 +1,11 @@
 <template>
-<div>
-<h1>Hello </h1>
-  <a-card style="width: 300px">
-    <p>Card content</p>
-    <p>Card content</p>
-    <p>Card content</p>
+<div >
+
+  <a-card style="width: 1400px">
+
+ 
+   <courseModule />
+
   </a-card>
 <br />
 <br />
@@ -18,16 +19,23 @@
 <script>
 import addNewSeminarModal from './addNewSeminarModal'
 import courseSeminarsList from './courseSeminarsList'
+import courseModule from "./courseModule";
 export default {
   name: "courseDetails",
   props: ["course"],
   components: {
       addNewSeminarModal,
-      courseSeminarsList
+      courseSeminarsList,
+      courseModule
   }
 }
 </script>
 
 <style scoped>
-
+.list-of-moduledesc {
+  justify-content: center;
+}
+.moduleDesc-item {
+  margin: 0 10px;
+}
 </style>
