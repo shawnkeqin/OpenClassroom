@@ -2,7 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import Profile from "./components/profile.vue";
 import mycourses from "./components/mycourses.vue";
-import observelog from "./components/observelog.vue";
+import MyVisitorsPage from "./components/MyVisitorsPage.vue";
 //import searchcourses from './components/searchcourses.vue'
 import viewSeminars from "./components/viewSeminars.vue";
 import courseDetails from "./components/courseDetails.vue";
@@ -40,9 +40,9 @@ const router = new Router({
       component: viewSeminars
     },
     {
-      path: "/observelog",
-      name: "observelog",
-      component: observelog
+      path: "/my-visitors",
+      name: "my-visitors",
+      component: MyVisitorsPage
     },
     {
       path: "/coursedetails",
@@ -70,15 +70,6 @@ const router = new Router({
   ]
 });
 
-/*
-router.beforeEach((to, from, next) => {
-  if (to.path == "/callback" || auth.isAuthenticated()) {
-    next();
-  } else {
-    auth.login({ target: to.path });
-  }
-});
-*/
 
 router.beforeEach((to, from, next) => {
   if (to.path == "/callback" || auth.isAuthenticated()) {
