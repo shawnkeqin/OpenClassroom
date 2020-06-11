@@ -1,77 +1,22 @@
 <template>
   <div id="parent">
     <a-card title="My Profile" style="width: 1400px">
-      <a-avatar shape="square" :size="64" icon="user" />
-      <a-descriptions title="User Info">
-        <a-descriptions-item label="UserName">
+      <a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" :size= "large" />
+
           <!-- <div>{{profile.name}} </div>  -->
-          <div class="field">
-            <span
-              class="field-value"
-              v-show="!showField('name')"
-              @click="focusField('name')"
-              >{{ profile.name }}</span
-            >
-            <input
-              v-model="profile.name"
-              v-show="showField('name')"
-              id="profile-name"
-              type="text"
-              class="field-value form-control"
-              @focus="focusField('name')"
-              @blur="blurField"
-            />
-          </div>
-        </a-descriptions-item>
-
-        <a-descriptions-item label="Staff ID">
-          <!-- <div>{{profile.id}}</div> -->
-          <div class="field">
-            <span
-              class="field-value"
-              v-show="!showField('id')"
-              @click="focusField('id')"
-              >{{ profile.id }}</span
-            >
-            <input
-              v-model="profile.id"
-              v-show="showField('id')"
-              type="id"
-              class="field-value form-control"
-              @focus="focusField('id')"
-              @blur="blurField"
-            />
-          </div>
-        </a-descriptions-item>
-        <a-descriptions-item label="Email Address">
-          <!-- <div>{{profile.email}}</div> -->
-          <div class="field">
-            <span
-              class="field-value"
-              v-show="!showField('email')"
-              @click="focusField('email')"
-              >{{ profile.email }}</span
-            >
-            <input
-              v-model="profile.email"
-              v-show="showField('email')"
-              type="email"
-              class="field-value form-control"
-              @focus="focusField('email')"
-              @blur="blurField"
-            />
-          </div>
-        </a-descriptions-item>
-      </a-descriptions>
-      <a-popover title="Title" trigger="hover">
-        <template slot="content">
-          <p>Click to Edit!</p>
-        </template>
-
-        <a-button type="primary">
-          Edit
-        </a-button>
-      </a-popover>
+<div class="list-of-faculties">
+  <profile-item
+      v-for="faculty in faculty"
+      :key="faculty.id"
+      :faculty="faculty"
+      class="faculty-item"
+    >
+    </profile-item>
+  </div> 
+  <!--  <profileItem /> -->
+       
+        <profileModal />
+     
     </a-card>
     <br />
     <br />
@@ -103,31 +48,33 @@
 
 <script>
 //import {mapState} from 'vuex'
+import gql from "graphql-tag";
+import profileModal from './profileModal'
+import profileItem from './profileItem'
+const GET_FACULTY = gql`
+query findFaculty {
+  faculty(where: {id: {_eq: "yncsjm1"}}) {
+    email
+    id
+    name
+  }
+}
+
+`
 export default {
   name: "Profile",
-  components: {},
-  // computed: mapState([
-  //   'profile'
-  // ]),
+  components: {
+    profileModal,
+    profileItem
+  },
   data() {
     return {
-      profile: {
-        name: "Mira Seo",
-        id: "yncsjm",
-        email: "yncsjm@nus.edu.sg"
-      },
-      editField: ""
+      faculty: []
     };
   },
-  methods: {
-    focusField(name) {
-      this.editField = name;
-    },
-    blurField() {
-      this.editField = "";
-    },
-    showField(name) {
-      return this.profile[name] == "" || this.editField == name;
+  apollo: {
+    faculty: {
+      query: GET_FACULTY
     }
   }
 };
@@ -139,5 +86,13 @@ export default {
 }
 .center {
   margin: auto;
+}
+
+.list-of-faculties {
+
+  justify-content: center;
+}
+.faculty-item {
+  margin: 0 10px;
 }
 </style>

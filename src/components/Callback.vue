@@ -10,8 +10,8 @@
 export default {
   methods: {
     handleLoginEvent(data) {
-      // this.$router.push(data.state.target || "/");
-      window.location.href = data.state.target || "/";
+       this.$router.push(data.state.target || "/");
+      //window.location.href = data.state.target || "/";
     }
   },
   created() {

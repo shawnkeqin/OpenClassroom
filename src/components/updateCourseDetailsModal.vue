@@ -2,18 +2,20 @@
   <div id="components-modal-demo-position">
     <br /><br />
     <a-button type="danger" @click="() => (modal2Visible = true)">
-      Delete Seminar
+      Update Course Details
     </a-button>
     <a-modal
       v-model="modal2Visible"
-      title="Confirm Delete?"
+      title="Update Course Details"
       centered
       @ok="() => (modal2Visible = false)"
     >
       <div class="submit-form">
         <form @submit.prevent="submit">
           <fieldset>
-            <input type="text" placeholder="Enter Seminar ID" v-model="id" />
+            <input type="number" placeholder="Course ID" v-model="id" />
+            <textarea name="Description" placeholder="New Course Description" rows="4" cols="50" v-model="desc"> </textarea>
+           <!-- <input type="text" placeholder="Description" v-model="desc" /> -->
           </fieldset>
           <input class="button-primary" type="submit" value="Send" />
         </form>
@@ -24,60 +26,61 @@
 <script>
 import gql from "graphql-tag";
 //import { InMemoryCache } from "apollo-cache-inmemory";
-const REMOVE_SEMINAR = gql`
-  mutation removeSeminar($id: Int!) {
-    delete_seminartest(where: { id: { _eq: $id } }) {
+const UPDATE_MODULE = gql`
+  mutation update_course($id: Int!, $desc: String!) {
+    update_course(where: { id: { _eq: $id } }, _set: { desc: $desc}) {
       affected_rows
     }
   }
 `;
-const GET_MY_SEMINARS = gql`
-query findSeminar{
-   	seminartest(limit: 3){
-       course_title
-       seminar_id
-        date
-        end
-        location
-        start
-     }
-  }`
+const GET_MODULE = gql`
+query getModules {
+   course(where: {id: {_eq: 1}}) {
+    desc
+    id
+    title
+    module_code
+  }
+}
+`
 export default {
-  name: "deleteSeminarModal",
+  name: "updateCourseDetailsModal",
   data() {
     return {
       id: "",
+      desc: "",
       modal2Visible: false
     };
   },
   apollo: {},
   methods: {
     submit() {
-      const { id } = this.$data;
+      const { id, desc } = this.$data;
       this.$apollo.mutate({
-        mutation: REMOVE_SEMINAR,
+        mutation: UPDATE_MODULE,
         variables: {
-          id
+          id,
+          desc
         },
-        update: (store, { data: { delete_seminartest } }) => {
-          if (delete_seminartest.affected_rows) {
+        update: (store, { data: { update_course } }) => {
+          if (update_course.affected_rows) {
             if (this.type === "private") {
               const data = store.readQuery({
-                query: GET_MY_SEMINARS
+                query: GET_MODULE
               });
-              data.id = data.id.filter(t => {
-                return t.id !== data.id;
-              });
+              const updateCourse = data.id.find(t => t.id === data.id);
+              updateCourse.desc = data.desc;
               store.writeQuery({
-                query: GET_MY_SEMINARS,
+                query: GET_MODULE,
                 data
               });
             }
           }
         },
-        refetchQueries: ["findSeminar"]
+        refetchQueries: ["getModules"]
       });
       this.id = "";
+      this.desc = "";
     }
   }
 };

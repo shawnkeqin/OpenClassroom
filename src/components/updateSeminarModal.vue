@@ -6,7 +6,7 @@
     </a-button>
     <a-modal
       v-model="modal2Visible"
-      title="Vertically centered modal dialog"
+      title="Update Seminar"
       centered
       @ok="() => (modal2Visible = false)"
     >
@@ -14,7 +14,13 @@
         <form @submit.prevent="submit">
           <fieldset>
             <input type="number" placeholder="id" v-model="id" />
-            <input type="text" placeholder="location" v-model="location" />
+               <input type="text" placeholder="Course Title" v-model="course_title" />
+            <input type="text" placeholder="Seminar ID" v-model="seminar_id" />
+         <!--   <input type="number" placeholder="id" v-model="id" /> -->
+            <input type="text" placeholder="Location" v-model="location" />
+             <input type="date" placeholder="Date" v-model="date" />  
+         <input type="time" placeholder="Start Time" v-model="start" />
+            <input type="time" placeholder="End Time" v-model="end" />
           </fieldset>
           <input class="button-primary" type="submit" value="Send" />
         </form>
@@ -25,7 +31,7 @@
 <script>
 import gql from "graphql-tag";
 //import { InMemoryCache } from "apollo-cache-inmemory";
-const UPDATE_FACULTY = gql`
+const UPDATE_SEMINAR = gql`
   mutation update_seminar($id: Int!, $location: String!) {
     update_seminartest(where: { id: { _eq: $id } }, _set: { location: $location }) {
       affected_rows
@@ -57,7 +63,7 @@ export default {
     submit() {
       const { id, location } = this.$data;
       this.$apollo.mutate({
-        mutation: UPDATE_FACULTY,
+        mutation: UPDATE_SEMINAR,
         variables: {
           id,
           location

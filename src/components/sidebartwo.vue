@@ -14,15 +14,15 @@
           <router-link to="/profile"></router-link>
         </a-menu-item>
         <a-menu-item key="2">
-          Manage Courses
+          My Courses
           <router-link to="/mycourses"></router-link>
         </a-menu-item>
         <a-menu-item key="3">
-          Find Courses to observe
+         Search Courses
           <router-link to="/searchcourses"></router-link>
         </a-menu-item>
         <a-menu-item key="4">
-          Manage Observation
+          Incoming Visits
           <router-link to="/observelog"></router-link>
         </a-menu-item>
       </a-menu>
@@ -52,20 +52,14 @@
               <router-link to="/searchcourses">Search Courses</router-link>
             </a-menu-item>
             <a-menu-item key="4">
-              <a-icon type="calendar" />
-              <span class="nav-text">Observe Log</span>
+              <a-icon type="download" />
+              <span class="nav-text">Incoming Visits</span>
               <router-link to="/observelog">Observe Log</router-link>
             </a-menu-item>
-
             <a-menu-item key="5">
               <a-icon type="solution" />
-              <span class="nav-text">FAQ</span>
-              <!-- <router-link to='/observelog'>Observe Log</router-link> -->
-            </a-menu-item>
-            <a-menu-item key="6">
-              <a-icon type="message" />
-              <span class="nav-text">Feedback</span>
-              <!--  <router-link to='/observelog'>Observe Log</router-link> -->
+              <span class="nav-text">Outcoming Visits</span>
+              <router-link to='/outcomingvisits'>Outcoming Visits</router-link> 
             </a-menu-item>
           </a-menu>
         </a-layout-sider>

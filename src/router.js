@@ -9,11 +9,14 @@ import courseDetails from "./components/courseDetails.vue";
 import auth from "./auth/authService";
 import Login from "./components/login.vue"
 import Callback from "./components/Callback.vue";
+import outcomingVisits from "./components/outcomingVisits.vue"
 
 
 Vue.use(Router);
 
 const router = new Router({
+  mode: "history",
+  // See https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode. 
   routes: [
     {
       path: "/",
@@ -55,10 +58,17 @@ const router = new Router({
       path: "/callback",
       name: "callback",
       component: Callback
+    },
+    {
+      path: "/outcomingvisits",
+      name: "outcomingvisits",
+      component: outcomingVisits
     }
+    
   ]
 });
 
+/*
 router.beforeEach((to, from, next) => {
   console.log('x');
 
@@ -70,6 +80,15 @@ router.beforeEach((to, from, next) => {
   console.log('z');
 
   auth.login({ target: to.path });
+});
+*/
+
+router.beforeEach((to, from, next) => {
+  if (to.path == "/callback" || auth.isAuthenticated()) {
+    next();
+  } else {
+    auth.login({ target: to.path });
+  }
 });
 
 export default router;
