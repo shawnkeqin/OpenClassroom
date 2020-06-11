@@ -48,7 +48,7 @@
           <template slot="footer">
             <a-button @click="handleCloseDescModal">Close</a-button>
           </template>
-     <!--     <p>{{ seminar.desc }}</p> -->
+         <p>{{ seminartest.date }}</p> 
         </a-modal>
       </a-col>
       <a-col :span="6">

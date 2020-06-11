@@ -95,7 +95,9 @@ export default {
      seminar_id: "",
      // seminartest: [] 
       course_title: "",
-      location: ""
+      location: "",
+      
+    
      
      
     //  seminartest: []
@@ -108,10 +110,12 @@ export default {
     seminartest: {
     query: gql`
 query findSeminar($seminar_id: String!, $course_title: String!, $location: String!)  {
-  seminartest(where: {_or: {course_title: {_similar: $course_title}, _or: {location: {_similar: $location}}}}) {
+  seminartest(where: {_or: [{location: {_similar: $location}}, {course_title: {_similar: $course_title}},{seminar_id: {_similar: $seminar_id}}] }) {
     course_title
     seminar_id
     location
+    date
+  
   }
 }
 `, 
@@ -132,6 +136,8 @@ variables() {
     seminar_id: this.seminar_id,
     course_title: this.course_title,
     location: this.location,
+   // date: this.date,
+   
  
 
 
