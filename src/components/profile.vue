@@ -48,19 +48,11 @@
 
 <script>
 //import {mapState} from 'vuex'
-import gql from "graphql-tag";
+// import gql from "graphql-tag";
 import profileModal from './profileModal'
 import profileItem from './profileItem'
-const GET_FACULTY = gql`
-query findFaculty {
-  faculty(where: {id: {_eq: "yncsjm1"}}) {
-    email
-    id
-    name
-  }
-}
+import queries from '../graphql/queries.gql'
 
-`
 export default {
   name: "Profile",
   components: {
@@ -74,7 +66,10 @@ export default {
   },
   apollo: {
     faculty: {
-      query: GET_FACULTY
+      query: queries.findFaculty,
+      variables: {
+        faculty_id: "yncsjm1"
+      }
     }
   }
 };
