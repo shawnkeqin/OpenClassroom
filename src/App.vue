@@ -1,7 +1,6 @@
 <template>
   <div>
     <sidebartwo />
-    <router-view />
   </div>
 </template>
 
@@ -13,10 +12,7 @@ import sidebartwo from "./components/sidebartwo";
 export default {
   name: "App",
   components: {
-    //  sidebar
-    //Login
-//incomingRequestsCard
-  sidebartwo
+    sidebartwo
   },
   async created() {
     try {
