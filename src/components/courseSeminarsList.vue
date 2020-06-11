@@ -1,13 +1,24 @@
 <template>
   <div class="list-of-seminars">
+    <a-button :type="isActiveOn ? 'primary' : 'default'" @click="isActiveOn = true">Active</a-button>
+    <a-button :type="!isActiveOn ? 'primary' : 'default'" @click="isActiveOn = false">Archived</a-button>
     <seminar-item
-      v-for="seminartest in seminartest"
+      v-show="isActiveOn"
+      @go-to-archived="isActiveOn = false"
+      v-for="seminartest in seminartest.filter(
+        seminartest => !seminartest.archived
+      )"
       :key="seminartest.seminar_id"
       :seminartest="seminartest"
-      class="faculty-item"
-    >
- 
-    </seminar-item>
+    />
+    <seminar-item
+      v-show="!isActiveOn"
+      v-for="seminartest in seminartest.filter(
+        seminartest => seminartest.archived
+      )"
+      :key="seminartest.seminar_id"
+      :seminartest="seminartest"
+    />
   </div>
 </template>
 
@@ -15,29 +26,21 @@
 //login page form box will determine the id which will allow the graphql query (id) to match and then retrieve all the courses linked to the id.
 //graphql query out all the information for the course - including the seminar information and display in the visible view and hidden view accordingly.
 import seminarItem from "./seminarItem";
-import gql from "graphql-tag";
-const GET_MY_SEMINARS = gql`
-query getSeminars{
-   	seminartest{
-       course_title
-       seminar_id
-        location
-        id
-     }
-  }`
-  ;
 export default {
   name: "courseSeminarsList",
   components: { seminarItem },
   data() {
     return {
-      seminartest: []
+      isActiveOn: true
     };
   },
-  apollo: {
-    seminartest: {
-      query: GET_MY_SEMINARS
+  computed: {
+    seminartest() {
+      return this.$store.getters.allSeminars;
     }
+  },
+  created() {
+    this.$store.dispatch("fetchSeminars");
   }
 };
 </script>

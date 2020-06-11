@@ -1,10 +1,16 @@
 <template>
   <div>
-  <a-card size="small" title="Small size card" style="width: 1100px" :key="seminartest.seminar_id">
+    <a-card
+      size="small"
+      title="Small size card"
+      style="width: 1100px"
+      :key="seminartest.seminar_id"
+    >
       <a slot="extra" href="#">more</a>
-      <p>{{seminartest.course_title}}</p>
-      <p>{{seminartest.location}}</p>
-      <deleteSeminarModal /> 
+      <p>{{ seminartest.course_title }}</p>
+      <p>{{ seminartest.location }}</p>
+      <archiveSeminarModal :seminartest="seminartest" @go-to-archived="$emit('go-to-archived')" />
+      <deleteSeminarModal />
       <p align="right">
       <updateSeminarModal />
       </p>
@@ -13,12 +19,13 @@
 </template>
 
 <script>
-import deleteSeminarModal from './deleteSeminarModal'
-import updateSeminarModal from './updateSeminarModal'
+import archiveSeminarModal from "./archiveSeminarModal";
+import deleteSeminarModal from "./deleteSeminarModal";
+import updateSeminarModal from "./updateSeminarModal";
 export default {
   name: "seminarItem",
-  components: { deleteSeminarModal, updateSeminarModal },
-  props: ["seminartest"]
+  components: { archiveSeminarModal, deleteSeminarModal, updateSeminarModal },
+  props: ["seminartest"],
 };
 </script>
 

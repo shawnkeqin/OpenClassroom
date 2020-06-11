@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
+import gql from "graphql-tag";
+import { apolloClient } from "../main";
 
 Vue.use(Vuex);
 
@@ -42,11 +44,21 @@ const store = new Vuex.Store({
   },
   actions: {
     async fetchSeminars({ commit }) {
-      const response = await axios(
-        "https://jsonplaceholder.typicode.com/todos"
-      );
-      commit("setSeminars", response.data);
-      console.log(response.data);
+      const response = await apolloClient.query({
+        query: gql`
+          query getSeminars {
+            seminartest {
+              course_title
+              seminar_id
+              location
+              id
+              archived
+            }
+          }
+        `
+      });
+      // currently commit seminartest field for testing only
+      commit("setSeminars", response.data.seminartest);
     },
     async addSeminar({ commit }, title) {
       const response = await axios.post(
