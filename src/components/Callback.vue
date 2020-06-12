@@ -1,8 +1,8 @@
   
 <template>
   <div class="spinner">
- <!--   <img src="../assets/loading.svg" alt="Loading"> -->
- <p>Loading... </p>
+    <!--   <img src="../assets/loading.svg" alt="Loading"> -->
+    <p>Loading...</p>
   </div>
 </template>
 
@@ -15,7 +15,6 @@ export default {
     }
   },
   created() {
-    console.log('12345');
     this.$auth.handleAuthentication();
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <a-layout id="components-layout-demo-top-side">
-    <a-layout-header class="header" theme="light">
+    <!-- <a-layout-header class="header" theme="light">
       <div class="logo" />
 
       <a-menu
@@ -30,7 +30,7 @@
           <router-link to="/observelog"></router-link>
         </a-menu-item>
       </a-menu>
-    </a-layout-header>
+    </a-layout-header> -->
     <a-layout-content style="padding: 0 50px">
       <a-layout style="padding: 24px 0; background: #fff">
         <a-layout-sider width="200" style="background: #fff">
@@ -58,12 +58,12 @@
             <a-menu-item key="4">
               <a-icon type="download" />
               <span class="nav-text">My Visitors</span>
-              <router-link to="/observelog">Observe Log</router-link>
+              <router-link to="/my-visitors"></router-link>
             </a-menu-item>
             <a-menu-item key="5">
               <a-icon type="solution" />
               <span class="nav-text">My Visits</span>
-              <router-link to='/outcomingvisits'>Outcoming Visits</router-link> 
+              <router-link to="/outcomingvisits"></router-link>
             </a-menu-item>
           </a-menu>
         </a-layout-sider>
