@@ -11,6 +11,7 @@
 <br />
 <h2>Upcoming Seminars</h2>
 <addNewSeminarModal />
+<br/>
 <courseSeminarsList />
 
 </div> 

@@ -1,61 +1,60 @@
-
 <template>
   <div style="padding: 10px">
     <div>
- <!--     <img
+      <!--     <img
         class="avatar"
         :src="instructor.profilePic"
         style="background-color: grey"
       /> -->
-   <!--   <span style="padding-right: 10px">{{
+      <!--   <span style="padding-right: 10px">{{
         instructor.name + "'s class"
       }}</span> -->
-  <!--    <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag> -->
+      <!--    <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag> -->
     </div>
     <a-card hoverable style="width: 600px" bodyStyle="padding: 10px">
       <a-col :span="4">
-        <div>{{ new Date(seminartest.date).toDateString().slice(0, 10) }}</div>
-        <div>{{ seminartest.start + " - " + seminartest.end }}</div> 
-        <div>{{ seminartest.location }}</div>
+        <div>{{ seminar.date }}</div>
+        <div>{{ seminar.start + " - " + seminar.end }}</div>
+        <div>{{ seminar.location_code }}</div>
       </a-col>
       <a-col :span="14" style="padding-right: 10px">
         <a-row type="flex" style="align-items: center">
-          <span class="module-code">{{ seminartest.seminar_id }}</span>
-          <template v-if="requestStatus === 'pending'">
+          <span class="module-code">{{ seminar.module_code }}</span>
+          <template v-if="visit.visit_status === 'PENDING'">
             <a-icon type="clock-circle" theme="filled" class="pending" />
             <span class="request-status pending">Request pending</span>
           </template>
-          <template v-else-if="requestStatus === 'accepted'">
+          <template v-else-if="visit.visit_status === 'accepted'">
             <a-icon type="check-circle" theme="filled" class="accepted" />
             <span class="request-status accepted">Request accepted</span>
             <a @click="handleAddToCalendar">Add to calendar</a>
           </template>
-          <template v-else-if="requestStatus === 'declined'">
+          <template v-else-if="visit.visit_status === 'declined'">
             <a-icon type="close-circle" theme="filled" class="declined" />
             <span class="request-status declined">Request declined</span>
           </template>
           <template v-else />
         </a-row>
-        <div class="seminar-title">{{ seminartest.course_title }}</div>
-        <a @click="handleOpenDescModal"
+        <div class="seminar-title">{{ course.title }}</div>
+        <a @click="isDescModalOn = true"
           >View course description and seminar details</a
         >
         <a-modal
           v-model="isDescModalOn"
           title="Course description and seminar details"
-          @ok="handleCloseDescModal"
+          @ok="isDescModalOn = false"
         >
           <template slot="footer">
-            <a-button @click="handleCloseDescModal">Close</a-button>
+            <a-button @click="isDescModalOn = false">Close</a-button>
           </template>
-         <p>{{ seminartest.date }}</p> 
+          <p>{{ course.desc }}</p>
         </a-modal>
       </a-col>
       <a-col :span="6">
         <a-button block style="margin-bottom: 2px" type="primary" ghost
           >Share</a-button
         >
-        <template v-if="!requestStatus">
+        <template v-if="!visit.visit_status">
           <a-popover
             v-model="isRequestPopoverOn"
             placement="bottomLeft"
@@ -94,32 +93,69 @@
 </template>
 
 <script>
+import gql from "graphql-tag";
+
 export default {
   name: "seminarCardRequest",
-  props: 
- //   seminar: Object, // assuming that seminar has fields module_code, title, date, start, end, location_code, is_open, desc, instructor
-  //  requestStatus: String,
-    ["seminartest"],
+  props:
+    //   seminar: Object, // assuming that seminar has fields module_code, title, date, start, end, location_code, is_open, desc, instructor
+    //  requestStatus: String,
+    ["visit"],
   data: function() {
     return {
       isRequestPopoverOn: false,
       isDescModalOn: false,
       isMessageModalOn: false,
-      message: ""
+      message: "",
+      seminar: {},
+      course: {}
     };
   },
-/*  computed: {
-    instructor: function() {
-      return this.seminar.instructor;
-    }
-  }, */
+  async created() {
+    const seminar_id = this.visit.seminar_id;
+    const seminarResponse = await this.$apollo.query({
+      query: gql`
+        query getSeminar($seminar_id: Int!) {
+          seminar(where: { id: { _eq: $seminar_id } }) {
+            title
+            start
+            location_code
+            module_code
+            date
+            desc
+            end
+            id
+          }
+        }
+      `,
+      variables: {
+        seminar_id
+      }
+    });
+    this.seminar = seminarResponse.data.seminar[0];
+    const module_code = this.seminar.module_code;
+    console.log(this.seminar);
+    console.log(module_code);
+    console.log('test');
+    const courseResponse = await this.$apollo.query({
+      query: gql`
+        query MyQuery($module_code: String!) {
+          course(where: { module_code: { _eq: $module_code } }) {
+            desc
+            id
+            module_brief_link
+            title
+          }
+        }
+      `,
+      variables: {
+        module_code
+      }
+    });
+    this.course = courseResponse.data.course[0];
+    console.log(courseResponse);
+  },
   methods: {
-    handleOpenDescModal() {
-      this.isDescModalOn = true;
-    },
-    handleCloseDescModal() {
-      this.isDescModalOn = false;
-    },
     handleRequestNow() {
       this.isRequestPopoverOn = false;
     },
@@ -135,7 +171,8 @@ export default {
       this.isMessageModalOn = false;
     },
     handleDeleteRequest() {},
-    handleAddToCalendar() {}
+    handleAddToCalendar() {},
+    handleCancelRequest() {}
   }
 };
 </script>

@@ -1,0 +1,7 @@
+query findFaculty($faculty_id: String) {
+  faculty(where: {id: {_eq: $faculty_id}}) {
+    email
+    id
+    name
+  }
+}

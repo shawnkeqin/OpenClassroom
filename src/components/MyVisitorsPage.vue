@@ -74,7 +74,7 @@ export default {
 
 <template>
 <div>
-<h1>Incoming Visits</h1>
+<h1>My Visitors</h1>
 <br />
   <incomingRequestsCard v-bind="{seminar: {module_code: 'YSC3237', title: 'Introduction to Modern Calculus', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremipsum1', visitor_capacity: 5 }, requests: [{name: 'Mira Seo', status: 'pending', profilePic: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1627&q=80'}, {id: 1, name: 'Matthew Stamp A', status: 'pending', requestMessage: 'Hello! '}, {id: 2, name: 'Matthew Stamp B', status: 'accepted', requestMessage: 'testing message feature'}, {id: 3, name: 'Somone cool', status: 'declined'}]}" />
 </div>
@@ -83,7 +83,7 @@ export default {
 <script>
 import incomingRequestsCard from './incomingRequestsCard'
 export default {
-  name: "observelog",
+  name: "MyVisitorsPage",
   components: {
     incomingRequestsCard
   }

@@ -32,7 +32,7 @@
     </a-descriptions-item>
         <a-descriptions-item label="Start">
 
-  <input type="time" v-model="start" placeholder="start" />
+  <input type="time" id="start" v-model="start" placeholder="start" />
     </a-descriptions-item>
         <a-descriptions-item label="End">
 
@@ -95,7 +95,12 @@ export default {
      seminar_id: "",
      // seminartest: [] 
       course_title: "",
-      location: ""
+      location: "",
+      date: "",
+      start: "",
+      end: ""
+      
+    
      
      
     //  seminartest: []
@@ -107,11 +112,15 @@ export default {
   //  },
     seminartest: {
     query: gql`
-query findSeminar($seminar_id: String!, $course_title: String!, $location: String!)  {
-  seminartest(where: {_or: {course_title: {_similar: $course_title}, _or: {location: {_similar: $location}}}}) {
+query findSeminar($seminar_id: String!, $course_title: String!, $location: String!, $date: String!,  $start: String! , $end: String!)  {
+  seminartest(where: {_or: [{location: {_similar: $location}}, {course_title: {_similar: $course_title}},{seminar_id: {_similar: $seminar_id}},  {date: {_eq: $date}},  {start: {_eq: $start}}, {end: {_eq: $end}}] }) {
     course_title
     seminar_id
     location
+    date
+    start
+    end
+  
   }
 }
 `, 
@@ -132,6 +141,10 @@ variables() {
     seminar_id: this.seminar_id,
     course_title: this.course_title,
     location: this.location,
+    date: this.date,
+    start: this.start, 
+    end: this.end 
+   
  
 
 

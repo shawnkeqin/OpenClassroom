@@ -1,10 +1,7 @@
 <template>
-<div>
-  <sidebartwo /> 
-<!-- <incomingRequestsCard /> -->
- <!-- <Login /> -->
- <!-- <router-view /> -->
- </div> 
+  <div>
+    <sidebartwo />
+  </div>
 </template>
 
 <script>
@@ -15,21 +12,16 @@ import sidebartwo from "./components/sidebartwo";
 export default {
   name: "App",
   components: {
-    //  sidebar
-    //Login
-//incomingRequestsCard
-  sidebartwo
+    sidebartwo
   },
-    async created() {
+  async created() {
     try {
-      console.log('123');
       await this.$auth.renewTokens();
     } catch {
       // Supress the 'not logged in' error as we can illegitimately get that
       // when processing the callback url
     }
   }
-
 };
 </script>
 
