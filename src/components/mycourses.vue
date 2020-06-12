@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>
+    <h1 style="color:DarkBlue;">
       My Courses
     </h1>
   <!--  <a-tabs>

@@ -14,8 +14,8 @@
     </div>
     <a-card hoverable style="width: 600px" bodyStyle="padding: 10px">
       <a-col :span="4">
-      <!--  <div>{{ new Date(seminar.date).toDateString().slice(0, 10) }}</div>
-        <div>{{ seminar.start + " - " + seminar.end }}</div> -->
+        <div>{{ new Date(seminartest.date).toDateString().slice(0, 10) }}</div>
+        <div>{{ seminartest.start + " - " + seminartest.end }}</div> 
         <div>{{ seminartest.location }}</div>
       </a-col>
       <a-col :span="14" style="padding-right: 10px">

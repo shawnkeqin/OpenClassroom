@@ -22,7 +22,11 @@
           <router-link to="/searchcourses"></router-link>
         </a-menu-item>
         <a-menu-item key="4">
-          Incoming Visits
+         My Visitors
+          <router-link to="/observelog"></router-link>
+        </a-menu-item>
+           <a-menu-item key="5">
+         My Visits
           <router-link to="/observelog"></router-link>
         </a-menu-item>
       </a-menu>

@@ -36,11 +36,14 @@ const ADD_SEMINAR = gql`
     $course_title: String!
     $seminar_id: String!
     $location: String!
+    $date: String!
+    $start: String!
+    $end: String!
   
 
   ) {
     insert_seminartest(
-      objects: [{ course_title: $course_title, seminar_id: $seminar_id, location: $location }]
+      objects: [{ course_title: $course_title, seminar_id: $seminar_id, location: $location, date: $date, start: $start, end: $end }]
     ) {
       returning {
         id
@@ -56,20 +59,25 @@ export default {
       course_title: "",
       seminar_id: "",
       location: "", 
-   //   date: "", 
+      date: "", 
+      start: "",
+      end: "",
       modal2Visible: false
     };
   },
   apollo: {},
   methods: {
     submit() {
-      const { course_title,seminar_id,location} = this.$data;
+      const { course_title,seminar_id,location, date,start,end} = this.$data;
       this.$apollo.mutate({
         mutation: ADD_SEMINAR,
         variables: {
           course_title,
           seminar_id,
           location,
+          date,
+          start,
+          end
       //    date
          
         },
@@ -78,7 +86,9 @@ export default {
       this.course_title = "";
       this.seminar_id = "";
       this.location = "";
-    //  this.date = "";
+      this.date = "";
+      this.start = "";
+      this.end = "";
      
     }
   }
