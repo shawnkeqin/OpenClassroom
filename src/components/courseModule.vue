@@ -1,5 +1,6 @@
 <template>
  <div class="list-of-moduledesc">
+ 
     <moduleDesc-item v-for="course in course" :key="course.module_code" :course="course" class="moduleDesc-item">
    
     </moduleDesc-item>

@@ -22,7 +22,11 @@
           <router-link to="/searchcourses"></router-link>
         </a-menu-item>
         <a-menu-item key="4">
-          Incoming Visits
+         My Visitors
+          <router-link to="/observelog"></router-link>
+        </a-menu-item>
+           <a-menu-item key="5">
+         My Visits
           <router-link to="/observelog"></router-link>
         </a-menu-item>
       </a-menu>
@@ -53,12 +57,12 @@
             </a-menu-item>
             <a-menu-item key="4">
               <a-icon type="download" />
-              <span class="nav-text">Incoming Visits</span>
+              <span class="nav-text">My Visitors</span>
               <router-link to="/observelog">Observe Log</router-link>
             </a-menu-item>
             <a-menu-item key="5">
               <a-icon type="solution" />
-              <span class="nav-text">Outcoming Visits</span>
+              <span class="nav-text">My Visits</span>
               <router-link to='/outcomingvisits'>Outcoming Visits</router-link> 
             </a-menu-item>
           </a-menu>
