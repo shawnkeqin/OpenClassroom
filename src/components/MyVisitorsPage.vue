@@ -73,25 +73,49 @@ export default {
 -->
 
 <template>
-<div>
-<h1>My Visitors</h1>
-<br />
-  <incomingRequestsCard v-bind="{seminar: {module_code: 'YSC3237', title: 'Introduction to Modern Calculus', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremipsum1', visitor_capacity: 5 }, requests: [{name: 'Mira Seo', status: 'pending', profilePic: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1627&q=80'}, {id: 1, name: 'Matthew Stamp A', status: 'pending', requestMessage: 'Hello! '}, {id: 2, name: 'Matthew Stamp B', status: 'accepted', requestMessage: 'testing message feature'}, {id: 3, name: 'Somone cool', status: 'declined'}]}" />
-</div>
+  <div>
+    <h1>My Visitors</h1>
+    <br />
+    <SeminarsWithVisitsCard
+      v-for="seminar in seminarsWithSomeVisits"
+      :seminar="seminar"
+      :key="seminar.id"
+    />
+  </div>
 </template>
 
 <script>
-import incomingRequestsCard from './incomingRequestsCard'
+import SeminarsWithVisitsCard from "./SeminarWithVisitsCard";
+import queries from "../graphql/queries.gql";
+import constants from "../utils/constants";
 export default {
   name: "MyVisitorsPage",
   components: {
-    incomingRequestsCard
+    SeminarsWithVisitsCard
+  },
+  data: function() {
+    return {
+      seminarsWithVisits: []
+    };
+  },
+  computed: {
+    seminarsWithSomeVisits: function() {
+      return this.seminarsWithVisits.filter(
+        seminar => Array.isArray(seminar.visits) && seminar.visits.length
+      );
+    }
+  },
+  apollo: {
+    seminarsWithVisits: {
+      query: queries.getSeminarsWithVisitsByTimeReq,
+      variables: {
+        faculty_id: constants.TEST_FACULTY_ID,
+        semester_code: constants.SEMESTER_CODE_AY1819_1
+      },
+      update: data => data.seminar
+    }
   }
-
-}
-
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

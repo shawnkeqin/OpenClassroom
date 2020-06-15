@@ -1,13 +1,19 @@
 <template>
   <div style="padding: 10px">
-    <a-card hoverable style="width: 600px" bodyStyle="padding: 10px">
+    <a-card hoverable style="width: auto" :bodyStyle="{ padding: '20px' }">
       <a-row>
         <a-col :span="4">
-          <div>{{ new Date(seminar.date).toDateString().slice(0, 10) }}</div>
-          <div>{{ seminar.start + " - " + seminar.end }}</div>
-          <div>{{ seminar.location_code }}</div>
+          <div>{{ utils.date_format(seminar.date) }}</div>
+          <div>
+            {{
+              utils.time_format(seminar.start) +
+                " - " +
+                utils.time_format(seminar.start)
+            }}
+          </div>
+          <div>{{ seminar.location.full_name }}</div>
         </a-col>
-        <a-col :span="14" style="padding-right: 10px">
+        <a-col :span="12" style="padding-right: 10px">
           <a-row type="flex" style="align-items: center">
             <span class="module-code">{{ seminar.module_code }}</span>
             <a-icon type="clock-circle" theme="filled" class="pending" />
@@ -15,18 +21,11 @@
               pendingCount + " request(s) pending"
             }}</span>
           </a-row>
-          <div class="seminar-title">{{ seminar.title }}</div>
-          <a
-            v-if="isRequestRowsOn"
-            @click="handleHideRequests"
-            style="font-size: 12px"
-            >{{ "Hide " + requests.length + " incoming requests" }}</a
-          >
-          <a v-else @click="handleShowRequests" style="font-size: 12px">{{
-            "Show " + requests.length + " incoming requests"
-          }}</a>
+          <div class="seminar-title">
+            {{ seminar.course_group.course.title }}
+          </div>
         </a-col>
-        <a-col :span="6">
+        <a-col :span="8">
           <a-button block type="primary" style="margin-bottom: 2px"
             >Go to course</a-button
           >
@@ -40,30 +39,45 @@
           </div>
         </a-col>
       </a-row>
+      <a
+        v-if="isRequestRowsOn"
+        @click="handleHideRequests"
+        style="font-size: 12px"
+        >{{ "Hide " + requests.length + " incoming requests" }}</a
+      >
+      <a v-else @click="handleShowRequests" style="font-size: 12px">{{
+        "Show " + requests.length + " incoming requests"
+      }}</a>
       <a-row v-if="isRequestRowsOn" type="flex" style="flex-direction: column">
         <a-row
           v-for="request in requests"
-          :key="request.name"
+          :key="request.id"
           type="flex"
           style="height: 35px"
         >
-          <a-col :span="18" class="requestor">
+          <a-col :span="16" class="requestor">
             <div>
               <img
                 class="avatar"
                 :src="request.profilePic"
                 style="background-color: grey"
               />
-              <span>{{ request.name }}</span>
+              <span>{{ request.visitor.name }}</span>
             </div>
             <div class="button-group">
-              <template v-if="request.status === 'pending'">
+              <template
+                v-if="request.visit_status === constants.VISIT_STATUS_PENDING"
+              >
                 <a-button class="respond-button accept-button">Accept</a-button>
                 <a-button class="respond-button decline-button"
                   >Decline</a-button
                 >
               </template>
-              <template v-else-if="request.status === 'accepted'">
+              <template
+                v-else-if="
+                  request.visit_status === constants.VISIT_STATUS_ACCEPTED
+                "
+              >
                 <a-button class="respond-button accepted-button"
                   >Accepted</a-button
                 >
@@ -71,7 +85,9 @@
                   >Decline</a-button
                 >
               </template>
-              <template v-else-if="request.status === 'declined'">
+              <template
+                v-else-if="request.status === constants.VISIT_STATUS_DECLINED"
+              >
                 <a-button class="respond-button accept-button">Accept</a-button>
                 <a-button class="respond-button declined-button"
                   >Declined</a-button
@@ -80,10 +96,13 @@
               <template v-else />
             </div>
           </a-col>
-          <a-col :span="6" class="view-message">
+          <a-col :span="4" class="view-message">{{
+            `(${utils.datetime_fromnow_format(request.time_requested)})`
+          }}</a-col>
+          <a-col :span="4" class="view-message">
             <a
-              v-if="request.requestMessage"
-              @click="handleOpenMessageModal(request.id)"
+              v-if="request.request_msg"
+              @click="handleOpenMessageModal(request)"
               >View message</a
             >
           </a-col>
@@ -97,8 +116,10 @@
               >Submit</a-button
             >
           </template>
-          <p>{{ sender.name + ": " }}</p>
-          <p>{{ sender.requestMessage }}</p>
+          <div v-if="requestInMessageModal">
+            <p>{{ requestInMessageModal.visitor.name || "" + ": " }}</p>
+            <p>{{ requestInMessageModal.request_msg || "" }}</p>
+          </div>
           <a-form-model-item label="Your reply (optional)">
             <a-input v-model="replyMessage" type="textarea" />
           </a-form-model-item>
@@ -109,29 +130,38 @@
 </template>
 
 <script>
+import utils from "../utils";
+import constants from "../utils/constants";
 export default {
-  name: "incomingRequestsCard",
   props: {
-    seminar: Object, // assuming that seminar has fields title, module_code, time, date
-    requests: Array // assuming that requests is an array of objects, each of which has the following fields: id, name, profilePic, status, and message
+    seminar: Object
   },
   data: function() {
     return {
+      utils: utils,
+      constants: constants,
       isRequestRowsOn: true,
       isMessageModalOn: false,
-      requestIdToReply: "",
+      requestInMessageModal: null,
       sender: "",
       replyMessage: ""
     };
   },
   computed: {
-    pendingCount: function() {
-      return this.requests.filter(request => request.status === "pending")
-        .length;
+    requests() {
+      console.log("VISITS");
+      console.log(this.seminar.visits);
+      return this.seminar.visits;
     },
-    acceptedCount: function() {
-      return this.requests.filter(request => request.status === "accepted")
-        .length;
+    pendingCount() {
+      return this.requests.filter(
+        request => request.visit_status === constants.VISIT_STATUS_PENDING
+      ).length;
+    },
+    acceptedCount() {
+      return this.requests.filter(
+        request => request.visit_status === constants.VISIT_STATUS_ACCEPTED
+      ).length;
     }
   },
   methods: {
@@ -141,9 +171,8 @@ export default {
     handleShowRequests() {
       this.isRequestRowsOn = true;
     },
-    handleOpenMessageModal(id) {
-      this.requestIdToReply = id;
-      this.sender = this.requests.find(request => request.id === id);
+    handleOpenMessageModal(request) {
+      this.requestInMessageModal = request;
       this.isMessageModalOn = true;
     },
     handleSubmitMessage() {
@@ -151,7 +180,7 @@ export default {
     },
     handleCancelMessage() {
       this.replyMessage = "";
-      this.requestIdToReply = "";
+      this.requestInMessageModal = null;
       this.isMessageModalOn = false;
     }
   }

@@ -5,3 +5,44 @@ query findFaculty($faculty_id: String) {
     name
   }
 }
+query getSeminarsWithVisitsByTimeReq($faculty_id: String, $semester_code: String) {
+  seminar(where: {course_group: {faculty_id: {_eq: $faculty_id}}, _and: {semester_code: {_eq: $semester_code}}}) {
+    title
+    start
+    module_code
+    location_code
+    location {
+      full_name
+    }
+    date
+    desc
+    end
+    id
+    is_open
+    semester_code
+    group_code
+    visitor_capacity
+    visits(order_by: {time_requested: desc}) {
+      id
+      is_archived
+      is_cancelled
+      request_msg
+      response_msg
+      time_requested
+      time_responded
+      visit_status
+      visitor_id
+      visitor {
+        email
+        id
+        name
+        is_active
+      }
+    }
+    course_group {
+      course {
+        title
+      }
+    }
+  }
+}
