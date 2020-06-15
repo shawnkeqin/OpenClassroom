@@ -82,7 +82,7 @@ export default {
       this.$store.commit("updateMessage", e.target.value);
     },
     onChange(e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 };

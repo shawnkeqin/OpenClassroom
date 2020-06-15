@@ -149,8 +149,6 @@ export default {
   },
   computed: {
     requests() {
-      console.log("VISITS");
-      console.log(this.seminar.visits);
       return this.seminar.visits;
     },
     pendingCount() {

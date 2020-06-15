@@ -134,9 +134,9 @@ export default {
     });
     this.seminar = seminarResponse.data.seminar[0];
     const module_code = this.seminar.module_code;
-    console.log(this.seminar);
-    console.log(module_code);
-    console.log('test');
+    // console.log(this.seminar);
+    // console.log(module_code);
+    // console.log('test');
     const courseResponse = await this.$apollo.query({
       query: gql`
         query MyQuery($module_code: String!) {
@@ -153,7 +153,7 @@ export default {
       }
     });
     this.course = courseResponse.data.course[0];
-    console.log(courseResponse);
+    // console.log(courseResponse);
   },
   methods: {
     handleRequestNow() {
