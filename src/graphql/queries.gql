@@ -5,7 +5,15 @@ query findFaculty($faculty_id: String) {
     name
   }
 }
-query getSeminarsWithVisitsByTimeReq($faculty_id: String, $semester_code: String) {
+
+mutation update_visit_status($visit_id: Int!, $visit_status: String, $time_responded: timestamptz) {
+  update_visit_by_pk(pk_columns: {id: $visit_id}, _set: {time_responded: $time_responded, visit_status: $visit_status}) {
+    time_responded
+    visit_status
+  }
+}
+
+query get_seminars_with_visits_by_time_requested($faculty_id: String, $semester_code: String) {
   seminar(where: {course_group: {faculty_id: {_eq: $faculty_id}}, _and: {semester_code: {_eq: $semester_code}}}) {
     title
     start
@@ -46,3 +54,10 @@ query getSeminarsWithVisitsByTimeReq($faculty_id: String, $semester_code: String
     }
   }
 }
+
+# query get_visit_status($visit_id:Int){
+#   visit_by_pk(id: $visit_id){
+#     visit_status
+#     time_responded
+#   }
+# }
