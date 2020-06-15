@@ -7,16 +7,15 @@ import MyVisitorsPage from "./components/MyVisitorsPage.vue";
 import viewSeminars from "./components/viewSeminars.vue";
 import courseDetails from "./components/courseDetails.vue";
 import auth from "./auth/authService";
-import Login from "./components/login.vue"
+import Login from "./components/login.vue";
 import Callback from "./components/Callback.vue";
-import outcomingVisits from "./components/outcomingVisits.vue"
-
+import outcomingVisits from "./components/outcomingVisits.vue";
 
 Vue.use(Router);
 
 const router = new Router({
   mode: "history",
-  // See https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode. 
+  // See https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode.
   routes: [
     {
       path: "/",
@@ -59,23 +58,22 @@ const router = new Router({
       name: "callback",
       component: Callback
     },
-    // See https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode. 
+    // See https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode.
     // { path: '*', component: NotFound }
     {
       path: "/outcomingvisits",
       name: "outcomingvisits",
       component: outcomingVisits
     }
-    
   ]
 });
-
 
 router.beforeEach((to, from, next) => {
   if (to.path == "/callback" || auth.isAuthenticated()) {
     next();
   } else {
-    auth.login({ target: to.path });
+    next();
+    // auth.login({ target: to.path });
   }
 });
 
