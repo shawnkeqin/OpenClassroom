@@ -107,7 +107,7 @@ export default {
   },
   apollo: {
     seminarsWithVisits: {
-      query: queries.getSeminarsWithVisitsByTimeReq,
+      query: queries.get_seminars_with_visits_by_time_requested,
       variables: {
         faculty_id: constants.TEST_FACULTY_ID,
         semester_code: constants.SEMESTER_CODE_AY1819_1

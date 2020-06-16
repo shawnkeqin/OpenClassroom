@@ -8,7 +8,7 @@
             {{
               utils.time_format(seminar.start) +
                 " - " +
-                utils.time_format(seminar.start)
+                utils.time_format(seminar.end)
             }}
           </div>
           <div>{{ seminar.location.full_name }}</div>
@@ -65,39 +65,62 @@
               <span>{{ request.visitor.name }}</span>
             </div>
             <div class="button-group">
-              <template
-                v-if="request.visit_status === constants.VISIT_STATUS_PENDING"
+              <a-button
+                v-if="
+                  request.visit_status === constants.VISIT_STATUS_PENDING ||
+                    request.visit_status === constants.VISIT_STATUS_DECLINED
+                "
+                class="respond-button accept-button"
+                @click="
+                  submitVisitResponse(
+                    request.id,
+                    constants.VISIT_STATUS_ACCEPTED
+                  )
+                "
               >
-                <a-button class="respond-button accept-button">Accept</a-button>
-                <a-button class="respond-button decline-button"
-                  >Decline</a-button
-                >
-              </template>
-              <template
+                Accept
+              </a-button>
+              <a-button
                 v-else-if="
                   request.visit_status === constants.VISIT_STATUS_ACCEPTED
                 "
+                class="respond-button accepted-button"
               >
-                <a-button class="respond-button accepted-button"
-                  >Accepted</a-button
-                >
-                <a-button class="respond-button decline-button"
-                  >Decline</a-button
-                >
-              </template>
-              <template
-                v-else-if="request.status === constants.VISIT_STATUS_DECLINED"
+                Accepted
+              </a-button>
+              <a-button
+                v-if="
+                  request.visit_status === constants.VISIT_STATUS_PENDING ||
+                    request.visit_status === constants.VISIT_STATUS_ACCEPTED
+                "
+                class="respond-button decline-button"
+                @click="
+                  submitVisitResponse(
+                    request.id,
+                    constants.VISIT_STATUS_DECLINED
+                  )
+                "
               >
-                <a-button class="respond-button accept-button">Accept</a-button>
-                <a-button class="respond-button declined-button"
-                  >Declined</a-button
-                >
-              </template>
-              <template v-else />
+                Decline
+              </a-button>
+              <a-button
+                v-else-if="
+                  request.visit_status === constants.VISIT_STATUS_DECLINED
+                "
+                class="respond-button declined-button"
+              >
+                Declined
+              </a-button>
             </div>
           </a-col>
-          <a-col :span="4" class="view-message">{{
-            `(${utils.datetime_fromnow_format(request.time_requested)})`
+          <a-col :span="4" class="view-message" style="font-size: 0.75em">{{
+            request.visit_status !== constants.PENDING && request.time_responded
+              ? `Responded ${utils.datetime_fromnow_format(
+                  request.time_responded
+                )}`
+              : `Requested ${utils.datetime_fromnow_format(
+                  request.time_requested
+                )}`
           }}</a-col>
           <a-col :span="4" class="view-message">
             <a
@@ -132,6 +155,9 @@
 <script>
 import utils from "../utils";
 import constants from "../utils/constants";
+import queries from "../graphql/queries.gql";
+import moment from "moment";
+
 export default {
   props: {
     seminar: Object
@@ -163,6 +189,23 @@ export default {
     }
   },
   methods: {
+    submitVisitResponse(visit_id, new_status) {
+      this.$apollo.mutate({
+        mutation: queries.update_visit_status,
+        variables: {
+          visit_id: visit_id,
+          visit_status: new_status,
+          time_responded: moment().format()
+        },
+        update: (store, { data: { update_visit_by_pk } }) => {
+          if (update_visit_by_pk) {
+            // We have not initialized Apollo Cache or VueX store. Or local data. So we should get the parent component to reload.
+            // this.$emit("visit-updated");
+          }
+        },
+        refetchQueries: ["get_seminars_with_visits_by_time_requested"]
+      });
+    },
     handleHideRequests() {
       this.isRequestRowsOn = false;
     },
