@@ -44,9 +44,10 @@ const router = new Router({
       component: MyVisitorsPage
     },
     {
-      path: "/coursedetails",
+      path: "/coursedetails/:id",
       name: "coursedetails",
-      component: courseDetails
+      component: courseDetails,
+      props: true
     },
     {
       path: "/login",

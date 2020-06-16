@@ -1,43 +1,66 @@
 <template>
   <div>
-  <a-card size="small" title="Seminar" style="width: 1100px" :key="seminartest.seminar_id">
+    <a-card
+      size="small"
+      title="Seminar"
+      style="width: 1100px"
+      :key="seminar.id"
+    >
       <a slot="extra" href="#">more</a>
-        <a-descriptions>
-    <a-descriptions-item label="Course Title">
- {{seminartest.course_title}}
-    </a-descriptions-item>
-    <a-descriptions-item label="Location">
-    {{seminartest.location}}
-    </a-descriptions-item>
-    <a-descriptions-item label="Date">
-        {{seminartest.date}}
-    </a-descriptions-item>
-    <a-descriptions-item label="Start">
-  {{seminartest.start}}
-    </a-descriptions-item>
-    <a-descriptions-item label="End">
-       {{seminartest.end}}
-    </a-descriptions-item>
-  </a-descriptions>
+      <a-descriptions>
+        <a-descriptions-item label="Date">
+          {{ utils.date_format(seminar.date) }}
+        </a-descriptions-item>
+        <a-descriptions-item label="Time">
+          {{
+            utils.time_format(seminar.start) +
+              " - " +
+              utils.time_format(seminar.end)
+          }}
+        </a-descriptions-item>
+        <a-descriptions-item label="Location">
+          {{ seminar.location.full_name }}
+        </a-descriptions-item>
+        <a-descriptions-item label="Seminar title">
+          {{ seminar.title }}
+        </a-descriptions-item>
+        <a-descriptions-item label="Seminar description">
+          {{ seminar.desc }}
+        </a-descriptions-item>
+        <a-descriptions-item label="Visitor capacity">
+          {{ seminar.visitor_capacity }}
+        </a-descriptions-item>
+      </a-descriptions>
       <p align="right">
-      <deleteSeminarModal /> 
+        <deleteSeminarModal />
       </p>
-            <archiveSeminarModal :seminartest="seminartest" @go-to-archived="$emit('go-to-archived')" />
       <p align="right">
-      <updateSeminarModal />
+        <archiveSeminarModal
+          :seminar_id="seminar.id"
+          :is_archived="seminar.is_archived"
+        />
+      </p>
+      <p align="right">
+        <updateSeminarModal />
       </p>
     </a-card>
   </div>
 </template>
 
 <script>
-import deleteSeminarModal from './deleteSeminarModal'
-import updateSeminarModal from './updateSeminarModal'
+import utils from "../utils";
+import deleteSeminarModal from "./deleteSeminarModal";
+import updateSeminarModal from "./updateSeminarModal";
 import archiveSeminarModal from "./archiveSeminarModal";
 export default {
   name: "seminarItem",
-  components: {  archiveSeminarModal, deleteSeminarModal, updateSeminarModal },
-  props: ["seminartest"]
+  components: { archiveSeminarModal, deleteSeminarModal, updateSeminarModal },
+  props: ["seminar"],
+  data: function() {
+    return {
+      utils: utils
+    };
+  }
 };
 </script>
 
