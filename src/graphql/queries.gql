@@ -6,10 +6,11 @@ query findFaculty($faculty_id: String) {
   }
 }
 
-mutation update_visit_status($visit_id: Int!, $visit_status: String, $time_responded: timestamptz) {
-  update_visit_by_pk(pk_columns: {id: $visit_id}, _set: {time_responded: $time_responded, visit_status: $visit_status}) {
+mutation update_visit_response($visit_id: Int!, $visit_status: String!, $time_responded: timestamptz!, $response_msg: String) {
+  update_visit_by_pk(pk_columns: {id: $visit_id}, _set: {time_responded: $time_responded, visit_status: $visit_status,     response_msg: $response_msg}) {
     time_responded
     visit_status
+    response_msg
   }
 }
 
