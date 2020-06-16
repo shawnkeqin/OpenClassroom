@@ -1,7 +1,51 @@
 <template>
   <div>
-    <a-card title="Search Courses" style="width: 1400px">
-    <!--  <form @submit.prevent="submit">
+    <a-input-search
+      placeholder="input search text"
+      enter-button="Search"
+      size="large"
+      @search="onSearch"
+    />
+    <br/>
+       <br/>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+     <p align="right">
+  <a-card style="width: 300px">
+ <p align="center">Filter</p>
+  <p align="center">Date Range</p>
+   <a-range-picker
+      :default-value="[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]"
+      :format="dateFormat"
+    />
+    <br />
+     <p align="center">Timings</p>
+     <p align="center">Start - End</p>
+     <p align="center">
+       <a-time-picker :default-value="moment('12:08', 'HH:mm')" format="HH:mm" align="center" />
+      
+         <a-time-picker :default-value="moment('12:08', 'HH:mm')" format="HH:mm" align="center" />
+         </p>
+    <p align="center">Instructor</p>
+     <a-select mode="tags" style="width: 100%" placeholder="Tags Mode" @change="handleChange">
+    <a-select-option v-for="i in 25" :key="(i + 9).toString(36) + i">
+      {{ (i + 9).toString(36) + i }}
+    </a-select-option>
+  </a-select>
+     <p align="center">Tags</p>
+       <a-select mode="tags" style="width: 100%" placeholder="Tags Mode" @change="handleChange">
+    <a-select-option v-for="i in 25" :key="(i + 9).toString(36) + i">
+      {{ (i + 9).toString(36) + i }}
+    </a-select-option>
+  </a-select>
+  </a-card>
+  
+  
+    
+      </p>
+  <!--  <a-card title="Search Courses" style="width: 1400px">
+     <form @submit.prevent="submit">
         <fieldset>
           <input type="text" placeholder="Seminar ID" v-model="seminar_id" />
           <input
@@ -16,7 +60,7 @@
         </fieldset>
         <input class="button-primary" type="submit" value="Send" />
       </form> -->
-        <a-descriptions title="Search Fields">
+   <!--    <a-descriptions title="Search Fields">
     <a-descriptions-item label="Seminar ID">
    <input v-model="seminar_id" placeholder="Seminar ID"  />
     </a-descriptions-item>
@@ -47,33 +91,34 @@
       <br />
       <h2>Results</h2>
   <div class="list-of-seminars">
-  <!--  <seminar-item
+   <seminar-item
       v-for="seminartest in seminartest"
       :key="seminartest.seminar_id"
       :seminartest="seminartest"
       class="seminar-item"
-    > -->
-  <!-- <seminarCardRequest :seminar="{module_code: 'YSC4211B', title: 'Adv Topics Molecular, Cell & Developmental Bio: Stem Cells', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremipsum1', tags: ['TAG1', 'TAG2', 'TAG3'], instructor: {name: 'Matthew Stamp', profilePic: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1627&q=80'} }" :requestStatus="''"/> --> 
+    > 
+  <seminarCardRequest :seminar="{module_code: 'YSC4211B', title: 'Adv Topics Molecular, Cell & Developmental Bio: Stem Cells', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremipsum1', tags: ['TAG1', 'TAG2', 'TAG3'], instructor: {name: 'Matthew Stamp', profilePic: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1627&q=80'} }" :requestStatus="''"/> 
    <seminarCardRequest  v-for="seminartest in seminartest"
       :key="seminartest.seminar_id"
       :seminartest="seminartest"
       class="seminar-item" >
   </seminarCardRequest >
-   <!-- </seminar-item>  -->
+    </seminar-item> 
   </div>
-    <!-- <p>{{seminartest}}</p> -->
+     <p>{{seminartest}}</p> 
       
-  <!-- <seminarCardRequest :seminar="{module_code: 'YSC3237', title: 'Introduction to Modern Algebra', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremipsum2', tags: ['TAG1', 'TAG2', 'TAG3'], instructor: {name: 'Matthew Stamp', profilePic: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1627&q=80'} }" :requestStatus="'pending'"/>
+   <seminarCardRequest :seminar="{module_code: 'YSC3237', title: 'Introduction to Modern Algebra', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremipsum2', tags: ['TAG1', 'TAG2', 'TAG3'], instructor: {name: 'Matthew Stamp', profilePic: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1627&q=80'} }" :requestStatus="'pending'"/>
   <seminarCardRequest :seminar="{module_code: 'YSC2222', title: 'Organic Chemistry Laboratory', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremipsum3', tags: ['TAG3', 'TAG4', 'TAG5'], instructor: {name: 'NAME HERE'} }" :requestStatus="'accepted'"/>
-  <seminarCardRequest :seminar="{module_code: 'YSC3253', title: 'Coral Reef Ecology and Environmental Change', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremupsum4', tags: ['TAG6', 'TAG7', 'TAG8'], instructor: {name: 'NAME HERE'} }" :requestStatus="'declined'"/> -->
-    </a-card>
+  <seminarCardRequest :seminar="{module_code: 'YSC3253', title: 'Coral Reef Ecology and Environmental Change', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremupsum4', tags: ['TAG6', 'TAG7', 'TAG8'], instructor: {name: 'NAME HERE'} }" :requestStatus="'declined'"/> 
+    </a-card> -->
   </div>
 </template>
 
 <script>
+import moment from 'moment';
 //import seminarItem from "./seminarItem";
 import gql from "graphql-tag";
-import seminarCardRequest from "./seminarCardRequest"
+//import seminarCardRequest from "./seminarCardRequest"
 //import seminarItem from './seminarItem'
 /*const GET_SEMINARS = gql`
   query getSeminars {
@@ -89,7 +134,7 @@ import seminarCardRequest from "./seminarCardRequest"
 `; */
 export default {
   name: "viewSeminars",
-  components: { seminarCardRequest },
+ // components: { seminarCardRequest },
   data() {
     return {
      seminar_id: "",
@@ -98,7 +143,10 @@ export default {
       location: "",
       date: "",
       start: "",
-      end: ""
+      end: "",
+      dateFormat: 'YYYY/MM/DD',
+      monthFormat: 'YYYY/MM',
+      dateFormatList: ['DD/MM/YYYY', 'DD/MM/YY'],
       
     
      
@@ -152,31 +200,16 @@ variables() {
 }
 }
 
-  }
- /* methods: {
-    submit() {
-      const { seminar_id } = this.$data;
-      this.$apollo.query({
-        query: `query searchSeminars{
-  seminartest(where: {seminar_id: {_eq: ${seminar_id}}}) {
-    course_title
-    date
-    end
-    location
-    seminar_id
-    start
-  }
-  }`
-      });
-
-      this.seminar_id = "";
-      this.course_title = "";
-      this.start = "";
-      this.end = "";
-      this.date = "";
-      this.location = "";
-    }
-  } */
+  },
+  methods: {
+  onSearch(value) {
+      console.log(value);
+    },
+    moment,
+    handleChange(value) {
+      console.log(`selected ${value}`);
+    },
+  } 
 };
 </script>
 
