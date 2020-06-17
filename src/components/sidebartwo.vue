@@ -53,7 +53,7 @@
             <a-menu-item key="3">
               <a-icon type="file-search" />
               <span class="nav-text">Search Courses</span>
-              <router-link to="/searchcourses">Search Courses</router-link>
+              <router-link to="/search-courses">Search Courses</router-link>
             </a-menu-item>
             <a-menu-item key="4">
               <a-icon type="download" />

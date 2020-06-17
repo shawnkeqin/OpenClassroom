@@ -60,6 +60,7 @@
 import queries from "@/graphql/queries.gql";
 import seminarItem from "./seminarItem";
 import addNewSeminarModal from "./addNewSeminarModal";
+import updateCourseDetailsModal from "./updateCourseDetailsModal";
 // import courseModule from "./courseModule";
 export default {
   name: "courseDetails",
@@ -67,6 +68,7 @@ export default {
   components: {
     seminarItem,
     addNewSeminarModal,
+    updateCourseDetailsModal
     // courseModule
   },
   data: function() {
@@ -97,7 +99,7 @@ export default {
         update: data => data.course[0]
       };
     }
-  }, 
+  },
   computed: {
     archived_seminars() {
       return this.seminars.filter(seminar => seminar.is_archived);
