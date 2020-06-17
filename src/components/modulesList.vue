@@ -49,12 +49,10 @@ export default {
       };
     }
 
-      course: [],
-      course_group : []
+    
      
-    };
-  },
 
+}
 };
 </script>
 
