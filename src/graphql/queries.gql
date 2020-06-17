@@ -62,3 +62,93 @@ query get_seminars_with_visits_by_time_requested($faculty_id: String, $semester_
 #     time_responded
 #   }
 # }
+
+query get_my_visits($visitor_id: String!) {
+  visit(where: { visitor_id: { _eq: $visitor_id } }) {
+    id
+    seminar_id
+    visit_status
+    visitor_id
+    request_msg
+    response_msg
+  }
+}
+
+mutation delete_visit($visit_id: Int!) {
+  delete_visit(where: {id: {_eq: $visit_id}}) {
+    affected_rows
+  }
+}
+
+query get_seminar($seminar_id: Int!) {
+  seminar(where: {id: {_eq: $seminar_id}}) {
+    id
+    module_code
+    date
+    start
+    end
+    location {
+      full_name
+    }
+    title
+    desc
+    course_group {
+      course {
+        id
+        module_code
+        title
+        desc
+        module_brief_link
+      }
+    }
+  }
+}
+
+query get_course_groups_by_faculty($faculty_id: String!) {
+  course_group(where: {faculty_id: {_eq: $faculty_id}}) {
+    id
+    group_code
+    course {
+      id
+      title
+      module_code
+    }
+  }
+}
+
+query get_seminars_by_course_group($course_group_id: Int!) {
+  seminar(where: {course_group: {id: {_eq: $course_group_id}}}) {
+    id
+    date
+    start
+    end
+    is_archived
+    location {
+      full_name
+    }
+    title
+    desc
+    visitor_capacity
+  }
+}
+
+query get_course_by_course_group($course_group_id: Int!) {
+  course(where: {course_groups: {id: {_eq: $course_group_id}}}) {
+    id
+    module_code
+    title
+    desc
+  }
+}
+
+mutation archive_seminar($seminar_id: Int!) {
+  update_seminar(where: {id: {_eq: $seminar_id}}, _set: {is_archived: true}) {
+    affected_rows
+  }
+}
+
+mutation unarchive_seminar($seminar_id: Int!) {
+  update_seminar(where: {id: {_eq: $seminar_id}}, _set: {is_archived: false}) {
+    affected_rows
+  }
+}
