@@ -63,7 +63,7 @@
             <a-menu-item key="5">
               <a-icon type="solution" />
               <span class="nav-text">My Visits</span>
-              <router-link to="/outcomingvisits"></router-link>
+              <router-link to="/my-visits"></router-link>
             </a-menu-item>
           </a-menu>
         </a-layout-sider>

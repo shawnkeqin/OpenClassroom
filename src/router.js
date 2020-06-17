@@ -9,7 +9,7 @@ import courseDetails from "./components/courseDetails.vue";
 import auth from "./auth/authService";
 import Login from "./components/login.vue";
 import Callback from "./components/Callback.vue";
-import outcomingVisits from "./components/outcomingVisits.vue";
+import MyVisitsPage from "@/components/MyVisitsPage";
 
 Vue.use(Router);
 
@@ -62,9 +62,9 @@ const router = new Router({
     // See https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode.
     // { path: '*', component: NotFound }
     {
-      path: "/outcomingvisits",
-      name: "outcomingvisits",
-      component: outcomingVisits
+      path: "/my-visits",
+      name: "MyVisitsPage",
+      component: MyVisitsPage
     }
   ]
 });
