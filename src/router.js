@@ -1,14 +1,14 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Profile from "./components/profile.vue";
-import mycourses from "./components/mycourses.vue";
-import MyVisitorsPage from "./components/MyVisitorsPage";
+import Profile from "@/components/profile";
+import mycourses from "@/components/mycourses";
+import MyVisitorsPage from "@/components/MyVisitorsPage";
 //import searchcourses from './components/searchcourses.vue'
-import viewSeminars from "./components/viewSeminars.vue";
-import courseDetails from "./components/courseDetails.vue";
-import auth from "./auth/authService";
+import viewSeminars from "@/components/viewSeminars";
+import courseDetails from "@/components/mycourses/courseDetails";
+import auth from "@/auth/authService";
 import LoginPage from "@/components/LoginPage";
-import Callback from "./components/Callback.vue";
+import Callback from "@/components/Callback.vue";
 import MyVisitsPage from "@/components/MyVisitsPage";
 
 Vue.use(Router);
@@ -29,12 +29,12 @@ const router = new Router({
       component: Profile
     },
     {
-      path: "/mycourses",
+      path: "/my-courses",
       name: "mycourses",
       component: mycourses
     },
     {
-      path: "/searchcourses",
+      path: "/search-courses",
       name: "viewSeminars",
       component: viewSeminars
     },

@@ -60,7 +60,8 @@
 import queries from "@/graphql/queries.gql";
 import seminarItem from "./seminarItem";
 import addNewSeminarModal from "./addNewSeminarModal";
-import updateCourseDetailsModal from "./updateCourseDetailsModal.vue";
+import updateCourseDetailsModal from "./updateCourseDetailsModal";
+// import courseModule from "./courseModule";
 export default {
   name: "courseDetails",
   props: ["id"],
@@ -98,7 +99,7 @@ export default {
         update: data => data.course[0]
       };
     }
-  }, 
+  },
   computed: {
     archived_seminars() {
       return this.seminars.filter(seminar => seminar.is_archived);
