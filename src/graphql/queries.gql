@@ -6,6 +6,15 @@ query findFaculty($faculty_id: String) {
   }
 }
 
+query getFacultyById($faculty_id: String!) {
+  faculty_by_pk(id: $faculty_id) {
+    email
+    id
+    name
+  }
+}
+
+
 mutation update_visit_response($visit_id: Int!, $visit_status: String!, $time_responded: timestamptz!, $response_msg: String) {
   update_visit_by_pk(pk_columns: {id: $visit_id}, _set: {time_responded: $time_responded, visit_status: $visit_status,     response_msg: $response_msg}) {
     time_responded
