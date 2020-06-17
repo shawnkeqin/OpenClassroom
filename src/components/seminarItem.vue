@@ -7,7 +7,7 @@
       style="width: 1100px"
       :key="seminar.id"
     >
-      <a slot="extra"><seminarStatusToggle :seminartest="seminartest" @toggle-availability="$emit('toggle-availability')"/></a>
+      <a slot="extra"><seminarStatusToggle :seminar_id="seminar.id" /></a>
       <a-descriptions>
         <a-descriptions-item label="Date">
           {{ utils.date_format(seminar.date) }}

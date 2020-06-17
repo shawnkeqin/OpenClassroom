@@ -1,63 +1,54 @@
 <template>
   <div>
-    <a-switch @change="onChange" />
+    <a-switch default-checked @change="onChange" />
   </div>
 </template>
 <script>
 import gql from "graphql-tag";
-const TOGGLE_SEMINAR_AVAILABILITY = gql`
-  mutation toggleSeminar($id: Int!) {
-    update_seminartest(_set: { is_open: true}, where: { id: { _eq: $id } }) {
-      affected_rows
-    }
-  }
-`;
-const GET_MY_SEMINARS = gql`
-  query findSeminar {
-    seminartest {
-      id
-      start
-      is_open
-    }
-  }
-`;
+
 export default {
   name: "seminarStatusToggle", 
-  props: ["seminartest"],
+  props: ["seminar_id"],
   data() {
     return {};
   },
   apollo: {},
   methods: {
     async onChange(checked) {
+      const seminar_id = this.seminar_id;
       console.log(`a-switch to ${checked}`);
        await this.$apollo.mutate({
-        mutation: TOGGLE_SEMINAR_AVAILABILITY,
+        mutation: gql`
+  mutation toggleSeminar($seminar_id: Int!) {
+    update_seminar(where: { id: { _eq: $seminar_id }}, _set: { is_open: ${checked}}) {
+      affected_rows
+    }
+  }
+`,
         variables: {
-          id: this.seminartest.id
+         seminar_id
         },
-        update: (store, { data: { update_seminartest } }) => {
-          if (update_seminartest.affected_rows) {
+    /*    update: (store, { data: { update_seminar } }) => {
+          if (update_seminar.affected_rows) {
             // if (this.type === "private") {
             const data = store.readQuery({
               query: GET_MY_SEMINARS
             });
-            const seminartest = data.seminartest;
-            const i = seminartest.findIndex(
-              seminar => seminar.id === this.seminartest.id
+            const seminar = data.seminar;
+            const i = seminar.findIndex(
+              seminar => seminar.id === this.seminar.id
             );
-            seminartest[i].is_open = checked;
+            seminar[i].is_open = checked;
             store.writeQuery({
               query: GET_MY_SEMINARS,
               data
             });
             // }
           }
-        },
-        // refetchQueries: ["findSeminar"]
+        }, */
+         refetchQueries: ["get_seminars_by_course_group"]
       });
-      this.$store.dispatch("fetchSeminars");
-      this.$emit('toggle-availability');
+
     }
   },
 };
