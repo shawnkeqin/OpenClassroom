@@ -45,7 +45,7 @@
 </template>
 <script>
 
-import queries from "../graphql/queries.gql";
+import queries from "@/graphql/queries.gql";
 
 export default {
   name: "archiveSeminarModal",

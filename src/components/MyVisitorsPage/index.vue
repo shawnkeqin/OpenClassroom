@@ -86,8 +86,8 @@ export default {
 
 <script>
 import SeminarsWithVisitsCard from "./SeminarWithVisitsCard";
-import queries from "../graphql/queries.gql";
-import constants from "../utils/constants";
+import queries from "@/graphql/queries.gql";
+import constants from "@/utils/constants";
 export default {
   name: "MyVisitorsPage",
   components: {

@@ -1,26 +1,19 @@
 <template>
   <div class="list-of-courses">
-
     <courseItem
       v-for="course_group in course_groups"
       :key="course_group.id"
       :course_group="course_group"
     />
-  </div>    
-
- 
-
-
-
+  </div>
 </template>
 
 <script>
 import courseItem from "./moduleItem";
 //import courseDetails from "./courseDetails";
 // import gql from "graphql-tag";
-import queries from "../graphql/queries.gql";
-import constants from "../utils/constants";
-
+import queries from "@/graphql/queries.gql";
+import constants from "@/utils/constants";
 
 export default {
   name: "coursesList",
@@ -30,7 +23,6 @@ export default {
   },
   data() {
     return {
-
       course_groups: []
     };
   },
@@ -48,11 +40,7 @@ export default {
         update: data => data.course_group
       };
     }
-
-    
-     
-
-}
+  }
 };
 </script>
 

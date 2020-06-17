@@ -51,7 +51,7 @@
 // import gql from "graphql-tag";
 import profileModal from './profileModal'
 import profileItem from './profileItem'
-import queries from '../graphql/queries.gql'
+import queries from '@/graphql/queries.gql'
 
 export default {
   name: "Profile",

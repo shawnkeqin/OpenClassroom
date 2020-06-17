@@ -2,14 +2,14 @@ import Vue from "vue";
 import Router from "vue-router";
 import Profile from "./components/profile.vue";
 import mycourses from "./components/mycourses.vue";
-import MyVisitorsPage from "./components/MyVisitorsPage.vue";
+import MyVisitorsPage from "./components/MyVisitorsPage";
 //import searchcourses from './components/searchcourses.vue'
 import viewSeminars from "./components/viewSeminars.vue";
 import courseDetails from "./components/courseDetails.vue";
 import auth from "./auth/authService";
-import Login from "./components/login.vue";
+import LoginPage from "@/components/LoginPage";
 import Callback from "./components/Callback.vue";
-import outcomingVisits from "./components/outcomingVisits.vue";
+import MyVisitsPage from "@/components/MyVisitsPage";
 
 Vue.use(Router);
 
@@ -51,8 +51,8 @@ const router = new Router({
     },
     {
       path: "/login",
-      name: "Login",
-      component: Login
+      name: "LoginPage",
+      component: LoginPage
     },
     {
       path: "/callback",
@@ -62,9 +62,9 @@ const router = new Router({
     // See https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode.
     // { path: '*', component: NotFound }
     {
-      path: "/outcomingvisits",
-      name: "outcomingvisits",
-      component: outcomingVisits
+      path: "/my-visits",
+      name: "MyVisitsPage",
+      component: MyVisitsPage
     }
   ]
 });

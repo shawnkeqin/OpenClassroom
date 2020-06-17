@@ -136,9 +136,9 @@
 
 <script>
 import VisitResponseModal from "./VisitResponseModal";
-import utils from "../utils";
-import constants from "../utils/constants";
-import queries from "../graphql/queries.gql";
+import utils from "@/utils";
+import constants from "@/utils/constants";
+import queries from "@/graphql/queries.gql";
 import moment from "moment";
 
 export default {

@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import queries from "../graphql/queries.gql";
+import queries from "@/graphql/queries.gql";
 import seminarItem from "./seminarItem";
 import addNewSeminarModal from "./addNewSeminarModal";
 // import courseModule from "./courseModule";
