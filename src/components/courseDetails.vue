@@ -60,13 +60,14 @@
 import queries from "@/graphql/queries.gql";
 import seminarItem from "./seminarItem";
 import addNewSeminarModal from "./addNewSeminarModal";
-// import courseModule from "./courseModule";
+import updateCourseDetailsModal from "./updateCourseDetailsModal.vue";
 export default {
   name: "courseDetails",
   props: ["id"],
   components: {
     seminarItem,
     addNewSeminarModal,
+    updateCourseDetailsModal
     // courseModule
   },
   data: function() {
