@@ -1,53 +1,36 @@
 <template>
   <div>
-    <h1>Outcoming Visits</h1>
+    <h1>My Visits</h1>
     <br />
-    <!-- <div>{{ myVists }}</div> -->
-    <myVisitCard v-for="visit in myVists" :visit="visit" :key="visit.id" />
+    <myVisitCard v-for="visit in myVisits" :visit="visit" :key="visit.id" />
   </div>
 </template>
 
 
 <script>
 import myVisitCard from "./myVisitCard";
-import gql from 'graphql-tag';
+import queries from "../graphql/queries.gql";
+// import constants from "../utils/constants";
 
 export default {
   name: "observelog",
   components: {
     myVisitCard
   },
-  // computed: {
-  //   myVists() {
-  //     return this.$store.state.myVists;
-  //   }
-  // },
   data() {
     return {
       myVisits: []
     }
   },
   apollo: {
-    myVists: {
-      query: gql`
-        query getMyVisits($visitor_id: String!) {
-          visit(where: { visitor_id: { _eq: $visitor_id } }) {
-            id
-            seminar_id
-            visit_status
-            visitor_id
-          }
-        }`,
+    myVisits: {
+      query: queries.get_my_visits,
       variables: {
-        visitor_id: "yncsjm"
+        visitor_id: "yncms"
       },
       update: data => data.visit
     }
-  },
-  // create() {
-    // console.log('created');
-    // this.$store.dispatch("fetchMyVisits", { visitor_id: "yncsjm" });
-  // }
+  }
 };
 </script>
 

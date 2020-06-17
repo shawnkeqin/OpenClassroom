@@ -11,29 +11,22 @@
       }}</span> -->
       <!--    <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag> -->
     </div>
-    <a-card hoverable style="width: 600px" bodyStyle="padding: 10px">
+    <a-card hoverable style="width: 800px" bodyStyle="padding: 10px">
       <a-col :span="4">
-        <div>{{ seminar.date }}</div>
-        <div>{{ seminar.start + " - " + seminar.end }}</div>
-        <div>{{ seminar.location_code }}</div>
+        <div>{{ utils.date_format(seminar.date) }}</div>
+        <div>
+          {{
+            utils.time_format(seminar.start) +
+              " - " +
+              utils.time_format(seminar.end)
+          }}
+        </div>
+        <div>{{ seminar.location.full_name }}</div>
       </a-col>
       <a-col :span="14" style="padding-right: 10px">
         <a-row type="flex" style="align-items: center">
           <span class="module-code">{{ seminar.module_code }}</span>
-          <template v-if="visit.visit_status === 'PENDING'">
-            <a-icon type="clock-circle" theme="filled" class="pending" />
-            <span class="request-status pending">Request pending</span>
-          </template>
-          <template v-else-if="visit.visit_status === 'accepted'">
-            <a-icon type="check-circle" theme="filled" class="accepted" />
-            <span class="request-status accepted">Request accepted</span>
-            <a @click="handleAddToCalendar">Add to calendar</a>
-          </template>
-          <template v-else-if="visit.visit_status === 'declined'">
-            <a-icon type="close-circle" theme="filled" class="declined" />
-            <span class="request-status declined">Request declined</span>
-          </template>
-          <template v-else />
+          <a @click="handleAddToCalendar">Add to calendar</a>
         </a-row>
         <div class="seminar-title">{{ course.title }}</div>
         <a @click="isDescModalOn = true"
@@ -50,129 +43,97 @@
           <p>{{ course.desc }}</p>
         </a-modal>
       </a-col>
-      <a-col :span="6">
-        <a-button block style="margin-bottom: 2px" type="primary" ghost
-          >Share</a-button
+      <a-col :span="6" type="flex" align="middle">
+        <a-button
+          @click="isCancelRequestModalOn = true"
+          block
+          type="primary"
+          ghost
+          >Cancel request</a-button
         >
-        <template v-if="!visit.visit_status">
-          <a-popover
-            v-model="isRequestPopoverOn"
-            placement="bottomLeft"
-            trigger="click"
-          >
-            <template slot="content">
-              <div @click="handleRequestNow"><a>Request now</a></div>
-              <div @click="handleOpenMessageModal">
-                <a>Request with a message</a>
-              </div>
-              <a-modal v-model="isMessageModalOn" @ok="handleSubmitMessage">
-                <template slot="footer">
-                  <a-button key="cancel" @click="handleCancelMessage"
-                    >Cancel</a-button
-                  >
-                  <a-button key="submit" @click="handleSubmitMessage"
-                    >Submit</a-button
-                  >
-                </template>
-                <a-form-model-item label="Your message">
-                  <a-input v-model="message" type="textarea" />
-                </a-form-model-item>
-              </a-modal>
-            </template>
-            <a-button block type="primary">Request</a-button>
-          </a-popover>
-        </template>
-        <template v-else>
-          <a-button @click="handleCancelRequest" block type="primary" ghost
-            >Cancel request</a-button
-          >
-        </template>
+        <a-modal
+          v-model="isCancelRequestModalOn"
+          @ok="handleCancelRequest"
+          title="You are about to cancel your visit request"
+        >
+          <template slot="footer">
+            <a-button key="cancel" @click="isCancelRequestModalOn = false"
+              >Cancel</a-button
+            >
+            <a-button key="submit" @click="handleCancelRequest"
+              >Confirm cancel request</a-button
+            >
+          </template>
+          <h6>Your request message</h6>
+          <p>{{ visit.request_msg }}</p>
+          <h6>Instructor's response message</h6>
+          <p>{{ visit.response_msg }}</p>
+        </a-modal>
+        <div>
+          <template v-if="visit.visit_status === 'PENDING'">
+            <a-icon type="clock-circle" theme="filled" class="pending" />
+            <span class="request-status pending">Request pending</span>
+          </template>
+          <template v-else-if="visit.visit_status === 'ACCEPTED'">
+            <a-icon type="check-circle" theme="filled" class="accepted" />
+            <span class="request-status accepted">Request accepted</span>
+          </template>
+          <template v-else-if="visit.visit_status === 'DECLINED'">
+            <a-icon type="close-circle" theme="filled" class="declined" />
+            <span class="request-status declined">Request declined</span>
+          </template>
+          <template v-else />
+        </div>
       </a-col>
     </a-card>
   </div>
 </template>
 
 <script>
-import gql from "graphql-tag";
+import utils from "../utils";
+import queries from "../graphql/queries.gql";
 
 export default {
-  name: "seminarCardRequest",
-  props:
-    //   seminar: Object, // assuming that seminar has fields module_code, title, date, start, end, location_code, is_open, desc, instructor
-    //  requestStatus: String,
-    ["visit"],
+  name: "myVisitCard",
+  props: ["visit"],
   data: function() {
     return {
-      isRequestPopoverOn: false,
+      utils: utils,
       isDescModalOn: false,
-      isMessageModalOn: false,
-      message: "",
-      seminar: {},
-      course: {}
+      isCancelRequestModalOn: false,
+      seminar: {}
     };
   },
-  async created() {
-    const seminar_id = this.visit.seminar_id;
-    const seminarResponse = await this.$apollo.query({
-      query: gql`
-        query getSeminar($seminar_id: Int!) {
-          seminar(where: { id: { _eq: $seminar_id } }) {
-            title
-            start
-            location_code
-            module_code
-            date
-            desc
-            end
-            id
-          }
-        }
-      `,
-      variables: {
-        seminar_id
-      }
-    });
-    this.seminar = seminarResponse.data.seminar[0];
-    const module_code = this.seminar.module_code;
-    console.log(this.seminar);
-    console.log(module_code);
-    console.log('test');
-    const courseResponse = await this.$apollo.query({
-      query: gql`
-        query MyQuery($module_code: String!) {
-          course(where: { module_code: { _eq: $module_code } }) {
-            desc
-            id
-            module_brief_link
-            title
-          }
-        }
-      `,
-      variables: {
-        module_code
-      }
-    });
-    this.course = courseResponse.data.course[0];
-    console.log(courseResponse);
+  apollo: {
+    seminar() {
+      const seminar_id = this.visit.seminar_id;
+      return {
+        query: queries.get_seminar,
+        variables: {
+          seminar_id
+        },
+        update: data => data.seminar[0]
+      };
+    }
+  },
+  computed: {
+    course() {
+      return this.seminar.course_group.course;
+    }
   },
   methods: {
-    handleRequestNow() {
-      this.isRequestPopoverOn = false;
+    async handleCancelRequest() {
+      const visit_id = this.visit.id;
+      await this.$apollo.mutate({
+        mutation: queries.delete_visit,
+        variables: {
+          visit_id
+        },
+        refetchQueries: ["get_my_visits"]
+      });
+      this.isCancelRequestModalOn = false;
     },
-    handleOpenMessageModal() {
-      this.isRequestPopoverOn = false;
-      this.isMessageModalOn = true;
-    },
-    handleSubmitMessage() {
-      this.isMessageModalOn = false;
-    },
-    handleCancelMessage() {
-      this.message = "";
-      this.isMessageModalOn = false;
-    },
-    handleDeleteRequest() {},
-    handleAddToCalendar() {},
-    handleCancelRequest() {}
+    handleAddToCalendar() {}
   }
 };
 </script>

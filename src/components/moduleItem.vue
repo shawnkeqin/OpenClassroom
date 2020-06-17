@@ -1,12 +1,23 @@
 <template>
-<div style="background-color: #F5F5F5; padding: 20px;">
+  <div style="background-color: #F5F5F5; padding: 20px;">
     <a-row :gutter="16">
       <a-col :span="8">
-        <a-card v-bind:title="course.title" :bordered="false" :key="course.module_code">
+
+        <!-- <a-card v-bind:title="course.title" :bordered="false" :key="course.module_code">
         <p>{{course.module_code}}</p>
         <router-link to='/coursedetails'>Course Details</router-link>
-        </a-card>
-      </a-col> 
+        </a-card> -->
+        <a-card v-bind:title="course_group.course.title" :bordered="false">
+          <p>{{ course_group.course.module_code }}</p>
+          <p>{{ "Group " + course_group.group_code }}</p>
+          <p>
+            <router-link :to="'/coursedetails/' + course_group.id"
+              >Course details</router-link
+            >
+          </p></a-card
+        >
+      </a-col>
+
     </a-row>
   </div>
 </template>
@@ -14,8 +25,12 @@
 <script>
 export default {
   name: "courseItem",
-  props: ["course"]
-}
+
+  props: ["course_group"]
+};
+
+
+
 </script>
 
 <style scoped>

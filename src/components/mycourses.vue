@@ -3,7 +3,7 @@
     <h1 style="color:DarkBlue;">
       My Courses
     </h1>
-  <!--  <a-tabs>
+    <!--  <a-tabs>
       <a-tab-pane key="2" tab="Current">
         <a-card title="Manage Course Information">
           <p
@@ -22,11 +22,7 @@
           <br />
           <updateFacultyModal /> -->
 
-       
-
-           
-
-          <!--
+    <!--
  <div class = "seminars">
   
     <div @dblclick="onDblClick(seminar)" v-for="seminar in allSeminars" :key="seminar.id" class = "seminar">{{seminar.title}} 
@@ -54,7 +50,7 @@
         Extra Action
       </a-button>
     </a-tabs> -->
-       <coursesList />
+    <coursesList />
   </div>
 </template>
 <script>
@@ -66,15 +62,15 @@ import { mapGetters, mapActions } from "vuex";
 //import deleteFacultyModal from "./deleteFacultyModal";
 //import updateFacultyModal from "./updateFacultyModal";
 //import coursesList from "./coursesList";
-import coursesList from './modulesList'
+import coursesList from "./modulesList";
 export default {
   components: {
-     coursesList
+    coursesList
     //addNewFacultyModal,
     //   facultiesList,
-   // deleteFacultyModal,
-   // updateFacultyModal,
-   // coursesList
+    // deleteFacultyModal,
+    // updateFacultyModal,
+    // coursesList
     //  updateSeminarModal,
     //  addNewSeminar
   },
@@ -89,7 +85,7 @@ export default {
         delivery: false,
         type: [],
         resource: "",
-        desc: "",
+        desc: ""
       },
       isAuthenticated: false,
       isLoading: true
@@ -105,13 +101,12 @@ export default {
       this.updateSeminar(updSeminar);
     },
     onSubmit() {
-      console.log("submit!", this.form);
+      // console.log("submit!", this.form);
     },
-      handleLoginEvent(data) {
+    handleLoginEvent(data) {
       this.isAuthenticated = data.loggedIn;
       this.isLoading = false;
     }
-    
   },
   beforeCreate() {
     this.isLoading = true;

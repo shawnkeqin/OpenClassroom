@@ -84,7 +84,6 @@ class AuthService extends EventEmitter {
     
     this.idToken = authResult.idToken;
     this.profile = authResult.idTokenPayload;
-    console.log(this.profile);
     // Convert the expiry time from seconds to milliseconds,
     // required by the Date constructor
     this.tokenExpiry = new Date(this.profile.exp * 1000);

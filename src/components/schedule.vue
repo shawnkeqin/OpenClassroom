@@ -70,7 +70,7 @@
 export default {
   methods: {
     handleMenuClick(e) {
-      console.log("click", e);
+      // console.log("click", e);
     }
   }
 };
