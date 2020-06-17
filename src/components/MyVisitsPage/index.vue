@@ -9,7 +9,7 @@
 <script>
 import MyVisitCard from "./MyVisitCard";
 import queries from "@/graphql/queries.gql";
-// import constants from "../utils/constants";
+import constants from "@/utils/constants";
 
 export default {
   name: "observelog",
@@ -25,7 +25,7 @@ export default {
     myVisits: {
       query: queries.get_my_visits,
       variables: {
-        visitor_id: "yncms"
+        visitor_id: constants.TEST_FACULTY_ID
       },
       update: data => data.visit
     }
