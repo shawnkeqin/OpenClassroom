@@ -48,7 +48,7 @@
             <a-menu-item key="2">
               <a-icon type="container" />
               <span class="nav-text">My Courses</span>
-              <router-link to="/mycourses">My Courses</router-link>
+              <router-link to="/my-courses">My Courses</router-link>
             </a-menu-item>
             <a-menu-item key="3">
               <a-icon type="file-search" />
