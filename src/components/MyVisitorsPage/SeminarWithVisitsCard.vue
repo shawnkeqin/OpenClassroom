@@ -33,7 +33,7 @@
             Seminar description: {{ seminarDesc }}
           </a-row>
           <a-row type="flex" style="align-items: center">
-            Notes for observers: {{ courseGroupNotes }}
+            Notes for visitors: {{ courseGroupNotes }}
           </a-row>
         </a-col>
         <a-col :span="8">

@@ -72,10 +72,32 @@
         </a-layout-content>
       </a-layout>
     </a-layout-content>
-    <a-layout-footer style="text-align: center"> </a-layout-footer>
+    <a-layout-footer style="text-align: left">
+      Logged in as: {{ loggedInUser.name }}, ID: {{ loggedInUser.id }}
+    </a-layout-footer>
   </a-layout>
 </template>
-
+<script>
+import constants from "../utils/constants";
+import queries from "../graphql/queries.gql";
+export default {
+  data() {
+    return {
+      constants: constants,
+      queries: queries
+    };
+  },
+  apollo: {
+    loggedInUser: {
+      query: queries.getFacultyById,
+      variables: {
+        faculty_id: constants.TEST_FACULTY_ID
+      },
+      update: data => data.faculty_by_pk
+    }
+  }
+};
+</script>
 <style>
 #components-layout-demo-top-side .logo {
   width: 120px;
