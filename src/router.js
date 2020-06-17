@@ -7,7 +7,7 @@ import MyVisitorsPage from "./components/MyVisitorsPage";
 import viewSeminars from "./components/viewSeminars.vue";
 import courseDetails from "./components/courseDetails.vue";
 import auth from "./auth/authService";
-import Login from "./components/login.vue";
+import LoginPage from "@/components/LoginPage";
 import Callback from "./components/Callback.vue";
 import MyVisitsPage from "@/components/MyVisitsPage";
 
@@ -51,8 +51,8 @@ const router = new Router({
     },
     {
       path: "/login",
-      name: "Login",
-      component: Login
+      name: "LoginPage",
+      component: LoginPage
     },
     {
       path: "/callback",
