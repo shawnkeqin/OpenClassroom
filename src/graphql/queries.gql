@@ -31,6 +31,7 @@ query get_seminars_with_visits_by_time_requested($faculty_id: String, $semester_
     semester_code
     group_code
     visitor_capacity
+    week
     visits(order_by: {time_requested: desc}) {
       id
       is_archived
@@ -49,6 +50,7 @@ query get_seminars_with_visits_by_time_requested($faculty_id: String, $semester_
       }
     }
     course_group {
+      notes
       course {
         title
       }
