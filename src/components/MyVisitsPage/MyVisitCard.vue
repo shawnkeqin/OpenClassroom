@@ -90,8 +90,8 @@
 </template>
 
 <script>
-import utils from "../utils";
-import queries from "../graphql/queries.gql";
+import utils from "@/utils";
+import queries from "@/graphql/queries.gql";
 
 export default {
   name: "myVisitCard",

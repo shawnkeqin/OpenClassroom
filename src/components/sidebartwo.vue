@@ -53,7 +53,7 @@
             <a-menu-item key="3">
               <a-icon type="file-search" />
               <span class="nav-text">Search Courses</span>
-              <router-link to="/searchcourses">Search Courses</router-link>
+              <router-link to="/search-courses">Search Courses</router-link>
             </a-menu-item>
             <a-menu-item key="4">
               <a-icon type="download" />
@@ -63,7 +63,7 @@
             <a-menu-item key="5">
               <a-icon type="solution" />
               <span class="nav-text">My Visits</span>
-              <router-link to="/outcomingvisits"></router-link>
+              <router-link to="/my-visits"></router-link>
             </a-menu-item>
           </a-menu>
         </a-layout-sider>
@@ -72,10 +72,32 @@
         </a-layout-content>
       </a-layout>
     </a-layout-content>
-    <a-layout-footer style="text-align: center"> </a-layout-footer>
+    <a-layout-footer style="text-align: left">
+      Logged in as: {{ loggedInUser.name }}, ID: {{ loggedInUser.id }}
+    </a-layout-footer>
   </a-layout>
 </template>
-
+<script>
+import constants from "../utils/constants";
+import queries from "../graphql/queries.gql";
+export default {
+  data() {
+    return {
+      constants: constants,
+      queries: queries
+    };
+  },
+  apollo: {
+    loggedInUser: {
+      query: queries.getFacultyById,
+      variables: {
+        faculty_id: constants.TEST_FACULTY_ID
+      },
+      update: data => data.faculty_by_pk
+    }
+  }
+};
+</script>
 <style>
 #components-layout-demo-top-side .logo {
   width: 120px;
