@@ -9,7 +9,7 @@
 
 <script>
 import myVisitCard from "./myVisitCard";
-import queries from "../graphql/queries.gql";
+import queries from "@/graphql/queries.gql";
 // import constants from "../utils/constants";
 
 export default {
