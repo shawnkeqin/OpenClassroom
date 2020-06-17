@@ -1,12 +1,13 @@
 <template>
   <div>
+
     <a-card
       size="small"
       title="Seminar"
       style="width: 1100px"
       :key="seminar.id"
     >
-      <a slot="extra" href="#">more</a>
+      <a slot="extra"><seminarStatusToggle :seminartest="seminartest" @toggle-availability="$emit('toggle-availability')"/></a>
       <a-descriptions>
         <a-descriptions-item label="Date">
           {{ utils.date_format(seminar.date) }}
@@ -31,6 +32,7 @@
           {{ seminar.visitor_capacity }}
         </a-descriptions-item>
       </a-descriptions>
+
       <p align="right">
         <deleteSeminarModal />
       </p>
@@ -52,15 +54,20 @@ import utils from "../utils";
 import deleteSeminarModal from "./deleteSeminarModal";
 import updateSeminarModal from "./updateSeminarModal";
 import archiveSeminarModal from "./archiveSeminarModal";
+import seminarStatusToggle from "./seminarStatusToggle"
 export default {
   name: "seminarItem",
-  components: { archiveSeminarModal, deleteSeminarModal, updateSeminarModal },
+
+  components: { archiveSeminarModal, deleteSeminarModal, updateSeminarModal, seminarStatusToggle },
   props: ["seminar"],
   data: function() {
     return {
       utils: utils
     };
   }
+
+
+
 };
 </script>
 

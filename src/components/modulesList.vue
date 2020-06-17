@@ -1,18 +1,17 @@
 <template>
   <div class="list-of-courses">
-    <!-- <course-item
-      v-for="course in course"
-      :key="course.module_code"
-      :course="course"
-      class="course-item"
-    >
-    </course-item> -->
+
     <courseItem
       v-for="course_group in course_groups"
       :key="course_group.id"
       :course_group="course_group"
     />
-  </div>
+  </div>    
+
+ 
+
+
+
 </template>
 
 <script>
@@ -22,16 +21,7 @@ import courseItem from "./moduleItem";
 import queries from "../graphql/queries.gql";
 import constants from "../utils/constants";
 
-// const GET_MODULES = gql`
-//   query getModules {
-//     course(where: { id: { _eq: 1 } }) {
-//       desc
-//       id
-//       title
-//       module_code
-//     }
-//   }
-// `;
+
 export default {
   name: "coursesList",
   components: {
@@ -40,7 +30,7 @@ export default {
   },
   data() {
     return {
-      // course: []
+
       course_groups: []
     };
   },
@@ -58,7 +48,13 @@ export default {
         update: data => data.course_group
       };
     }
-  }
+
+      course: [],
+      course_group : []
+     
+    };
+  },
+
 };
 </script>
 

@@ -3,8 +3,8 @@
     <a-card hoverable style="width: auto" :bodyStyle="{ padding: '20px' }">
       <a-row>
         <a-col :span="4">
-          <div>{{ utils.date_format(seminar.date) }}</div>
-          <div>
+          <div class="seminar-date-and-time">
+            {{ utils.date_format(seminar.date) }}
             {{
               utils.time_format(seminar.start) +
                 " - " +
@@ -22,7 +22,8 @@
             }}</span>
           </a-row>
           <div class="seminar-title">
-            {{ seminar.course_group.course.title }}
+            {{ seminar.course_group.course.title }} (Group
+            {{ seminar.group_code }})
           </div>
         </a-col>
         <a-col :span="8">
@@ -55,7 +56,7 @@
           type="flex"
           style="height: 35px"
         >
-          <a-col :span="16" class="requestor">
+          <a-col :span="12" class="requestor">
             <div>
               <img
                 class="avatar"
@@ -64,70 +65,51 @@
               />
               <span>{{ request.visitor.name }}</span>
             </div>
-            <div class="button-group">
-              <a-button
-                v-if="
-                  request.visit_status === constants.VISIT_STATUS_PENDING ||
-                    request.visit_status === constants.VISIT_STATUS_DECLINED
-                "
-                class="respond-button accept-button"
-                @click="
-                  submitVisitResponse(
-                    request.id,
-                    constants.VISIT_STATUS_ACCEPTED
-                  )
-                "
+          </a-col>
+          <a-col :span="4">
+            <div style="float: right">
+              <a-tag
+                v-if="request.visit_status === constants.VISIT_STATUS_PENDING"
+                color="#ffb74d"
               >
-                Accept
-              </a-button>
-              <a-button
+                {{ constants.VISIT_STATUS_PENDING }}
+              </a-tag>
+              <a-tag
                 v-else-if="
                   request.visit_status === constants.VISIT_STATUS_ACCEPTED
                 "
-                class="respond-button accepted-button"
+                color="#81c784"
               >
-                Accepted
-              </a-button>
-              <a-button
-                v-if="
-                  request.visit_status === constants.VISIT_STATUS_PENDING ||
-                    request.visit_status === constants.VISIT_STATUS_ACCEPTED
-                "
-                class="respond-button decline-button"
-                @click="
-                  submitVisitResponse(
-                    request.id,
-                    constants.VISIT_STATUS_DECLINED
-                  )
-                "
-              >
-                Decline
-              </a-button>
-              <a-button
+                {{ constants.VISIT_STATUS_ACCEPTED }}
+              </a-tag>
+              <a-tag
                 v-else-if="
                   request.visit_status === constants.VISIT_STATUS_DECLINED
                 "
-                class="respond-button declined-button"
+                color="#e57373"
               >
-                Declined
-              </a-button>
+                {{ constants.VISIT_STATUS_DECLINED }}
+              </a-tag>
             </div>
           </a-col>
-          <a-col :span="4" class="view-message" style="font-size: 0.75em">{{
-            request.visit_status !== constants.PENDING && request.time_responded
-              ? `Responded ${utils.datetime_fromnow_format(
-                  request.time_responded
-                )}`
-              : `Requested ${utils.datetime_fromnow_format(
-                  request.time_requested
-                )}`
-          }}</a-col>
-          <a-col :span="4" class="view-message">
-            <a
+          <a-col :span="4">
+            <VisitResponseModal
+              :seminar="seminar"
+              :visit="request"
+            ></VisitResponseModal>
+
+            <!-- <a
               v-if="request.request_msg"
               @click="handleOpenMessageModal(request)"
               >View message</a
-            >
+            > -->
+          </a-col>
+          <a-col :span="4">
+            <div>
+              <p style="text-align: center;">
+                {{ responseTime(request) }}
+              </p>
+            </div>
           </a-col>
         </a-row>
         <a-modal v-model="isMessageModalOn" @ok="handleSubmitMessage">
@@ -153,12 +135,16 @@
 </template>
 
 <script>
+import VisitResponseModal from "./VisitResponseModal";
 import utils from "../utils";
 import constants from "../utils/constants";
 import queries from "../graphql/queries.gql";
 import moment from "moment";
 
 export default {
+  components: {
+    VisitResponseModal
+  },
   props: {
     seminar: Object
   },
@@ -189,6 +175,14 @@ export default {
     }
   },
   methods: {
+    responseTime(request) {
+      return request.visit_status !== constants.PENDING &&
+        request.time_responded
+        ? `(Responded ${utils.datetime_fromnow_format(request.time_responded)})`
+        : `(Requested ${utils.datetime_fromnow_format(
+            request.time_requested
+          )})`;
+    },
     submitVisitResponse(visit_id, new_status) {
       this.$apollo.mutate({
         mutation: queries.update_visit_status,
@@ -241,6 +235,10 @@ export default {
   padding-right: 10px;
 }
 .seminar-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+.seminar-date-and-time {
   font-size: 16px;
   font-weight: bold;
 }
