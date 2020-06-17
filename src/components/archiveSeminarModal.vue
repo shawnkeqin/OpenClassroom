@@ -1,82 +1,100 @@
 <template>
   <div id="components-modal-demo-position">
     <br /><br />
-    <a-button type="danger" @click="modal2Visible = true">
-      Archive Seminar
-    </a-button>
-    <a-modal
-      v-model="modal2Visible"
-      title="Confirm archive?"
-      centered
-      @ok="() => (modal2Visible = false)"
-    >
-      <template slot="footer">
-        <a-button key="cancel" @click="modal2Visible = false">
-          >Cancel</a-button
-        >
-        <a-button key="submit" @click="submit">Confirm archive</a-button>
-      </template>
-    </a-modal>
+    <template v-if="!is_archived">
+      <a-button type="danger" @click="archiveModalVisible = true">
+        Archive Seminar
+      </a-button>
+      <a-modal
+        v-model="archiveModalVisible"
+        title="Confirm archive?"
+        centered
+        @ok="() => (archiveModalVisible = false)"
+      >
+        <template slot="footer">
+          <a-button key="cancel" @click="archiveModalVisible = false">
+            Cancel</a-button
+          >
+          <a-button key="submit" @click="handleArchive"
+            >Confirm archive</a-button
+          >
+        </template>
+      </a-modal>
+    </template>
+    <template v-else>
+      <a-button type="danger" @click="unarchiveModalVisible = true">
+        Unarchive Seminar
+      </a-button>
+      <a-modal
+        v-model="unarchiveModalVisible"
+        title="Confirm unarchive?"
+        centered
+        @ok="() => (unarchiveModalVisible = false)"
+      >
+        <template slot="footer">
+          <a-button key="cancel" @click="unarchiveModalVisible = false">
+            Cancel</a-button
+          >
+          <a-button key="submit" @click="handleUnarchive"
+            >Confirm unarchive</a-button
+          >
+        </template>
+      </a-modal>
+    </template>
   </div>
 </template>
 <script>
-import gql from "graphql-tag";
-//import { InMemoryCache } from "apollo-cache-inmemory";
-const ARCHIVE_SEMINAR = gql`
-  mutation archiveSeminar($id: Int!) {
-    update_seminartest(_set: { archived: true }, where: { id: { _eq: $id } }) {
-      affected_rows
-    }
-  }
-`;
-const GET_MY_SEMINARS = gql`
-  query findSeminar {
-    seminartest {
-      id
-      start
-      archived
-    }
-  }
-`;
+
+import queries from "../graphql/queries.gql";
+
 export default {
   name: "archiveSeminarModal",
-  props: ["seminartest"],
+  props: ["seminar_id", "is_archived"],
   data() {
     return {
-      modal2Visible: false
+      archiveModalVisible: false,
+      unarchiveModalVisible: false
     };
   },
   apollo: {},
   methods: {
-    async submit() {
+    async handleArchive() {
+      const seminar_id = this.seminar_id;
       await this.$apollo.mutate({
-        mutation: ARCHIVE_SEMINAR,
+        mutation: queries.archive_seminar,
         variables: {
-          id: this.seminartest.id
+          seminar_id
         },
-        update: (store, { data: { update_seminartest } }) => {
-          if (update_seminartest.affected_rows) {
-            // if (this.type === "private") {
-            const data = store.readQuery({
-              query: GET_MY_SEMINARS
-            });
-            const seminartest = data.seminartest;
-            const i = seminartest.findIndex(
-              seminar => seminar.id === this.seminartest.id
-            );
-            seminartest[i].archived = true;
-            store.writeQuery({
-              query: GET_MY_SEMINARS,
-              data
-            });
-            // }
-          }
-        },
-        // refetchQueries: ["findSeminar"]
+        // update: (store, { data: { update_seminartest } }) => {
+        //   if (update_seminartest.affected_rows) {
+        //     const data = store.readQuery({
+        //       query: GET_MY_SEMINARS
+        //     });
+        //     const seminartest = data.seminartest;
+        //     const i = seminartest.findIndex(
+        //       seminar => seminar.id === this.seminartest.id
+        //     );
+        //     seminartest[i].archived = true;
+        //     store.writeQuery({
+        //       query: GET_MY_SEMINARS,
+        //       data
+        //     });
+        //   }
+        // },
+        refetchQueries: ["get_seminars_by_course_group"]
       });
-      this.$store.dispatch("fetchSeminars");
       this.modal2Visible = false;
-      this.$emit('go-to-archived');
+    },
+    async handleUnarchive() {
+      const seminar_id = this.seminar_id;
+      await this.$apollo.mutate({
+        mutation: queries.unarchive_seminar,
+        variables: {
+          seminar_id
+        },
+        refetchQueries: ["get_seminars_by_course_group"]
+      });
+      this.modal2Visible = false;
     }
   }
 };
