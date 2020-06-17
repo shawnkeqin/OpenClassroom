@@ -2,7 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import Profile from "./components/profile.vue";
 import mycourses from "./components/mycourses.vue";
-import MyVisitorsPage from "./components/MyVisitorsPage.vue";
+import MyVisitorsPage from "./components/MyVisitorsPage";
 //import searchcourses from './components/searchcourses.vue'
 import viewSeminars from "./components/viewSeminars.vue";
 import courseDetails from "./components/courseDetails.vue";
