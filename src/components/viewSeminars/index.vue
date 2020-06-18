@@ -42,10 +42,17 @@
               <h4 align="left">Filter by</h4>
               <p align="left">Date Range</p>
               <a-range-picker
-                :default-value="[
-                  moment('01/01/15', utils.dateFormatStr),
-                  moment('01/01/20', utils.dateFormatStr)
-                ]"
+                :ranges="{
+                  Today: [moment(TEST_DATE), moment(TEST_DATE)],
+                  'Next 7 days': [
+                    moment(TEST_DATE),
+                    moment(TEST_DATE).add(1, 'weeks')
+                  ],
+                  'This month': [
+                    moment(TEST_DATE),
+                    moment(TEST_DATE).endOf('month')
+                  ]
+                }"
                 :format="utils.dateFormatStr"
                 v-model="selectedDateRange"
               />
@@ -110,21 +117,23 @@ import utils from "@/utils";
 import queries from "@/graphql/queries.gql";
 import seminarCardRequest from "./seminarCardRequest";
 const DEFAULT_PAGE_SIZE = 10;
+const TEST_DATE = "08/12/2018";
 export default {
   name: "viewSeminars",
   components: { seminarCardRequest },
   data() {
     return {
+      TEST_DATE,
       seminar: [],
       DEFAULT_PAGE_SIZE,
-      moment: moment,
+      moment,
       utils,
       // form: this.$form.createForm(this, { name: "form" }),
       open2: false,
       course_title: "",
       faculty_name: undefined,
       selected_tags: [],
-      selectedDateRange: null,
+      selectedDateRange: [moment(TEST_DATE), moment(TEST_DATE).add(1, "weeks")],
       start: "",
       end: "",
       page: 1,
