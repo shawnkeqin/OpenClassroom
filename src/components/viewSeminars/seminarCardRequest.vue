@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 10px">
+  <div style="padding: 10px 0px 10px 0px" align="left">
     <div>
       <!--    <img
         class="avatar"
@@ -11,7 +11,7 @@
       }}</span>
       <!--    <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag> -->
     </div>
-    <a-card hoverable style="width: 600px" :bodyStyle="{ padding: '10px' }">
+    <a-card hoverable style="width: auto" :bodyStyle="{ padding: '10px' }">
       <a-col :span="4">
         <div>{{ new Date(seminar.date).toDateString().slice(0, 10) }}</div>
         <div>{{ seminar.start + " - " + seminar.end }}</div>
@@ -19,7 +19,7 @@
       </a-col>
       <a-col :span="14" style="padding-right: 10px">
         <a-row type="flex" style="align-items: center">
-          <span class="module-code">{{ seminar.id }}</span>
+          <span class="module-code">{{ seminar.module_code }}</span>
           <template v-if="requestStatus === 'pending'">
             <a-icon type="clock-circle" theme="filled" class="pending" />
             <span class="request-status pending">Request pending</span>
@@ -52,9 +52,9 @@
         </a-modal>
       </a-col>
       <a-col :span="6">
-        <a-button block style="margin-bottom: 2px" type="primary" ghost
+        <!-- <a-button block style="margin-bottom: 2px" type="primary" ghost
           >Share</a-button
-        >
+        > -->
         <template v-if="!requestStatus">
           <a-popover
             v-model="isRequestPopoverOn"

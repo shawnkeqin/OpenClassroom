@@ -202,13 +202,19 @@ mutation unarchive_seminar($seminar_id: Int!) {
   }
 }
 
-query searchSeminarsByFilters($course_title: String!, $faculty_name: String!) {
+query searchSeminarsByFilters(
+  $course_title: String!
+  $faculty_name: String!
+  $start_date: date!
+  $end_date: date!
+) {
   seminar(
-    limit: 10
     where: {
       _and: [
         { course_group: { course: { title: { _similar: $course_title } } } }
         { course_group: { faculty: { name: { _similar: $faculty_name } } } }
+        { date: { _gte: $start_date } }
+        { date: { _lte: $end_date } }
       ]
     }
   ) {
@@ -217,18 +223,19 @@ query searchSeminarsByFilters($course_title: String!, $faculty_name: String!) {
     end
     id
     is_open
+    module_code
+    group_code
+    semester_code
     location {
       code
       full_name
     }
     course_group {
-      group_code
       faculty {
         name
       }
       course {
         title
-        module_code
       }
     }
   }
@@ -237,14 +244,17 @@ query searchSeminarsByFilters($course_title: String!, $faculty_name: String!) {
 query searchSeminarsByFiltersWithTags(
   $course_title: String!
   $faculty_name: String!
+  $start_date: date!
+  $end_date: date!
   $selected_tags: [String!]
 ) {
   seminar(
-    limit: 10
     where: {
       _and: [
         { course_group: { course: { title: { _similar: $course_title } } } }
         { course_group: { faculty: { name: { _similar: $faculty_name } } } }
+        { date: { _gte: $start_date } }
+        { date: { _lte: $end_date } }
         {
           course_group: {
             course: { tagged_as: { tag_label: { _in: $selected_tags } } }
@@ -258,18 +268,19 @@ query searchSeminarsByFiltersWithTags(
     end
     id
     is_open
+    module_code
+    group_code
+    semester_code
     location {
       code
       full_name
     }
     course_group {
-      group_code
       faculty {
         name
       }
       course {
         title
-        module_code
       }
     }
   }
