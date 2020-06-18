@@ -65,7 +65,10 @@
             style="width: 100%"
             placeholder="Tags Mode"
           >
-            <a-select-option v-for="tag in tag" :key="tag.label.toString()">
+            <a-select-option
+              v-for="tag in tags_list"
+              :key="tag.label.toString()"
+            >
               {{ tag.label.toString() }}
             </a-select-option>
           </a-select>
@@ -77,26 +80,8 @@
 
 <script>
 import moment from "moment";
-import gql from "graphql-tag";
+import queries from "@/graphql/queries.gql";
 import seminarCardRequest from "./seminarCardRequest";
-
-const GET_FACULTY = gql`
-  query getFaculty {
-    faculty {
-      id
-      name
-    }
-  }
-`;
-
-const GET_TAGS = gql`
-  query MyQuery {
-    tag {
-      label
-    }
-  }
-`;
-
 export default {
   name: "viewSeminars",
   components: { seminarCardRequest },
@@ -106,7 +91,7 @@ export default {
       open2: false,
       course_title: "",
       faculty_name: "",
-      tag_label: []
+      tags_list: []
 
       /*    seminar: [], 
       course_title: "",
@@ -122,46 +107,7 @@ export default {
   },
   apollo: {
     seminar: {
-      query: gql`
-        query MyQuery($course_title: String!, $faculty_name: String!, $tag_label: [String!]) {
-          seminar(
-            limit: 10
-            where: {
-              _and: [
-                {
-                  course_group: {
-                    course: { title: { _similar: $course_title } }
-                  }
-                }
-                {
-                  course_group: {
-                    faculty: { name: { _similar: $faculty_name } }
-                {
-                  course_group: {
-                    course: { tagged_as: { tag_label: { _in: $tag_label } } }
-                  }
-                }
-              ]
-            }
-            limit: 3
-          ) {
-            date
-            start
-            end
-            id
-            location {
-              code
-            }
-            course_group {
-              course {
-                title
-                module_code
-              }
-            }
-            is_open
-          }
-        }
-      `,
+      query: queries.searchSeminarsByFilters,
       variables() {
         return {
           course_title: this.course_title ? `%${this.course_title}%` : "%",
@@ -171,11 +117,12 @@ export default {
       }
     },
     faculty_list: {
-      query: GET_FACULTY,
+      query: queries.getFacultyList,
       update: data => data.faculty
     },
-    tag: {
-      query: GET_TAGS
+    tags_list: {
+      query: queries.getTagsList,
+      update: data => data.tag
     }
   },
   methods: {
