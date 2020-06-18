@@ -228,8 +228,13 @@ query searchSeminarsByFilters(
     is_open
     location {
       code
+      full_name
     }
     course_group {
+      group_code
+      faculty {
+        name
+      }
       course {
         title
         module_code

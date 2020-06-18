@@ -1,21 +1,21 @@
 <template>
   <div style="padding: 10px">
     <div>
-      <!--     <img
+      <!--    <img
         class="avatar"
         :src="instructor.profilePic"
         style="background-color: grey"
       /> -->
-      <!--   <span style="padding-right: 10px">{{
-        instructor.name + "'s class"
-      }}</span> -->
+      <span style="padding-right: 10px">{{
+        seminar.course_group.faculty.name + "'s class"
+      }}</span>
       <!--    <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag> -->
     </div>
     <a-card hoverable style="width: 600px" :bodyStyle="{ padding: '10px' }">
       <a-col :span="4">
         <div>{{ new Date(seminar.date).toDateString().slice(0, 10) }}</div>
         <div>{{ seminar.start + " - " + seminar.end }}</div>
-        <!--     <div>{{ seminar.location.code }}</div>  -->
+        <div>{{ seminar.location.code }}</div>
       </a-col>
       <a-col :span="14" style="padding-right: 10px">
         <a-row type="flex" style="align-items: center">
@@ -35,7 +35,8 @@
           </template>
           <template v-else />
         </a-row>
-        <!--    <div class="seminar-title">{{ seminar.course_group.course.title }}</div>  -->
+        <div class="seminar-title">{{ seminar.course_group.course.title }}</div>
+        <div>{{ seminar.course_group.group_code }}</div>
         <a @click="handleOpenDescModal"
           >View course description and seminar details</a
         >
