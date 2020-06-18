@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <!-- <div> -->
     <a-switch default-checked @change="onChange" />
-  </div>
+  <!-- </div> -->
 </template>
 <script>
 import gql from "graphql-tag";

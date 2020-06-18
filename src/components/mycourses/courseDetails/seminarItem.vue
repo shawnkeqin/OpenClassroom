@@ -1,14 +1,45 @@
 <template>
-  <div>
-
-    <a-card
-      size="small"
-      title="Seminar"
-      style="width: 1100px"
-      :key="seminar.id"
-    >
-      <a slot="extra"><seminarStatusToggle :seminar_id="seminar.id" /></a>
-      <a-descriptions>
+  <div style="margin-bottom: 20px">
+    <a-card style="width: 700px" :key="seminar.id">
+      <a-row>
+        <a-col :span="5">
+          <h5>Date</h5>
+          <p>{{ utils.date_format(seminar.date) }}</p>
+        </a-col>
+        <a-col :span="7">
+          <h5>Time</h5>
+          <p>
+            {{
+              utils.time_format(seminar.start) +
+                " - " +
+                utils.time_format(seminar.end)
+            }}
+          </p>
+        </a-col>
+        <a-col>
+          <h5>Venue</h5>
+          <p>{{ seminar.location.full_name }}</p>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="12">
+          <h5>Seminar title</h5>
+          <p>{{ seminar.title || "None" }}</p>
+        </a-col>
+        <a-col>
+          <h5>Visitor capacity</h5>
+          <p>{{ seminar.visitor_capacity || "None" }}</p>
+        </a-col>
+      </a-row>
+      <a-row>
+        <h5>Seminar description</h5>
+        <p>{{ seminar.desc || "None" }}</p>
+      </a-row>
+      <div style="display: flex; align-items: center;">
+        <p style="margin: 0 20px 0 0">This class is open to visit requests</p>
+        <seminarStatusToggle :seminar_id="seminar.id" />
+      </div>
+      <!-- <a-descriptions>
         <a-descriptions-item label="Date">
           {{ utils.date_format(seminar.date) }}
         </a-descriptions-item>
@@ -31,16 +62,16 @@
         <a-descriptions-item label="Visitor capacity">
           {{ seminar.visitor_capacity }}
         </a-descriptions-item>
-      </a-descriptions>
+      </a-descriptions> -->
 
       <p align="right">
-        <deleteSeminarModal />
+        <!-- <deleteSeminarModal /> -->
       </p>
       <p align="right">
-        <archiveSeminarModal
+        <!-- <archiveSeminarModal
           :seminar_id="seminar.id"
           :is_archived="seminar.is_archived"
-        />
+        /> -->
       </p>
       <p align="right">
         <updateSeminarModal />
@@ -51,23 +82,21 @@
 
 <script>
 import utils from "@/utils";
-import deleteSeminarModal from "./deleteSeminarModal";
+// import deleteSeminarModal from "./deleteSeminarModal";
 import updateSeminarModal from "./updateSeminarModal";
-import archiveSeminarModal from "./archiveSeminarModal";
-import seminarStatusToggle from "./seminarStatusToggle"
+// import archiveSeminarModal from "./archiveSeminarModal";
+import seminarStatusToggle from "./seminarStatusToggle";
 export default {
   name: "seminarItem",
 
-  components: { archiveSeminarModal, deleteSeminarModal, updateSeminarModal, seminarStatusToggle },
+  // components: { archiveSeminarModal, deleteSeminarModal, updateSeminarModal, seminarStatusToggle },
+  components: { updateSeminarModal, seminarStatusToggle },
   props: ["seminar"],
   data: function() {
     return {
       utils: utils
     };
   }
-
-
-
 };
 </script>
 

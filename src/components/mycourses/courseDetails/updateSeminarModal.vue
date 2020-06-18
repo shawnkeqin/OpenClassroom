@@ -1,6 +1,6 @@
 <template>
   <div id="components-modal-demo-position">
-    <br /><br />
+    <!-- <br /><br /> -->
     <a-button type="dashed" @click="() => (modal2Visible = true)">
       Update Seminar
     </a-button>

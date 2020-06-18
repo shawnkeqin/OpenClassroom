@@ -1,6 +1,6 @@
 <template>
   <div id="components-modal-demo-position">
-    <br /><br />
+    <!-- <br /><br /> -->
     <a-button type="danger" @click="() => (modal2Visible = true)">
       Update Course Details
     </a-button>
