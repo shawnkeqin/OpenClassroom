@@ -6,6 +6,13 @@ query findFaculty($faculty_id: String) {
   }
 }
 
+query getCourseList {
+  course(order_by: { title: asc }) {
+    title
+    module_code
+  }
+}
+
 query getFacultyList {
   faculty {
     id
@@ -98,20 +105,6 @@ query get_seminars_with_visits_by_time_requested(
     }
   }
 }
-
-query getCourseList {
-  course {
-    title
-    module_code
-  }
-}
-
-# query get_visit_status($visit_id:Int){
-#   visit_by_pk(id: $visit_id){
-#     visit_status
-#     time_responded
-#   }
-# }
 
 query get_my_visits($visitor_id: String!) {
   visit(where: { visitor_id: { _eq: $visitor_id } }) {

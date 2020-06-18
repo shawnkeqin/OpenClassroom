@@ -17,8 +17,17 @@
     <div>
       <a-row>
         <a-col :span="18">
-          <!-- <p align="left">{{ allResultsCount }} total results</p> -->
-          <h4 align="left">Results</h4>
+          <h4 align="left">
+            Results
+            <a-spin v-if="$apollo.loading">
+              <a-icon
+                slot="indicator"
+                type="loading"
+                style="font-size: 26px; padding-left: 10px"
+                spin
+              />
+            </a-spin>
+          </h4>
           <a-pagination
             style="text-align: center"
             @change="onPageChange"
@@ -34,13 +43,16 @@
           <a-card
             style="margin: 20px 20px 20px 0px; height: 800px; overflow: scroll"
           >
-            <seminarCardRequest
-              v-for="seminar in seminarLimited"
-              :key="seminar.id"
-              :seminar="seminar"
-              class="seminar-item"
-            >
-            </seminarCardRequest>
+            <div v-if="$apollo.loading"><a-skeleton active /></div>
+            <div v-else>
+              <seminarCardRequest
+                v-for="seminar in seminarLimited"
+                :key="seminar.id"
+                :seminar="seminar"
+                class="seminar-item"
+              >
+              </seminarCardRequest>
+            </div>
           </a-card>
         </a-col>
         <a-col :span="6">
