@@ -99,6 +99,13 @@ query get_seminars_with_visits_by_time_requested(
   }
 }
 
+query getCourseList {
+  course {
+    title
+    module_code
+  }
+}
+
 # query get_visit_status($visit_id:Int){
 #   visit_by_pk(id: $visit_id){
 #     visit_status

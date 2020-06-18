@@ -1,17 +1,24 @@
 <template>
   <div>
     <h1>Search Courses</h1>
-    <a-input-search
-      placeholder="Search by course title"
-      size="large"
+    <a-auto-complete
+      :data-source="courseList"
+      :filterOption="autoCompleteCourseTitle"
+      style="width:100%; margin:10px 0px 20px 0px;"
       v-model="course_title"
-      style="margin:10px 80px 20px 0px"
-    />
-    <h4 align="left">Results</h4>
+    >
+      <a-input-search
+        placeholder="Search by course title"
+        size="large"
+        style=" height: 50px; .ant-input-lg { font-size: 18px} "
+      />
+    </a-auto-complete>
+
     <div>
       <a-row>
         <a-col :span="18">
           <!-- <p align="left">{{ allResultsCount }} total results</p> -->
+          <h4 align="left">Results</h4>
           <a-pagination
             style="text-align: center"
             @change="onPageChange"
@@ -40,8 +47,10 @@
           <a-card>
             <a-form>
               <h4 align="left">Filter by</h4>
-              <p align="left">Date Range</p>
+              <p align="left">Date range</p>
               <a-range-picker
+                style="width:auto"
+                show-time
                 :ranges="{
                   Today: [moment(TEST_DATE), moment(TEST_DATE)],
                   'Next 7 days': [
@@ -49,7 +58,7 @@
                     moment(TEST_DATE).add(1, 'weeks')
                   ],
                   'This month': [
-                    moment(TEST_DATE),
+                    moment(TEST_DATE).startOf('month'),
                     moment(TEST_DATE).endOf('month')
                   ]
                 }"
@@ -117,7 +126,7 @@ import utils from "@/utils";
 import queries from "@/graphql/queries.gql";
 import seminarCardRequest from "./seminarCardRequest";
 const DEFAULT_PAGE_SIZE = 10;
-const TEST_DATE = "08/12/2018";
+const TEST_DATE = "08-12-2018";
 export default {
   name: "viewSeminars",
   components: { seminarCardRequest },
@@ -141,6 +150,10 @@ export default {
     };
   },
   apollo: {
+    courses: {
+      query: queries.getCourseList,
+      update: data => data.course
+    },
     seminar: {
       query() {
         return this.searchQuery;
@@ -164,6 +177,11 @@ export default {
     }
   },
   computed: {
+    courseList() {
+      return utils.isNonEmptyArray(this.courses)
+        ? this.courses.map(c => c.title)
+        : [];
+    },
     allResultsCount() {
       return utils.isNonEmptyArray(this.seminar) ? this.seminar.length : 0;
     },
@@ -205,6 +223,13 @@ export default {
     }
   },
   methods: {
+    autoCompleteCourseTitle(input, option) {
+      return (
+        option.componentOptions.children[0].text
+          .toUpperCase()
+          .indexOf(input.toUpperCase()) >= 0
+      );
+    },
     onPageChange(page, pageSize) {
       this.page = page;
       this.pageSize = pageSize;
