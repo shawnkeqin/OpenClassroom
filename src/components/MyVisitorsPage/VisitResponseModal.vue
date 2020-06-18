@@ -24,6 +24,10 @@
           />
         </a-form-item>
       </a-form>
+      <p>
+        Send them an email:
+        <a :href="'mailto:' + visit.visitor.email">{{ visit.visitor.email }}</a>
+      </p>
       <template slot="footer">
         <div>
           <span style="float: left;color: grey;">{{ responseTime }}</span>
@@ -73,9 +77,9 @@
   </div>
 </template>
 <script>
-import utils from "../utils";
-import constants from "../utils/constants";
-import queries from "../graphql/queries.gql";
+import utils from "@/utils";
+import constants from "@/utils/constants";
+import queries from "@/graphql/queries.gql";
 import moment from "moment";
 export default {
   props: {
@@ -137,12 +141,6 @@ export default {
 };
 </script>
 <style scoped>
-.respond-button {
-  /* padding: 0px; */
-  /* margin: 2px; */
-  /* width: 100px; */
-  /* height: 30px; */
-}
 .accept-button {
   color: #81c784;
   border-color: #81c784;

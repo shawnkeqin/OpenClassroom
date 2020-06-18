@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import utils from "../utils";
+import utils from "@/utils";
 import deleteSeminarModal from "./deleteSeminarModal";
 import updateSeminarModal from "./updateSeminarModal";
 import archiveSeminarModal from "./archiveSeminarModal";

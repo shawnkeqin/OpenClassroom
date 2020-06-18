@@ -21,15 +21,22 @@
               pendingCount + " request(s) pending"
             }}</span>
           </a-row>
-          <div class="seminar-title">
-            {{ seminar.course_group.course.title }} (Group
-            {{ seminar.group_code }})
-          </div>
+          <a-row type="flex" style="align-items: center">
+            <div class="seminar-title">
+              {{ seminar.course_group.course.title }} (Group
+              {{ seminar.group_code }})
+            </div> </a-row
+          ><a-row type="flex" style="align-items: center">
+            Seminar title: {{ seminarTitle }}
+          </a-row>
+          <a-row type="flex" style="align-items: center">
+            Seminar description: {{ seminarDesc }}
+          </a-row>
+          <a-row type="flex" style="align-items: center">
+            Notes for visitors: {{ courseGroupNotes }}
+          </a-row>
         </a-col>
         <a-col :span="8">
-          <a-button block type="primary" style="margin-bottom: 2px"
-            >Go to course</a-button
-          >
           <div style="text-align: center">
             {{
               "Seminar capacity: " +
@@ -136,9 +143,9 @@
 
 <script>
 import VisitResponseModal from "./VisitResponseModal";
-import utils from "../utils";
-import constants from "../utils/constants";
-import queries from "../graphql/queries.gql";
+import utils from "@/utils";
+import constants from "@/utils/constants";
+import queries from "@/graphql/queries.gql";
 import moment from "moment";
 
 export default {
@@ -156,7 +163,10 @@ export default {
       isMessageModalOn: false,
       requestInMessageModal: null,
       sender: "",
-      replyMessage: ""
+      replyMessage: "",
+      seminarTitle: this.seminar.title || "-",
+      seminarDesc: this.seminar.desc || "-",
+      courseGroupNotes: this.seminar.course_group.notes || "-"
     };
   },
   computed: {
