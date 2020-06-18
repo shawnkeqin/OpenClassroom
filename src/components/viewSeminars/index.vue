@@ -1,223 +1,272 @@
 <template>
   <div>
-    <a-input-search
-      placeholder="input search text"
-      enter-button="Search"
-      size="large"
-      @search="onSearch"
-    />
-    <br/>
-       <br/>
+    <h1>Search Courses</h1>
+    <a-auto-complete
+      :data-source="courseList"
+      :filterOption="autoCompleteCourseTitle"
+      style="width:100%; margin:10px 0px 20px 0px;"
+      v-model="course_title"
+    >
+      <a-input-search
+        placeholder="Search by course title"
+        size="large"
+        style=" height: 50px; .ant-input-lg { font-size: 18px} "
+      />
+    </a-auto-complete>
 
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-     <p align="right">
-  <a-card style="width: 300px">
- <p align="center">Filter</p>
-  <p align="center">Date Range</p>
-   <a-range-picker
-      :default-value="[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]"
-      :format="dateFormat"
-    />
-    <br />
-     <p align="center">Timings</p>
-     <p align="center">Start - End</p>
-     <p align="center">
-       <a-time-picker :default-value="moment('12:08', 'HH:mm')" format="HH:mm" align="center" />
-      
-         <a-time-picker :default-value="moment('12:08', 'HH:mm')" format="HH:mm" align="center" />
-         </p>
-    <p align="center">Instructor</p>
-     <a-select mode="tags" style="width: 100%" placeholder="Tags Mode" @change="handleChange">
-    <a-select-option v-for="i in 25" :key="(i + 9).toString(36) + i">
-      {{ (i + 9).toString(36) + i }}
-    </a-select-option>
-  </a-select>
-     <p align="center">Tags</p>
-       <a-select mode="tags" style="width: 100%" placeholder="Tags Mode" @change="handleChange">
-    <a-select-option v-for="i in 25" :key="(i + 9).toString(36) + i">
-      {{ (i + 9).toString(36) + i }}
-    </a-select-option>
-  </a-select>
-  </a-card>
-  
-  
-    
-      </p>
-  <!--  <a-card title="Search Courses" style="width: 1400px">
-     <form @submit.prevent="submit">
-        <fieldset>
-          <input type="text" placeholder="Seminar ID" v-model="seminar_id" />
-          <input
-            type="text"
-            placeholder="Course Title"
-            v-model="course_title"
+    <div>
+      <a-row>
+        <a-col :span="18">
+          <h4 align="left">
+            Results
+            <a-spin v-if="$apollo.loading">
+              <a-icon
+                slot="indicator"
+                type="loading"
+                style="font-size: 26px; padding-left: 10px"
+                spin
+              />
+            </a-spin>
+          </h4>
+          <a-pagination
+            style="text-align: center"
+            @change="onPageChange"
+            showSizeChanger
+            :show-total="
+              (total, range) => `${range[0]}-${range[1]} of ${total} items`
+            "
+            :total="allResultsCount"
+            :defaultPageSize="DEFAULT_PAGE_SIZE"
+            :current="page"
+            :pageSizeOptions="['10', '25', '50', '100']"
           />
-          <input type="text" placeholder="Start" v-model="start" />
-          <input type="text" placeholder="End" v-model="end" />
-          <input type="text" placeholder="Date" v-model="date" />
-          <input type="text" placeholder="Location" v-model="location" />
-        </fieldset>
-        <input class="button-primary" type="submit" value="Send" />
-      </form> -->
-   <!--    <a-descriptions title="Search Fields">
-    <a-descriptions-item label="Seminar ID">
-   <input v-model="seminar_id" placeholder="Seminar ID"  />
-    </a-descriptions-item>
-    <a-descriptions-item label="Course Title">
-  <input v-model="course_title" placeholder="Course Title" />
-    </a-descriptions-item>
-    <a-descriptions-item label="Location">
-  <input v-model="location" placeholder="location" />
-    </a-descriptions-item>
-    <a-descriptions-item label="Date">
+          <a-card
+            style="margin: 20px 20px 20px 0px; height: 800px; overflow: scroll"
+          >
+            <div v-if="$apollo.loading"><a-skeleton active /></div>
+            <div v-else>
+              <seminarCardRequest
+                v-for="seminar in seminarLimited"
+                :key="seminar.id"
+                :seminar="seminar"
+                class="seminar-item"
+              >
+              </seminarCardRequest>
+            </div>
+          </a-card>
+        </a-col>
+        <a-col :span="6">
+          <a-card>
+            <a-form>
+              <h4 align="left">Filter by</h4>
+              <p align="left">Date range</p>
+              <a-range-picker
+                style="width:auto"
+                show-time
+                :ranges="{
+                  Today: [moment(TEST_DATE), moment(TEST_DATE)],
+                  'Next 7 days': [
+                    moment(TEST_DATE),
+                    moment(TEST_DATE).add(1, 'weeks')
+                  ],
+                  'This month': [
+                    moment(TEST_DATE).startOf('month'),
+                    moment(TEST_DATE).endOf('month')
+                  ]
+                }"
+                :format="utils.dateFormatStr"
+                v-model="selectedDateRange"
+              />
+              <br />
+              <!-- <p align="left">Timings</p> -->
+              <p align="left">Start - End</p>
+              <p align="left">
+                <a-time-picker :open.sync="open2" v-model="start">
+                  <a-button
+                    slot="addon"
+                    size="small"
+                    type="primary"
+                    @click="handleClose"
+                  >
+                    Ok
+                  </a-button>
+                </a-time-picker>
+              </p>
 
-  <input type="date" v-model="date" placeholder="date" />
-    </a-descriptions-item>
-        <a-descriptions-item label="Start">
-
-  <input type="time" id="start" v-model="start" placeholder="start" />
-    </a-descriptions-item>
-        <a-descriptions-item label="End">
-
-  <input type="time" v-model="end" placeholder="end" />
-    </a-descriptions-item>
- 
-  </a-descriptions>
-
-
-      <br />
-      <br />
-      <br />
-      <h2>Results</h2>
-  <div class="list-of-seminars">
-   <seminar-item
-      v-for="seminartest in seminartest"
-      :key="seminartest.seminar_id"
-      :seminartest="seminartest"
-      class="seminar-item"
-    > 
-  <seminarCardRequest :seminar="{module_code: 'YSC4211B', title: 'Adv Topics Molecular, Cell & Developmental Bio: Stem Cells', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremipsum1', tags: ['TAG1', 'TAG2', 'TAG3'], instructor: {name: 'Matthew Stamp', profilePic: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1627&q=80'} }" :requestStatus="''"/> 
-   <seminarCardRequest  v-for="seminartest in seminartest"
-      :key="seminartest.seminar_id"
-      :seminartest="seminartest"
-      class="seminar-item" >
-  </seminarCardRequest >
-    </seminar-item> 
-  </div>
-     <p>{{seminartest}}</p> 
-      
-   <seminarCardRequest :seminar="{module_code: 'YSC3237', title: 'Introduction to Modern Algebra', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremipsum2', tags: ['TAG1', 'TAG2', 'TAG3'], instructor: {name: 'Matthew Stamp', profilePic: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1627&q=80'} }" :requestStatus="'pending'"/>
-  <seminarCardRequest :seminar="{module_code: 'YSC2222', title: 'Organic Chemistry Laboratory', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremipsum3', tags: ['TAG3', 'TAG4', 'TAG5'], instructor: {name: 'NAME HERE'} }" :requestStatus="'accepted'"/>
-  <seminarCardRequest :seminar="{module_code: 'YSC3253', title: 'Coral Reef Ecology and Environmental Change', start: '0900', end: '1030', date: '2020-06-08', location_code: 'Y-CR20', desc: 'loremupsum4', tags: ['TAG6', 'TAG7', 'TAG8'], instructor: {name: 'NAME HERE'} }" :requestStatus="'declined'"/> 
-    </a-card> -->
+              <p align="left">Instructor</p>
+              <a-form-item>
+                <a-select
+                  v-model="faculty_name"
+                  show-search
+                  placeholder="Select or type instructor name"
+                  allowClear
+                >
+                  <a-select-option
+                    v-for="faculty in faculty_list"
+                    :value="faculty.name.toString()"
+                    :key="faculty.name.toString()"
+                  >
+                    {{ faculty.name.toString() }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+              <p align="left">Tags</p>
+              <a-select
+                v-model="selected_tags"
+                mode="tags"
+                style="width: 100%"
+                placeholder="Select a tag"
+              >
+                <a-select-option
+                  v-for="tag in tags_list"
+                  :key="tag.label.toString()"
+                >
+                  {{ tag.label.toString() }}
+                </a-select-option>
+              </a-select>
+            </a-form>
+          </a-card>
+        </a-col>
+      </a-row>
+    </div>
   </div>
 </template>
 
 <script>
-import moment from 'moment';
-//import seminarItem from "./seminarItem";
-import gql from "graphql-tag";
-//import seminarCardRequest from "./seminarCardRequest"
-//import seminarItem from './seminarItem'
-/*const GET_SEMINARS = gql`
-  query getSeminars {
-    seminartest {
-      course_title
-      date
-      end
-      location
-      seminar_id
-      start
-    }
-  }
-`; */
+import moment from "moment";
+import utils from "@/utils";
+import queries from "@/graphql/queries.gql";
+import seminarCardRequest from "./seminarCardRequest";
+const DEFAULT_PAGE_SIZE = 10;
+const TEST_DATE = "08-12-2018";
 export default {
   name: "viewSeminars",
- // components: { seminarCardRequest },
+  components: { seminarCardRequest },
   data() {
     return {
-     seminar_id: "",
-     // seminartest: [] 
+      TEST_DATE,
+      seminar: [],
+      DEFAULT_PAGE_SIZE,
+      moment,
+      utils,
+      // form: this.$form.createForm(this, { name: "form" }),
+      open2: false,
       course_title: "",
-      location: "",
-      date: "",
+      faculty_name: undefined,
+      selected_tags: [],
+      selectedDateRange: [moment(TEST_DATE), moment(TEST_DATE).add(1, "weeks")],
       start: "",
       end: "",
-      dateFormat: 'YYYY/MM/DD',
-      monthFormat: 'YYYY/MM',
-      dateFormatList: ['DD/MM/YYYY', 'DD/MM/YY'],
-      
-    
-     
-     
-    //  seminartest: []
+      page: 1,
+      pageSize: DEFAULT_PAGE_SIZE
     };
   },
   apollo: {
-  //  seminartest: {
-  //    query: GET_SEMINARS
-  //  },
-    seminartest: {
-    query: gql`
-query findSeminar($seminar_id: String!, $course_title: String!, $location: String!, $date: String!,  $start: String! , $end: String!)  {
-  seminartest(where: {_or: [{location: {_similar: $location}}, {course_title: {_similar: $course_title}},{seminar_id: {_similar: $seminar_id}},  {date: {_eq: $date}},  {start: {_eq: $start}}, {end: {_eq: $end}}] }) {
-    course_title
-    seminar_id
-    location
-    date
-    start
-    end
-  
-  }
-}
-`, 
-/*
-query: gql`
-query findSeminar( $course_title: String , $location: String!) {
-   	seminartest(where: {course_title: {_eq:$course_title} , _or: {location: {_eq: $location}}){
-       course_title
-       seminar_id
-        location
-       
-     }
-  }
-`, 
-*/
-variables() {
-  return {
-    seminar_id: this.seminar_id,
-    course_title: this.course_title,
-    location: this.location,
-    date: this.date,
-    start: this.start, 
-    end: this.end 
-   
- 
-
-
-  }
-}
-}
-
+    courses: {
+      query: queries.getCourseList,
+      update: data => data.course
+    },
+    seminar: {
+      query() {
+        return this.searchQuery;
+      },
+      variables() {
+        return this.searchQueryVariables;
+      }
+    },
+    faculty_list: {
+      query: queries.getFacultyList,
+      update: data => data.faculty
+    },
+    tags_list: {
+      query: queries.getTagsList,
+      update: data => data.tag
+    }
+  },
+  watch: {
+    seminar() {
+      this.page = 1;
+    }
+  },
+  computed: {
+    courseList() {
+      return utils.isNonEmptyArray(this.courses)
+        ? this.courses.map(c => c.title)
+        : [];
+    },
+    allResultsCount() {
+      return utils.isNonEmptyArray(this.seminar) ? this.seminar.length : 0;
+    },
+    seminarLimited() {
+      const start = (this.page - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return utils.isNonEmptyArray(this.seminar)
+        ? this.seminar.slice(start, end)
+        : [];
+    },
+    searchQuery() {
+      return utils.isNonEmptyArray(this.selected_tags)
+        ? queries.searchSeminarsByFiltersWithTags
+        : queries.searchSeminarsByFilters;
+    },
+    searchQueryVariables() {
+      const course_title = this.course_title ? `%${this.course_title}%` : "%";
+      const faculty_name = this.faculty_name || "%";
+      const start_date = utils.isNonEmptyArray(this.selectedDateRange)
+        ? this.selectedDateRange[0]
+        : "2000-01-01";
+      const end_date = utils.isNonEmptyArray(this.selectedDateRange)
+        ? this.selectedDateRange[1]
+        : "2050-01-01";
+      return utils.isNonEmptyArray(this.selected_tags)
+        ? {
+            course_title,
+            faculty_name,
+            start_date,
+            end_date,
+            selected_tags: this.selected_tags
+          }
+        : {
+            course_title,
+            faculty_name,
+            start_date,
+            end_date
+          };
+    }
   },
   methods: {
-  onSearch(value) {
-      console.log(value);
+    autoCompleteCourseTitle(input, option) {
+      return (
+        option.componentOptions.children[0].text
+          .toUpperCase()
+          .indexOf(input.toUpperCase()) >= 0
+      );
     },
-    moment,
+    onPageChange(page, pageSize) {
+      this.page = page;
+      this.pageSize = pageSize;
+    },
     handleChange(value) {
       console.log(`selected ${value}`);
     },
-  } 
+    handleClose() {
+      this.open = false;
+      this.open2 = false;
+    }
+  }
 };
 </script>
 
 <style scoped>
 .list-of-seminars {
-  justify-content: center;
+  /* justify-content: center; */
+  /* position: absolute; */
 }
 .seminar-item {
   margin: 0 10px;
+}
+
+.filter {
+  position: fixed;
 }
 </style>

@@ -1,26 +1,25 @@
-
 <template>
-  <div style="padding: 10px">
+  <div style="padding: 10px 0px 10px 0px" align="left">
     <div>
- <!--     <img
+      <!--    <img
         class="avatar"
         :src="instructor.profilePic"
         style="background-color: grey"
       /> -->
-   <!--   <span style="padding-right: 10px">{{
-        instructor.name + "'s class"
-      }}</span> -->
-  <!--    <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag> -->
+      <span style="padding-right: 10px">{{
+        seminar.course_group.faculty.name + "'s class"
+      }}</span>
+      <!--    <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag> -->
     </div>
-    <a-card hoverable style="width: 600px" bodyStyle="padding: 10px">
+    <a-card hoverable style="width: auto" :bodyStyle="{ padding: '10px' }">
       <a-col :span="4">
-        <div>{{ new Date(seminartest.date).toDateString().slice(0, 10) }}</div>
-        <div>{{ seminartest.start + " - " + seminartest.end }}</div> 
-        <div>{{ seminartest.location }}</div>
+        <div>{{ new Date(seminar.date).toDateString().slice(0, 10) }}</div>
+        <div>{{ seminar.start + " - " + seminar.end }}</div>
+        <div>{{ seminar.location.code }}</div>
       </a-col>
       <a-col :span="14" style="padding-right: 10px">
         <a-row type="flex" style="align-items: center">
-          <span class="module-code">{{ seminartest.seminar_id }}</span>
+          <span class="module-code">{{ seminar.module_code }}</span>
           <template v-if="requestStatus === 'pending'">
             <a-icon type="clock-circle" theme="filled" class="pending" />
             <span class="request-status pending">Request pending</span>
@@ -36,7 +35,8 @@
           </template>
           <template v-else />
         </a-row>
-        <div class="seminar-title">{{ seminartest.course_title }}</div>
+        <div class="seminar-title">{{ seminar.course_group.course.title }}</div>
+        <div>{{ seminar.course_group.group_code }}</div>
         <a @click="handleOpenDescModal"
           >View course description and seminar details</a
         >
@@ -48,13 +48,13 @@
           <template slot="footer">
             <a-button @click="handleCloseDescModal">Close</a-button>
           </template>
-         <p>{{ seminartest.date }}</p> 
+          <p>{{ seminar.date }}</p>
         </a-modal>
       </a-col>
       <a-col :span="6">
-        <a-button block style="margin-bottom: 2px" type="primary" ghost
+        <!-- <a-button block style="margin-bottom: 2px" type="primary" ghost
           >Share</a-button
-        >
+        > -->
         <template v-if="!requestStatus">
           <a-popover
             v-model="isRequestPopoverOn"
@@ -96,19 +96,19 @@
 <script>
 export default {
   name: "seminarCardRequest",
-  props: 
- //   seminar: Object, // assuming that seminar has fields module_code, title, date, start, end, location_code, is_open, desc, instructor
-  //  requestStatus: String,
-    ["seminartest"],
+  props: {
+    seminar: Object
+  },
   data: function() {
     return {
+      requestStatus: false,
       isRequestPopoverOn: false,
       isDescModalOn: false,
       isMessageModalOn: false,
       message: ""
     };
   },
-/*  computed: {
+  /*  computed: {
     instructor: function() {
       return this.seminar.instructor;
     }

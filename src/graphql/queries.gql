@@ -1,6 +1,20 @@
 query findFaculty($faculty_id: String) {
-  faculty(where: {id: {_eq: $faculty_id}}) {
+  faculty(where: { id: { _eq: $faculty_id } }) {
     email
+    id
+    name
+  }
+}
+
+query getCourseList {
+  course(order_by: { title: asc }) {
+    title
+    module_code
+  }
+}
+
+query getFacultyList {
+  faculty(order_by: { name: asc }) {
     id
     name
   }
@@ -14,17 +28,42 @@ query getFacultyById($faculty_id: String!) {
   }
 }
 
+query getTagsList {
+  tag {
+    label
+  }
+}
 
-mutation update_visit_response($visit_id: Int!, $visit_status: String!, $time_responded: timestamptz!, $response_msg: String) {
-  update_visit_by_pk(pk_columns: {id: $visit_id}, _set: {time_responded: $time_responded, visit_status: $visit_status,     response_msg: $response_msg}) {
+mutation update_visit_response(
+  $visit_id: Int!
+  $visit_status: String!
+  $time_responded: timestamptz!
+  $response_msg: String
+) {
+  update_visit_by_pk(
+    pk_columns: { id: $visit_id }
+    _set: {
+      time_responded: $time_responded
+      visit_status: $visit_status
+      response_msg: $response_msg
+    }
+  ) {
     time_responded
     visit_status
     response_msg
   }
 }
 
-query get_seminars_with_visits_by_time_requested($faculty_id: String, $semester_code: String) {
-  seminar(where: {course_group: {faculty_id: {_eq: $faculty_id}}, _and: {semester_code: {_eq: $semester_code}}}) {
+query get_seminars_with_visits_by_time_requested(
+  $faculty_id: String
+  $semester_code: String
+) {
+  seminar(
+    where: {
+      course_group: { faculty_id: { _eq: $faculty_id } }
+      _and: { semester_code: { _eq: $semester_code } }
+    }
+  ) {
     title
     start
     module_code
@@ -41,7 +80,7 @@ query get_seminars_with_visits_by_time_requested($faculty_id: String, $semester_
     group_code
     visitor_capacity
     week
-    visits(order_by: {time_requested: desc}) {
+    visits(order_by: { time_requested: desc }) {
       id
       is_archived
       is_cancelled
@@ -67,13 +106,6 @@ query get_seminars_with_visits_by_time_requested($faculty_id: String, $semester_
   }
 }
 
-# query get_visit_status($visit_id:Int){
-#   visit_by_pk(id: $visit_id){
-#     visit_status
-#     time_responded
-#   }
-# }
-
 query get_my_visits($visitor_id: String!) {
   visit(where: { visitor_id: { _eq: $visitor_id } }) {
     id
@@ -86,13 +118,13 @@ query get_my_visits($visitor_id: String!) {
 }
 
 mutation delete_visit($visit_id: Int!) {
-  delete_visit(where: {id: {_eq: $visit_id}}) {
+  delete_visit(where: { id: { _eq: $visit_id } }) {
     affected_rows
   }
 }
 
 query get_seminar($seminar_id: Int!) {
-  seminar(where: {id: {_eq: $seminar_id}}) {
+  seminar(where: { id: { _eq: $seminar_id } }) {
     id
     module_code
     date
@@ -116,7 +148,7 @@ query get_seminar($seminar_id: Int!) {
 }
 
 query get_course_groups_by_faculty($faculty_id: String!) {
-  course_group(where: {faculty_id: {_eq: $faculty_id}}) {
+  course_group(where: { faculty_id: { _eq: $faculty_id } }) {
     id
     group_code
     course {
@@ -128,7 +160,7 @@ query get_course_groups_by_faculty($faculty_id: String!) {
 }
 
 query get_seminars_by_course_group($course_group_id: Int!) {
-  seminar(where: {course_group: {id: {_eq: $course_group_id}}}) {
+  seminar(where: { course_group: { id: { _eq: $course_group_id } } }) {
     id
     date
     start
@@ -144,7 +176,7 @@ query get_seminars_by_course_group($course_group_id: Int!) {
 }
 
 query get_course_by_course_group($course_group_id: Int!) {
-  course(where: {course_groups: {id: {_eq: $course_group_id}}}) {
+  course(where: { course_groups: { id: { _eq: $course_group_id } } }) {
     id
     module_code
     title
@@ -153,13 +185,103 @@ query get_course_by_course_group($course_group_id: Int!) {
 }
 
 mutation archive_seminar($seminar_id: Int!) {
-  update_seminar(where: {id: {_eq: $seminar_id}}, _set: {is_archived: true}) {
+  update_seminar(
+    where: { id: { _eq: $seminar_id } }
+    _set: { is_archived: true }
+  ) {
     affected_rows
   }
 }
 
 mutation unarchive_seminar($seminar_id: Int!) {
-  update_seminar(where: {id: {_eq: $seminar_id}}, _set: {is_archived: false}) {
+  update_seminar(
+    where: { id: { _eq: $seminar_id } }
+    _set: { is_archived: false }
+  ) {
     affected_rows
+  }
+}
+
+query searchSeminarsByFilters(
+  $course_title: String!
+  $faculty_name: String!
+  $start_date: date!
+  $end_date: date!
+) {
+  seminar(
+    where: {
+      _and: [
+        { course_group: { course: { title: { _similar: $course_title } } } }
+        { course_group: { faculty: { name: { _similar: $faculty_name } } } }
+        { date: { _gte: $start_date } }
+        { date: { _lte: $end_date } }
+      ]
+    }
+  ) {
+    date
+    start
+    end
+    id
+    is_open
+    module_code
+    group_code
+    semester_code
+    location {
+      code
+      full_name
+    }
+    course_group {
+      faculty {
+        name
+      }
+      course {
+        title
+      }
+    }
+  }
+}
+
+query searchSeminarsByFiltersWithTags(
+  $course_title: String!
+  $faculty_name: String!
+  $start_date: date!
+  $end_date: date!
+  $selected_tags: [String!]
+) {
+  seminar(
+    where: {
+      _and: [
+        { course_group: { course: { title: { _similar: $course_title } } } }
+        { course_group: { faculty: { name: { _similar: $faculty_name } } } }
+        { date: { _gte: $start_date } }
+        { date: { _lte: $end_date } }
+        {
+          course_group: {
+            course: { tagged_as: { tag_label: { _in: $selected_tags } } }
+          }
+        }
+      ]
+    }
+  ) {
+    date
+    start
+    end
+    id
+    is_open
+    module_code
+    group_code
+    semester_code
+    location {
+      code
+      full_name
+    }
+    course_group {
+      faculty {
+        name
+      }
+      course {
+        title
+      }
+    }
   }
 }

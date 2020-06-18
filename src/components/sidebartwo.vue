@@ -84,7 +84,8 @@ export default {
   data() {
     return {
       constants: constants,
-      queries: queries
+      queries: queries,
+      loggedInUser: {}
     };
   },
   apollo: {
