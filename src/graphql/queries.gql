@@ -14,7 +14,7 @@ query getCourseList {
 }
 
 query getFacultyList {
-  faculty {
+  faculty(order_by: { name: asc }) {
     id
     name
   }
