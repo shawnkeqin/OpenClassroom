@@ -91,8 +91,9 @@ export default {
       open2: false,
       course_title: "",
       faculty_name: "",
-      tags_list: []
-
+      tag_label: [],
+      start: "",
+      end: ""
       /*    seminar: [], 
       course_title: "",
       location: "",
