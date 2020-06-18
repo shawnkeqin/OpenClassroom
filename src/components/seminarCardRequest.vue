@@ -14,13 +14,13 @@
     </div>
     <a-card hoverable style="width: 600px" bodyStyle="padding: 10px">
       <a-col :span="4">
-        <div>{{ new Date(seminartest.date).toDateString().slice(0, 10) }}</div>
-        <div>{{ seminartest.start + " - " + seminartest.end }}</div> 
-        <div>{{ seminartest.location }}</div>
+        <div>{{ new Date(seminar.date).toDateString().slice(0, 10) }}</div>
+        <div>{{ seminar.start + " - " + seminar.end }}</div> 
+   <!--     <div>{{ seminar.location.code }}</div>  -->
       </a-col>
       <a-col :span="14" style="padding-right: 10px">
         <a-row type="flex" style="align-items: center">
-          <span class="module-code">{{ seminartest.seminar_id }}</span>
+          <span class="module-code">{{ seminar.id }}</span>
           <template v-if="requestStatus === 'pending'">
             <a-icon type="clock-circle" theme="filled" class="pending" />
             <span class="request-status pending">Request pending</span>
@@ -36,7 +36,7 @@
           </template>
           <template v-else />
         </a-row>
-        <div class="seminar-title">{{ seminartest.course_title }}</div>
+      <!--    <div class="seminar-title">{{ seminar.course_group.course.title }}</div>  -->
         <a @click="handleOpenDescModal"
           >View course description and seminar details</a
         >
@@ -48,7 +48,7 @@
           <template slot="footer">
             <a-button @click="handleCloseDescModal">Close</a-button>
           </template>
-         <p>{{ seminartest.date }}</p> 
+         <p>{{ seminar.date }}</p> 
         </a-modal>
       </a-col>
       <a-col :span="6">
@@ -99,7 +99,7 @@ export default {
   props: 
  //   seminar: Object, // assuming that seminar has fields module_code, title, date, start, end, location_code, is_open, desc, instructor
   //  requestStatus: String,
-    ["seminartest"],
+    ["seminar"],
   data: function() {
     return {
       isRequestPopoverOn: false,
