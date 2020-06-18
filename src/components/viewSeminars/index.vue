@@ -60,7 +60,7 @@
           </a-form-item>
           <p align="center">Tags</p>
           <a-select
-            v-model="tag_label"
+            v-model="selected_tags"
             mode="tags"
             style="width: 100%"
             placeholder="Tags Mode"
@@ -91,30 +91,18 @@ export default {
       open2: false,
       course_title: "",
       faculty_name: "",
-      tag_label: [],
+      selected_tags: [],
       start: "",
       end: ""
-      /*    seminar: [], 
-      course_title: "",
-      location: "",
-      date: "",
-      start: "",
-      end: "",
-      dateFormat: 'YYYY/MM/DD',
-      monthFormat: 'YYYY/MM',
-      dateFormatList: ['DD/MM/YYYY', 'DD/MM/YY'], */
-      // seminar: []
     };
   },
   apollo: {
     seminar: {
-      query: queries.searchSeminarsByFilters,
+      query() {
+        return this.searchQuery;
+      },
       variables() {
-        return {
-          course_title: this.course_title ? `%${this.course_title}%` : "%",
-          faculty_name: this.faculty_name || "%",
-          tag_label: this.tag_label
-        };
+        return this.searchQueryVariables;
       }
     },
     faculty_list: {
@@ -124,6 +112,27 @@ export default {
     tags_list: {
       query: queries.getTagsList,
       update: data => data.tag
+    }
+  },
+  computed: {
+    searchQuery() {
+      return this.selected_tags.length > 0
+        ? queries.searchSeminarsByFiltersWithTags
+        : queries.searchSeminarsByFilters;
+    },
+    searchQueryVariables() {
+      const course_title = this.course_title ? `%${this.course_title}%` : "%";
+      const faculty_name = this.faculty_name || "%";
+      return this.selected_tags.length > 0
+        ? {
+            course_title,
+            faculty_name,
+            selected_tags: this.selected_tags
+          }
+        : {
+            course_title,
+            faculty_name
+          };
     }
   },
   methods: {

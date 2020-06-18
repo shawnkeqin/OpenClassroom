@@ -202,10 +202,42 @@ mutation unarchive_seminar($seminar_id: Int!) {
   }
 }
 
-query searchSeminarsByFilters(
+query searchSeminarsByFilters($course_title: String!, $faculty_name: String!) {
+  seminar(
+    limit: 10
+    where: {
+      _and: [
+        { course_group: { course: { title: { _similar: $course_title } } } }
+        { course_group: { faculty: { name: { _similar: $faculty_name } } } }
+      ]
+    }
+  ) {
+    date
+    start
+    end
+    id
+    is_open
+    location {
+      code
+      full_name
+    }
+    course_group {
+      group_code
+      faculty {
+        name
+      }
+      course {
+        title
+        module_code
+      }
+    }
+  }
+}
+
+query searchSeminarsByFiltersWithTags(
   $course_title: String!
   $faculty_name: String!
-  $tag_label: [String!]
+  $selected_tags: [String!]
 ) {
   seminar(
     limit: 10
@@ -215,7 +247,7 @@ query searchSeminarsByFilters(
         { course_group: { faculty: { name: { _similar: $faculty_name } } } }
         {
           course_group: {
-            course: { tagged_as: { tag_label: { _in: $tag_label } } }
+            course: { tagged_as: { tag_label: { _in: $selected_tags } } }
           }
         }
       ]
