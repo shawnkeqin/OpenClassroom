@@ -199,7 +199,7 @@ export default {
                 }
               ]
             }
-            limit: 3
+            limit: 5
           ) {
             date
             start
@@ -213,8 +213,11 @@ export default {
                 title
                 module_code
               }
+              group_code
+              faculty {
+                name
+              }
             }
-            is_open
           }
         }
       `,
