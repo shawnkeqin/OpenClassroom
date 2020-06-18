@@ -51,11 +51,11 @@
           <a-form-item>
             <a-select v-model="name">
               <a-select-option
-                v-for="i in 25"
-                :value="(i + 9).toString(36) + i"
-                :key="(i + 9).toString(36) + i"
+                v-for="faculty in faculty"
+                :value="faculty.name.toString()"
+                :key="faculty.name.toString()"
               >
-                {{ (i + 9).toString(36) + i }}
+                {{ faculty.name.toString() }}
               </a-select-option>
             </a-select>
           </a-form-item>
@@ -143,6 +143,15 @@ import gql from "graphql-tag";
 import seminarCardRequest from "./seminarCardRequest";
 //import seminarItem from './seminarItem'
 
+const GET_FACULTY = gql`
+  query getFaculty {
+    faculty {
+      id
+      name
+    }
+  }
+`;
+
 export default {
   name: "viewSeminars",
   components: { seminarCardRequest },
@@ -167,25 +176,6 @@ export default {
     };
   },
   apollo: {
-    //  seminartest: {
-    //    query: GET_SEMINARS
-    //  },
-    /*   seminartest: {
-    query: gql`
-query findSeminar($seminar_id: String!, $course_title: String!, $location: String!, $date: String!,  $start: String! , $end: String!)  {
-  seminartest(where: {_or: [{location: {_similar: $location}}, {course_title: {_similar: $course_title}},{seminar_id: {_similar: $seminar_id}},  {date: {_eq: $date}},  {start: {_eq: $start}}, {end: {_eq: $end}}] }) {
-    course_title
-    seminar_id
-    location
-    date
-    start
-    end
-  
-  }
-}
-
-`
-*/
     seminar: {
       query: gql`
         query MyQuery($title: String!, $name: String!) {
@@ -220,7 +210,30 @@ query findSeminar($seminar_id: String!, $course_title: String!, $location: Strin
           name: this.name
         };
       }
+    },
+    faculty: {
+      query: GET_FACULTY
     }
+
+    //  seminartest: {
+    //    query: GET_SEMINARS
+    //  },
+    /*   seminartest: {
+    query: gql`
+query findSeminar($seminar_id: String!, $course_title: String!, $location: String!, $date: String!,  $start: String! , $end: String!)  {
+  seminartest(where: {_or: [{location: {_similar: $location}}, {course_title: {_similar: $course_title}},{seminar_id: {_similar: $seminar_id}},  {date: {_eq: $date}},  {start: {_eq: $start}}, {end: {_eq: $end}}] }) {
+    course_title
+    seminar_id
+    location
+    date
+    start
+    end
+  
+  }
+}
+
+`
+*/
   },
   methods: {
     onSearch(value) {
@@ -248,6 +261,6 @@ query findSeminar($seminar_id: String!, $course_title: String!, $location: Strin
 }
 
 .filter {
-  position: absolute;
+  position: fixed;
 }
 </style>
