@@ -35,7 +35,7 @@
           <p align="center">Timings</p>
           <p align="center">Start - End</p>
           <p align="center">
-            <a-time-picker :open.sync="open2">
+            <a-time-picker :open.sync="open2" v-model="start">
               <a-button
                 slot="addon"
                 size="small"
@@ -61,13 +61,13 @@
           </a-form-item>
           <p align="center">Tags</p>
           <a-select
-            v-model="tags"
+            v-model="tag_label"
             mode="tags"
             style="width: 100%"
             placeholder="Tags Mode"
           >
-            <a-select-option v-for="i in 25" :key="(i + 9).toString(36) + i">
-              {{ (i + 9).toString(36) + i }}
+            <a-select-option v-for="tag in tag" :key="tag.label.toString()">
+              {{ tag.label.toString() }}
             </a-select-option>
           </a-select>
         </a-form>
@@ -152,6 +152,14 @@ const GET_FACULTY = gql`
   }
 `;
 
+const GET_TAGS = gql`
+  query MyQuery {
+    tag {
+      label
+    }
+  }
+`;
+
 export default {
   name: "viewSeminars",
   components: { seminarCardRequest },
@@ -161,7 +169,7 @@ export default {
       open2: false,
       title: "",
       name: "",
-      tags: []
+      tag_label: []
 
       /*    seminar: [], 
       course_title: "",
@@ -178,14 +186,20 @@ export default {
   apollo: {
     seminar: {
       query: gql`
-        query MyQuery($title: String!, $name: String!) {
+        query MyQuery($title: String!, $name: String!, $tag_label: [String!]) {
           seminar(
             where: {
               _or: [
                 { course_group: { course: { title: { _similar: $title } } } }
                 { course_group: { faculty: { name: { _similar: $name } } } }
+                {
+                  course_group: {
+                    course: { tagged_as: { tag_label: { _in: $tag_label } } }
+                  }
+                }
               ]
             }
+            limit: 3
           ) {
             date
             start
@@ -207,12 +221,17 @@ export default {
       variables() {
         return {
           title: this.title,
-          name: this.name
+          name: this.name,
+          start: this.start,
+          tag_label: this.tag_label
         };
       }
     },
     faculty: {
       query: GET_FACULTY
+    },
+    tag: {
+      query: GET_TAGS
     }
 
     //  seminartest: {
