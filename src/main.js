@@ -14,6 +14,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import AuthPlugin from "./plugins/auth";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+import "./assets/css/main.css";
 import VueApollo from "vue-apollo";
 //import { createProvider } from './vue-apollo'
 
