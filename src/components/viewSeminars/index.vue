@@ -50,6 +50,7 @@
                 :key="seminar.id"
                 :seminar="seminar"
                 class="seminar-item"
+                :seminar_id="seminar.id"
               >
               </seminarCardRequest>
             </div>

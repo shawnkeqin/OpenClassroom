@@ -56,11 +56,16 @@
               <router-link to="/search-courses" />
             </a-menu-item>
             <a-menu-item key="4" class="nav-item">
+              <a-icon type="file-search" />
+              <span class="nav-text">Calendar View</span>
+              <router-link to="/calendar-view" />
+            </a-menu-item>
+            <a-menu-item key="5" class="nav-item">
               <a-icon type="download" />
               <span class="nav-text">My Visitors</span>
               <router-link to="/my-visitors" />
             </a-menu-item>
-            <a-menu-item key="5" class="nav-item">
+            <a-menu-item key="6" class="nav-item">
               <a-icon type="solution" />
               <span class="nav-text">My Visits</span>
               <router-link to="/my-visits" />
@@ -115,7 +120,7 @@ export default {
   color: #004b8d;
 }
 .nav-text {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 20px;
 }
 </style>

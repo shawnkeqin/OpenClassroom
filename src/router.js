@@ -10,6 +10,7 @@ import auth from "@/auth/authService";
 import LoginPage from "@/components/LoginPage";
 import Callback from "@/components/Callback.vue";
 import MyVisitsPage from "@/components/MyVisitsPage";
+import calendarView from "@/components/viewSeminars/calendarView";
 
 Vue.use(Router);
 
@@ -37,6 +38,11 @@ const router = new Router({
       path: "/search-courses",
       name: "viewSeminars",
       component: viewSeminars
+    },
+    {
+      path: "/calendar-view",
+      name: "calendarView",
+      component: calendarView
     },
     {
       path: "/my-visitors",
