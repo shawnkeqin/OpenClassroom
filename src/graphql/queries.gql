@@ -285,3 +285,12 @@ query searchSeminarsByFiltersWithTags(
     }
   }
 }
+
+mutation request_seminar($seminar_id: Int!) {
+  update_seminar(
+    where: { id: { _eq: $seminar_id } }
+    _set: { is_archived: true }
+  ) {
+    affected_rows
+  }
+}

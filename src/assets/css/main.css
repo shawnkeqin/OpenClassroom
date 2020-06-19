@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Open+Sans:wght@600&display=swap');
+h1 {
+  font-size: 48px;
+  font-family: "Open Sans", sans-serif;
+  color: #004b8d;
+  margin-bottom: 24px;
+}
+h2 {
+  font-size: 30px;
+  font-family: "Open Sans", sans-serif;
+  color: #004b8d;
+  margin-bottom: 15px;
+}
+h3 {
+  font-size: 18px;
+  font-family: "Lato", sans-serif;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.87);
+}
+h5 {
+  font-size: 14px;
+  font-family: "Lato", sans-serif;
+  color: rgba(0, 0, 0, 0.54);
+  margin-bottom: 5px;
+}
+p {
+  font-size: 16px;
+  font-family: "Lato", sans-serif;
+  color: rgba(0, 0, 0, 0.87);
+}

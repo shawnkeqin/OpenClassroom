@@ -94,6 +94,8 @@
 </template>
 
 <script>
+import queries from "@/graphql/queries.gql";
+
 export default {
   name: "seminarCardRequest",
   props: {
@@ -127,8 +129,17 @@ export default {
       this.isRequestPopoverOn = false;
       this.isMessageModalOn = true;
     },
-    handleSubmitMessage() {
+    async handleSubmitMessage() {
       this.isMessageModalOn = false;
+      const seminar_id = this.seminar_id;
+      await this.$apollo.mutate({
+        mutation: queries.request_seminar,
+        variables: {
+          seminar_id
+        },
+        refetchQueries: ["get_my_visits"]
+      });
+      this.modal2Visible = false;
     },
     handleCancelMessage() {
       this.message = "";
