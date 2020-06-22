@@ -287,14 +287,14 @@ query searchSeminarsByFiltersWithTags(
 }
 
 mutation request_visit($seminar_id: Int!, $visitor_id: String! ) {
-  update_visit(
-    where: { seminar_id: { _eq: $seminar_id } }
-    _set: { visitor_id: $visitor_id  , visit_status: "ACTIVE" }
-  ) {
-    affected_rows
+  insert_visit(
+     objects: [{ seminar_id: $seminar_id, visitor_id: $visitor_id, visit_status: "PENDING"}]
+    ) {
+      returning {
+        seminar_id
+      }
+    }
   }
-}
-
 
 mutation edit_capacity($id: Int!, $visitor_capacity: Int!) {
   update_seminar(
