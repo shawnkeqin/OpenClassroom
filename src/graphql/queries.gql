@@ -207,6 +207,8 @@ query searchSeminarsByFilters(
   $faculty_name: String!
   $start_date: date!
   $end_date: date!
+  $start_time: time!
+  $end_time: time!
 ) {
   seminar(
     where: {
@@ -215,6 +217,8 @@ query searchSeminarsByFilters(
         { course_group: { faculty: { name: { _similar: $faculty_name } } } }
         { date: { _gte: $start_date } }
         { date: { _lte: $end_date } }
+        { start: { _gte: $start_time } }
+        { end: { _lte: $end_time } }
       ]
     }
   ) {
@@ -246,6 +250,8 @@ query searchSeminarsByFiltersWithTags(
   $faculty_name: String!
   $start_date: date!
   $end_date: date!
+  $start_time: time!
+  $end_time: time!
   $selected_tags: [String!]
 ) {
   seminar(
@@ -255,6 +261,8 @@ query searchSeminarsByFiltersWithTags(
         { course_group: { faculty: { name: { _similar: $faculty_name } } } }
         { date: { _gte: $start_date } }
         { date: { _lte: $end_date } }
+        { start: { _gte: $start_time } }
+        { end: { _lte: $end_time } }
         {
           course_group: {
             course: { tagged_as: { tag_label: { _in: $selected_tags } } }

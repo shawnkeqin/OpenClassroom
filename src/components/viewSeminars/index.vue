@@ -78,21 +78,27 @@
                 :format="utils.dateFormatStr"
                 v-model="selectedDateRange"
               />
-              <br />
-              <!-- <p align="left">Timings</p> -->
-              <p align="left">Start - End</p>
-              <p align="left">
-                <a-time-picker :open.sync="open2" v-model="start">
-                  <a-button
-                    slot="addon"
-                    size="small"
-                    type="primary"
-                    @click="handleClose"
-                  >
-                    Ok
-                  </a-button>
-                </a-time-picker>
-              </p>
+              <p align="left">Time range</p>
+              <a-time-picker
+                :minute-step="30"
+                use12-hours
+                format="h:mm A"
+                v-model="startTime"
+                placeholder="Start"
+                style="width:auto;"
+                valueFormat="HH:mm"
+              >
+              </a-time-picker>
+              <a-time-picker
+                :minute-step="30"
+                use12-hours
+                format="h:mm A"
+                v-model="endTime"
+                placeholder="End"
+                style="width:auto;"
+                valueFormat="HH:mm"
+              >
+              </a-time-picker>
 
               <p align="left">Instructor</p>
               <a-form-item>
@@ -150,16 +156,14 @@ export default {
       DEFAULT_PAGE_SIZE,
       moment,
       utils,
-      // form: this.$form.createForm(this, { name: "form" }),
-      open2: false,
       course_title: "",
       faculty_name: undefined,
       selected_tags: [],
       selectedDateRange: [moment(TEST_DATE), moment(TEST_DATE).add(1, "weeks")],
-      start: "",
-      end: "",
       page: 1,
-      pageSize: DEFAULT_PAGE_SIZE
+      pageSize: DEFAULT_PAGE_SIZE,
+      startTime: null,
+      endTime: null
     };
   },
   apollo: {
@@ -219,19 +223,25 @@ export default {
       const end_date = utils.isNonEmptyArray(this.selectedDateRange)
         ? this.selectedDateRange[1]
         : "2050-01-01";
+      const start_time = this.startTime || "00:00";
+      const end_time = this.endTime || "23:59";
       return utils.isNonEmptyArray(this.selected_tags)
         ? {
             course_title,
             faculty_name,
             start_date,
             end_date,
+            start_time,
+            end_time,
             selected_tags: this.selected_tags
           }
         : {
             course_title,
             faculty_name,
             start_date,
-            end_date
+            end_date,
+            start_time,
+            end_time
           };
     }
   },
