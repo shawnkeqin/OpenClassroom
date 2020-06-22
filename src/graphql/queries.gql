@@ -98,6 +98,7 @@ query get_seminars_with_visits_by_time_requested(
       }
     }
     course_group {
+      id
       notes
       course {
         title
@@ -114,6 +115,8 @@ query get_my_visits($visitor_id: String!) {
     visitor_id
     request_msg
     response_msg
+    time_requested
+    time_responded
   }
 }
 
@@ -136,6 +139,7 @@ query get_seminar($seminar_id: Int!) {
     title
     desc
     course_group {
+      notes
       course {
         id
         module_code

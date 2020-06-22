@@ -62,7 +62,6 @@ p {
   color: rgba(0, 0, 0, 0.87);
 }
 .truncate {
-  height: 16px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -70,7 +69,7 @@ p {
 .page-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  padding-left: 5rem;
 }
 .content-block-wrapper {
   padding: 20px
@@ -79,4 +78,13 @@ button span {
   font-size: 14px;
   font-family: "Lato", sans-serif;
   font-weight: bold;
+}
+.pending {
+  color: #ffb74d;
+}
+.accepted {
+  color: #81c784;
+}
+.declined {
+  color: #e57373;
 }
