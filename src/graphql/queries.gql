@@ -286,11 +286,24 @@ query searchSeminarsByFiltersWithTags(
   }
 }
 
-mutation request_seminar($seminar_id: Int!) {
-  update_seminar(
-    where: { id: { _eq: $seminar_id } }
-    _set: { is_archived: true }
+mutation request_visit($seminar_id: Int!, $visitor_id: String! ) {
+  update_visit(
+    where: { seminar_id: { _eq: $seminar_id } }
+    _set: { visitor_id: $visitor_id  , visit_status: "ACTIVE" }
   ) {
     affected_rows
   }
 }
+
+
+mutation edit_capacity($id: Int!, $visitor_capacity: Int!) {
+  update_seminar(
+   where:  { id: { _eq: $id } } 
+    _set: { visitor_capacity: $visitor_capacity }
+  ) {
+    affected_rows
+  }
+}
+
+
+

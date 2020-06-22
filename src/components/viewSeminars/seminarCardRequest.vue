@@ -95,7 +95,7 @@
 
 <script>
 import queries from "@/graphql/queries.gql";
-
+import constants from "@/utils/constants";
 export default {
   name: "seminarCardRequest",
   props: {
@@ -131,11 +131,12 @@ export default {
     },
     async handleSubmitMessage() {
       this.isMessageModalOn = false;
-      const seminar_id = this.seminar_id;
+      const seminar_id = this.seminar.id;
       await this.$apollo.mutate({
-        mutation: queries.request_seminar,
+        mutation: queries.request_visit,
         variables: {
-          seminar_id
+          seminar_id,
+          visitor_id: constants.TEST_FACULTY_ID
         },
         refetchQueries: ["get_my_visits"]
       });
