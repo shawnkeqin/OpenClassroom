@@ -1,8 +1,9 @@
 <template>
-  <div>
-    <h1>My Visits</h1>
-    <br />
-    <MyVisitCard v-for="visit in myVisits" :visit="visit" :key="visit.id" />
+  <div class="page-wrapper">
+    <div class="content-block-wrapp">
+      <h1>My Visits</h1>
+      <MyVisitCard v-for="visit in myVisits" :visit="visit" :key="visit.id" />
+    </div>
   </div>
 </template>
 

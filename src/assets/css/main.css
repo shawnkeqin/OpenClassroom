@@ -1,18 +1,45 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Open+Sans:wght@600&display=swap');
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  html {
+    font-size: 80%;
+  }
+}
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  html {
+    font-size: 100%;
+  }
+}
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  html {
+    font-size: 120%;
+  }
+}
 h1 {
-  font-size: 48px;
+  font-size: 3rem;
   font-family: "Open Sans", sans-serif;
   color: #004b8d;
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
 }
 h2 {
-  font-size: 30px;
+  font-size: 2rem;
   font-family: "Open Sans", sans-serif;
   color: #004b8d;
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
 }
 h3 {
   font-size: 18px;
+  font-family: "Lato", sans-serif;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.87);
+}
+h4 {
+  font-size: 16px;
   font-family: "Lato", sans-serif;
   font-weight: bold;
   color: rgba(0, 0, 0, 0.87);
@@ -21,10 +48,35 @@ h5 {
   font-size: 14px;
   font-family: "Lato", sans-serif;
   color: rgba(0, 0, 0, 0.54);
-  margin-bottom: 5px;
+  margin-bottom: 3px;
+}
+h6 {
+  font-size: 12px;
+  font-family: "Lato", sans-serif;
+  color: rgba(0, 0, 0, 0.54);
+  margin-bottom: 0;
 }
 p {
   font-size: 16px;
   font-family: "Lato", sans-serif;
   color: rgba(0, 0, 0, 0.87);
+}
+.truncate {
+  height: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.content-block-wrapper {
+  padding: 20px
+}
+button span {
+  font-size: 14px;
+  font-family: "Lato", sans-serif;
+  font-weight: bold;
 }
