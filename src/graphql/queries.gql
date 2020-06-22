@@ -294,11 +294,24 @@ query searchSeminarsByFiltersWithTags(
   }
 }
 
-mutation request_seminar($seminar_id: Int!) {
+mutation request_visit($seminar_id: Int!, $visitor_id: String! ) {
+  insert_visit(
+     objects: [{ seminar_id: $seminar_id, visitor_id: $visitor_id, visit_status: "PENDING"}]
+    ) {
+      returning {
+        seminar_id
+      }
+    }
+  }
+
+mutation edit_capacity($id: Int!, $visitor_capacity: Int!) {
   update_seminar(
-    where: { id: { _eq: $seminar_id } }
-    _set: { is_archived: true }
+   where:  { id: { _eq: $id } } 
+    _set: { visitor_capacity: $visitor_capacity }
   ) {
     affected_rows
   }
 }
+
+
+

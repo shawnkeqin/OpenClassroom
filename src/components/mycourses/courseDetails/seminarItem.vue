@@ -34,10 +34,16 @@
       <a-row>
         <h5>Seminar description</h5>
         <p>{{ seminar.desc || "None" }}</p>
+
+        <h5>Seminar ID</h5>
+        <p>{{ seminar.id || "None" }}</p>
       </a-row>
       <div style="display: flex; align-items: center;">
         <p style="margin: 0 20px 0 0">This class is open to visit requests</p>
         <seminarStatusToggle :seminar_id="seminar.id" />
+      </div>
+      <div>
+        <updateVisitorCapacityModal />
       </div>
       <!-- <a-descriptions>
         <a-descriptions-item label="Date">
@@ -86,11 +92,16 @@ import utils from "@/utils";
 import updateSeminarModal from "./updateSeminarModal";
 // import archiveSeminarModal from "./archiveSeminarModal";
 import seminarStatusToggle from "./seminarStatusToggle";
+import updateVisitorCapacityModal from "./updateVisitorCapacityModal";
 export default {
   name: "seminarItem",
 
   // components: { archiveSeminarModal, deleteSeminarModal, updateSeminarModal, seminarStatusToggle },
-  components: { updateSeminarModal, seminarStatusToggle },
+  components: {
+    updateSeminarModal,
+    seminarStatusToggle,
+    updateVisitorCapacityModal
+  },
   props: ["seminar"],
   data: function() {
     return {
