@@ -1,7 +1,15 @@
 <template>
   <div>
-    <h2>{{ course.title }}</h2>
-    <h3>{{ course.module_code }}</h3>
+    <h2>
+      {{ course.title }}
+      <a-button type="danger" size="large" @click="setAllUnavailable">
+        Close Course
+      </a-button>
+    </h2>
+    <h3>
+      {{ course.module_code }}
+    </h3>
+
     <a-card style="width: 700px" bodyStyle="padding: 0">
       <a-collapse default-active-key="1" :bordered="false">
         <a-collapse-panel key="2" header="Course description">
@@ -97,6 +105,35 @@ export default {
     },
     active_seminars() {
       return this.seminars.filter(seminar => !seminar.is_archived);
+    }
+  },
+  methods: {
+    async setAllUnavailable() {
+      const course_group_id = this.id;
+      await this.$apollo.mutate({
+        mutation: queries.close_all_course_seminars,
+        variables: {
+          course_group_id
+        },
+        // update: (store, { data: { update_seminartest } }) => {
+        //   if (update_seminartest.affected_rows) {
+        //     const data = store.readQuery({
+        //       query: GET_MY_SEMINARS
+        //     });
+        //     const seminartest = data.seminartest;
+        //     const i = seminartest.findIndex(
+        //       seminar => seminar.id === this.seminartest.id
+        //     );
+        //     seminartest[i].archived = true;
+        //     store.writeQuery({
+        //       query: GET_MY_SEMINARS,
+        //       data
+        //     });
+        //   }
+        // },
+        refetchQueries: ["get_seminars_by_course_group"]
+      });
+      this.modal2Visible = false;
     }
   }
 };

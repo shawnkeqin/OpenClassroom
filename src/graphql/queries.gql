@@ -319,4 +319,9 @@ mutation edit_capacity($id: Int!, $visitor_capacity: Int!) {
 }
 
 
+mutation close_all_course_seminars($course_group_id: Int!) {
+  update_seminar(where: {course_group: {id: {_eq: $course_group_id}}}, _set: {is_open: false}) {
+    affected_rows
+  }
+}
 
