@@ -172,7 +172,7 @@ import constants from "@/utils/constants";
 import queries from "@/graphql/queries.gql";
 
 export default {
-  name: "seminarRequestCard",
+  name: "SeminarRequestCard",
   props: {
     visit: {
       type: Object,
