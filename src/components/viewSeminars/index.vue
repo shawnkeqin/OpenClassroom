@@ -122,7 +122,7 @@
                 v-model="selected_tags"
                 mode="tags"
                 style="width: 100%"
-                placeholder="Select a tag"
+                placeholder="Select a tag ⯆"
               >
                 <a-select-option
                   v-for="tag in tags_list"

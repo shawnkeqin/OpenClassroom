@@ -160,7 +160,7 @@ query get_course_groups_by_faculty($faculty_id: String!) {
 }
 
 query get_seminars_by_course_group($course_group_id: Int!) {
-  seminar(where: { course_group: { id: { _eq: $course_group_id } } }) {
+  seminar(where: { course_group: { id: { _eq: $course_group_id } } }, order_by: {date: desc}) {
     id
     date
     start
@@ -172,6 +172,7 @@ query get_seminars_by_course_group($course_group_id: Int!) {
     title
     desc
     visitor_capacity
+    is_open
   }
 }
 

@@ -34,6 +34,8 @@ import InteractionPlugin from "@fullcalendar/interaction";
 import ListPlugin from "@fullcalendar/list";
 import { mapGetters } from "vuex";
 import calendarSeminarModal from "./calendarSeminarModal";
+import queries from "@/graphql/queries.gql";
+import constants from "@/utils/constants";
 export default {
   name: "calendarView",
   data: () => ({
@@ -42,11 +44,21 @@ export default {
       TimeGridPlugin,
       InteractionPlugin,
       ListPlugin
-    ]
+    ],
+    mySeminars: []
   }),
   components: { Fullcalendar },
   computed: {
     ...mapGetters(["EVENTS"])
+  },
+  apollo: {
+    mySeminars: {
+      query: queries.get_my_visits,
+      variables: {
+        visitor_id: constants.TEST_FACULTY_ID
+      },
+      update: data => data.visit
+    }
   },
   methods: {
     handleSelect(arg) {

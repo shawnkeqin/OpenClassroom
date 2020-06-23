@@ -32,18 +32,11 @@
         </a-col>
       </a-row>
       <a-row>
-        <a-col>
-          <h5>Seminar description</h5>
-          <p>{{ seminar.desc || "None" }}</p>
-        </a-col>
-        <a-col>
-          <h5>Seminar ID</h5>
-          <p>{{ seminar.id || "None" }}</p>
-        </a-col>
-      </a-row>
-      <a-row>
-        <h5>Seminar Availability</h5>
-        <p>{{ seminar.is_open }}</p>
+        <h5>Seminar description</h5>
+        <p>{{ seminar.desc || "None" }}</p>
+
+        <h5>Seminar ID</h5>
+        <p>{{ seminar.id || "None" }}</p>
       </a-row>
       <div style="display: flex; align-items: center;">
         <p style="margin: 0 20px 0 0">This class is open to visit requests</p>
@@ -101,7 +94,7 @@ import updateSeminarModal from "./updateSeminarModal";
 import seminarStatusToggle from "./seminarStatusToggle";
 import updateVisitorCapacityModal from "./updateVisitorCapacityModal";
 export default {
-  name: "seminarItem",
+  name: "calendarEventItem",
 
   // components: { archiveSeminarModal, deleteSeminarModal, updateSeminarModal, seminarStatusToggle },
   components: {
@@ -109,7 +102,7 @@ export default {
     seminarStatusToggle,
     updateVisitorCapacityModal
   },
-  props: ["seminar"],
+  props: ["mySeminars"],
   data: function() {
     return {
       utils: utils

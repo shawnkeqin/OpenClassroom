@@ -16,6 +16,7 @@
         <div>{{ new Date(seminar.date).toDateString().slice(0, 10) }}</div>
         <div>{{ seminar.start + " - " + seminar.end }}</div>
         <div>{{ seminar.location.code }}</div>
+        <div>Availability Status: {{ seminar.is_open }}</div>
       </a-col>
       <a-col :span="14" style="padding-right: 10px">
         <a-row type="flex" style="align-items: center">
@@ -148,6 +149,11 @@ export default {
     },
     handleDeleteRequest() {},
     handleAddToCalendar() {}
+  },
+  computed: {
+    //  isDisabled: function() {
+    //    return !this.terms;
+    //  }
   }
 };
 </script>
