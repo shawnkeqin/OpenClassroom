@@ -1,24 +1,26 @@
 <template>
-  <div>
+  <div class="page-wrapper">
     <div class="content-block-wrapper">
       <h1>My profile</h1>
-      <a-card style="width: 700px">
-        <div style="display: flex">
-          <a-avatar :size="160" src="https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80" />
-          <div id="profile-details">
+      <a-card style="width: 40rem">
+        <a-row type="flex" align="middle" :gutter="20">
+          <a-col :xs="24" :sm="8" align="middle" justify="center">
+            <a-avatar :size="160" src="https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80" />
+          </a-col>
+          <a-col>
             <h5>Name</h5>
             <p>{{ faculty.name }}</p>
             <h5>Staff ID</h5>
             <p>{{ faculty.id }}</p>
             <h5>Email</h5>
             <p style="margin: 0">{{ faculty.email }}</p>
-          </div>
-        </div>
+          </a-col>
+        </a-row>
       </a-card>
     </div>
     <div class="content-block-wrapper">
       <h2>My Preferences</h2>
-      <a-card style="width: 700px" bodyStyle="padding: 0">
+      <a-card style="width: 40rem" bodyStyle="padding: 0">
         <a-list item-layout="horizontal" size="small">
           <a-list-item class="preference-item">
             <p>Email me when new requests for my seminars are created</p>
@@ -61,23 +63,12 @@ export default {
 </script>
 
 <style scoped>
-.content-block-wrapper {
-  padding-bottom: 50px
-}
 #profile-card-container {
   display: flex;
   flex-direction: row;
 }
 #profile-details {
   margin-left: 30px;
-}
-.avatar {
-  background-image: url("https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80");
-  width: 160x;
-  height: 160px;
-  background-size: cover;
-  background-position: top center;
-  border-radius: 50%;
 }
 .preference-item {
   padding: 10px 20px 10px 20px;
