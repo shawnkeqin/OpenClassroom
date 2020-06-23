@@ -101,6 +101,7 @@ query get_seminars_with_visits_by_time_requested(
       id
       notes
       course {
+        id
         title
       }
     }
@@ -130,8 +131,10 @@ query get_my_visits($visitor_id: String!) {
       title
       desc
       course_group {
+        id
         notes
         faculty {
+          id
           name
         }
         course {
@@ -243,10 +246,12 @@ query searchSeminarsByFilters(
       full_name
     }
     course_group {
+      id
       faculty {
         name
       }
       course {
+        id
         title
       }
     }
@@ -269,6 +274,7 @@ query searchSeminarsByFiltersWithTags(
   $start_time: time!
   $end_time: time!
   $selected_tags: [String!]
+  $visitor_id: String
 ) {
   seminar(
     where: {
@@ -300,25 +306,34 @@ query searchSeminarsByFiltersWithTags(
       full_name
     }
     course_group {
+      id
       faculty {
+        id
         name
       }
       course {
+        id
         title
       }
+    }
+    visits(where: {visitor_id: {_eq: $visitor_id}}) {
+      id
+      visit_status
+      request_msg
+      response_msg
+      time_requested
+      time_responded
     }
   }
 }
 
-mutation request_visit($seminar_id: Int!, $visitor_id: String! ) {
-  insert_visit(
-     objects: [{ seminar_id: $seminar_id, visitor_id: $visitor_id, visit_status: "PENDING"}]
-    ) {
-      returning {
-        seminar_id
-      }
+mutation request_visit($seminar_id: Int!, $visitor_id: String!, $request_msg: String ) {
+  insert_visit(objects: [{ seminar_id: $seminar_id, visitor_id: $visitor_id, visit_status: "PENDING", request_msg: $request_msg }]) {
+    returning {
+      seminar_id
     }
   }
+}
 
 mutation edit_capacity($id: Int!, $visitor_capacity: Int!) {
   update_seminar(

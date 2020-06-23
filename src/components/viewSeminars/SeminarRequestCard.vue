@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 35rem">
     <!--     <img
         class="avatar"
         :src="instructor.profilePic"
@@ -9,7 +9,7 @@
       {{ `${course_group.faculty.name}'s class` }}
     </p>
     <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag>
-    <a-card hoverable style="width: 35rem; margin-bottom: 20px">
+    <a-card hoverable style="margin-bottom: 20px">
       <a-row style="margin-bottom: 5px">
         <h5 style="display: inline; font-weight: bold">
           {{ utils.date_format(seminar.date) + " | " }}
@@ -43,13 +43,13 @@
                   "This is some seminar descriptions"
               }}
             </h5>
-            <a @click="isDescModalOn = true"
+            <a @click="descModalVisible = true"
               >View full course description and seminar details</a
             >
           </a-row>
-          <a-modal v-model="isDescModalOn" @ok="isDescModalOn = false">
+          <a-modal v-model="descModalVisible" @ok="descModalVisible = false">
             <template slot="footer">
-              <a-button @click="isDescModalOn = false">Close</a-button>
+              <a-button @click="descModalVisible = false">Close</a-button>
             </template>
             <h4>Seminar description:</h4>
             <p>{{ seminar.desc }}</p>
@@ -61,30 +61,60 @@
           </h5>
         </a-col>
         <a-col :span="7">
-          <a-button
-            @click="isCancelRequestModalOn = true"
-            type="primary"
-            ghost
-            block
-            style="margin-bottom: 20px"
-            >Cancel request</a-button
-          >
-          <a-modal
-            v-model="isCancelRequestModalOn"
-            @ok="handleCancelRequest"
-            title="Cancel visit request"
-          >
-            <template slot="footer">
-              <a-button key="cancel" @click="isCancelRequestModalOn = false"
-                >Cancel</a-button
-              >
-              <a-button key="submit" @click="handleCancelRequest"
-                >Confirm cancel request</a-button
-              >
-            </template>
-            <p>Your are about to cancel your visit request</p>
-          </a-modal>
-          <div style="display: flex; justify-content: center">
+          <template v-if="!visit">
+            <a-button
+              @click="requestModalVisible = true"
+              type="primary"
+              block
+              style="margin-bottom: 20px"
+              >Request visit</a-button
+            >
+            <a-modal
+              v-model="requestModalVisible"
+              title="Making a vist request"
+              @ok="handleSubmitRequest"
+            >
+              <template slot="footer">
+                <a-button key="cancel" @click="requestModalVisible = false"
+                  >Cancel</a-button
+                >
+                <a-button key="submit" @click="handleSubmitRequest"
+                  >Submit</a-button
+                >
+              </template>
+              <a-form-model-item label="Your request message (optional)">
+                <a-input v-model="request_msg" type="textarea" />
+              </a-form-model-item>
+            </a-modal>
+          </template>
+          <template v-else>
+            <a-button
+              @click="cancelRequestModalVisible = true"
+              type="primary"
+              ghost
+              block
+              style="margin-bottom: 20px"
+              >Cancel request</a-button
+            >
+            <a-modal
+              v-model="cancelRequestModalVisible"
+              @ok="handleCancelRequest"
+              title="Cancel visit request"
+            >
+              <template slot="footer">
+                <a-button
+                  key="cancel"
+                  @click="cancelRequestModalVisible = false"
+                  >Cancel</a-button
+                >
+                <a-button key="submit" @click="handleCancelRequest"
+                  >Confirm cancel request</a-button
+                >
+              </template>
+              <p>Your are about to cancel your visit request</p>
+            </a-modal>
+          </template>
+          <div v-if="visit" style="display: flex; justify-content: center">
             <template v-if="visit.visit_status === 'PENDING'">
               <a-icon
                 type="clock-circle"
@@ -125,11 +155,10 @@
                 Request declined
               </h4>
             </template>
-            <template v-else />
           </div>
         </a-col>
       </a-row>
-      <a-row v-show="isMessagesVisible" style="margin-top: 20px">
+      <a-row v-if="visit && isMessagesVisible" style="margin-top: 20px">
         <div>{{ "Request message: " + visit.request_msg }}</div>
         <div>{{ "Response message: " + visit.response_msg }}</div>
       </a-row>
@@ -139,13 +168,20 @@
 
 <script>
 import utils from "@/utils";
+import constants from "@/utils/constants";
 import queries from "@/graphql/queries.gql";
 
 export default {
-  name: "myVisitCard",
+  name: "seminarRequestCard",
   props: {
-    visit: Object,
-    seminar: Object,
+    visit: {
+      type: Object,
+      default: null
+    },
+    seminar: {
+      type: Object,
+      default: null
+    },
     isMessagesVisible: {
       type: Boolean,
       default: false
@@ -154,8 +190,10 @@ export default {
   data: function() {
     return {
       utils: utils,
-      isDescModalOn: false,
-      isCancelRequestModalOn: false
+      descModalVisible: false,
+      requestModalVisible: false,
+      request_msg: "",
+      cancelRequestModalVisible: false
     };
   },
   computed: {
@@ -167,12 +205,29 @@ export default {
     }
   },
   methods: {
+    async handleSubmitRequest() {
+      const seminar_id = this.seminar.id;
+      const request_msg = this.request_msg;
+      await this.$apollo.mutate({
+        mutation: queries.request_visit,
+        variables: {
+          seminar_id,
+          visitor_id: constants.TEST_FACULTY_ID,
+          request_msg
+        },
+        // update: {}
+        refetchQueries: ["get_my_visits"]
+      });
+      this.requestModalVisible = false;
+    },
     async handleCancelRequest() {
       const visit_id = this.visit.id;
+      const request_msg = this.request_msg;
       await this.$apollo.mutate({
         mutation: queries.delete_visit,
         variables: {
-          visit_id
+          visit_id,
+          request_msg
         },
         refetchQueries: ["get_my_visits"]
       });
@@ -186,9 +241,6 @@ export default {
 <style scoped>
 a {
   font-size: 12px;
-}
-.ant-card-body {
-  padding: 10px;
 }
 .ant-card-hoverable {
   cursor: default;

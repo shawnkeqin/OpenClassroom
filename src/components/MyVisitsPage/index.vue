@@ -2,7 +2,7 @@
   <div class="page-wrapper">
     <div class="content-block-wrapp">
       <h1>My Visits</h1>
-      <MyVisitCard
+      <SeminarRequestCard
         v-for="visit in myVisits"
         :seminar="visit.seminar"
         :visit="visit"
@@ -14,14 +14,14 @@
 </template>
 
 <script>
-import MyVisitCard from "./MyVisitCard";
+import SeminarRequestCard from "../viewSeminars/SeminarRequestCard";
 import queries from "@/graphql/queries.gql";
 import constants from "@/utils/constants";
 
 export default {
   name: "observelog",
   components: {
-    MyVisitCard
+    SeminarRequestCard
   },
   data() {
     return {
