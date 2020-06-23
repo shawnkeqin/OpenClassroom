@@ -108,7 +108,7 @@ query get_seminars_with_visits_by_time_requested(
 }
 
 query get_my_visits($visitor_id: String!) {
-  visit(where: { visitor_id: { _eq: $visitor_id } }) {
+  visit(where: {visitor_id: {_eq: $visitor_id}}) {
     id
     seminar_id
     visit_status
@@ -117,37 +117,39 @@ query get_my_visits($visitor_id: String!) {
     response_msg
     time_requested
     time_responded
+    seminar {
+      id
+      module_code
+      date
+      start
+      end
+      is_open
+      location {
+        full_name
+      }
+      title
+      desc
+      course_group {
+        notes
+        faculty {
+          name
+        }
+        course {
+          id
+          module_code
+          title
+          desc
+          module_brief_link
+        }
+      }
+    }
   }
 }
+
 
 mutation delete_visit($visit_id: Int!) {
   delete_visit(where: { id: { _eq: $visit_id } }) {
     affected_rows
-  }
-}
-
-query get_seminar($seminar_id: Int!) {
-  seminar(where: { id: { _eq: $seminar_id } }) {
-    id
-    module_code
-    date
-    start
-    end
-    location {
-      full_name
-    }
-    title
-    desc
-    course_group {
-      notes
-      course {
-        id
-        module_code
-        title
-        desc
-        module_brief_link
-      }
-    }
   }
 }
 
@@ -214,6 +216,7 @@ query searchSeminarsByFilters(
   $end_date: date!
   $start_time: time!
   $end_time: time!
+  $visitor_id: String
 ) {
   seminar(
     where: {
@@ -246,6 +249,14 @@ query searchSeminarsByFilters(
       course {
         title
       }
+    }
+    visits(where: {visitor_id: {_eq: $visitor_id}}) {
+      id
+      visit_status
+      request_msg
+      response_msg
+      time_requested
+      time_responded
     }
   }
 }

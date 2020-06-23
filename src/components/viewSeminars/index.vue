@@ -142,6 +142,7 @@
 <script>
 import moment from "moment";
 import utils from "@/utils";
+// import constants from "@/utils/constants";
 import queries from "@/graphql/queries.gql";
 import seminarCardRequest from "./seminarCardRequest";
 const DEFAULT_PAGE_SIZE = 10;
@@ -233,7 +234,8 @@ export default {
             end_date,
             start_time,
             end_time,
-            selected_tags: this.selected_tags
+            selected_tags: this.selected_tags,
+            // visitor_id: constants.TEST_FACULTY_ID
           }
         : {
             course_title,
@@ -241,7 +243,8 @@ export default {
             start_date,
             end_date,
             start_time,
-            end_time
+            end_time,
+            // visitor_id: constants.TEST_FACULTY_ID
           };
     }
   },

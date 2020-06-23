@@ -2,7 +2,13 @@
   <div class="page-wrapper">
     <div class="content-block-wrapp">
       <h1>My Visits</h1>
-      <MyVisitCard v-for="visit in myVisits" :visit="visit" :key="visit.id" />
+      <MyVisitCard
+        v-for="visit in myVisits"
+        :seminar="visit.seminar"
+        :visit="visit"
+        :isMessagesVisible="true"
+        :key="visit.id"
+      />
     </div>
   </div>
 </template>
