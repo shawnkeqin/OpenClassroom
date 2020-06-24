@@ -3,8 +3,6 @@
     <a-button
       v-if="this.visit.visit_status === constants.VISIT_STATUS_PENDING"
       type="primary"
-      block
-      style="width: 100%"
       @click="onClickRespond"
     >
       Respond

@@ -79,6 +79,24 @@ button span {
   font-family: "Lato", sans-serif;
   font-weight: bold;
 }
+.status-icon {
+  font-size: 20px;
+  padding-right: 10px;
+}
+.avatar-small {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  margin-right: 5px;
+  background-color: grey
+}
+.avatar-medium {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  margin-right: 5px;
+  background-color: grey
+}
 .pending {
   color: #ffb74d;
 }
