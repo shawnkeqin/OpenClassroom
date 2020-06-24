@@ -61,7 +61,7 @@
           </h5>
         </a-col>
         <a-col :span="7">
-          <template v-if="!visit">
+          <template v-if="!visit_local">
             <a-button
               @click="requestModalVisible = true"
               type="primary"
@@ -113,52 +113,52 @@
               </template>
               <p>Your are about to cancel your visit request</p>
             </a-modal>
-          </template>
-          <div v-if="visit" style="display: flex; justify-content: center">
-            <template v-if="visit.visit_status === 'PENDING'">
-              <a-icon
-                type="clock-circle"
-                theme="filled"
-                class="status-icon pending"
-              />
-              <h4 class="pending" style="margin-bottom: 0">
-                Request pending
-              </h4>
-            </template>
-            <template v-else-if="visit.visit_status === 'ACCEPTED'">
-              <div style="display: flex; align-items: center">
+            <div style="display: flex; justify-content: center">
+              <template v-if="visit_local.visit_status === 'PENDING'">
                 <a-icon
-                  type="check-circle"
+                  type="clock-circle"
                   theme="filled"
-                  class="status-icon accepted"
+                  class="status-icon pending"
                 />
-              </div>
-              <div>
-                <h4 class="accepted" style="margin-bottom: 3px">
-                  Request accepted
+                <h4 class="pending" style="margin-bottom: 0">
+                  Request pending
                 </h4>
-                <h5 class="accepted">
-                  {{
-                    visit.time_responded &&
-                      utils.datetime_fromnow_format(visit.time_responded)
-                  }}
-                </h5>
-              </div>
-            </template>
-            <template v-else-if="visit.visit_status === 'DECLINED'">
-              <a-icon
-                type="closed-circle"
-                theme="filled"
-                class="status-icon declined"
-              />
-              <h4 class="declined" style="margin-bottom: 0">
-                Request declined
-              </h4>
-            </template>
-          </div>
+              </template>
+              <template v-else-if="visit_local.visit_status === 'ACCEPTED'">
+                <div style="display: flex; align-items: center">
+                  <a-icon
+                    type="check-circle"
+                    theme="filled"
+                    class="status-icon accepted"
+                  />
+                </div>
+                <div>
+                  <h4 class="accepted" style="margin-bottom: 3px">
+                    Request accepted
+                  </h4>
+                  <h5 class="accepted">
+                    {{
+                      visit.time_responded &&
+                        utils.datetime_fromnow_format(visit.time_responded)
+                    }}
+                  </h5>
+                </div>
+              </template>
+              <template v-else-if="visit_local.visit_status === 'DECLINED'">
+                <a-icon
+                  type="closed-circle"
+                  theme="filled"
+                  class="status-icon declined"
+                />
+                <h4 class="declined" style="margin-bottom: 0">
+                  Request declined
+                </h4>
+              </template>
+            </div>
+          </template>
         </a-col>
       </a-row>
-      <a-row v-if="visit && isMessagesVisible" style="margin-top: 20px">
+      <a-row v-if="visit_local && isMessagesVisible" style="margin-top: 20px">
         <div>{{ "Request message: " + visit.request_msg }}</div>
         <div>{{ "Response message: " + visit.response_msg }}</div>
       </a-row>
@@ -190,6 +190,7 @@ export default {
   data: function() {
     return {
       utils: utils,
+      visit_local: this.visit,
       descModalVisible: false,
       requestModalVisible: false,
       request_msg: "",
@@ -208,30 +209,29 @@ export default {
     async handleSubmitRequest() {
       const seminar_id = this.seminar.id;
       const request_msg = this.request_msg;
-      await this.$apollo.mutate({
+      const result = await this.$apollo.mutate({
         mutation: queries.request_visit,
         variables: {
           seminar_id,
           visitor_id: constants.TEST_FACULTY_ID,
           request_msg
         },
-        // update: {}
         refetchQueries: ["get_my_visits"]
       });
+      this.visit_local = result.data.insert_visit.returning[0];
       this.requestModalVisible = false;
     },
     async handleCancelRequest() {
-      const visit_id = this.visit.id;
-      const request_msg = this.request_msg;
+      const visit_id = this.visit_local.id;
       await this.$apollo.mutate({
         mutation: queries.delete_visit,
         variables: {
-          visit_id,
-          request_msg
+          visit_id
         },
-        refetchQueries: ["get_my_visits"]
+        refetchQueries: ["get_my_visits", "searchSeminarsByFilters"]
       });
-      this.isCancelRequestModalOn = false;
+      this.visit_local = null;
+      this.cancelRequestModalVisible = false;
     },
     handleAddToCalendar() {}
   }

@@ -331,6 +331,12 @@ mutation request_visit($seminar_id: Int!, $visitor_id: String!, $request_msg: St
   insert_visit(objects: [{ seminar_id: $seminar_id, visitor_id: $visitor_id, visit_status: "PENDING", request_msg: $request_msg }]) {
     returning {
       seminar_id
+      id
+      visit_status
+      request_msg
+      response_msg
+      time_requested
+      time_responded
     }
   }
 }
