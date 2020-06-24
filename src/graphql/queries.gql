@@ -101,6 +101,7 @@ query get_seminars_with_visits_by_time_requested(
       id
       notes
       course {
+        id
         title
       }
     }
@@ -108,7 +109,7 @@ query get_seminars_with_visits_by_time_requested(
 }
 
 query get_my_visits($visitor_id: String!) {
-  visit(where: { visitor_id: { _eq: $visitor_id } }) {
+  visit(where: {visitor_id: {_eq: $visitor_id}}) {
     id
     seminar_id
     visit_status
@@ -117,37 +118,41 @@ query get_my_visits($visitor_id: String!) {
     response_msg
     time_requested
     time_responded
+    seminar {
+      id
+      module_code
+      date
+      start
+      end
+      is_open
+      location {
+        full_name
+      }
+      title
+      desc
+      course_group {
+        id
+        notes
+        faculty {
+          id
+          name
+        }
+        course {
+          id
+          module_code
+          title
+          desc
+          module_brief_link
+        }
+      }
+    }
   }
 }
+
 
 mutation delete_visit($visit_id: Int!) {
   delete_visit(where: { id: { _eq: $visit_id } }) {
     affected_rows
-  }
-}
-
-query get_seminar($seminar_id: Int!) {
-  seminar(where: { id: { _eq: $seminar_id } }) {
-    id
-    module_code
-    date
-    start
-    end
-    location {
-      full_name
-    }
-    title
-    desc
-    course_group {
-      notes
-      course {
-        id
-        module_code
-        title
-        desc
-        module_brief_link
-      }
-    }
   }
 }
 
@@ -214,6 +219,7 @@ query searchSeminarsByFilters(
   $end_date: date!
   $start_time: time!
   $end_time: time!
+  $visitor_id: String
 ) {
   seminar(
     where: {
@@ -240,12 +246,22 @@ query searchSeminarsByFilters(
       full_name
     }
     course_group {
+      id
       faculty {
         name
       }
       course {
+        id
         title
       }
+    }
+    visits(where: {visitor_id: {_eq: $visitor_id}}) {
+      id
+      visit_status
+      request_msg
+      response_msg
+      time_requested
+      time_responded
     }
   }
 }
@@ -258,6 +274,7 @@ query searchSeminarsByFiltersWithTags(
   $start_time: time!
   $end_time: time!
   $selected_tags: [String!]
+  $visitor_id: String
 ) {
   seminar(
     where: {
@@ -289,25 +306,34 @@ query searchSeminarsByFiltersWithTags(
       full_name
     }
     course_group {
+      id
       faculty {
+        id
         name
       }
       course {
+        id
         title
       }
+    }
+    visits(where: {visitor_id: {_eq: $visitor_id}}) {
+      id
+      visit_status
+      request_msg
+      response_msg
+      time_requested
+      time_responded
     }
   }
 }
 
-mutation request_visit($seminar_id: Int!, $visitor_id: String! ) {
-  insert_visit(
-     objects: [{ seminar_id: $seminar_id, visitor_id: $visitor_id, visit_status: "PENDING"}]
-    ) {
-      returning {
-        seminar_id
-      }
+mutation request_visit($seminar_id: Int!, $visitor_id: String!, $request_msg: String ) {
+  insert_visit(objects: [{ seminar_id: $seminar_id, visitor_id: $visitor_id, visit_status: "PENDING", request_msg: $request_msg }]) {
+    returning {
+      seminar_id
     }
   }
+}
 
 mutation edit_capacity($id: Int!, $visitor_capacity: Int!) {
   update_seminar(
