@@ -29,7 +29,7 @@
             </a-spin>
           </h4>
           <a-pagination
-            style="text-align: center"
+            style="text-align: center; margin-bottom: 20px"
             @change="onPageChange"
             showSizeChanger
             :show-total="
@@ -40,21 +40,19 @@
             :current="page"
             :pageSizeOptions="['10', '25', '50', '100']"
           />
-          <a-card
-            style="margin: 20px 20px 20px 0px; height: 800px; overflow: scroll"
+          <div
+            style="display: flex; flex-direction: column; align-items: center; height: 70vh; overflow: scroll;"
           >
-            <div v-if="$apollo.loading"><a-skeleton active /></div>
-            <div v-else>
-              <seminarCardRequest
+            <template v-if="$apollo.loading"><a-skeleton active/></template>
+            <template v-else>
+              <SeminarRequestCard
                 v-for="seminar in seminarLimited"
                 :key="seminar.id"
                 :seminar="seminar"
-                class="seminar-item"
-                :seminar_id="seminar.id"
-              >
-              </seminarCardRequest>
-            </div>
-          </a-card>
+                :visit="seminar.visits[0]"
+              />
+            </template>
+          </div>
         </a-col>
         <a-col :span="6">
           <a-card>
@@ -142,13 +140,14 @@
 <script>
 import moment from "moment";
 import utils from "@/utils";
+import constants from "@/utils/constants";
 import queries from "@/graphql/queries.gql";
-import seminarCardRequest from "./seminarCardRequest";
+import SeminarRequestCard from "./SeminarRequestCard";
 const DEFAULT_PAGE_SIZE = 10;
 const TEST_DATE = "08-12-2018";
 export default {
   name: "viewSeminars",
-  components: { seminarCardRequest },
+  components: { SeminarRequestCard },
   data() {
     return {
       TEST_DATE,
@@ -233,7 +232,8 @@ export default {
             end_date,
             start_time,
             end_time,
-            selected_tags: this.selected_tags
+            selected_tags: this.selected_tags,
+            visitor_id: constants.TEST_FACULTY_ID
           }
         : {
             course_title,
@@ -241,7 +241,8 @@ export default {
             start_date,
             end_date,
             start_time,
-            end_time
+            end_time,
+            visitor_id: constants.TEST_FACULTY_ID
           };
     }
   },
@@ -269,14 +270,6 @@ export default {
 </script>
 
 <style scoped>
-.list-of-seminars {
-  /* justify-content: center; */
-  /* position: absolute; */
-}
-.seminar-item {
-  margin: 0 10px;
-}
-
 .filter {
   position: fixed;
 }
