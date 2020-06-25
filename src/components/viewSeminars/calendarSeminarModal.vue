@@ -1,47 +1,47 @@
 <template>
   <div>
-    {{ text }}
+    {{ seminar.module_code }}
     <fieldset>
       <legend>EVENT DETAILS</legend>
-      <b>Title:</b>{{ event.title }} <br />
-      <b>Start: </b>{{ event.start }} <br />
-      <b>End: </b>{{ event.end }} <br />
-      <b>ID: </b>{{ event.id }} <br />
-    </fieldset>
-
-    <fieldset>
-      <b-form-group label="Select Observation Status Request">
-        <b-form-radio v-model="selected" name="some-radios" value="Accepted!"
-          >Accept Request</b-form-radio
-        >
-        <b-form-radio v-model="selected" name="some-radios" value="Declined!"
-          >Decline Request</b-form-radio
-        >
-      </b-form-group>
-
-      <div class="mt-3">
-        Selected: <strong>{{ selected }}</strong>
-      </div>
-
-      <button @click.prevent="getFormValues()">Get values</button>
+      <b>Title:</b>{{ seminar.title }} <br />
+      <b>Start: </b> {{ utils.time_format(seminar.start) }} <br />
+      <b>End: </b>{{ utils.time_format(seminar.end) }} <br />
     </fieldset>
   </div>
 </template>
 
 <script>
 //import {mapGetters} from "vuex";
+import utils from "@/utils";
+import queries from "@/graphql/queries.gql";
 export default {
   name: "calendarSeminarModal",
-  data: () => ({
-    selected: ""
-  }),
-  props: {
-    text: String,
-    event: Object
+  props: ["visit"],
+  data: function() {
+    return {
+      selected: "",
+      utils: utils,
+      seminar: {}
+    };
   },
-  methods: {
-    getFormValues() {
-      this.output = this.$refs.my_input.value;
+  apollo: {
+    seminar() {
+      const seminar_id = this.visit.seminar_id;
+      return {
+        query: queries.get_seminar,
+        variables: {
+          seminar_id
+        },
+        update: data => data.seminar[0]
+      };
+    }
+  },
+  computed: {
+    course_group() {
+      return this.seminar.course_group;
+    },
+    course() {
+      return this.course_group.course;
     }
   }
 };

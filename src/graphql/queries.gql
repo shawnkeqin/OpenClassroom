@@ -325,3 +325,15 @@ mutation close_all_course_seminars($course_group_id: Int!) {
   }
 }
 
+query get_my_visited_request_seminars($visitor_id: String!) {
+  seminar(where: {visits: {visitor_id: {_eq: $visitor_id}}}) {
+    date
+    end
+    start
+    course_group {
+      course {
+        title
+      }
+    }
+  }
+}

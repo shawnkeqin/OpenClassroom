@@ -14,12 +14,16 @@
         day: 'Day',
         list: 'List'
       }"
+      :events="seminars"
       :selectable="true"
-      :events="EVENTS"
-      @select="handleSelect"
-      @eventClick="handleClick"
+      @eventClick="showEvent"
     />
-    <modals-container />
+    <!--  <calendarSeminarModal
+      v-for="visit in myVisits"
+      :visit="visit"
+      :key="visit.id"
+    /> -->
+    <modal-containers />
   </div>
 </template>
 
@@ -32,44 +36,35 @@ import DayGridPlugin from "@fullcalendar/daygrid";
 import TimeGridPlugin from "@fullcalendar/timegrid";
 import InteractionPlugin from "@fullcalendar/interaction";
 import ListPlugin from "@fullcalendar/list";
-import { mapGetters } from "vuex";
 import calendarSeminarModal from "./calendarSeminarModal";
 import queries from "@/graphql/queries.gql";
 import constants from "@/utils/constants";
 export default {
   name: "calendarView",
-  data: () => ({
-    calendarPlugins: [
-      DayGridPlugin,
-      TimeGridPlugin,
-      InteractionPlugin,
-      ListPlugin
-    ],
-    mySeminars: []
-  }),
-  components: { Fullcalendar },
-  computed: {
-    ...mapGetters(["EVENTS"])
+  data() {
+    return {
+      calendarPlugins: [
+        DayGridPlugin,
+        TimeGridPlugin,
+        InteractionPlugin,
+        ListPlugin
+      ],
+      seminars: [],
+      // hello: [{ date: "2019-04-01" }, { date: "2019-04-02" }],
+
+      eventDisplay: "block"
+    };
   },
+  components: { Fullcalendar },
   apollo: {
-    mySeminars: {
-      query: queries.get_my_visits,
+    seminars: {
+      query: queries.get_my_visited_request_seminars,
       variables: {
         visitor_id: constants.TEST_FACULTY_ID
-      },
-      update: data => data.visit
+      }
     }
   },
   methods: {
-    handleSelect(arg) {
-      this.$store.commit("ADD_EVENT", {
-        id: new Date().getTime(),
-        title: "something",
-        start: arg.start,
-        end: arg.end,
-        allDay: arg.allDay
-      });
-    },
     handleClick(arg) {
       this.$modal.show(calendarSeminarModal, {
         text: "This is from the component",
