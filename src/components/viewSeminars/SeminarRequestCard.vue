@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 35rem">
+  <div style="width: 35rem; margin-bottom: 20px">
     <!--     <img
         class="avatar"
         :src="instructor.profilePic"
@@ -9,7 +9,7 @@
       {{ `${course_group.faculty.name}'s class` }}
     </p>
     <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag>
-    <a-card hoverable style="margin-bottom: 20px">
+    <a-card hoverable>
       <div style="display: flex; flex-direction: column;">
         <div style="margin-bottom: 5px">
           <h5 style="display: inline; font-weight: bold">
