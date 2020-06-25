@@ -73,9 +73,8 @@ export default {
 -->
 
 <template>
-  <div>
+  <div class="page-wrapper">
     <h1>My Visitors</h1>
-    <br />
     <SeminarsWithVisitsCard
       v-for="seminar in seminarsWithSomeVisits"
       :seminar="seminar"

@@ -175,7 +175,9 @@ query get_seminars_by_course_group($course_group_id: Int!) {
     start
     end
     is_archived
+    location_code
     location {
+      code
       full_name
     }
     title
@@ -191,6 +193,27 @@ query get_course_by_course_group($course_group_id: Int!) {
     module_code
     title
     desc
+  }
+}
+
+mutation updateSeminarIsOpen($seminar_id: Int!, $is_open: Boolean!) {
+  update_seminar(where: {id: {_eq: $seminar_id}}, _set: {is_open: $is_open}) {
+    returning {
+      is_open
+    }
+  }
+}
+
+query getLocations {
+  location {
+    code
+    full_name
+  }
+}
+
+mutation updateSeminar($seminar_id: Int!, $date: date!, $start: time!, $end: time!, $visitor_capacity: Int, $location_code: String!, $title: String, $desc: String) {
+  update_seminar(where: {id: {_eq: $seminar_id}}, _set: {date: $date, start: $start, end: $end, visitor_capacity: $visitor_capacity, location_code: $location_code, title: $title, desc: $desc}) {
+    affected_rows
   }
 }
 
@@ -331,6 +354,12 @@ mutation request_visit($seminar_id: Int!, $visitor_id: String!, $request_msg: St
   insert_visit(objects: [{ seminar_id: $seminar_id, visitor_id: $visitor_id, visit_status: "PENDING", request_msg: $request_msg }]) {
     returning {
       seminar_id
+      id
+      visit_status
+      request_msg
+      response_msg
+      time_requested
+      time_responded
     }
   }
 }

@@ -1,6 +1,148 @@
 <template>
-  <div style="padding: 10px">
-    <a-card hoverable style="width: auto" :bodyStyle="{ padding: '20px' }">
+  <div style="width: 35rem">
+    <a-card hoverable style="margin-bottom: 10px">
+      <div style="margin-bottom: 5px">
+        <h5 style="display: inline; font-weight: bold">
+          {{ utils.date_format(seminar.date) + " | " }}
+        </h5>
+        <h5 style="display: inline">
+          {{
+            utils.time_format(seminar.start) +
+              " - " +
+              utils.time_format(seminar.end) +
+              " | "
+          }}
+        </h5>
+        <h6 style="display: inline">{{ seminar.location.full_name }}</h6>
+      </div>
+      <div>
+        <a-col :span="17" style="padding-right: 20px">
+          <div style="margin-bottom: 5px">
+            <h3 style="display: inline">
+              {{ course.title }}
+            </h3>
+            <p style="display: inline">
+              {{ seminar.module_code }}
+            </p>
+            <h4>{{ seminar.title || "This is seminar title" }}</h4>
+            <h5>
+              {{
+                "Seminar capacity: " +
+                  acceptedCount +
+                  "/" +
+                  seminar.visitor_capacity
+              }}
+            </h5>
+          </div>
+        </a-col>
+        <a-col :span="7">
+          <div
+            style="display: flex; flex-direction: column; align-items: center;"
+          >
+            <div
+              style="display: flex; justify-content: center; margin-bottom: 20px"
+            >
+              <a-icon
+                type="clock-circle"
+                theme="filled"
+                class="status-icon pending"
+              />
+              <h4 class="pending" style="margin-bottom: 0">
+                {{ pendingCount + " request(s) pending" }}
+              </h4>
+            </div>
+            <a
+              v-if="isRequestRowsOn"
+              @click="handleHideRequests"
+              style="font-size: 12px"
+              >{{ `Hide ${requests.length} incoming request(s)` }}</a
+            >
+            <a v-else @click="handleShowRequests" style="font-size: 12px">{{
+              `Show ${requests.length} incoming request(s)`
+            }}</a>
+          </div>
+        </a-col>
+      </div>
+    </a-card>
+    <div v-show="isRequestRowsOn" style="margin-left: 3rem">
+      <a-card
+        v-for="request in requests"
+        :key="request.id"
+        style="margin-bottom: 5px"
+      >
+        <div style="display: flex; flex-direction: column;">
+          <div>
+            <a-col :span="16">
+              <div style="display: flex;">
+                <img class="avatar-medium" :src="request.profilePic" />
+                <div style="display: flex; flex-direction: column;">
+                  <div>
+                    <p style="display: inline;">{{ request.visitor.name }}</p>
+                    <h5 style="display: inline;">
+                      {{
+                        ` requested a visit ${utils.datetime_fromnow_format(
+                          request.time_requested
+                        )}`
+                      }}
+                    </h5>
+                  </div>
+                  <VisitResponseModal :seminar="seminar" :visit="request" />
+                </div>
+              </div>
+            </a-col>
+            <a-col>
+              <div style="display: flex; justify-content: center">
+                <template v-if="request.visit_status === 'PENDING'">
+                  <a-icon
+                    type="clock-circle"
+                    theme="filled"
+                    class="status-icon pending"
+                  />
+                  <h4 class="pending" style="margin-bottom: 0">
+                    Request pending
+                  </h4>
+                </template>
+                <template v-else-if="request.visit_status === 'ACCEPTED'">
+                  <div style="display: flex; align-items: center">
+                    <a-icon
+                      type="check-circle"
+                      theme="filled"
+                      class="status-icon accepted"
+                    />
+                  </div>
+                  <div>
+                    <h4 class="accepted" style="margin-bottom: 3px">
+                      Request accepted
+                    </h4>
+                    <h5 class="accepted">
+                      {{
+                        request.time_responded &&
+                          utils.datetime_fromnow_format(visit.time_responded)
+                      }}
+                    </h5>
+                  </div>
+                </template>
+                <template v-else-if="request.visit_status === 'DECLINED'">
+                  <a-icon
+                    type="closed-circle"
+                    theme="filled"
+                    class="status-icon declined"
+                  />
+                  <h4 class="declined" style="margin-bottom: 0">
+                    Request declined
+                  </h4>
+                </template>
+              </div>
+            </a-col>
+          </div>
+          <div v-if="request" style="margin-top: 20px">
+            <div>{{ "Request message: " + request.request_msg }}</div>
+            <div>{{ "Response message: " + request.response_msg }}</div>
+          </div>
+        </div>
+      </a-card>
+    </div>
+    <!-- <a-card hoverable style="width: auto" :bodyStyle="{ padding: '20px' }">
       <a-row>
         <a-col :span="4">
           <div class="seminar-date-and-time">
@@ -105,11 +247,11 @@
               :visit="request"
             ></VisitResponseModal>
 
-            <!-- <a
+            <a
               v-if="request.request_msg"
               @click="handleOpenMessageModal(request)"
               >View message</a
-            > -->
+            >
           </a-col>
           <a-col :span="4">
             <div>
@@ -137,7 +279,7 @@
           </a-form-model-item>
         </a-modal>
       </a-row>
-    </a-card>
+    </a-card> -->
   </div>
 </template>
 
@@ -159,7 +301,7 @@ export default {
     return {
       utils: utils,
       constants: constants,
-      isRequestRowsOn: true,
+      isRequestRowsOn: false,
       isMessageModalOn: false,
       requestInMessageModal: null,
       sender: "",
@@ -170,6 +312,12 @@ export default {
     };
   },
   computed: {
+    course_group() {
+      return this.seminar.course_group;
+    },
+    course() {
+      return this.seminar.course_group.course;
+    },
     requests() {
       return this.seminar.visits;
     },
@@ -299,14 +447,5 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.pending {
-  color: #ffb74d;
-}
-.accepted {
-  color: #81c784;
-}
-.declined {
-  color: #e57373;
 }
 </style>

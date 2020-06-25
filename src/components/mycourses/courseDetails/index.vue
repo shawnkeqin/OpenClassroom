@@ -1,16 +1,17 @@
 <template>
-  <div>
+  <div class="page-wrapper">
     <h2>
       {{ course.title }}
+    </h2>
+    <div style="display: flex; align-items: center; margin-bottom: 5px">
+      <h3 style="display: inline; margin: 0 10px 0 0">
+        {{ course.module_code }}
+      </h3>
       <a-button type="danger" size="large" @click="setAllUnavailable">
         Close Course
       </a-button>
-    </h2>
-    <h3>
-      {{ course.module_code }}
-    </h3>
-
-    <a-card style="width: 700px" bodyStyle="padding: 0">
+    </div>
+    <a-card style="width: 35rem" bodyStyle="padding: 0">
       <a-collapse default-active-key="1" :bordered="false">
         <a-collapse-panel key="2" header="Course description">
           <p>{{ course.desc }}</p>
@@ -27,7 +28,7 @@
       <h2>Upcoming classes</h2>
       <!-- <addNewSeminarModal /> -->
       <div class="list-of-seminars">
-        <a-button
+        <!-- <a-button
           :type="isActiveOn ? 'primary' : 'default'"
           @click="isActiveOn = true"
           >Active</a-button
@@ -36,16 +37,13 @@
           :type="!isActiveOn ? 'primary' : 'default'"
           @click="isActiveOn = false"
           >Archived</a-button
-        >
+        > -->
         <seminar-item
-          v-show="isActiveOn"
-          @go-to-archived="isActiveOn = false"
           v-for="seminar in active_seminars"
           :key="seminar.id"
           :seminar="seminar"
         />
         <seminar-item
-          v-show="!isActiveOn"
           v-for="seminar in archived_seminars"
           :key="seminar.id"
           :seminar="seminar"
@@ -73,8 +71,7 @@ export default {
   data: function() {
     return {
       seminars: [],
-      course: {},
-      isActiveOn: true
+      course: {}
     };
   },
   apollo: {
