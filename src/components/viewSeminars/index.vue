@@ -29,7 +29,7 @@
             </a-spin>
           </h4>
           <a-pagination
-            style="text-align: center"
+            style="text-align: center; margin-bottom: 20px"
             @change="onPageChange"
             showSizeChanger
             :show-total="
@@ -40,27 +40,25 @@
             :current="page"
             :pageSizeOptions="['10', '25', '50', '100']"
           />
-          <a-card
-            style="margin: 20px 20px 20px 0px; height: 800px; overflow: scroll"
+          <div
+            style="display: flex; flex-direction: column; align-items: center; height: 70vh; overflow: scroll;"
           >
-            <div v-if="$apollo.loading"><a-skeleton active /></div>
-            <div v-else>
-              <seminarCardRequest
+            <template v-if="$apollo.loading"><a-skeleton active/></template>
+            <template v-else>
+              <SeminarRequestCard
                 v-for="seminar in seminarLimited"
                 :key="seminar.id"
                 :seminar="seminar"
-                class="seminar-item"
-                :seminar_id="seminar.id"
-              >
-              </seminarCardRequest>
-            </div>
-          </a-card>
+                :visit="seminar.visits[0]"
+              />
+            </template>
+          </div>
         </a-col>
         <a-col :span="6">
           <a-card>
             <a-form>
               <h4 align="left">Filter by</h4>
-              <p align="left">Date range</p>
+              <h5 align="left">Date range</h5>
               <a-range-picker
                 style="width:auto"
                 show-time
@@ -77,15 +75,16 @@
                 }"
                 :format="utils.dateFormatStr"
                 v-model="selectedDateRange"
+                class="filter-field"
               />
-              <p align="left">Time range</p>
+              <h5 align="left">Time range</h5>
               <a-time-picker
                 :minute-step="30"
                 use12-hours
                 format="h:mm A"
                 v-model="startTime"
                 placeholder="Start"
-                style="width:auto;"
+                style="width:100%; margin-bottom: 5px"
                 valueFormat="HH:mm"
               >
               </a-time-picker>
@@ -95,34 +94,36 @@
                 format="h:mm A"
                 v-model="endTime"
                 placeholder="End"
-                style="width:auto;"
+                style="width:100%;"
                 valueFormat="HH:mm"
+                class="filter-field"
               >
               </a-time-picker>
-
-              <p align="left">Instructor</p>
-              <a-form-item>
-                <a-select
-                  v-model="faculty_name"
-                  show-search
-                  placeholder="Select or type instructor name"
-                  allowClear
+              <h5 align="left">Instructor</h5>
+              <!-- <a-form-item> -->
+              <a-select
+                v-model="faculty_name"
+                show-search
+                placeholder="Select or type instructor name"
+                allowClear
+                class="filter-field"
+              >
+                <a-select-option
+                  v-for="faculty in faculty_list"
+                  :value="faculty.name.toString()"
+                  :key="faculty.name.toString()"
                 >
-                  <a-select-option
-                    v-for="faculty in faculty_list"
-                    :value="faculty.name.toString()"
-                    :key="faculty.name.toString()"
-                  >
-                    {{ faculty.name.toString() }}
-                  </a-select-option>
-                </a-select>
-              </a-form-item>
-              <p align="left">Tags</p>
+                  {{ faculty.name.toString() }}
+                </a-select-option>
+              </a-select>
+              <!-- </a-form-item> -->
+              <h5 align="left">Tags</h5>
               <a-select
                 v-model="selected_tags"
                 mode="tags"
                 style="width: 100%"
-                placeholder="Select a tag"
+                placeholder="Select a tag ⯆"
+                class="filter-field"
               >
                 <a-select-option
                   v-for="tag in tags_list"
@@ -142,13 +143,14 @@
 <script>
 import moment from "moment";
 import utils from "@/utils";
+import constants from "@/utils/constants";
 import queries from "@/graphql/queries.gql";
-import seminarCardRequest from "./seminarCardRequest";
+import SeminarRequestCard from "./SeminarRequestCard";
 const DEFAULT_PAGE_SIZE = 10;
 const TEST_DATE = "08-12-2018";
 export default {
   name: "viewSeminars",
-  components: { seminarCardRequest },
+  components: { SeminarRequestCard },
   data() {
     return {
       TEST_DATE,
@@ -233,7 +235,8 @@ export default {
             end_date,
             start_time,
             end_time,
-            selected_tags: this.selected_tags
+            selected_tags: this.selected_tags,
+            visitor_id: constants.TEST_FACULTY_ID
           }
         : {
             course_title,
@@ -241,7 +244,8 @@ export default {
             start_date,
             end_date,
             start_time,
-            end_time
+            end_time,
+            visitor_id: constants.TEST_FACULTY_ID
           };
     }
   },
@@ -269,15 +273,10 @@ export default {
 </script>
 
 <style scoped>
-.list-of-seminars {
-  /* justify-content: center; */
-  /* position: absolute; */
-}
-.seminar-item {
-  margin: 0 10px;
-}
-
 .filter {
   position: fixed;
+}
+.filter-field {
+  margin-bottom: 20px;
 }
 </style>

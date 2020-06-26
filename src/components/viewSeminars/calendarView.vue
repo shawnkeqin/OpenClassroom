@@ -14,11 +14,15 @@
         day: 'Day',
         list: 'List'
       }"
+      :events="newData"
       :selectable="true"
-      :events="EVENTS"
-      @select="handleSelect"
       @eventClick="handleClick"
     />
+    <!--  <calendarSeminarModal
+      v-for="visit in myVisits"
+      :visit="visit"
+      :key="visit.id"
+    /> -->
     <modals-container />
   </div>
 </template>
@@ -32,35 +36,52 @@ import DayGridPlugin from "@fullcalendar/daygrid";
 import TimeGridPlugin from "@fullcalendar/timegrid";
 import InteractionPlugin from "@fullcalendar/interaction";
 import ListPlugin from "@fullcalendar/list";
-import { mapGetters } from "vuex";
 import calendarSeminarModal from "./calendarSeminarModal";
+import queries from "@/graphql/queries.gql";
+import constants from "@/utils/constants";
+
 export default {
   name: "calendarView",
-  data: () => ({
-    calendarPlugins: [
-      DayGridPlugin,
-      TimeGridPlugin,
-      InteractionPlugin,
-      ListPlugin
-    ]
-  }),
+
+  data() {
+    return {
+      calendarPlugins: [
+        DayGridPlugin,
+        TimeGridPlugin,
+        InteractionPlugin,
+        ListPlugin
+      ],
+      seminar: [],
+      eventDisplay: "block"
+    };
+  },
   components: { Fullcalendar },
+  apollo: {
+    seminar: {
+      query: queries.get_my_visited_request_seminars,
+      variables: {
+        visitor_id: constants.TEST_FACULTY_ID
+      }
+    }
+  },
   computed: {
-    ...mapGetters(["EVENTS"])
+    newData() {
+      console.log(this.seminar);
+
+      return this.seminar.map(a => {
+        return {
+          date: a.date,
+          start: a.date.toString() + "T" + a.start.toString(),
+          end: a.date.toString() + "T" + a.end.toString(),
+          title: a.course_group.course.title,
+          id: a.id
+        };
+      });
+    }
   },
   methods: {
-    handleSelect(arg) {
-      this.$store.commit("ADD_EVENT", {
-        id: new Date().getTime(),
-        title: "something",
-        start: arg.start,
-        end: arg.end,
-        allDay: arg.allDay
-      });
-    },
     handleClick(arg) {
       this.$modal.show(calendarSeminarModal, {
-        text: "This is from the component",
         event: arg.event
       });
     }

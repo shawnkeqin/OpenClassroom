@@ -1,17 +1,26 @@
 <template>
-  <div>
-    <h2>{{ course.title }}</h2>
-    <h3>{{ course.module_code }}</h3>
-    <a-card style="width: 700px" bodyStyle="padding: 0">
+  <div class="page-wrapper">
+    <h2>
+      {{ course.title }}
+    </h2>
+    <div style="display: flex; align-items: center; margin-bottom: 5px">
+      <h3 style="display: inline; margin: 0 10px 0 0">
+        {{ course.module_code }}
+      </h3>
+      <a-button type="danger" size="large" @click="setAllUnavailable">
+        Close Course
+      </a-button>
+    </div>
+    <a-card style="width: 35rem" bodyStyle="padding: 0">
       <a-collapse default-active-key="1" :bordered="false">
         <a-collapse-panel key="2" header="Course description">
           <p>{{ course.desc }}</p>
-          <updateCourseDetailsModal />
+          <updateCourseDetailsModal :course="course" />
         </a-collapse-panel>
       </a-collapse>
       <a-collapse default-active-key="1" :bordered="false">
         <a-collapse-panel key="2" header="Notes for observers">
-          <p>{{ text }}</p>
+          <p>{{ course.course_group }}</p>
         </a-collapse-panel>
       </a-collapse>
     </a-card>
@@ -19,7 +28,7 @@
       <h2>Upcoming classes</h2>
       <!-- <addNewSeminarModal /> -->
       <div class="list-of-seminars">
-        <a-button
+        <!-- <a-button
           :type="isActiveOn ? 'primary' : 'default'"
           @click="isActiveOn = true"
           >Active</a-button
@@ -28,20 +37,18 @@
           :type="!isActiveOn ? 'primary' : 'default'"
           @click="isActiveOn = false"
           >Archived</a-button
-        >
-        <seminar-item
-          v-show="isActiveOn"
-          @go-to-archived="isActiveOn = false"
+        > -->
+        <!-- <seminar-item
           v-for="seminar in active_seminars"
           :key="seminar.id"
           :seminar="seminar"
         />
         <seminar-item
-          v-show="!isActiveOn"
           v-for="seminar in archived_seminars"
           :key="seminar.id"
           :seminar="seminar"
-        />
+        /> -->
+        <seminarItem v-for="seminar in seminars" :key="seminar.id" :seminar="seminar" />
       </div>
     </div>
   </div>
@@ -65,8 +72,7 @@ export default {
   data: function() {
     return {
       seminars: [],
-      course: {},
-      isActiveOn: true
+      course: {}
     };
   },
   apollo: {
@@ -91,12 +97,41 @@ export default {
       };
     }
   },
-  computed: {
-    archived_seminars() {
-      return this.seminars.filter(seminar => seminar.is_archived);
-    },
-    active_seminars() {
-      return this.seminars.filter(seminar => !seminar.is_archived);
+  // computed: {
+  //   archived_seminars() {
+  //     return this.seminars.filter(seminar => seminar.is_archived);
+  //   },
+  //   active_seminars() {
+  //     return this.seminars.filter(seminar => !seminar.is_archived);
+  //   }
+  // },
+  methods: {
+    async setAllUnavailable() {
+      const course_group_id = this.id;
+      await this.$apollo.mutate({
+        mutation: queries.close_all_course_seminars,
+        variables: {
+          course_group_id
+        },
+        // update: (store, { data: { update_seminartest } }) => {
+        //   if (update_seminartest.affected_rows) {
+        //     const data = store.readQuery({
+        //       query: GET_MY_SEMINARS
+        //     });
+        //     const seminartest = data.seminartest;
+        //     const i = seminartest.findIndex(
+        //       seminar => seminar.id === this.seminartest.id
+        //     );
+        //     seminartest[i].archived = true;
+        //     store.writeQuery({
+        //       query: GET_MY_SEMINARS,
+        //       data
+        //     });
+        //   }
+        // },
+        refetchQueries: ["get_seminars_by_course_group"]
+      });
+      this.modal2Visible = false;
     }
   }
 };
