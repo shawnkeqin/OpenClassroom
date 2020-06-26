@@ -390,5 +390,6 @@ query get_my_visited_request_seminars($visitor_id: String!) {
         title
       }
     }
+    id
   }
 }

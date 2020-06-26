@@ -1,11 +1,23 @@
 <template>
   <div>
-    {{ seminar.module_code }}
     <fieldset>
-      <legend>EVENT DETAILS</legend>
-      <b>Title:</b>{{ seminar.title }} <br />
-      <b>Start: </b> {{ utils.time_format(seminar.start) }} <br />
-      <b>End: </b>{{ utils.time_format(seminar.end) }} <br />
+      <legend align="center">{{ event.title }}</legend>
+      <p align="center">
+        <u>Seminar Details</u>
+      </p>
+      <p align="center">
+        <b>Start: </b>
+        {{ event.start }}
+      </p>
+      <p align="center">
+        <b>End: </b>
+        {{ event.end }}
+      </p>
+      <p align="center">
+        <b>ID: </b>
+        {{ event.id }}
+      </p>
+      <br />
     </fieldset>
   </div>
 </template>
@@ -13,28 +25,19 @@
 <script>
 //import {mapGetters} from "vuex";
 import utils from "@/utils";
-import queries from "@/graphql/queries.gql";
+//import queries from "@/graphql/queries.gql";
+//import constants from "@/utils/constants";
 export default {
   name: "calendarSeminarModal",
-  props: ["visit"],
+  props: {
+    event: []
+  },
   data: function() {
     return {
       selected: "",
-      utils: utils,
-      seminar: {}
+      utils: utils
+      //  seminar: {}
     };
-  },
-  apollo: {
-    seminar() {
-      const seminar_id = this.visit.seminar_id;
-      return {
-        query: queries.get_seminar,
-        variables: {
-          seminar_id
-        },
-        update: data => data.seminar[0]
-      };
-    }
   },
   computed: {
     course_group() {
