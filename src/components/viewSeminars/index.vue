@@ -64,9 +64,9 @@
                 show-time
                 :ranges="{
                   Today: [moment(TEST_DATE), moment(TEST_DATE)],
-                  'Next 7 days': [
-                    moment(TEST_DATE),
-                    moment(TEST_DATE).add(1, 'weeks')
+                  'This week': [
+                    moment(TEST_DATE).startOf('week'),
+                    moment(TEST_DATE).endOf('week')
                   ],
                   'This month': [
                     moment(TEST_DATE).startOf('month'),
@@ -147,7 +147,7 @@ import constants from "@/utils/constants";
 import queries from "@/graphql/queries.gql";
 import SeminarRequestCard from "./SeminarRequestCard";
 const DEFAULT_PAGE_SIZE = 10;
-const TEST_DATE = "08-12-2018";
+const TEST_DATE = "2018-08-12";
 export default {
   name: "viewSeminars",
   components: { SeminarRequestCard },
@@ -161,7 +161,7 @@ export default {
       course_title: "",
       faculty_name: undefined,
       selected_tags: [],
-      selectedDateRange: [moment(TEST_DATE), moment(TEST_DATE).add(1, "weeks")],
+      selectedDateRange: [],
       page: 1,
       pageSize: DEFAULT_PAGE_SIZE,
       startTime: null,
