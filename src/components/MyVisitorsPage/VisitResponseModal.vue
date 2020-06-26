@@ -7,10 +7,7 @@
     >
       Respond
     </a-button>
-    <a-button v-else block style="width: 100%" @click="onClickRespond"
-      >Edit response</a-button
-    >
-
+    <a-button v-else @click="onClickRespond">Edit response</a-button>
     <a-modal v-model="visible" :title="`${this.visit.visitor.name}'s request`">
       <p>{{ visit.request_msg }}</p>
       <a-form :form="form">

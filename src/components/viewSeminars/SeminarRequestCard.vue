@@ -9,7 +9,7 @@
       {{ `${course_group.faculty.name}'s class` }}
     </p>
     <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag>
-    <a-card hoverable>
+    <a-card hoverable :class="{ closed: !seminar.is_open }">
       <div style="display: flex; flex-direction: column;">
         <div style="margin-bottom: 5px">
           <h5 style="display: inline; font-weight: bold">
@@ -61,7 +61,7 @@
               {{ "Notes for visitors: " + (course_group.notes || "Some notes") }}
             </h5>
           </a-col>
-          <a-col :span="7">
+          <a-col v-if="seminar.is_open" :span="7">
             <template v-if="!visit_local">
               <a-button
                 @click="requestModalVisible = true"
@@ -146,14 +146,24 @@
                   </div>
                 </template>
                 <template v-else-if="visit_local.visit_status === 'DECLINED'">
-                  <a-icon
-                    type="closed-circle"
-                    theme="filled"
-                    class="status-icon declined"
-                  />
-                  <h4 class="declined" style="margin-bottom: 0">
-                    Request declined
-                  </h4>
+                  <div style="display: flex; align-items: center">
+                    <a-icon
+                      type="close-circle"
+                      theme="filled"
+                      class="status-icon declined"
+                    />
+                  </div>
+                  <div>
+                    <h4 class="declined" style="margin-bottom: 3px">
+                      Request accepted
+                    </h4>
+                    <h5 class="declined">
+                      {{
+                        visit.time_responded &&
+                          utils.datetime_fromnow_format(visit.time_responded)
+                      }}
+                    </h5>
+                  </div>
                 </template>
               </div>
             </template>
@@ -209,6 +219,7 @@ export default {
   },
   methods: {
     async handleSubmitRequest() {
+      if (!this.seminar.is_open) return;
       const seminar_id = this.seminar.id;
       const request_msg = this.request_msg;
       const result = await this.$apollo.mutate({
@@ -246,6 +257,9 @@ a {
 }
 .ant-card-hoverable {
   cursor: default;
+}
+.closed {
+  background-color: rgba(0, 0, 0, 0.12);
 }
 .avatar {
   height: 25px;

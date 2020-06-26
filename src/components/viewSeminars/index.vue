@@ -58,7 +58,7 @@
           <a-card>
             <a-form>
               <h4 align="left">Filter by</h4>
-              <p align="left">Date range</p>
+              <h5 align="left">Date range</h5>
               <a-range-picker
                 style="width:auto"
                 show-time
@@ -75,15 +75,16 @@
                 }"
                 :format="utils.dateFormatStr"
                 v-model="selectedDateRange"
+                class="filter-field"
               />
-              <p align="left">Time range</p>
+              <h5 align="left">Time range</h5>
               <a-time-picker
                 :minute-step="30"
                 use12-hours
                 format="h:mm A"
                 v-model="startTime"
                 placeholder="Start"
-                style="width:auto;"
+                style="width:100%; margin-bottom: 5px"
                 valueFormat="HH:mm"
               >
               </a-time-picker>
@@ -93,34 +94,36 @@
                 format="h:mm A"
                 v-model="endTime"
                 placeholder="End"
-                style="width:auto;"
+                style="width:100%;"
                 valueFormat="HH:mm"
+                class="filter-field"
               >
               </a-time-picker>
-
-              <p align="left">Instructor</p>
-              <a-form-item>
-                <a-select
-                  v-model="faculty_name"
-                  show-search
-                  placeholder="Select or type instructor name"
-                  allowClear
+              <h5 align="left">Instructor</h5>
+              <!-- <a-form-item> -->
+              <a-select
+                v-model="faculty_name"
+                show-search
+                placeholder="Select or type instructor name"
+                allowClear
+                class="filter-field"
+              >
+                <a-select-option
+                  v-for="faculty in faculty_list"
+                  :value="faculty.name.toString()"
+                  :key="faculty.name.toString()"
                 >
-                  <a-select-option
-                    v-for="faculty in faculty_list"
-                    :value="faculty.name.toString()"
-                    :key="faculty.name.toString()"
-                  >
-                    {{ faculty.name.toString() }}
-                  </a-select-option>
-                </a-select>
-              </a-form-item>
-              <p align="left">Tags</p>
+                  {{ faculty.name.toString() }}
+                </a-select-option>
+              </a-select>
+              <!-- </a-form-item> -->
+              <h5 align="left">Tags</h5>
               <a-select
                 v-model="selected_tags"
                 mode="tags"
                 style="width: 100%"
                 placeholder="Select a tag ⯆"
+                class="filter-field"
               >
                 <a-select-option
                   v-for="tag in tags_list"
@@ -272,5 +275,8 @@ export default {
 <style scoped>
 .filter {
   position: fixed;
+}
+.filter-field {
+  margin-bottom: 20px;
 }
 </style>
