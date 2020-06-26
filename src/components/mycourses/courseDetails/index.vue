@@ -15,12 +15,12 @@
       <a-collapse default-active-key="1" :bordered="false">
         <a-collapse-panel key="2" header="Course description">
           <p>{{ course.desc }}</p>
-          <updateCourseDetailsModal />
+          <updateCourseDetailsModal :course="course" />
         </a-collapse-panel>
       </a-collapse>
       <a-collapse default-active-key="1" :bordered="false">
         <a-collapse-panel key="2" header="Notes for observers">
-          <p>{{ text }}</p>
+          <p>{{ course.course_group }}</p>
         </a-collapse-panel>
       </a-collapse>
     </a-card>
@@ -38,7 +38,7 @@
           @click="isActiveOn = false"
           >Archived</a-button
         > -->
-        <seminar-item
+        <!-- <seminar-item
           v-for="seminar in active_seminars"
           :key="seminar.id"
           :seminar="seminar"
@@ -47,7 +47,8 @@
           v-for="seminar in archived_seminars"
           :key="seminar.id"
           :seminar="seminar"
-        />
+        /> -->
+        <seminarItem v-for="seminar in seminars" :key="seminar.id" :seminar="seminar" />
       </div>
     </div>
   </div>
@@ -96,14 +97,14 @@ export default {
       };
     }
   },
-  computed: {
-    archived_seminars() {
-      return this.seminars.filter(seminar => seminar.is_archived);
-    },
-    active_seminars() {
-      return this.seminars.filter(seminar => !seminar.is_archived);
-    }
-  },
+  // computed: {
+  //   archived_seminars() {
+  //     return this.seminars.filter(seminar => seminar.is_archived);
+  //   },
+  //   active_seminars() {
+  //     return this.seminars.filter(seminar => !seminar.is_archived);
+  //   }
+  // },
   methods: {
     async setAllUnavailable() {
       const course_group_id = this.id;

@@ -64,7 +64,7 @@
         </a-col>
       </div>
     </a-card>
-    <div v-show="isRequestRowsOn" style="margin-left: 3rem">
+    <div v-show="isRequestRowsOn" style="margin: 0 0 25px 3rem">
       <a-card
         v-for="request in requests"
         :key="request.id"
@@ -117,20 +117,30 @@
                     <h5 class="accepted">
                       {{
                         request.time_responded &&
-                          utils.datetime_fromnow_format(visit.time_responded)
+                          utils.datetime_fromnow_format(request.time_responded)
                       }}
                     </h5>
                   </div>
                 </template>
                 <template v-else-if="request.visit_status === 'DECLINED'">
-                  <a-icon
-                    type="closed-circle"
-                    theme="filled"
-                    class="status-icon declined"
-                  />
-                  <h4 class="declined" style="margin-bottom: 0">
-                    Request declined
-                  </h4>
+                  <div style="display: flex; align-items: center">
+                    <a-icon
+                      type="close-circle"
+                      theme="filled"
+                      class="status-icon declined"
+                    />
+                  </div>
+                  <div>
+                    <h4 class="declined" style="margin-bottom: 3px">
+                      Request declined
+                    </h4>
+                    <h5 class="declined">
+                      {{
+                        request.time_responded &&
+                          utils.datetime_fromnow_format(request.time_responded)
+                      }}
+                    </h5>
+                  </div>
                 </template>
               </div>
             </a-col>

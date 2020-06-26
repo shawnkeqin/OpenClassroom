@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-button type="dashed" @click="modal2Visible = true">
+    <a-button type="danger" @click="modal2Visible = true">
       Update Seminar
     </a-button>
     <a-modal
