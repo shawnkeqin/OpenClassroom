@@ -57,7 +57,7 @@
             </a-menu-item>
             <a-menu-item key="4" class="nav-item">
               <a-icon type="file-search" />
-              <span class="nav-text">Calendar View</span>
+              <span class="nav-text">My Calendar</span>
               <router-link to="/calendar-view" />
             </a-menu-item>
             <a-menu-item key="5" class="nav-item">
@@ -69,6 +69,13 @@
               <a-icon type="solution" />
               <span class="nav-text">My Visits</span>
               <router-link to="/my-visits" />
+            </a-menu-item>
+            <a-menu-item key="7" class="nav-item">
+              <a-icon type="book" />
+              <span class="nav-text">Feedback</span>
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLScOfSV1ZIChd6IQJ9WLegujtfhlE-E5hG-tyDMBzEL-JUdEUQ/viewform?usp=sf_link"
+              ></a>
             </a-menu-item>
           </a-menu>
         </a-layout-sider>
