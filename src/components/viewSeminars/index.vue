@@ -118,20 +118,25 @@
               </a-select>
               <!-- </a-form-item> -->
               <h5 align="left">Tags</h5>
-              <a-select
-                v-model="selected_tags"
-                mode="tags"
-                style="width: 100%"
-                placeholder="Select a tag ⯆"
-                class="filter-field"
-              >
-                <a-select-option
-                  v-for="tag in tags_list"
-                  :key="tag.label.toString()"
+              <div style="width:100%; display:flex">
+                <a-select
+                  v-model="selected_tags"
+                  mode="tags"
+                  placeholder="Select a tag"
+                  class="filter-field"
                 >
-                  {{ tag.label.toString() }}
-                </a-select-option>
-              </a-select>
+                  <a-select-option
+                    v-for="tag in tags_list"
+                    :key="tag.label.toString()"
+                  >
+                    {{ tag.label.toString() }}
+                  </a-select-option>
+                </a-select>
+                <a-icon
+                  type="down"
+                  style="position:absolute; right:35px; margin-top: 10px; color:rgba(0, 0, 0, 0.25)"
+                />
+              </div>
             </a-form>
           </a-card>
         </a-col>
