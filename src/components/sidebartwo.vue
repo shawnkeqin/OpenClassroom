@@ -31,7 +31,7 @@
         </a-menu-item>
       </a-menu>
     </a-layout-header> -->
-    <a-layout-content style="padding: 0">
+    <a-layout-content>
       <a-layout style="padding: 0; background: #f6f6f6">
         <a-layout-sider width="250px" style="background: #fff">
           <a-menu
@@ -40,12 +40,12 @@
             :default-open-keys="['sub1']"
             style="height: 100%"
           >
-            <a-menu-item key="1" class="nav-item">
+            <a-menu-item :key="1" class="nav-item">
               <a-icon type="user" />
               <span class="nav-text">Profile</span>
               <router-link to="/profile" />
             </a-menu-item>
-            <a-menu-item key="2" class="nav-item">
+            <a-menu-item :ey="2" class="nav-item">
               <a-icon type="container" />
               <span class="nav-text">My Courses</span>
               <router-link to="/my-courses" />
@@ -61,8 +61,10 @@
               <router-link to="/calendar-view" />
             </a-menu-item>
             <a-menu-item key="5" class="nav-item">
-              <a-icon type="download" />
-              <span class="nav-text">My Visitors</span>
+              <a-badge :count="pendingVisitsCount" :offset="[10, 5]">
+                <a-icon type="download" />
+                <span class="nav-text">My Visitors</span>
+              </a-badge>
               <router-link to="/my-visitors" />
             </a-menu-item>
             <a-menu-item key="6" class="nav-item">
@@ -97,7 +99,8 @@ export default {
     return {
       constants: constants,
       queries: queries,
-      loggedInUser: {}
+      loggedInUser: {},
+      seminarWithVisits: []
     };
   },
   apollo: {
@@ -107,6 +110,32 @@ export default {
         faculty_id: constants.TEST_FACULTY_ID
       },
       update: data => data.faculty_by_pk
+    },
+    seminarsWithVisits: {
+      query: queries.get_seminars_with_visits_by_time_requested,
+      variables: {
+        faculty_id: constants.TEST_FACULTY_ID,
+        semester_code: constants.SEMESTER_CODE_AY1819_1
+      },
+      update: data => data.seminar
+    }
+  },
+  computed: {
+    pendingVisitsCount() {
+      const count = this.seminarsWithVisits &&
+        this.seminarsWithVisits
+          .map(seminar => seminar.visits)
+          .flat()
+          .filter(visit => visit.visit_status === "PENDING").length;
+      if (count) {
+        this.$notification.open({
+          message: `${count} pending visit request${count > 1 && "s"}`,
+          description:
+            "Head over to My Visitors page to review your incoming visit requests.",
+          duration: 0
+        });
+      }
+      return count;
     }
   }
 };
@@ -119,9 +148,10 @@ export default {
   margin: 16px 28px 16px 0;
   float: left;
 }
-.ant-menu-item.nav-item {
+li.nav-item.ant-menu-item {
   display: flex;
   align-items: center;
+  margin: 0;
 }
 .ant-menu-item-selected.nav-item {
   color: #004b8d;
@@ -129,5 +159,22 @@ export default {
 .nav-text {
   font-family: "Open Sans", sans-serif;
   font-size: 20px;
+}
+.ant-scroll-number-only-unit {
+  color: white;
+}
+.ant-scroll-number.ant-badge-count {
+  background-color: #ffb74d;
+}
+.ant-badge-count {
+  box-shadow: transparent;
+}
+.ant-notification-notice.ant-notification-notice-closable {
+  color: white;
+  background-color: #ffb74d;
+}
+div.ant-notification-notice-message {
+  font-weight: bold;
+  color: white;
 }
 </style>
