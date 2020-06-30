@@ -7,15 +7,32 @@
       <h3 style="display: inline; margin: 0 10px 0 0">
         {{ course.module_code }}
       </h3>
-      <a-button type="danger" size="large" @click="setAllUnavailable">
+      <!--  <a-button type="danger" size="large" @click="setAllUnavailable">
         Close Course
-      </a-button>
+      </a-button> -->
+      <a-tooltip
+        placement="topLeft"
+        title="Caution: All individual classes will be closed!"
+        arrow-point-at-center
+      >
+        <closeCourseAndSeminarsToggle
+          v-bind:course_group_id="course_group.id"
+        />
+      </a-tooltip>
     </div>
     <a-card style="width: 35rem" bodyStyle="padding: 0">
       <a-collapse default-active-key="1" :bordered="false">
         <a-collapse-panel key="2" header="Course description">
           <p>{{ course.desc }}</p>
           <updateCourseDetailsModal :course="course" />
+          <b>Additional Description: </b>
+          <br />
+          <p>{{ course_group.course_group_desc }}</p>
+        </a-collapse-panel>
+      </a-collapse>
+      <a-collapse default-active-key="1" :bordered="false">
+        <a-collapse-panel key="2" header="Course Syllabus">
+          <p>{{ course_group.syllabus }}</p>
         </a-collapse-panel>
       </a-collapse>
       <a-collapse default-active-key="1" :bordered="false">
@@ -48,7 +65,11 @@
           :key="seminar.id"
           :seminar="seminar"
         /> -->
-        <seminarItem v-for="seminar in seminars" :key="seminar.id" :seminar="seminar" />
+        <seminarItem
+          v-for="seminar in seminars"
+          :key="seminar.id"
+          :seminar="seminar"
+        />
       </div>
     </div>
   </div>
@@ -60,19 +81,22 @@ import seminarItem from "./seminarItem";
 // import addNewSeminarModal from "./addNewSeminarModal";
 import updateCourseDetailsModal from "./updateCourseDetailsModal";
 // import courseModule from "./courseModule";
+import closeCourseAndSeminarsToggle from "./closeCourseAndSeminarsToggle";
 export default {
   name: "courseDetails",
   props: ["id"],
   components: {
     seminarItem,
     // addNewSeminarModal,
-    updateCourseDetailsModal
+    updateCourseDetailsModal,
+    closeCourseAndSeminarsToggle
     // courseModule
   },
   data: function() {
     return {
       seminars: [],
-      course: {}
+      course: {},
+      course_group: []
     };
   },
   apollo: {
@@ -94,6 +118,16 @@ export default {
           course_group_id
         },
         update: data => data.course[0]
+      };
+    },
+    course_group() {
+      const course_group_id = this.id;
+      return {
+        query: queries.get_syllabus_by_course_group,
+        variables: {
+          course_group_id
+        },
+        update: data => data.course_group[0]
       };
     }
   },

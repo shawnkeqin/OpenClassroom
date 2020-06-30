@@ -2,7 +2,7 @@
   <div id="components-modal-demo-position">
     <!-- <br /><br /> -->
     <a-button type="danger" @click="() => (modal2Visible = true)">
-      Update Course Details
+      Add Extra Description
     </a-button>
     <a-modal
       v-model="modal2Visible"
@@ -13,9 +13,16 @@
       <div class="submit-form">
         <form @submit.prevent="submit">
           <fieldset>
-            <input type="number" placeholder="Course ID" v-model="id" />
-            <textarea name="Description" placeholder="New Course Description" rows="4" cols="50" v-model="desc"> </textarea>
-           <!-- <input type="text" placeholder="Description" v-model="desc" /> -->
+            <!--      <input type="number" placeholder="Enter Course ID" v-model="id" /> -->
+            <textarea
+              name="Description"
+              placeholder="New Course Description"
+              rows="4"
+              cols="50"
+              v-model="course_group_desc"
+            >
+            </textarea>
+            <!-- <input type="text" placeholder="Description" v-model="desc" /> -->
           </fieldset>
           <input class="button-primary" type="submit" value="Send" />
         </form>
@@ -24,63 +31,47 @@
   </div>
 </template>
 <script>
-import gql from "graphql-tag";
 //import { InMemoryCache } from "apollo-cache-inmemory";
-const UPDATE_MODULE = gql`
-  mutation update_course($id: Int!, $desc: String!) {
-    update_course(where: { id: { _eq: $id } }, _set: { desc: $desc}) {
-      affected_rows
-    }
-  }
-`;
-const GET_MODULE = gql`
-query getModules {
-   course(where: {id: {_eq: 1}}) {
-    desc
-    id
-    title
-    module_code
-  }
-}
-`
+import queries from "@/graphql/queries.gql";
 export default {
   name: "updateCourseDetailsModal",
+  props: ["id"],
   data() {
     return {
-      id: "",
-      desc: "",
+      // id: "",
+      course_group_desc: "",
       modal2Visible: false
     };
   },
   apollo: {},
   methods: {
     submit() {
-      const { id, desc } = this.$data;
+      const { course_group_desc } = this.$data;
+      const id = this.id;
       this.$apollo.mutate({
-        mutation: UPDATE_MODULE,
+        mutation: queries.update_course_group_desc,
         variables: {
           id,
-          desc
+          course_group_desc
         },
-        update: (store, { data: { update_course } }) => {
-          if (update_course.affected_rows) {
+        update: (store, { data: { update_course_group } }) => {
+          if (update_course_group.affected_rows) {
             if (this.type === "private") {
               const data = store.readQuery({
-                query: GET_MODULE
+                query: queries.get_course_group_new_desc
               });
-              const updateCourse = data.id.find(t => t.id === data.id);
-              updateCourse.desc = data.desc;
+              const updateCourse = data.id.find(t => t.id === id);
+              updateCourse.course_group_desc = data.course_group_desc;
               store.writeQuery({
-                query: GET_MODULE,
+                query: queries.get_course_group_new_desc,
                 data
               });
             }
           }
         },
-        refetchQueries: ["getModules"]
+        refetchQueries: ["get_course_group_new_desc"]
       });
-      this.id = "";
-      this.desc = "";
+      this.course_group_desc = "";
     }
   }
 };

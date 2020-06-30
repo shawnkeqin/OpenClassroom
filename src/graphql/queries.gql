@@ -196,6 +196,29 @@ query get_course_by_course_group($course_group_id: Int!) {
   }
 }
 
+query get_syllabus_by_course_group($course_group_id: Int!) {
+  course_group(where: {id: {_eq: $course_group_id }}) {
+    id
+    syllabus
+    course_group_desc
+  }
+}
+
+mutation update_course_group_desc($id: Int!, $course_group_desc: String!) {
+  update_course_group(where: {id: {_eq: $id}}, _set: { course_group_desc: $course_group_desc}) {
+    affected_rows
+  }
+}
+
+query get_course_group_new_desc($course_group_id: Int!) {
+  course_group(where: {id: {_eq: $course_group_id}}) {
+    id
+    course_group_desc
+  }
+}
+
+
+
 mutation updateSeminarIsOpen($seminar_id: Int!, $is_open: Boolean!) {
   update_seminar(where: {id: {_eq: $seminar_id}}, _set: {is_open: $is_open}) {
     returning {
@@ -379,6 +402,11 @@ mutation close_all_course_seminars($course_group_id: Int!) {
     affected_rows
   }
 }
+
+
+
+
+
 
 query get_my_visited_request_seminars($visitor_id: String!) {
   seminar(where: {visits: {visitor_id: {_eq: $visitor_id}}}) {
