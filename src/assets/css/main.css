@@ -61,6 +61,9 @@ p {
   font-family: "Lato", sans-serif;
   color: rgba(0, 0, 0, 0.87);
 }
+div {
+  font-family: "Lato", sans-serif;
+}
 .truncate {
   white-space: nowrap;
   overflow: hidden;
@@ -69,7 +72,7 @@ p {
 .page-wrapper {
   display: flex;
   flex-direction: column;
-  padding-left: 5rem;
+  padding-left: 2rem;
 }
 .content-block-wrapper {
   padding: 20px
