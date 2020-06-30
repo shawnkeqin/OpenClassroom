@@ -11,8 +11,24 @@
           :key="visit.id"
         />
       </div>
-      <div >
-        <a href="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg" target="_blank" style="position: sticky; top: 20px; margin: 50px" >View campus map</a>
+      <div>
+        <div style="position: sticky; top: 20px; margin: 50px">
+          <p>
+            <a
+              href="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg"
+              target="_blank"
+              >View campus map</a
+            >
+          </p>
+          <p>
+            CTL best practices for Peer Observation: download
+            <a
+              href="https://teaching.yale-nus.edu.sg/wp-content/uploads/sites/25/2019/04/Peer-Observation-Booklet-web-version-edited-linked.pdf#page=20"
+              target="_blank"
+              >here</a
+            >
+          </p>
+        </div>
       </div>
     </div>
   </div>
