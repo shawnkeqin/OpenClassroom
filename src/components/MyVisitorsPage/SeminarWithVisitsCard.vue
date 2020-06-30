@@ -74,7 +74,13 @@
           <div>
             <a-col :span="16">
               <div style="display: flex;">
-                <img class="avatar-medium" :src="request.profilePic" />
+                <img
+                  class="avatar-medium"
+                  :src="
+                    request.profilePic ||
+                      'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
+                  "
+                />
                 <div style="display: flex; flex-direction: column;">
                   <div>
                     <p style="display: inline;">{{ request.visitor.name }}</p>
