@@ -1,11 +1,25 @@
 <template>
   <div>
     <h1>Search Courses</h1>
+    <div style="padding: 5px 0px 10px 0px">
+      <suggestedSearchButton
+        :id="SUGGESTED_SEARCH_IDS.SUGGESTED_SEARCH_1"
+        label="CC classes (this week)"
+        :selected="SUGGESTED_SEARCH_STATE.SUGGESTED_SEARCH_1"
+        @select-toggled="onSuggestedSearchSelectToggle"
+      />
+      <suggestedSearchButton
+        :id="SUGGESTED_SEARCH_IDS.SUGGESTED_SEARCH_2"
+        label="Suggested search 2"
+        :selected="SUGGESTED_SEARCH_STATE.SUGGESTED_SEARCH_2"
+        @select-toggled="onSuggestedSearchSelectToggle"
+      />
+    </div>
     <a-auto-complete
       :data-source="courseList"
       :filterOption="autoCompleteCourseTitle"
       style="width:100%; margin:10px 0px 20px 0px;"
-      v-model="course_title"
+      v-model="filters.course_title"
     >
       <a-input-search
         placeholder="Search by course title"
@@ -73,7 +87,7 @@
                 ]
               }"
               :format="utils.dateFormatStr"
-              v-model="selectedDateRange"
+              v-model="filters.selectedDateRange"
               class="filter-field"
             />
             <h5 align="left">Time range</h5>
@@ -81,7 +95,7 @@
               :minute-step="30"
               use12-hours
               format="h:mm A"
-              v-model="startTime"
+              v-model="filters.startTime"
               placeholder="Start"
               style="width:100%; margin-bottom: 5px"
               valueFormat="HH:mm"
@@ -91,7 +105,7 @@
               :minute-step="30"
               use12-hours
               format="h:mm A"
-              v-model="endTime"
+              v-model="filters.endTime"
               placeholder="End"
               style="width:100%;"
               valueFormat="HH:mm"
@@ -101,7 +115,7 @@
             <h5 align="left">Instructor</h5>
             <!-- <a-form-item> -->
             <a-select
-              v-model="faculty_name"
+              v-model="filters.facultyName"
               show-search
               placeholder="Select or type instructor name"
               allowClear
@@ -119,7 +133,7 @@
             <h5 align="left">Tags</h5>
             <div style="width:100%; display:flex">
               <a-select
-                v-model="selected_tags"
+                v-model="filters.selectedTags"
                 mode="tags"
                 placeholder="Select a tag"
                 class="filter-field"
@@ -154,11 +168,33 @@ import utils from "@/utils";
 import constants from "@/utils/constants";
 import queries from "@/graphql/queries.gql";
 import SeminarRequestCard from "./SeminarRequestCard";
+import suggestedSearchButton from "./suggestedSearchButton";
+import _ from "lodash";
 const DEFAULT_PAGE_SIZE = 10;
 const TEST_DATE = "2018-08-12";
+const SUGGESTED_SEARCH_1 = "SUGGESTED_SEARCH_1";
+const SUGGESTED_SEARCH_2 = "SUGGESTED_SEARCH_2";
+const DEFAULT_FILTERS = {
+  courseTitle: undefined,
+  selectedDateRange: [],
+  startTime: null,
+  endTime: null,
+  facultyName: undefined,
+  selectedTags: []
+};
+const SUGGESTED_SEARCH_FILTERS = {
+  [SUGGESTED_SEARCH_1]: {
+    selectedDateRange: [
+      moment(TEST_DATE).startOf("week"),
+      moment(TEST_DATE).endOf("week")
+    ],
+    selectedTags: ["Common Curriculum"]
+  },
+  [SUGGESTED_SEARCH_2]: {}
+};
 export default {
   name: "viewSeminars",
-  components: { SeminarRequestCard },
+  components: { SeminarRequestCard, suggestedSearchButton },
   data() {
     return {
       TEST_DATE,
@@ -166,14 +202,19 @@ export default {
       DEFAULT_PAGE_SIZE,
       moment,
       utils,
-      course_title: "",
-      faculty_name: undefined,
-      selected_tags: [],
-      selectedDateRange: [],
       page: 1,
       pageSize: DEFAULT_PAGE_SIZE,
-      startTime: null,
-      endTime: null
+      // Search filters
+      filters: _.cloneDeep(DEFAULT_FILTERS),
+      SUGGESTED_SEARCH_IDS: {
+        SUGGESTED_SEARCH_1,
+        SUGGESTED_SEARCH_2
+      },
+      SUGGESTED_SEARCH_STATE: {
+        [SUGGESTED_SEARCH_1]: false,
+        [SUGGESTED_SEARCH_2]: true
+      },
+      SUGGESTED_SEARCH_FILTERS: _.cloneDeep(SUGGESTED_SEARCH_FILTERS)
     };
   },
   apollo: {
@@ -201,6 +242,22 @@ export default {
   watch: {
     seminar() {
       this.page = 1;
+    },
+    filters: {
+      handler(newFilters) {
+        // Check if new filter still matches current suggested search, if any.
+        _.entries(SUGGESTED_SEARCH_FILTERS).forEach(([key, suggested]) => {
+          suggested = _.assign(_.cloneDeep(DEFAULT_FILTERS), suggested);
+          if (
+            this.SUGGESTED_SEARCH_STATE[key] === true &&
+            _.isEqual(newFilters, suggested) == false
+          ) {
+            this.SUGGESTED_SEARCH_STATE[key] = false;
+          }
+        });
+      },
+      // This observes nested properties of filter.
+      deep: true
     }
   },
   computed: {
@@ -220,22 +277,24 @@ export default {
         : [];
     },
     searchQuery() {
-      return utils.isNonEmptyArray(this.selected_tags)
+      return utils.isNonEmptyArray(this.filters.selectedTags)
         ? queries.searchSeminarsByFiltersWithTags
         : queries.searchSeminarsByFilters;
     },
     searchQueryVariables() {
-      const course_title = this.course_title ? `%${this.course_title}%` : "%";
-      const faculty_name = this.faculty_name || "%";
-      const start_date = utils.isNonEmptyArray(this.selectedDateRange)
-        ? this.selectedDateRange[0]
+      const course_title = this.filters.course_title
+        ? `%${this.filters.course_title}%`
+        : "%";
+      const faculty_name = this.filters.facultyName || "%";
+      const start_date = utils.isNonEmptyArray(this.filters.selectedDateRange)
+        ? this.filters.selectedDateRange[0]
         : "2000-01-01";
-      const end_date = utils.isNonEmptyArray(this.selectedDateRange)
-        ? this.selectedDateRange[1]
+      const end_date = utils.isNonEmptyArray(this.filters.selectedDateRange)
+        ? this.filters.selectedDateRange[1]
         : "2050-01-01";
-      const start_time = this.startTime || "00:00";
-      const end_time = this.endTime || "23:59";
-      return utils.isNonEmptyArray(this.selected_tags)
+      const start_time = this.filters.startTime || "00:00";
+      const end_time = this.filters.endTime || "23:59";
+      return utils.isNonEmptyArray(this.filters.selectedTags)
         ? {
             course_title,
             faculty_name,
@@ -243,7 +302,7 @@ export default {
             end_date,
             start_time,
             end_time,
-            selected_tags: this.selected_tags,
+            selected_tags: this.filters.selectedTags,
             visitor_id: constants.TEST_FACULTY_ID
           }
         : {
@@ -258,6 +317,28 @@ export default {
     }
   },
   methods: {
+    // onManualFilterChange() {
+    //   Object.keys(this.SUGGESTED_SEARCH_STATE).forEach(
+    //     key => (this.SUGGESTED_SEARCH_STATE[key] = FALSE)
+    //   );
+    // },
+    onSuggestedSearchSelectToggle(data) {
+      // Update which button is selected.
+      const new_button_state = {};
+      Object.keys(this.SUGGESTED_SEARCH_STATE).forEach(key => {
+        new_button_state[key] = false;
+      });
+      if (data.value === true) {
+        new_button_state[data.id] = true;
+      }
+      this.SUGGESTED_SEARCH_STATE = new_button_state;
+      // Update filter values
+      const new_filters = { ...DEFAULT_FILTERS };
+      if (data.value) {
+        Object.assign(new_filters, SUGGESTED_SEARCH_FILTERS[data.id]);
+      }
+      this.filters = new_filters;
+    },
     autoCompleteCourseTitle(input, option) {
       return (
         option.componentOptions.children[0].text
@@ -286,5 +367,11 @@ export default {
 }
 .filter-field {
   margin-bottom: 20px;
+}
+.suggested-search-option {
+  font-size: 30px;
+}
+.suggested-search-option .anticon-close {
+  font-size: 30px;
 }
 </style>
