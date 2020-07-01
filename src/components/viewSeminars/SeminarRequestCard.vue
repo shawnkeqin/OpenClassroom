@@ -12,7 +12,7 @@
         {{ `${course_group.faculty.name}'s class` }}
       </p>
       <template v-for="tag in course.tagged_as">
-        <ColoredTag :key="tag.tag_label" :tag_label="tag.tag_label"/>
+        <ColoredTag :key="tag.tag_label" :tag_label="tag.tag_label" />
       </template>
     </div>
     <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag>
@@ -46,7 +46,7 @@
               </h4>
             </div>
             <div style="margin-bottom: 10px">
-              <h5 class='truncate' :class="{ placeholder: !seminar.desc }">
+              <h5 class="truncate" :class="{ placeholder: !seminar.desc }">
                 {{ seminar.desc || "No seminar description" }}
               </h5>
               <h6>
@@ -168,7 +168,9 @@
                     >
                     <a-menu slot="overlay">
                       <a-menu-item key="0">
-                        <a :href="googleCalendarLink" target="_blank">Google calendar</a>
+                        <a :href="googleCalendarLink" target="_blank"
+                          >Google calendar</a
+                        >
                       </a-menu-item>
                       <a-menu-item key="1">
                         <a :href="icsFile">iCalendar</a>
@@ -210,7 +212,7 @@
 </template>
 
 <script>
-const ics = require('ics')
+const ics = require("ics");
 import utils from "@/utils";
 import constants from "@/utils/constants";
 import queries from "@/graphql/queries.gql";

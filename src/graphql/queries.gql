@@ -25,6 +25,13 @@ query getFacultyById($faculty_id: String!) {
     email
     id
     name
+    has_consented
+  }
+}
+
+mutation update_faculty_consent($faculty_id: String!, $has_consented: Boolean!) {
+  update_faculty(where: {id: {_eq: $faculty_id}}, _set: {has_consented: $has_consented}) {
+    affected_rows
   }
 }
 

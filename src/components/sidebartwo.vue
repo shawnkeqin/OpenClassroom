@@ -31,6 +31,13 @@
         </a-menu-item>
       </a-menu>
     </a-layout-header> -->
+    <a-alert
+      v-if="!loggedInUser.has_consented"
+      message="View and agree to the terms of the app in Profile to start making vists requests."
+      type="info"
+      show-icon
+    />
+    <ConsentForm :showButton="false" :showModal="!loggedInUser.has_consented" />
     <a-layout-content>
       <a-layout style="padding: 0; background: #f6f6f6">
         <a-layout-sider width="250px" style="background: #fff">
@@ -94,12 +101,16 @@
 <script>
 import constants from "../utils/constants";
 import queries from "../graphql/queries.gql";
+import ConsentForm from "./ConsentForm";
 export default {
+  components: { ConsentForm },
   data() {
     return {
       constants: constants,
       queries: queries,
       loggedInUser: {},
+      consentModalVisible: false,
+      consentChecked: false,
       seminarWithVisits: []
     };
   },
@@ -122,20 +133,22 @@ export default {
   },
   computed: {
     pendingVisitsCount() {
-      const count = this.seminarsWithVisits &&
+      const count =
+        this.seminarsWithVisits &&
         this.seminarsWithVisits
           .map(seminar => seminar.visits)
           .flat()
           .filter(visit => visit.visit_status === "PENDING").length;
-
       return count;
     }
   },
+
   watch: {
     pendingVisitsCount() {
       const count = this.pendingVisitsCount;
       if (count) {
-        this.$notification.open({
+        this.$notification.warn({
+          key: "PENDING_VISITS",
           message: `${count} pending visit request${count > 1 && "s"}`,
           description:
             "Head over to My Visitors page to review your incoming visit requests.",
@@ -174,13 +187,5 @@ li.nav-item.ant-menu-item {
 }
 .ant-badge-count {
   box-shadow: transparent;
-}
-.ant-notification-notice.ant-notification-notice-closable {
-  color: white;
-  background-color: #ffb74d;
-}
-div.ant-notification-notice-message {
-  font-weight: bold;
-  color: white;
 }
 </style>
