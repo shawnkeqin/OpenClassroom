@@ -136,6 +136,7 @@ query get_my_visits($visitor_id: String!) {
         faculty {
           id
           name
+          email
         }
         course {
           id

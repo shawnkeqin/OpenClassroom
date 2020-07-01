@@ -69,88 +69,112 @@
             </h5>
           </a-col>
           <a-col v-if="seminar.is_open" :span="7">
-            <template v-if="!visit_local">
-              <a-button
-                @click="requestModalVisible = true"
-                type="primary"
-                block
-                style="margin-bottom: 20px"
-                >Request visit</a-button
-              >
-              <a-modal
-                v-model="requestModalVisible"
-                title="Making a vist request"
-                @ok="handleSubmitRequest"
-              >
-                <template slot="footer">
-                  <a-button key="cancel" @click="requestModalVisible = false"
-                    >Cancel</a-button
-                  >
-                  <a-button key="submit" @click="handleSubmitRequest"
-                    >Submit</a-button
-                  >
-                </template>
-                <a-form-model-item label="Your request message (optional)">
-                  <a-input v-model="request_msg" type="textarea" />
-                </a-form-model-item>
-              </a-modal>
-            </template>
-            <template v-else>
-              <a-button
-                @click="cancelRequestModalVisible = true"
-                type="primary"
-                ghost
-                block
-                style="margin-bottom: 20px"
-                >Cancel request</a-button
-              >
-              <a-modal
-                v-model="cancelRequestModalVisible"
-                @ok="handleCancelRequest"
-                title="Cancel visit request"
-              >
-                <template slot="footer">
-                  <a-button
-                    key="cancel"
-                    @click="cancelRequestModalVisible = false"
-                    >Cancel</a-button
-                  >
-                  <a-button key="submit" @click="handleCancelRequest"
-                    >Confirm cancel request</a-button
-                  >
-                </template>
-                <p>Your are about to cancel your visit request</p>
-              </a-modal>
-              <div style="display: flex; justify-content: center">
+            <div
+              style="display: flex; flex-direction: column; align-items: center;"
+            >
+              <template v-if="!visit_local">
+                <a-button
+                  @click="requestModalVisible = true"
+                  type="primary"
+                  block
+                  style="margin-bottom: 15px"
+                  >Request visit</a-button
+                >
+                <a-modal
+                  v-model="requestModalVisible"
+                  title="Making a vist request"
+                  @ok="handleSubmitRequest"
+                >
+                  <template slot="footer">
+                    <a-button key="cancel" @click="requestModalVisible = false"
+                      >Cancel</a-button
+                    >
+                    <a-button key="submit" @click="handleSubmitRequest"
+                      >Submit</a-button
+                    >
+                  </template>
+                  <a-form-model-item label="Your request message (optional)">
+                    <a-input v-model="request_msg" type="textarea" />
+                  </a-form-model-item>
+                </a-modal>
+              </template>
+              <template v-else>
+                <a-button
+                  @click="cancelRequestModalVisible = true"
+                  type="primary"
+                  ghost
+                  block
+                  style="margin-bottom: 15px"
+                  >Cancel request</a-button
+                >
+                <a-modal
+                  v-model="cancelRequestModalVisible"
+                  @ok="handleCancelRequest"
+                  title="Cancel visit request"
+                >
+                  <template slot="footer">
+                    <a-button
+                      key="cancel"
+                      @click="cancelRequestModalVisible = false"
+                      >Cancel</a-button
+                    >
+                    <a-button key="submit" @click="handleCancelRequest"
+                      >Confirm cancel request</a-button
+                    >
+                  </template>
+                  <p>Your are about to cancel your visit request</p>
+                </a-modal>
                 <template v-if="visit_local.visit_status === 'PENDING'">
-                  <a-icon
-                    type="clock-circle"
-                    theme="filled"
-                    class="status-icon pending"
-                  />
-                  <h4 class="pending" style="margin-bottom: 0">
-                    Request pending
-                  </h4>
+                  <div style="display: flex; justify-content: center">
+                    <a-icon
+                      type="clock-circle"
+                      theme="filled"
+                      class="status-icon pending"
+                    />
+                    <h4 class="pending" style="margin-bottom: 0">
+                      Request pending
+                    </h4>
+                  </div>
                 </template>
                 <template v-else-if="visit_local.visit_status === 'ACCEPTED'">
-                  <div style="display: flex; align-items: center">
-                    <a-icon
-                      type="check-circle"
-                      theme="filled"
-                      class="status-icon accepted"
-                    />
+                  <div
+                    style="display: flex; justify-content: center; margin-bottom: 5px;"
+                  >
+                    <div style="display: flex; align-items: center">
+                      <a-icon
+                        type="check-circle"
+                        theme="filled"
+                        class="status-icon accepted"
+                      />
+                    </div>
+                    <div>
+                      <h4 class="accepted" style="margin-bottom: 3px">
+                        Request accepted
+                      </h4>
+                      <h5 class="accepted">
+                        {{
+                          visit.time_responded &&
+                            utils.datetime_fromnow_format(visit.time_responded)
+                        }}
+                      </h5>
+                    </div>
                   </div>
-                  <div>
-                    <h4 class="accepted" style="margin-bottom: 3px">
-                      Request accepted
-                    </h4>
-                    <h5 class="accepted">
-                      {{
-                        visit.time_responded &&
-                          utils.datetime_fromnow_format(visit.time_responded)
-                      }}
-                    </h5>
-                  </div>
+                  <a-dropdown :trigger="['click']">
+                    <a
+                      class="ant-dropdown-link"
+                      @click="e => e.preventDefault()"
+                      href="#"
+                      >Add to my calendar</a
+                    >
+                    <a-menu slot="overlay">
+                      <a-menu-item key="0">
+                        <a :href="googleCalendarLink" target="_blank">Google calendar</a>
+                      </a-menu-item>
+                      <a-menu-item key="1">
+                        <a :href="icsFile">iCalendar</a>
+                      </a-menu-item>
+                    </a-menu>
+                  </a-dropdown>
                 </template>
                 <template v-else-if="visit_local.visit_status === 'DECLINED'">
                   <div style="display: flex; align-items: center">
@@ -162,7 +186,7 @@
                   </div>
                   <div>
                     <h4 class="declined" style="margin-bottom: 3px">
-                      Request accepted
+                      Request declined
                     </h4>
                     <h5 class="declined">
                       {{
@@ -172,8 +196,8 @@
                     </h5>
                   </div>
                 </template>
-              </div>
-            </template>
+              </template>
+            </div>
           </a-col>
         </div>
         <div v-if="visit_local && isMessagesVisible" style="margin-top: 20px">
@@ -186,6 +210,7 @@
 </template>
 
 <script>
+const ics = require('ics')
 import utils from "@/utils";
 import constants from "@/utils/constants";
 import queries from "@/graphql/queries.gql";
@@ -213,6 +238,7 @@ export default {
   data: function() {
     return {
       utils: utils,
+      ics: ics,
       visit_local: this.visit,
       descModalVisible: false,
       requestModalVisible: false,
@@ -227,6 +253,41 @@ export default {
     },
     course() {
       return this.course_group.course;
+    },
+    googleCalendarLink() {
+      const text = `Class visit - ${this.course.title}`;
+      const date = this.seminar.date.replace(/-/g, "");
+      const start = this.seminar.start.replace(/:/g, "");
+      const end = this.seminar.end.replace(/:/g, "");
+      const dates = `${date}T${start}/${date}T${end}`;
+      const ctz = "Asia%2FSingapore";
+      const location = this.seminar.location.full_name;
+      const details = `${this.seminar.desc}%0D%0A%0D%0AInstructor: ${this.course_group.faculty.name}%0D%0AEmail: ${this.course_group.faculty.email}`;
+      return `https://www.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dates}&ctz=${ctz}&location=${location}&details=${details}&trp=false`;
+    },
+    icsFile() {
+      const date = this.seminar.date.split("-");
+      const start = date.concat(this.seminar.start.split(":").splice(0, -1));
+      const end = date.concat(this.seminar.end.split(":").splice(0, -1));
+      const event = {
+        start,
+        end,
+        title: `Class visit - ${this.course.title}`,
+        description: this.seminar.desc,
+        location: this.seminar.location.full_name,
+        status: "CONFIRMED",
+        organizer: {
+          name: this.course_group.faculty.name,
+          email: this.course_group.faculty.email
+        }
+      };
+      const { error, value } = this.ics.createEvent(event);
+      console.log(value);
+      if (error) {
+        console.log(error);
+        return "#";
+      }
+      return `data:text/calendar;charset=utf8,${escape(value)}`;
     }
   },
   methods: {

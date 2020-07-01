@@ -127,6 +127,13 @@ export default {
           .map(seminar => seminar.visits)
           .flat()
           .filter(visit => visit.visit_status === "PENDING").length;
+
+      return count;
+    }
+  },
+  watch: {
+    pendingVisitsCount() {
+      const count = this.pendingVisitsCount;
       if (count) {
         this.$notification.open({
           message: `${count} pending visit request${count > 1 && "s"}`,
@@ -135,7 +142,6 @@ export default {
           duration: 0
         });
       }
-      return count;
     }
   }
 };
