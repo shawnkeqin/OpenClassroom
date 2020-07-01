@@ -143,6 +143,9 @@ query get_my_visits($visitor_id: String!) {
           title
           desc
           module_brief_link
+          tagged_as {
+            tag_label
+          }
         }
       }
     }
@@ -299,6 +302,9 @@ query searchSeminarsByFilters(
       course {
         id
         title
+        tagged_as {
+          tag_label
+        }
       }
     }
     visits(where: {visitor_id: {_eq: $visitor_id}}) {
@@ -360,6 +366,9 @@ query searchSeminarsByFiltersWithTags(
       course {
         id
         title
+        tagged_as {
+          tag_label
+        }
       }
     }
     visits(where: {visitor_id: {_eq: $visitor_id}}) {

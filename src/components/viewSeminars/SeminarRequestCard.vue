@@ -8,9 +8,12 @@
             'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
         "
       />
-      <p style="margin: 0 0 0 5px;">
+      <p style="margin: 0 5px;">
         {{ `${course_group.faculty.name}'s class` }}
       </p>
+      <template v-for="tag in course.tagged_as">
+        <ColoredTag :key="tag.tag_label" :tag_label="tag.tag_label"/>
+      </template>
     </div>
     <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag>
     <a-card hoverable :class="{ closed: !seminar.is_open }">
@@ -38,19 +41,19 @@
               <p style="display: inline">
                 {{ seminar.module_code }}
               </p>
-              <h4>{{ seminar.title || "This is seminar title" }}</h4>
+              <h4 :class="{ placeholder: !seminar.title }">
+                {{ seminar.title || "No seminar title" }}
+              </h4>
             </div>
             <div style="margin-bottom: 10px">
-              <h5 class="truncate" style="margin-bottom: 0">
-                {{
-                  seminar.desc ||
-                    course.desc ||
-                    "This is some seminar descriptions"
-                }}
+              <h5 class='truncate' :class="{ placeholder: !seminar.desc }">
+                {{ seminar.desc || "No seminar description" }}
               </h5>
-              <a @click="descModalVisible = true"
-                >View full course description and seminar details</a
-              >
+              <h6>
+                <a @click="descModalVisible = true" href="#"
+                  >View full course description and seminar details</a
+                >
+              </h6>
             </div>
             <a-modal v-model="descModalVisible" @ok="descModalVisible = false">
               <template slot="footer">
@@ -62,7 +65,7 @@
               <p>{{ course.desc }}</p>
             </a-modal>
             <h5>
-              {{ "Notes for visitors: " + (course_group.notes || "Some notes") }}
+              {{ "Notes for visitors: " + (course_group.notes || "None") }}
             </h5>
           </a-col>
           <a-col v-if="seminar.is_open" :span="7">
@@ -186,9 +189,13 @@
 import utils from "@/utils";
 import constants from "@/utils/constants";
 import queries from "@/graphql/queries.gql";
+import ColoredTag from "./ColoredTag";
 
 export default {
   name: "SeminarRequestCard",
+  components: {
+    ColoredTag
+  },
   props: {
     visit: {
       type: Object,
@@ -210,7 +217,8 @@ export default {
       descModalVisible: false,
       requestModalVisible: false,
       request_msg: "",
-      cancelRequestModalVisible: false
+      cancelRequestModalVisible: false,
+      tag: this.makeTag
     };
   },
   computed: {
@@ -249,31 +257,25 @@ export default {
       });
       this.visit_local = null;
       this.cancelRequestModalVisible = false;
-    },
-    handleAddToCalendar() {}
+    }
   }
 };
 </script>
 
 <style scoped>
-a {
-  font-size: 12px;
-}
 .ant-card-hoverable {
   cursor: default;
 }
 .closed {
   background-color: rgba(0, 0, 0, 0.12);
 }
-.avatar {
-  height: 25px;
-  width: 25px;
-  border-radius: 50%;
-  margin: 5px;
-}
 .request-status {
   font-size: 16px;
   font-family: "Lato", sans-serif;
   font-weight: bold;
+}
+.placeholder {
+  color: rgba(0, 0, 0, 0.37);
+  font-weight: normal;
 }
 </style>
