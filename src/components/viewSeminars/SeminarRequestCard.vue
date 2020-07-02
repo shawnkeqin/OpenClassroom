@@ -42,16 +42,16 @@
                 {{ seminar.module_code }}
               </p>
               <h4 :class="{ placeholder: !seminar.title }">
-                {{ seminar.title || "No seminar title" }}
+                {{ seminar.title || "No class title" }}
               </h4>
             </div>
             <div style="margin-bottom: 10px">
               <h5 class="truncate" :class="{ placeholder: !seminar.desc }">
-                {{ seminar.desc || "No seminar description" }}
+                {{ seminar.desc || "No class description" }}
               </h5>
               <h6>
                 <a @click="descModalVisible = true" href="#"
-                  >View full course description and seminar details</a
+                  >View full course description and class details</a
                 >
               </h6>
             </div>
@@ -285,14 +285,5 @@ export default {
 }
 .closed {
   background-color: rgba(0, 0, 0, 0.12);
-}
-.request-status {
-  font-size: 16px;
-  font-family: "Lato", sans-serif;
-  font-weight: bold;
-}
-.placeholder {
-  color: rgba(0, 0, 0, 0.37);
-  font-weight: normal;
 }
 </style>

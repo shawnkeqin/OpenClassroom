@@ -24,10 +24,12 @@
             <p style="display: inline">
               {{ seminar.module_code }}
             </p>
-            <h4>{{ seminar.title || "This is seminar title" }}</h4>
+            <h4 :class="{ placeholder: !seminar.title }">
+              {{ seminar.title || "No class title" }}
+            </h4>
             <h5>
               {{
-                "Seminar capacity: " +
+                "Class capacity: " +
                   acceptedCount +
                   "/" +
                   seminar.visitor_capacity
@@ -264,66 +266,5 @@ export default {
 }
 .ant-card-hoverable {
   cursor: default;
-}
-.module-code {
-  font-size: 12px;
-  color: rgba(0, 0, 0, 0.54);
-  padding-right: 10px;
-}
-.seminar-title {
-  font-size: 16px;
-  font-weight: bold;
-}
-.seminar-date-and-time {
-  font-size: 16px;
-  font-weight: bold;
-}
-.request-status {
-  font-size: 12px;
-  padding-left: 5px;
-  padding-right: 10px;
-}
-.requestor {
-  display: flex;
-  align-items: center;
-}
-.avatar {
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-  margin: 5px;
-}
-.button-group {
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  right: 0px;
-}
-.respond-button {
-  padding: 0px;
-  margin: 2px;
-  width: 80px;
-  height: 28px;
-}
-.accept-button {
-  color: #81c784;
-  border-color: #81c784;
-}
-.decline-button {
-  color: #e57373;
-  border-color: #e57373;
-}
-.accepted-button {
-  color: #ffffff;
-  background-color: #81c784;
-}
-.declined-button {
-  color: #ffffff;
-  background-color: #e57373;
-}
-.view-message {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 </style>
