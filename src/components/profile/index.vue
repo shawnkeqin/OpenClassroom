@@ -5,7 +5,10 @@
       <a-card style="width: 40rem">
         <a-row type="flex" align="middle" :gutter="20">
           <a-col :xs="24" :sm="8" align="middle" justify="center">
-            <a-avatar :size="160" src="https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80" />
+            <a-avatar
+              :size="160"
+              src="https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"
+            />
           </a-col>
           <a-col>
             <h5>Name</h5>
@@ -26,7 +29,10 @@
             <p>Email me when new requests for my seminars are created</p>
             <a-switch default-checked />
           </a-list-item>
-          <a-list-item class="preference-item" style="background-color: #F6F6F6">
+          <a-list-item
+            class="preference-item"
+            style="background-color: #F6F6F6"
+          >
             <p>Email me when my pending requests are accepted/declined</p>
             <a-switch default-checked />
           </a-list-item>
@@ -37,14 +43,26 @@
         </a-list>
       </a-card>
     </div>
+    <div class="content-block-wrapper">
+      <h2>My Preferences</h2>
+      <template v-if="faculty.has_consented">
+        <p v-if="faculty.has_consented">You have submitted your consent.</p>
+      </template>
+      <template v-else>
+        <ConsentForm />
+      </template>
+    </div>
   </div>
 </template>
 
 <script>
 import queries from "@/graphql/queries.gql";
+import constants from "@/utils/constants";
+import ConsentForm from "../ConsentForm";
 
 export default {
   name: "Profile",
+  components: { ConsentForm },
   data() {
     return {
       faculty: {}
@@ -52,11 +70,11 @@ export default {
   },
   apollo: {
     faculty: {
-      query: queries.findFaculty,
+      query: queries.getFacultyById,
       variables: {
-        faculty_id: "yncsjm1"
+        faculty_id: constants.TEST_FACULTY_ID
       },
-      update: data => data.faculty[0]
+      update: data => data.faculty_by_pk
     }
   }
 };
