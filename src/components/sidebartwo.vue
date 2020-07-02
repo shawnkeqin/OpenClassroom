@@ -31,20 +31,14 @@
         </a-menu-item>
       </a-menu>
     </a-layout-header> -->
-    <template v-if="showConsent">
-      <a-alert type="info" show-icon>
-        <template slot="message">
-          <p style="margin-bottom: 5px;">
-            View and agree to the terms of the app in Profile to start making
-            vists requests.
-          </p>
-          <router-link to="/profile"
-            ><a-button type="primary">Go to My profile</a-button></router-link
-          >
-        </template>
-      </a-alert>
-      <ConsentForm :showButton="false" :showModal="showConsent" />
-    </template>
+    <a-alert v-if="showConsent" type="info" show-icon>
+      <template slot="message">
+        <p style="margin-bottom: 5px;">
+          View and agree to the terms of the app to start making vists requests.
+        </p>
+        <ConsentForm />
+      </template>
+    </a-alert>
     <a-layout-content>
       <a-layout style="padding: 0; background: #f6f6f6">
         <a-layout-sider width="250px" style="background: #fff">
