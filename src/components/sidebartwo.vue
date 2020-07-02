@@ -31,12 +31,17 @@
         </a-menu-item>
       </a-menu>
     </a-layout-header> -->
-    <a-alert
-      v-if="!loggedInUser.has_consented"
-      message="View and agree to the terms of the app in Profile to start making vists requests."
-      type="info"
-      show-icon
-    />
+    <a-alert v-if="!loggedInUser.has_consented" type="info" show-icon>
+      <template slot="message">
+        <p style="margin-bottom: 5px;">
+          View and agree to the terms of the app in Profile to start making
+          vists requests.
+        </p>
+        <router-link to="/profile"
+          ><a-button type="primary">Go to My profile</a-button></router-link
+        >
+      </template>
+    </a-alert>
     <ConsentForm :showButton="false" :showModal="!loggedInUser.has_consented" />
     <a-layout-content>
       <a-layout style="padding: 0; background: #f6f6f6">
@@ -49,7 +54,7 @@
           >
             <a-menu-item :key="1" class="nav-item">
               <a-icon type="user" />
-              <span class="nav-text">Profile</span>
+              <span class="nav-text">My profile</span>
               <router-link to="/profile" />
             </a-menu-item>
             <a-menu-item :ey="2" class="nav-item">
