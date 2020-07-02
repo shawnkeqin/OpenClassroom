@@ -78,6 +78,7 @@
                   type="primary"
                   block
                   style="margin-bottom: 15px"
+                  :disabled="!has_consented"
                   >Request visit</a-button
                 >
                 <a-modal
@@ -105,6 +106,7 @@
                   ghost
                   block
                   style="margin-bottom: 15px"
+                  :disabled="!has_consented"
                   >Cancel request</a-button
                 >
                 <a-modal
@@ -235,6 +237,10 @@ export default {
     isMessagesVisible: {
       type: Boolean,
       default: false
+    },
+    has_consented: {
+      type: Boolean,
+      default: true
     }
   },
   data: function() {
