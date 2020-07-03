@@ -1,36 +1,24 @@
 <template>
   <div class="spinner">
     <div class="section">
-      <h1>Opt Out</h1>
-      <p>
-        App users will not be able to send visit requests to your class once you
-        have successfully opted out.
-      </p>
-      <div>
-        <h5>Your YNC staff ID:</h5>
-        <a-input
-          v-model="faculty_id_opt_out"
-          placeholder="Type your staffID here"
-          style="width: 200px;"
-        />
-        <a-button @click="handleOptOut">Confirm</a-button>
-      </div>
-    </div>
-    <div class="section">
       <h1>Opt In</h1>
       <p>
         App users will be able to send visit requests to your class once you
         have successfully opted in.
       </p>
-      <div>
+      <div style="margin-bottom: 120px;">
         <h5>Your YNC staff ID:</h5>
         <a-input
-          v-model="faculty_id_opt_in"
+          v-model="faculty_id"
           placeholder="Type your staffID here"
           style="width: 200px;"
         />
         <a-button @click="handleOptIn">Confirm</a-button>
       </div>
+      <p>
+        Or
+        <router-link to="/opt-out"><a href="#">opt out</a></router-link> instead.
+      </p>
     </div>
   </div>
 </template>
@@ -42,39 +30,12 @@ export default {
   name: "FacultyStatusPage",
   data() {
     return {
-      faculty_id_opt_out: "",
-      faculty_id_opt_in: ""
+      faculty_id: ""
     };
   },
   methods: {
-    async handleOptOut() {
-      const faculty_id = this.faculty_id_opt_out;
-      const results = await this.$apollo.mutate({
-        mutation: queries.update_faculty_active_status,
-        variables: {
-          faculty_id,
-          active_status: false
-        }
-      });
-      if (results.data.update_faculty.affected_rows) {
-        this.$notification.success({
-          key: "OPT_OUT_SUCCESS",
-          message: "Succesful opt-out request",
-          description:
-            "All your classes are no longer open to visit requests in this app."
-        });
-        this.faculty_id = "";
-      } else {
-        this.$notification.error({
-          key: "OPT_OUT_ERROR",
-          message: "Opt-out error",
-          description:
-            "The server could not process your request. Please ensure that your staff ID is correct."
-        });
-      }
-    },
     async handleOptIn() {
-      const faculty_id = this.faculty_id_opt_in;
+      const faculty_id = this.faculty_id;
       const results = await this.$apollo.mutate({
         mutation: queries.update_faculty_active_status,
         variables: {
