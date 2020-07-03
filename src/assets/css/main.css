@@ -111,3 +111,7 @@ button span {
 .declined {
   color: #e57373;
 }
+.placeholder {
+  color: rgba(0, 0, 0, 0.37);
+  font-weight: normal;
+}

@@ -31,13 +31,14 @@
         </a-menu-item>
       </a-menu>
     </a-layout-header> -->
-    <a-alert
-      v-if="!loggedInUser.has_consented"
-      message="View and agree to the terms of the app in Profile to start making vists requests."
-      type="info"
-      show-icon
-    />
-    <ConsentForm :showButton="false" :showModal="!loggedInUser.has_consented" />
+    <a-alert v-if="showConsent" type="info" show-icon>
+      <template slot="message">
+        <p style="margin-bottom: 5px;">
+          View and agree to the terms of the app to start making vists requests.
+        </p>
+        <ConsentForm />
+      </template>
+    </a-alert>
     <a-layout-content>
       <a-layout style="padding: 0; background: #f6f6f6">
         <a-layout-sider width="250px" style="background: #fff">
@@ -49,7 +50,7 @@
           >
             <a-menu-item :key="1" class="nav-item">
               <a-icon type="user" />
-              <span class="nav-text">Profile</span>
+              <span class="nav-text">My profile</span>
               <router-link to="/profile" />
             </a-menu-item>
             <a-menu-item :ey="2" class="nav-item">
@@ -109,8 +110,7 @@ export default {
       constants: constants,
       queries: queries,
       loggedInUser: {},
-      consentModalVisible: false,
-      consentChecked: false,
+      showConsent: false,
       seminarWithVisits: []
     };
   },
@@ -142,8 +142,10 @@ export default {
       return count;
     }
   },
-
   watch: {
+    loggedInUser() {
+      this.showConsent = !this.loggedInUser.has_consented;
+    },
     pendingVisitsCount() {
       const count = this.pendingVisitsCount;
       if (count) {
