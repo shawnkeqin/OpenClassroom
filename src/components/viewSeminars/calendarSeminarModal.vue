@@ -17,6 +17,10 @@
         <b>ID: </b>
         {{ event.id }}
       </p>
+      <p align="center">
+        <b>ID: </b>
+        {{ event.id }}
+      </p>
       <br />
     </fieldset>
   </div>
