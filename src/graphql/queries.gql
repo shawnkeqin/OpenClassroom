@@ -27,6 +27,12 @@ mutation update_faculty_consent($faculty_id: String!, $has_consented: Boolean!) 
   }
 }
 
+mutation update_faculty_active_status($faculty_id: String!, $active_status: Boolean!) {
+  update_faculty(where: {id: {_eq: $faculty_id}}, _set: {is_active: $active_status}) {
+    affected_rows
+  }
+}
+
 query getTagsList {
   tag {
     label

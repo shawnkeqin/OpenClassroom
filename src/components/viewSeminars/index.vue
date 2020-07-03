@@ -63,6 +63,7 @@
               :key="seminar.id"
               :seminar="seminar"
               :visit="seminar.visits[0]"
+              :has_consented="loggedInUser.has_consented"
             />
           </template>
         </div>
@@ -197,6 +198,7 @@ export default {
   components: { SeminarRequestCard, suggestedSearchButton },
   data() {
     return {
+      loggedInUser: {}, 
       TEST_DATE,
       seminar: [],
       DEFAULT_PAGE_SIZE,
@@ -218,6 +220,13 @@ export default {
     };
   },
   apollo: {
+    loggedInUser: {
+      query: queries.getFacultyById,
+      variables: {
+        faculty_id: constants.TEST_FACULTY_ID
+      },
+      update: data => data.faculty_by_pk
+    },
     courses: {
       query: queries.getCourseList,
       update: data => data.course

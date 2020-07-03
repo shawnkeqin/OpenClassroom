@@ -1,8 +1,6 @@
 <template>
   <div>
-    <a-button v-if="showButton" @click="consentModalVisible = true"
-      >View consent form</a-button
-    >
+    <a-button @click="consentModalVisible = true">View consent form</a-button>
     <a-modal v-model="consentModalVisible" width="80vw">
       <template slot="footer">
         <div />
@@ -107,22 +105,12 @@ import constants from "../utils/constants";
 import queries from "../graphql/queries.gql";
 export default {
   name: "ConsentForm",
-  props: {
-    showButton: {
-      type: Boolean,
-      default: true
-    },
-    showModal: {
-      type: Boolean,
-      default: false
-    }
-  },
   data() {
     return {
       constants: constants,
       queries: queries,
       loggedInUser: {},
-      consentModalVisible: this.showModal,
+      consentModalVisible: false,
       consentChecked: false
     };
   },

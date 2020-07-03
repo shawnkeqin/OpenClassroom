@@ -43,26 +43,15 @@
         </a-list>
       </a-card>
     </div>
-    <div class="content-block-wrapper">
-      <h2>My Preferences</h2>
-      <template v-if="faculty.has_consented">
-        <p v-if="faculty.has_consented">You have submitted your consent.</p>
-      </template>
-      <template v-else>
-        <ConsentForm />
-      </template>
-    </div>
   </div>
 </template>
 
 <script>
 import queries from "@/graphql/queries.gql";
 import constants from "@/utils/constants";
-import ConsentForm from "../ConsentForm";
 
 export default {
   name: "Profile",
-  components: { ConsentForm },
   data() {
     return {
       faculty: {}
