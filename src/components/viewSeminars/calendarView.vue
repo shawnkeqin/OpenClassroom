@@ -1,6 +1,34 @@
 <template>
   <div>
-    <a-switch default-checked @change="onChange" v-bind="toggle" />
+    <!-- <div>
+      <div :style="{ borderBottom: '1px solid #E9E9E9' }">
+        <a-checkbox
+          :indeterminate="indeterminate"
+          :checked="checkAll"
+          @change="onCheckAllChange"
+        >
+          Check all
+        </a-checkbox>
+      </div>
+      <br />
+      <a-checkbox-group
+        v-model="checkedList"
+        :options="plainOptions"
+        @change="onChange"
+      />
+    </div> -->
+    <div>
+      <a-checkbox @change="onChange" v-model="checkedBox">
+        My Requests
+      </a-checkbox>
+      <a-checkbox @change="onChangeTwo" v-model="checkedBoxTwo">
+        My Seminars
+      </a-checkbox>
+      <a-checkbox @change="onChangeThree" v-model="checkedBoxThree">
+        My Vists
+      </a-checkbox>
+    </div>
+    <br />
     <Fullcalendar
       ref="calendar"
       :plugins="calendarPlugins"
@@ -19,14 +47,13 @@
       :event-sources="eventSources"
       :selectable="true"
       @eventClick="handleClick"
-      @eventRender="renderEvent"
     />
     <!--  <calendarSeminarModal
       v-for="visit in myVisits"
       :visit="visit"
       :key="visit.id"
     /> -->
-    <modals-container />
+    <modals-container :adaptive="true" :width="1000" :height="1000" />
   </div>
 </template>
 
@@ -40,8 +67,11 @@ import TimeGridPlugin from "@fullcalendar/timegrid";
 import InteractionPlugin from "@fullcalendar/interaction";
 import ListPlugin from "@fullcalendar/list";
 import calendarSeminarModal from "./calendarSeminarModal";
+//import CalendarSeminar from "./CalendarSeminar";
 import queries from "@/graphql/queries.gql";
 import constants from "@/utils/constants";
+const plainOptions = ["My Seminars", "My Visits", "My Requests"];
+const defaultCheckedList = ["My Seminars", "My Visits"];
 
 export default {
   name: "calendarView",
@@ -55,6 +85,13 @@ export default {
         ListPlugin
       ],
       eventSources: [],
+      checkedList: defaultCheckedList,
+      checkedBox: false,
+      checkedBoxTwo: false,
+      checkedBoxThree: false,
+      indeterminate: true,
+      checkAll: false,
+      plainOptions,
       /*      config: {
         eventRender: function(event,element){
           var eventSources = []; 
@@ -84,6 +121,16 @@ export default {
   }, */
   components: { Fullcalendar },
   apollo: {
+    course_group() {
+      const faculty_id = constants.TEST_FACULTY_ID;
+      return {
+        query: queries.get_course_groups_by_faculty,
+        variables: {
+          faculty_id
+        },
+        update: data => data.course_group
+      };
+    },
     my_visits: {
       query: queries.get_my_visits,
       variables: {
@@ -98,16 +145,6 @@ export default {
         semester_code: constants.SEMESTER_CODE_AY1819_1
       },
       update: data => data.seminar
-    },
-    course_group() {
-      const faculty_id = constants.TEST_FACULTY_ID;
-      return {
-        query: queries.get_course_groups_by_faculty,
-        variables: {
-          faculty_id
-        },
-        update: data => data.course_group
-      };
     },
     my_seminars() {
       const course_group_id = this.course_group[0].id;
@@ -127,17 +164,16 @@ export default {
           date: a.seminar.date,
           start: a.seminar.date.toString() + "T" + a.seminar.start.toString(),
           end: a.seminar.date.toString() + "T" + a.seminar.end.toString(),
-          title:
-            a.seminar.course_group.course.title +
-            "\n" +
-            a.seminar.course_group.faculty.name +
-            "\n" +
-            a.seminar.location.full_name,
+          title: a.seminar.course_group.course.title,
           id: a.id,
-          // name: a.seminar.course_group.faculty.name,
-          // location: a.seminar.location.full_name,
-          groupId: "my_visits",
-          color: "green"
+          //  name: a.seminar.course_group.faculty.name,
+          //  location: a.seminar.location.full_name,
+          className: "my_visits",
+          color: "green",
+          extendedProps: {
+            name: a.seminar.course_group.faculty.name.toString(),
+            location: a.seminar.location.full_name.toString()
+          }
         };
       });
     },
@@ -147,17 +183,16 @@ export default {
           date: a.date,
           start: a.date.toString() + "T" + a.start.toString(),
           end: a.date.toString() + "T" + a.end.toString(),
-          title:
-            a.course_group.course.title +
-            "\n" +
-            a.course_group.faculty.name +
-            "\n" +
-            a.location.full_name,
+          title: a.course_group.course.title,
           id: a.id,
-          //   name: a.course_group.faculty.name,
-          //  location: a.location.full_name,
-          groupId: "my_requests",
-          color: "red"
+          // name: a.course_group.faculty.name,
+          // location: a.location.full_name,
+          className: "my_requests",
+          color: "red",
+          extendedProps: {
+            name: a.course_group.faculty.name.toString(),
+            location: a.location.full_name.toString()
+          }
         };
       });
     },
@@ -167,49 +202,73 @@ export default {
           date: a.date,
           start: a.date.toString() + "T" + a.start.toString(),
           end: a.date.toString() + "T" + a.end.toString(),
-          title:
-            a.course_group.course.title +
-            "\n" +
-            a.course_group.faculty.name +
-            "\n" +
-            a.location.full_name,
-          //  name: a.course_group.faculty.name,
-          //  location: a.location.full_name,
-          groupId: "my_seminars",
-          id: a.id
+          title: a.course_group.course.title,
+          // name: a.course_group.faculty.name,
+          // location: a.location.full_name,
+          className: "my_seminars",
+          id: a.id,
+          extendedProps: {
+            name: a.course_group.faculty.name.toString(),
+            location: a.location.full_name.toString()
+          }
         };
       });
     }
   },
-  created() {
+  /* created() {
     this.eventSources.push(this.Visits);
     this.eventSources.push(this.Requests);
     this.eventSources.push(this.Seminars);
     return this.eventSources;
-  },
+  }, */
   methods: {
     handleClick(arg) {
       this.$modal.show(calendarSeminarModal, {
         event: arg.event
       });
+      /* this.$modal.show(CalendarSeminar, {
+        event: arg.event
+      }); */
+    },
+    /* onChange(checkedList) {
+      this.indeterminate =
+        !!checkedList.length && checkedList.length < plainOptions.length;
+      this.checkAll = checkedList.length === plainOptions.length;
+    }, */
+    /*  onCheckAllChange(e) {
+      Object.assign(this, {
+        checkedList: e.target.checked ? plainOptions : [],
+        indeterminate: false,
+        checkAll: e.target.checked
+      });
+    }, */
+    onChange(e) {
+      console.log(`checked = ${e.target.checked}`);
+      Object.assign(this, {
+        checkedBox: e.target.checked
+          ? this.eventSources.push(this.Requests)
+          : this.eventSources.pop(this.Requests)
+      });
+      return this.eventSources;
+    },
+    onChangeTwo(e) {
+      console.log(`checked = ${e.target.checked}`);
+      Object.assign(this, {
+        checkedBoxTwo: e.target.checked
+          ? this.eventSources.push(this.Seminars)
+          : this.eventSources.pop(this.Seminars)
+      });
+      return this.eventSources;
+    },
+    onChangeThree(e) {
+      console.log(`checked = ${e.target.checked}`);
+      Object.assign(this, {
+        checkedBoxThree: e.target.checked
+          ? this.eventSources.push(this.Visits)
+          : this.eventSources.pop(this.Visits)
+      });
+      return this.eventSources;
     }
-    /*   renderEvent: function(event, element) {
-            // Array that will store accepted classes
-            var eventAcceptedClasses = [];
-            if ($('.daytime-events-checkbox').is(':checked')){
-                eventAcceptedClasses.push('daytime-events');
-            }
-            if ($('.nighttime-events-checkbox').is(':checked')){
-                eventAcceptedClasses.push('nighttime-events');
-            }
-            displayEvent = false;
-            event.className.forEach(function(element){
-                if ($.inArray(element, eventAcceptedClasses) != -1){
-                    displayEvent = true;
-                }
-            });
-            return displayEvent;
-        } */
   }
 };
 </script>
