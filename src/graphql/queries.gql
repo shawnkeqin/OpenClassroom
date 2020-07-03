@@ -1,11 +1,3 @@
-query findFaculty($faculty_id: String) {
-  faculty(where: { id: { _eq: $faculty_id } }) {
-    email
-    id
-    name
-  }
-}
-
 query getCourseList {
   course(order_by: { title: asc }) {
     title
@@ -25,6 +17,19 @@ query getFacultyById($faculty_id: String!) {
     email
     id
     name
+    has_consented
+  }
+}
+
+mutation update_faculty_consent($faculty_id: String!, $has_consented: Boolean!) {
+  update_faculty(where: {id: {_eq: $faculty_id}}, _set: {has_consented: $has_consented}) {
+    affected_rows
+  }
+}
+
+mutation update_faculty_active_status($faculty_id: String!, $active_status: Boolean!) {
+  update_faculty(where: {id: {_eq: $faculty_id}}, _set: {is_active: $active_status}) {
+    affected_rows
   }
 }
 
@@ -136,6 +141,7 @@ query get_my_visits($visitor_id: String!) {
         faculty {
           id
           name
+          email
         }
         course {
           id
@@ -143,6 +149,9 @@ query get_my_visits($visitor_id: String!) {
           title
           desc
           module_brief_link
+          tagged_as {
+            tag_label
+          }
         }
       }
     }
@@ -195,6 +204,29 @@ query get_course_by_course_group($course_group_id: Int!) {
     desc
   }
 }
+
+query get_syllabus_by_course_group($course_group_id: Int!) {
+  course_group(where: {id: {_eq: $course_group_id }}) {
+    id
+    syllabus
+    course_group_desc
+  }
+}
+
+mutation update_course_group_desc($id: Int!, $course_group_desc: String!) {
+  update_course_group(where: {id: {_eq: $id}}, _set: { course_group_desc: $course_group_desc}) {
+    affected_rows
+  }
+}
+
+query get_course_group_new_desc($course_group_id: Int!) {
+  course_group(where: {id: {_eq: $course_group_id}}) {
+    id
+    course_group_desc
+  }
+}
+
+
 
 mutation updateSeminarIsOpen($seminar_id: Int!, $is_open: Boolean!) {
   update_seminar(where: {id: {_eq: $seminar_id}}, _set: {is_open: $is_open}) {
@@ -276,6 +308,9 @@ query searchSeminarsByFilters(
       course {
         id
         title
+        tagged_as {
+          tag_label
+        }
       }
     }
     visits(where: {visitor_id: {_eq: $visitor_id}}) {
@@ -337,6 +372,9 @@ query searchSeminarsByFiltersWithTags(
       course {
         id
         title
+        tagged_as {
+          tag_label
+        }
       }
     }
     visits(where: {visitor_id: {_eq: $visitor_id}}) {
@@ -379,6 +417,11 @@ mutation close_all_course_seminars($course_group_id: Int!) {
     affected_rows
   }
 }
+
+
+
+
+
 
 query get_my_visited_request_seminars($visitor_id: String!) {
   seminar(where: {visits: {visitor_id: {_eq: $visitor_id}}}) {

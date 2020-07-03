@@ -1,11 +1,25 @@
 <template>
   <div>
     <h1>Search Courses</h1>
+    <div style="padding: 5px 0px 10px 0px">
+      <suggestedSearchButton
+        :id="SUGGESTED_SEARCH_IDS.SUGGESTED_SEARCH_1"
+        label="CC classes (this week)"
+        :selected="SUGGESTED_SEARCH_STATE.SUGGESTED_SEARCH_1"
+        @select-toggled="onSuggestedSearchSelectToggle"
+      />
+      <suggestedSearchButton
+        :id="SUGGESTED_SEARCH_IDS.SUGGESTED_SEARCH_2"
+        label="Suggested search 2"
+        :selected="SUGGESTED_SEARCH_STATE.SUGGESTED_SEARCH_2"
+        @select-toggled="onSuggestedSearchSelectToggle"
+      />
+    </div>
     <a-auto-complete
       :data-source="courseList"
       :filterOption="autoCompleteCourseTitle"
       style="width:100%; margin:10px 0px 20px 0px;"
-      v-model="course_title"
+      v-model="filters.course_title"
     >
       <a-input-search
         placeholder="Search by course title"
@@ -14,115 +28,115 @@
       />
     </a-auto-complete>
 
-    <div>
-      <a-row>
-        <a-col :span="18">
-          <h4 align="left">
-            Results
-            <a-spin v-if="$apollo.loading">
-              <a-icon
-                slot="indicator"
-                type="loading"
-                style="font-size: 26px; padding-left: 10px"
-                spin
-              />
-            </a-spin>
-          </h4>
-          <a-pagination
-            style="text-align: center; margin-bottom: 20px"
-            @change="onPageChange"
-            showSizeChanger
-            :show-total="
-              (total, range) => `${range[0]}-${range[1]} of ${total} items`
-            "
-            :total="allResultsCount"
-            :defaultPageSize="DEFAULT_PAGE_SIZE"
-            :current="page"
-            :pageSizeOptions="['10', '25', '50', '100']"
-          />
-          <div
-            style="display: flex; flex-direction: column; align-items: center; height: 70vh; overflow: scroll;"
-          >
-            <template v-if="$apollo.loading"><a-skeleton active/></template>
-            <template v-else>
-              <SeminarRequestCard
-                v-for="seminar in seminarLimited"
-                :key="seminar.id"
-                :seminar="seminar"
-                :visit="seminar.visits[0]"
-              />
-            </template>
-          </div>
-        </a-col>
-        <a-col :span="6">
-          <a-card>
-            <a-form>
-              <h4 align="left">Filter by</h4>
-              <h5 align="left">Date range</h5>
-              <a-range-picker
-                style="width:auto"
-                show-time
-                :ranges="{
-                  Today: [moment(TEST_DATE), moment(TEST_DATE)],
-                  'This week': [
-                    moment(TEST_DATE).startOf('week'),
-                    moment(TEST_DATE).endOf('week')
-                  ],
-                  'This month': [
-                    moment(TEST_DATE).startOf('month'),
-                    moment(TEST_DATE).endOf('month')
-                  ]
-                }"
-                :format="utils.dateFormatStr"
-                v-model="selectedDateRange"
-                class="filter-field"
-              />
-              <h5 align="left">Time range</h5>
-              <a-time-picker
-                :minute-step="30"
-                use12-hours
-                format="h:mm A"
-                v-model="startTime"
-                placeholder="Start"
-                style="width:100%; margin-bottom: 5px"
-                valueFormat="HH:mm"
+    <div style="display: flex;">
+      <div style="width: 80%;">
+        <h4 align="left">
+          Results
+          <a-spin v-if="$apollo.loading">
+            <a-icon
+              slot="indicator"
+              type="loading"
+              style="font-size: 26px; padding-left: 10px"
+              spin
+            />
+          </a-spin>
+        </h4>
+        <a-pagination
+          style="text-align: center; margin-bottom: 20px"
+          @change="onPageChange"
+          showSizeChanger
+          :show-total="
+            (total, range) => `${range[0]}-${range[1]} of ${total} items`
+          "
+          :total="allResultsCount"
+          :defaultPageSize="DEFAULT_PAGE_SIZE"
+          :current="page"
+          :pageSizeOptions="['10', '25', '50', '100']"
+        />
+        <div
+          style="display: flex; flex-direction: column; align-items: center;"
+        >
+          <template v-if="$apollo.loading"><a-skeleton active/></template>
+          <template v-else>
+            <SeminarRequestCard
+              v-for="seminar in seminarLimited"
+              :key="seminar.id"
+              :seminar="seminar"
+              :visit="seminar.visits[0]"
+              :has_consented="loggedInUser.has_consented"
+            />
+          </template>
+        </div>
+      </div>
+      <div style="margin: 20px">
+        <a-card style="position: sticky; top: 50px;">
+          <a-form>
+            <h4 align="left">Filter by</h4>
+            <h5 align="left">Date range</h5>
+            <a-range-picker
+              style="width:auto"
+              show-time
+              :ranges="{
+                Today: [moment(TEST_DATE), moment(TEST_DATE)],
+                'This week': [
+                  moment(TEST_DATE).startOf('week'),
+                  moment(TEST_DATE).endOf('week')
+                ],
+                'This month': [
+                  moment(TEST_DATE).startOf('month'),
+                  moment(TEST_DATE).endOf('month')
+                ]
+              }"
+              :format="utils.dateFormatStr"
+              v-model="filters.selectedDateRange"
+              class="filter-field"
+            />
+            <h5 align="left">Time range</h5>
+            <a-time-picker
+              :minute-step="30"
+              use12-hours
+              format="h:mm A"
+              v-model="filters.startTime"
+              placeholder="Start"
+              style="width:100%; margin-bottom: 5px"
+              valueFormat="HH:mm"
+            >
+            </a-time-picker>
+            <a-time-picker
+              :minute-step="30"
+              use12-hours
+              format="h:mm A"
+              v-model="filters.endTime"
+              placeholder="End"
+              style="width:100%;"
+              valueFormat="HH:mm"
+              class="filter-field"
+            >
+            </a-time-picker>
+            <h5 align="left">Instructor</h5>
+            <!-- <a-form-item> -->
+            <a-select
+              v-model="filters.facultyName"
+              show-search
+              placeholder="Select or type instructor name"
+              allowClear
+              class="filter-field"
+            >
+              <a-select-option
+                v-for="faculty in faculty_list"
+                :value="faculty.name.toString()"
+                :key="faculty.name.toString()"
               >
-              </a-time-picker>
-              <a-time-picker
-                :minute-step="30"
-                use12-hours
-                format="h:mm A"
-                v-model="endTime"
-                placeholder="End"
-                style="width:100%;"
-                valueFormat="HH:mm"
-                class="filter-field"
-              >
-              </a-time-picker>
-              <h5 align="left">Instructor</h5>
-              <!-- <a-form-item> -->
+                {{ faculty.name.toString() }}
+              </a-select-option>
+            </a-select>
+            <!-- </a-form-item> -->
+            <h5 align="left">Tags</h5>
+            <div style="width:100%; display:flex">
               <a-select
-                v-model="faculty_name"
-                show-search
-                placeholder="Select or type instructor name"
-                allowClear
-                class="filter-field"
-              >
-                <a-select-option
-                  v-for="faculty in faculty_list"
-                  :value="faculty.name.toString()"
-                  :key="faculty.name.toString()"
-                >
-                  {{ faculty.name.toString() }}
-                </a-select-option>
-              </a-select>
-              <!-- </a-form-item> -->
-              <h5 align="left">Tags</h5>
-              <a-select
-                v-model="selected_tags"
+                v-model="filters.selectedTags"
                 mode="tags"
-                style="width: 100%"
-                placeholder="Select a tag ⯆"
+                placeholder="Select a tag"
                 class="filter-field"
               >
                 <a-select-option
@@ -132,10 +146,19 @@
                   {{ tag.label.toString() }}
                 </a-select-option>
               </a-select>
-            </a-form>
-          </a-card>
-        </a-col>
-      </a-row>
+              <a-icon
+                type="down"
+                style="position:absolute; right:35px; margin-top: 10px; color:rgba(0, 0, 0, 0.25)"
+              />
+            </div>
+            <a
+              href="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg"
+              target="_blank"
+              >View campus map</a
+            >
+          </a-form>
+        </a-card>
+      </div>
     </div>
   </div>
 </template>
@@ -146,29 +169,64 @@ import utils from "@/utils";
 import constants from "@/utils/constants";
 import queries from "@/graphql/queries.gql";
 import SeminarRequestCard from "./SeminarRequestCard";
+import suggestedSearchButton from "./suggestedSearchButton";
+import _ from "lodash";
 const DEFAULT_PAGE_SIZE = 10;
 const TEST_DATE = "2018-08-12";
+const SUGGESTED_SEARCH_1 = "SUGGESTED_SEARCH_1";
+const SUGGESTED_SEARCH_2 = "SUGGESTED_SEARCH_2";
+const DEFAULT_FILTERS = {
+  courseTitle: undefined,
+  selectedDateRange: [],
+  startTime: null,
+  endTime: null,
+  facultyName: undefined,
+  selectedTags: []
+};
+const SUGGESTED_SEARCH_FILTERS = {
+  [SUGGESTED_SEARCH_1]: {
+    selectedDateRange: [
+      moment(TEST_DATE).startOf("week"),
+      moment(TEST_DATE).endOf("week")
+    ],
+    selectedTags: ["Common Curriculum"]
+  },
+  [SUGGESTED_SEARCH_2]: {}
+};
 export default {
   name: "viewSeminars",
-  components: { SeminarRequestCard },
+  components: { SeminarRequestCard, suggestedSearchButton },
   data() {
     return {
+      loggedInUser: {}, 
       TEST_DATE,
       seminar: [],
       DEFAULT_PAGE_SIZE,
       moment,
       utils,
-      course_title: "",
-      faculty_name: undefined,
-      selected_tags: [],
-      selectedDateRange: [],
       page: 1,
       pageSize: DEFAULT_PAGE_SIZE,
-      startTime: null,
-      endTime: null
+      // Search filters
+      filters: _.cloneDeep(DEFAULT_FILTERS),
+      SUGGESTED_SEARCH_IDS: {
+        SUGGESTED_SEARCH_1,
+        SUGGESTED_SEARCH_2
+      },
+      SUGGESTED_SEARCH_STATE: {
+        [SUGGESTED_SEARCH_1]: false,
+        [SUGGESTED_SEARCH_2]: true
+      },
+      SUGGESTED_SEARCH_FILTERS: _.cloneDeep(SUGGESTED_SEARCH_FILTERS)
     };
   },
   apollo: {
+    loggedInUser: {
+      query: queries.getFacultyById,
+      variables: {
+        faculty_id: constants.TEST_FACULTY_ID
+      },
+      update: data => data.faculty_by_pk
+    },
     courses: {
       query: queries.getCourseList,
       update: data => data.course
@@ -193,6 +251,22 @@ export default {
   watch: {
     seminar() {
       this.page = 1;
+    },
+    filters: {
+      handler(newFilters) {
+        // Check if new filter still matches current suggested search, if any.
+        _.entries(SUGGESTED_SEARCH_FILTERS).forEach(([key, suggested]) => {
+          suggested = _.assign(_.cloneDeep(DEFAULT_FILTERS), suggested);
+          if (
+            this.SUGGESTED_SEARCH_STATE[key] === true &&
+            _.isEqual(newFilters, suggested) == false
+          ) {
+            this.SUGGESTED_SEARCH_STATE[key] = false;
+          }
+        });
+      },
+      // This observes nested properties of filter.
+      deep: true
     }
   },
   computed: {
@@ -212,22 +286,24 @@ export default {
         : [];
     },
     searchQuery() {
-      return utils.isNonEmptyArray(this.selected_tags)
+      return utils.isNonEmptyArray(this.filters.selectedTags)
         ? queries.searchSeminarsByFiltersWithTags
         : queries.searchSeminarsByFilters;
     },
     searchQueryVariables() {
-      const course_title = this.course_title ? `%${this.course_title}%` : "%";
-      const faculty_name = this.faculty_name || "%";
-      const start_date = utils.isNonEmptyArray(this.selectedDateRange)
-        ? this.selectedDateRange[0]
+      const course_title = this.filters.course_title
+        ? `%${this.filters.course_title}%`
+        : "%";
+      const faculty_name = this.filters.facultyName || "%";
+      const start_date = utils.isNonEmptyArray(this.filters.selectedDateRange)
+        ? this.filters.selectedDateRange[0]
         : "2000-01-01";
-      const end_date = utils.isNonEmptyArray(this.selectedDateRange)
-        ? this.selectedDateRange[1]
+      const end_date = utils.isNonEmptyArray(this.filters.selectedDateRange)
+        ? this.filters.selectedDateRange[1]
         : "2050-01-01";
-      const start_time = this.startTime || "00:00";
-      const end_time = this.endTime || "23:59";
-      return utils.isNonEmptyArray(this.selected_tags)
+      const start_time = this.filters.startTime || "00:00";
+      const end_time = this.filters.endTime || "23:59";
+      return utils.isNonEmptyArray(this.filters.selectedTags)
         ? {
             course_title,
             faculty_name,
@@ -235,7 +311,7 @@ export default {
             end_date,
             start_time,
             end_time,
-            selected_tags: this.selected_tags,
+            selected_tags: this.filters.selectedTags,
             visitor_id: constants.TEST_FACULTY_ID
           }
         : {
@@ -250,6 +326,28 @@ export default {
     }
   },
   methods: {
+    // onManualFilterChange() {
+    //   Object.keys(this.SUGGESTED_SEARCH_STATE).forEach(
+    //     key => (this.SUGGESTED_SEARCH_STATE[key] = FALSE)
+    //   );
+    // },
+    onSuggestedSearchSelectToggle(data) {
+      // Update which button is selected.
+      const new_button_state = {};
+      Object.keys(this.SUGGESTED_SEARCH_STATE).forEach(key => {
+        new_button_state[key] = false;
+      });
+      if (data.value === true) {
+        new_button_state[data.id] = true;
+      }
+      this.SUGGESTED_SEARCH_STATE = new_button_state;
+      // Update filter values
+      const new_filters = { ...DEFAULT_FILTERS };
+      if (data.value) {
+        Object.assign(new_filters, SUGGESTED_SEARCH_FILTERS[data.id]);
+      }
+      this.filters = new_filters;
+    },
     autoCompleteCourseTitle(input, option) {
       return (
         option.componentOptions.children[0].text
@@ -278,5 +376,11 @@ export default {
 }
 .filter-field {
   margin-bottom: 20px;
+}
+.suggested-search-option {
+  font-size: 30px;
+}
+.suggested-search-option .anticon-close {
+  font-size: 30px;
 }
 </style>

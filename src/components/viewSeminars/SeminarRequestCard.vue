@@ -1,13 +1,20 @@
 <template>
-  <div style="width: 35rem; margin-bottom: 20px">
-    <!--     <img
-        class="avatar"
-        :src="instructor.profilePic"
-        style="background-color: grey"
-      /> -->
-    <p style="margin: 0 0 3px 20px">
-      {{ `${course_group.faculty.name}'s class` }}
-    </p>
+  <div style="width: 35rem; margin-bottom: 30px">
+    <div style="display: flex; align-items: center; margin: 0 0 10px 20px">
+      <img
+        class="avatar-medium"
+        :src="
+          course_group.faculty.profilePic ||
+            'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
+        "
+      />
+      <p style="margin: 0 5px;">
+        {{ `${course_group.faculty.name}'s class` }}
+      </p>
+      <template v-for="tag in course.tagged_as">
+        <ColoredTag :key="tag.tag_label" :tag_label="tag.tag_label" />
+      </template>
+    </div>
     <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag>
     <a-card hoverable :class="{ closed: !seminar.is_open }">
       <div style="display: flex; flex-direction: column;">
@@ -34,19 +41,19 @@
               <p style="display: inline">
                 {{ seminar.module_code }}
               </p>
-              <h4>{{ seminar.title || "This is seminar title" }}</h4>
+              <h4 :class="{ placeholder: !seminar.title }">
+                {{ seminar.title || "No class title" }}
+              </h4>
             </div>
             <div style="margin-bottom: 10px">
-              <h5 class="truncate" style="margin-bottom: 0">
-                {{
-                  seminar.desc ||
-                    course.desc ||
-                    "This is some seminar descriptions"
-                }}
+              <h5 class="truncate" :class="{ placeholder: !seminar.desc }">
+                {{ seminar.desc || "No class description" }}
               </h5>
-              <a @click="descModalVisible = true"
-                >View full course description and seminar details</a
-              >
+              <h6>
+                <a @click="descModalVisible = true" href="#"
+                  >View full course description and class details</a
+                >
+              </h6>
             </div>
             <a-modal v-model="descModalVisible" @ok="descModalVisible = false">
               <template slot="footer">
@@ -58,92 +65,103 @@
               <p>{{ course.desc }}</p>
             </a-modal>
             <h5>
-              {{ "Notes for visitors: " + (course_group.notes || "Some notes") }}
+              {{ "Notes for visitors: " + (course_group.notes || "None") }}
             </h5>
           </a-col>
           <a-col v-if="seminar.is_open" :span="7">
-            <template v-if="!visit_local">
-              <a-button
-                @click="requestModalVisible = true"
-                type="primary"
-                block
-                style="margin-bottom: 20px"
-                >Request visit</a-button
-              >
-              <a-modal
-                v-model="requestModalVisible"
-                title="Making a vist request"
-                @ok="handleSubmitRequest"
-              >
-                <template slot="footer">
-                  <a-button key="cancel" @click="requestModalVisible = false"
-                    >Cancel</a-button
-                  >
-                  <a-button key="submit" @click="handleSubmitRequest"
-                    >Submit</a-button
-                  >
-                </template>
-                <a-form-model-item label="Your request message (optional)">
-                  <a-input v-model="request_msg" type="textarea" />
-                </a-form-model-item>
-              </a-modal>
-            </template>
-            <template v-else>
-              <a-button
-                @click="cancelRequestModalVisible = true"
-                type="primary"
-                ghost
-                block
-                style="margin-bottom: 20px"
-                >Cancel request</a-button
-              >
-              <a-modal
-                v-model="cancelRequestModalVisible"
-                @ok="handleCancelRequest"
-                title="Cancel visit request"
-              >
-                <template slot="footer">
-                  <a-button
-                    key="cancel"
-                    @click="cancelRequestModalVisible = false"
-                    >Cancel</a-button
-                  >
-                  <a-button key="submit" @click="handleCancelRequest"
-                    >Confirm cancel request</a-button
-                  >
-                </template>
-                <p>Your are about to cancel your visit request</p>
-              </a-modal>
-              <div style="display: flex; justify-content: center">
+            <div
+              style="display: flex; flex-direction: column; align-items: center;"
+            >
+              <template v-if="!visit_local">
+                <a-button
+                  @click="requestModalVisible = true"
+                  type="primary"
+                  block
+                  style="margin-bottom: 15px"
+                  :disabled="!has_consented"
+                  >Request visit</a-button
+                >
+                <a-modal
+                  v-model="requestModalVisible"
+                  title="Making a vist request"
+                  @ok="handleSubmitRequest"
+                >
+                  <template slot="footer">
+                    <a-button key="cancel" @click="requestModalVisible = false"
+                      >Cancel</a-button
+                    >
+                    <a-button key="submit" @click="handleSubmitRequest"
+                      >Submit</a-button
+                    >
+                  </template>
+                  <a-form-model-item label="Your request message (optional)">
+                    <a-input v-model="request_msg" type="textarea" />
+                  </a-form-model-item>
+                </a-modal>
+              </template>
+              <template v-else>
+                <a-button
+                  @click="cancelRequestModalVisible = true"
+                  type="primary"
+                  ghost
+                  block
+                  style="margin-bottom: 15px"
+                  :disabled="!has_consented"
+                  >Cancel request</a-button
+                >
+                <a-modal
+                  v-model="cancelRequestModalVisible"
+                  @ok="handleCancelRequest"
+                  title="Cancel visit request"
+                >
+                  <template slot="footer">
+                    <a-button
+                      key="cancel"
+                      @click="cancelRequestModalVisible = false"
+                      >Cancel</a-button
+                    >
+                    <a-button key="submit" @click="handleCancelRequest"
+                      >Confirm cancel request</a-button
+                    >
+                  </template>
+                  <p>Your are about to cancel your visit request</p>
+                </a-modal>
                 <template v-if="visit_local.visit_status === 'PENDING'">
-                  <a-icon
-                    type="clock-circle"
-                    theme="filled"
-                    class="status-icon pending"
-                  />
-                  <h4 class="pending" style="margin-bottom: 0">
-                    Request pending
-                  </h4>
+                  <div style="display: flex; justify-content: center">
+                    <a-icon
+                      type="clock-circle"
+                      theme="filled"
+                      class="status-icon pending"
+                    />
+                    <h4 class="pending" style="margin-bottom: 0">
+                      Request pending
+                    </h4>
+                  </div>
                 </template>
                 <template v-else-if="visit_local.visit_status === 'ACCEPTED'">
-                  <div style="display: flex; align-items: center">
-                    <a-icon
-                      type="check-circle"
-                      theme="filled"
-                      class="status-icon accepted"
-                    />
+                  <div
+                    style="display: flex; justify-content: center; margin-bottom: 5px;"
+                  >
+                    <div style="display: flex; align-items: center">
+                      <a-icon
+                        type="check-circle"
+                        theme="filled"
+                        class="status-icon accepted"
+                      />
+                    </div>
+                    <div>
+                      <h4 class="accepted" style="margin-bottom: 3px">
+                        Request accepted
+                      </h4>
+                      <h5 class="accepted">
+                        {{
+                          visit.time_responded &&
+                            utils.datetime_fromnow_format(visit.time_responded)
+                        }}
+                      </h5>
+                    </div>
                   </div>
-                  <div>
-                    <h4 class="accepted" style="margin-bottom: 3px">
-                      Request accepted
-                    </h4>
-                    <h5 class="accepted">
-                      {{
-                        visit.time_responded &&
-                          utils.datetime_fromnow_format(visit.time_responded)
-                      }}
-                    </h5>
-                  </div>
+                  <AddToCalendar :seminar="seminar" />
                 </template>
                 <template v-else-if="visit_local.visit_status === 'DECLINED'">
                   <div style="display: flex; align-items: center">
@@ -155,7 +173,7 @@
                   </div>
                   <div>
                     <h4 class="declined" style="margin-bottom: 3px">
-                      Request accepted
+                      Request declined
                     </h4>
                     <h5 class="declined">
                       {{
@@ -165,8 +183,8 @@
                     </h5>
                   </div>
                 </template>
-              </div>
-            </template>
+              </template>
+            </div>
           </a-col>
         </div>
         <div v-if="visit_local && isMessagesVisible" style="margin-top: 20px">
@@ -182,9 +200,15 @@
 import utils from "@/utils";
 import constants from "@/utils/constants";
 import queries from "@/graphql/queries.gql";
+import ColoredTag from "./ColoredTag";
+import AddToCalendar from "./AddToCalendar";
 
 export default {
   name: "SeminarRequestCard",
+  components: {
+    ColoredTag,
+    AddToCalendar
+  },
   props: {
     visit: {
       type: Object,
@@ -197,6 +221,10 @@ export default {
     isMessagesVisible: {
       type: Boolean,
       default: false
+    },
+    has_consented: {
+      type: Boolean,
+      default: true
     }
   },
   data: function() {
@@ -206,7 +234,8 @@ export default {
       descModalVisible: false,
       requestModalVisible: false,
       request_msg: "",
-      cancelRequestModalVisible: false
+      cancelRequestModalVisible: false,
+      tag: this.makeTag
     };
   },
   computed: {
@@ -245,31 +274,16 @@ export default {
       });
       this.visit_local = null;
       this.cancelRequestModalVisible = false;
-    },
-    handleAddToCalendar() {}
+    }
   }
 };
 </script>
 
 <style scoped>
-a {
-  font-size: 12px;
-}
 .ant-card-hoverable {
   cursor: default;
 }
 .closed {
   background-color: rgba(0, 0, 0, 0.12);
-}
-.avatar {
-  height: 25px;
-  width: 25px;
-  border-radius: 50%;
-  margin: 5px;
-}
-.request-status {
-  font-size: 16px;
-  font-family: "Lato", sans-serif;
-  font-weight: bold;
 }
 </style>

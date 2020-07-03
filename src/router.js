@@ -5,6 +5,7 @@ import mycourses from "@/components/mycourses";
 import MyVisitorsPage from "@/components/MyVisitorsPage";
 //import searchcourses from './components/searchcourses.vue'
 import viewSeminars from "@/components/viewSeminars";
+import FacultyStatusPage from "@/components/FacultyStatusPage";
 import courseDetails from "@/components/mycourses/courseDetails";
 import auth from "@/auth/authService";
 import LoginPage from "@/components/LoginPage";
@@ -71,6 +72,11 @@ const router = new Router({
       path: "/my-visits",
       name: "MyVisitsPage",
       component: MyVisitsPage
+    },
+    {
+      path: "/faculty-status",
+      name: "FacultyStatusPage",
+      component: FacultyStatusPage
     }
   ]
 });

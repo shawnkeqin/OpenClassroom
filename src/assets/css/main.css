@@ -61,6 +61,12 @@ p {
   font-family: "Lato", sans-serif;
   color: rgba(0, 0, 0, 0.87);
 }
+div {
+  font-family: "Lato", sans-serif;
+}
+span {
+  font-family: "Lato", sans-serif;
+}
 .truncate {
   white-space: nowrap;
   overflow: hidden;
@@ -69,14 +75,13 @@ p {
 .page-wrapper {
   display: flex;
   flex-direction: column;
-  padding-left: 5rem;
+  padding-left: 2rem;
 }
 .content-block-wrapper {
   padding: 20px
 }
 button span {
   font-size: 14px;
-  font-family: "Lato", sans-serif;
   font-weight: bold;
 }
 .status-icon {
@@ -105,4 +110,8 @@ button span {
 }
 .declined {
   color: #e57373;
+}
+.placeholder {
+  color: rgba(0, 0, 0, 0.37);
+  font-weight: normal;
 }
