@@ -10,16 +10,25 @@
       <!--  <a-button type="danger" size="large" @click="setAllUnavailable">
         Close Course
       </a-button> -->
-      <a-tooltip
-        placement="topLeft"
-        title="Caution: All individual classes will be closed!"
-        arrow-point-at-center
-      >
-        <closeCourseAndSeminarsToggle
-          v-bind:course_group_id="course_group.id"
-        />
-      </a-tooltip>
     </div>
+    <a-tooltip
+      placement="topLeft"
+      title="Closing or opening the course will apply the same effect to all classes."
+      arrow-point-at-center
+    >
+      <div style="display: flex; align-items: center; padding-bottom: 5px;">
+        <p style="margin: 0 10px 0 0">
+          This course is open to visit requests
+        </p>
+        <a-switch 
+          :checked="course_group.is_open"
+          checked-children="open"
+          un-checked-children="closed"
+          :loading="isToggleCourseGroupLoading"
+          @click="toggleCourseGroupIsOpen"
+        />
+      </div>
+    </a-tooltip>
     <a-card style="width: 35rem" bodyStyle="padding: 0">
       <a-collapse default-active-key="1" :bordered="false">
         <a-collapse-panel key="2" header="Course description">
@@ -36,8 +45,8 @@
         </a-collapse-panel>
       </a-collapse>
       <a-collapse default-active-key="1" :bordered="false">
-        <a-collapse-panel key="2" header="Notes for observers">
-          <p>{{ course.course_group }}</p>
+        <a-collapse-panel key="3" header="Notes for observers">
+          <p>{{ course.notes }}</p>
         </a-collapse-panel>
       </a-collapse>
     </a-card>
@@ -81,7 +90,7 @@ import seminarItem from "./seminarItem";
 // import addNewSeminarModal from "./addNewSeminarModal";
 import updateCourseDetailsModal from "./updateCourseDetailsModal";
 // import courseModule from "./courseModule";
-import closeCourseAndSeminarsToggle from "./closeCourseAndSeminarsToggle";
+// import closeCourseAndSeminarsToggle from "./closeCourseAndSeminarsToggle";
 export default {
   name: "courseDetails",
   props: ["id"],
@@ -89,14 +98,14 @@ export default {
     seminarItem,
     // addNewSeminarModal,
     updateCourseDetailsModal,
-    closeCourseAndSeminarsToggle
+    // closeCourseAndSeminarsToggle
     // courseModule
   },
   data: function() {
     return {
       seminars: [],
-      course: {},
-      course_group: []
+      course_group: {},
+      isToggleCourseGroupLoading: false,
     };
   },
   apollo: {
@@ -110,25 +119,20 @@ export default {
         update: data => data.seminar
       };
     },
-    course() {
-      const course_group_id = this.id;
-      return {
-        query: queries.get_course_by_course_group,
-        variables: {
-          course_group_id
-        },
-        update: data => data.course[0]
-      };
-    },
     course_group() {
       const course_group_id = this.id;
       return {
-        query: queries.get_syllabus_by_course_group,
+        query: queries.get_course_group_details,
         variables: {
           course_group_id
         },
         update: data => data.course_group[0]
       };
+    }
+  },
+  computed: {
+    course() {
+      return this.course_group.course;
     }
   },
   // computed: {
@@ -140,6 +144,23 @@ export default {
   //   }
   // },
   methods: {
+    async toggleCourseGroupIsOpen() {
+      this.isToggleCourseGroupLoading = true;
+      const course_group_id = this.id;
+      const current_is_open = this.course_group.is_open;
+      await this.$apollo.mutate({
+        mutation: queries.update_course_group_and_seminars_is_open,
+        variables: {
+          course_group_id,
+          is_open: !current_is_open
+        },
+        refetchQueries: [
+          "get_course_group_details",
+          "get_seminars_by_course_group"
+        ]
+      });
+      this.isToggleCourseGroupLoading = false;
+    },
     async setAllUnavailable() {
       const course_group_id = this.id;
       await this.$apollo.mutate({
