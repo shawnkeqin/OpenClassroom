@@ -14,12 +14,22 @@
       <div>
         <div style="position: sticky; top: 20px; margin: 50px">
           <p>
-            <a
-              href="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg"
-              target="_blank"
-              >View campus map</a
-            >
+            <a @click="mapVisible = true" href="#">View campus map</a>
           </p>
+          <a-modal
+            title="Campus map"
+            :visible="mapVisible"
+            @cancel="mapVisible = false"
+            width="60vw"
+          >
+            <template slot="footer">
+              <div />
+            </template>
+            <img
+              src="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg"
+              width="100%"
+            />
+          </a-modal>
           <p>
             CTL best practices for Peer Observation: download
             <a
@@ -46,7 +56,8 @@ export default {
   },
   data() {
     return {
-      myVisits: []
+      myVisits: [],
+      mapVisible: false
     };
   },
   apollo: {
