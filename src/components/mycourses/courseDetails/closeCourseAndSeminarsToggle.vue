@@ -12,7 +12,6 @@ export default {
   data() {
     return {};
   },
-  apollo: {},
   methods: {
     async onChange(checked) {
       const course_group_id = this.course_group_id;
