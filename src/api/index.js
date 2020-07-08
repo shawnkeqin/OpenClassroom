@@ -31,16 +31,17 @@ api.get("/", function(req, res) {
 
 api.post("/login", (req, res, next) => {
   passport.authenticate("ldapauth", (err, user, info) => {
-    console.log(err);
-    console.log(user);
-    console.log(info);
+    // console.log("API:");
+    // console.log(err);
+    // console.log(user);
+    // console.log(info);
     if (err) {
       return next(err);
     }
     if (!user) {
       res.status(401).json({
         success: false,
-        message: "info"
+        message: info
       });
     } else {
       const payload = {
@@ -55,7 +56,7 @@ api.post("/login", (req, res, next) => {
       };
       jwt.sign(payload, process.env.JWT_SECRET, (err, token) => {
         if (err) {
-          console.log(err);
+          // console.log(err);;
           res.send(err);
         }
         res.json({
@@ -78,5 +79,3 @@ module.exports = app => {
 //   console.log("Time: ", Date.now());
 //   next();
 // });
-
-// {"type": "RS512", "key": ";"}
