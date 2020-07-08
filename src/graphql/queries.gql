@@ -182,7 +182,7 @@ query get_course_groups_by_faculty($faculty_id: String!) {
 
 query get_seminars_by_course_group($course_group_id: Int!) {
   seminar(where: { course_group: { id: { _eq: $course_group_id } } }, order_by: {date: desc}) {
-     id
+    id
     date
     start
     end
@@ -197,27 +197,39 @@ query get_seminars_by_course_group($course_group_id: Int!) {
     visitor_capacity
     is_open
     course_group {
+      id
       faculty {
+        id
         name
       }
     }
   }
 }
 
-query get_course_by_course_group($course_group_id: Int!) {
-  course(where: { course_groups: { id: { _eq: $course_group_id } } }) {
+query get_course_group_details($course_group_id: Int!) {
+  course_group(where: {id: {_eq: $course_group_id}}) {
     id
-    module_code
-    title
-    desc
+    group_code
+    syllabus
+    course_group_desc
+    is_open
+    notes
+    course {
+      id
+      title
+      module_code
+      module_brief_link
+      desc
+    }
   }
 }
 
-query get_syllabus_by_course_group($course_group_id: Int!) {
-  course_group(where: {id: {_eq: $course_group_id }}) {
-    id
-    syllabus
-    course_group_desc
+mutation update_course_group_and_seminars_is_open($course_group_id: Int!, $is_open: Boolean!) {
+  update_course_group(where: {id: {_eq: $course_group_id}}, _set: { is_open: $is_open}) {
+ 		affected_rows
+  }
+  update_seminar(where: {course_group: {id: {_eq: $course_group_id}}}, _set: {is_open: $is_open}) {
+    affected_rows
   }
 }
 

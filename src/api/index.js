@@ -5,6 +5,8 @@ var passport = require("passport"),
   jwt = require("jsonwebtoken"),
   moment = require("moment");
 
+const notifsRouter = require("./notifsRouter");
+
 var api = express.Router();
 
 var getLDAPConfiguration = function(req, callback) {
@@ -73,6 +75,7 @@ api.use(passport.initialize());
 module.exports = app => {
   app.use(bodyParser.json());
   app.use("/api", api);
+  app.use("/notifs", notifsRouter);
 };
 // middleware that is specific to this router
 // api.use(function timeLog(req, res, next) {
