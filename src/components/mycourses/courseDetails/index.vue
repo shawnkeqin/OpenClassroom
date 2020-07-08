@@ -11,24 +11,28 @@
         Close Course
       </a-button> -->
     </div>
-    <a-tooltip
-      placement="topLeft"
-      title="Closing or opening the course will apply the same effect to all classes."
-      arrow-point-at-center
-    >
-      <div style="display: flex; align-items: center; padding-bottom: 5px;">
-        <p style="margin: 0 10px 0 0">
-          This course is open to visit requests
-        </p>
-        <a-switch 
-          :checked="course_group.is_open"
-          checked-children="open"
-          un-checked-children="closed"
-          :loading="isToggleCourseGroupLoading"
-          @click="toggleCourseGroupIsOpen"
-        />
-      </div>
-    </a-tooltip>
+    <div style="display: flex; align-items: center; padding-bottom: 5px;">
+      <p style="margin: 0 10px 0 0">
+        {{
+          `This course group is ${
+            course_group.is_open ? `open` : `closed`
+          } to visit requests`
+        }}
+      </p>
+      <a-switch
+        :checked="course_group.is_open"
+        checked-children="open"
+        un-checked-children="closed"
+        :loading="isToggleCourseGroupLoading"
+        @click="toggleCourseGroupIsOpen"
+        style="margin-right: 5px;"
+      />
+      <a-tooltip
+        title="Closing/opening this course group will automatically close/open all of its classes."
+      >
+        <a-icon type="exclamation-circle" theme="filled" class="pending" />
+      </a-tooltip>
+    </div>
     <a-card style="width: 35rem" bodyStyle="padding: 0">
       <a-collapse default-active-key="1" :bordered="false">
         <a-collapse-panel key="2" header="Course description">
