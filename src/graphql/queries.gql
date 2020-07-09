@@ -18,6 +18,8 @@ query getFacultyById($faculty_id: String!) {
     id
     name
     has_consented
+    notif_new_request
+    notif_request_update
   }
 }
 
@@ -471,8 +473,19 @@ query getSeminarById($seminar_id: Int!) {
         id
         email
         name
-        email_notif
       }
     }
+  }
+}
+
+mutation update_faculty_notif_new_request($faculty_id: String!, $notif_new_request: Boolean!) {
+  update_faculty(where: {id: {_eq: $faculty_id}}, _set: {notif_new_request: $notif_new_request}) {
+    affected_rows
+  }
+}
+
+mutation update_faculty_notif_request_update($faculty_id: String!, $notif_request_update: Boolean!) {
+  update_faculty(where: {id: {_eq: $faculty_id}}, _set: {notif_request_update: $notif_request_update}) {
+    affected_rows
   }
 }

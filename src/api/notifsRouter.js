@@ -32,6 +32,7 @@ async function notifMiddleware(req, res, next) {
               id
               name
               has_consented
+              notif_request_update
             }
           }
         `,
@@ -65,7 +66,7 @@ async function notifMiddleware(req, res, next) {
                   id
                   email
                   name
-                  email_notif
+                  notif_new_request
                 }
               }
             }
@@ -79,12 +80,6 @@ async function notifMiddleware(req, res, next) {
     ).data.seminar_by_pk;
     const course = seminar.course_group.course;
     const instructor = seminar.course_group.faculty;
-
-    if (!instructor.email_notif)
-      return res.json({
-        success: true,
-        message: "No email sent because of user preference"
-      });
 
     req.visit = {
       visitor,
@@ -105,14 +100,20 @@ async function notifMiddleware(req, res, next) {
 }
 
 async function newRequestHandler(req, res) {
-  const { visitor, seminar, course } = req.visit;
+  const { visitor, seminar, instructor, course } = req.visit;
+
+  if (!instructor.notif_new_request)
+    return res.json({
+      success: true,
+      message: "No email sent because of user preference"
+    });
 
   try {
     const info = await transporter.sendMail({
       from: process.env.EMAIL,
       to: process.env.EMAIL_TO,
       // process.env.NODE_ENV === "production"
-      //   ? seminar.faculty.email
+      //   ? instructor.email
       //   : process.env.EMAIL_TO,
       subject: `New visit request to your class`,
       html: `<p>${visitor.name} made a visit request to your class ${course.module_code} ${course.title}, ${seminar.date}.</p>
@@ -134,14 +135,20 @@ async function newRequestHandler(req, res) {
 }
 
 async function requestUpdateHandler(req, res) {
-  // const { visitor, seminar, visit_status_old, visit_status_new } = req.visit;
   const {
+    visitor,
     seminar,
     course,
     instructor,
     visit_status_old,
     visit_status_new
   } = req.visit;
+
+  if (!visitor.notif_request_update)
+    return res.json({
+      success: true,
+      message: "No email sent because of user preference"
+    });
 
   if (visit_status_old === visit_status_new)
     return res.json({
