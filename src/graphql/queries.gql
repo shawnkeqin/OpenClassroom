@@ -438,11 +438,6 @@ mutation close_all_course_seminars($course_group_id: Int!) {
   }
 }
 
-
-
-
-
-
 query get_my_visited_request_seminars($visitor_id: String!) {
   seminar(where: {visits: {visitor_id: {_eq: $visitor_id}}}) {
     date
@@ -454,5 +449,30 @@ query get_my_visited_request_seminars($visitor_id: String!) {
       }
     }
     id
+  }
+}
+
+query getSeminarById($seminar_id: Int!) {
+  seminar_by_pk(id: $seminar_id) {
+    id
+    date
+    start
+    end
+    title
+    desc
+    course_group {
+      id
+      course {
+        id
+        module_code
+        title
+      }
+      faculty {
+        id
+        email
+        name
+        email_notif
+      }
+    }
   }
 }
