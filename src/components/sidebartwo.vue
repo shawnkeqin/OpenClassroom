@@ -1,36 +1,5 @@
 <template>
   <a-layout id="components-layout-demo-top-side">
-    <!-- <a-layout-header class="header" theme="light">
-      <div class="logo" />
-
-      <a-menu
-        theme="dark"
-        mode="horizontal"
-        :default-selected-keys="['2']"
-        :style="{ lineHeight: '64px' }"
-      >
-        <a-menu-item key="1">
-          Profile
-          <router-link to="/profile"></router-link>
-        </a-menu-item>
-        <a-menu-item key="2">
-          My Courses
-          <router-link to="/mycourses"></router-link>
-        </a-menu-item>
-        <a-menu-item key="3">
-         Search Courses
-          <router-link to="/searchcourses"></router-link>
-        </a-menu-item>
-        <a-menu-item key="4">
-         My Visitors
-          <router-link to="/observelog"></router-link>
-        </a-menu-item>
-           <a-menu-item key="5">
-         My Visits
-          <router-link to="/observelog"></router-link>
-        </a-menu-item>
-      </a-menu>
-    </a-layout-header> -->
     <a-alert v-if="showConsent" type="info" show-icon>
       <template slot="message">
         <p style="margin-bottom: 5px;">
@@ -88,50 +57,76 @@
               ></a>
             </a-menu-item>
           </a-menu>
+          <div class="logged-in" v-if="loggedInUserObj">
+            {{ loggedInUserObj.name }}
+            <div>
+              <a-button class="logout-button" icon="logout" @click="logout"
+                >Log Out</a-button
+              >
+            </div>
+          </div>
         </a-layout-sider>
         <a-layout-content style="padding: 30px 50px 30px 50px; height: 100vh">
-          <router-view />
+          <router-view v-on:login-event="onLoginEvent" />
         </a-layout-content>
       </a-layout>
     </a-layout-content>
-    <a-layout-footer style="text-align: left">
-      Logged in as: {{ loggedInUser.name }}, ID: {{ loggedInUser.id }}
-    </a-layout-footer>
+    <a-layout-footer style="text-align: left"> </a-layout-footer>
   </a-layout>
 </template>
 <script>
 import constants from "../utils/constants";
 import queries from "../graphql/queries.gql";
 import ConsentForm from "./ConsentForm";
+import auth from "@/auth";
 export default {
   components: { ConsentForm },
   data() {
     return {
       constants: constants,
       queries: queries,
-      loggedInUser: {},
-      showConsent: false,
-      seminarWithVisits: []
+      loggedInUserObj: null,
+      seminarWithVisits: [],
+      loggedInUser: auth.getLoggedInUser()
     };
   },
+  methods: {
+    onLoginEvent() {
+      this.loggedInUser = auth.getLoggedInUser();
+    },
+    logout() {
+      auth.logout();
+      // this.$router.push({ path: "/login" });
+    }
+  },
   apollo: {
-    loggedInUser: {
+    loggedInUserObj: {
       query: queries.getFacultyById,
-      variables: {
-        faculty_id: constants.TEST_FACULTY_ID
+      variables() {
+        return { faculty_id: this.loggedInUser };
       },
-      update: data => data.faculty_by_pk
+      update: data => data.faculty_by_pk,
+      skip() {
+        return this.loggedInUser === null;
+      }
     },
     seminarsWithVisits: {
       query: queries.get_seminars_with_visits_by_time_requested,
-      variables: {
-        faculty_id: constants.TEST_FACULTY_ID,
-        semester_code: constants.SEMESTER_CODE_AY1819_1
+      variables() {
+        return {
+          faculty_id: auth.getLoggedInUser(),
+          semester_code: constants.SEMESTER_CODE_AY1819_1
+        };
       },
       update: data => data.seminar
     }
   },
   computed: {
+    showConsent() {
+      return (
+        this.loggedInUserObj && this.loggedInUserObj.has_consented == false
+      );
+    },
     pendingVisitsCount() {
       const count =
         this.seminarsWithVisits &&
@@ -143,9 +138,6 @@ export default {
     }
   },
   watch: {
-    loggedInUser() {
-      this.showConsent = !this.loggedInUser.has_consented;
-    },
     pendingVisitsCount() {
       const count = this.pendingVisitsCount;
       if (count) {
@@ -189,5 +181,18 @@ li.nav-item.ant-menu-item {
 }
 .ant-badge-count {
   box-shadow: transparent;
+}
+
+.logged-in {
+  position: fixed;
+  left: 30px;
+  bottom: 20px;
+  width: 250px;
+  height: 80px;
+  color: #004b8d;
+  background-color: white;
+}
+.logout-button {
+  margin-top: 5px;
 }
 </style>
