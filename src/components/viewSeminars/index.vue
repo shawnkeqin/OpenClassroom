@@ -198,7 +198,7 @@ export default {
   components: { SeminarRequestCard, suggestedSearchButton },
   data() {
     return {
-      loggedInUser: {}, 
+      loggedInUser: {},
       TEST_DATE,
       seminar: [],
       DEFAULT_PAGE_SIZE,
@@ -358,9 +358,6 @@ export default {
     onPageChange(page, pageSize) {
       this.page = page;
       this.pageSize = pageSize;
-    },
-    handleChange(value) {
-      console.log(`selected ${value}`);
     },
     handleClose() {
       this.open = false;

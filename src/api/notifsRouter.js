@@ -91,7 +91,6 @@ async function notifMiddleware(req, res, next) {
     };
     next();
   } catch (err) {
-    console.log(err);
     return res.json({
       success: false,
       message: "Server error"
