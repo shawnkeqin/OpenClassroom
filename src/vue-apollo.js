@@ -23,21 +23,18 @@ export const filesRoot =
 
 Vue.prototype.$filesRoot = filesRoot;
 
-const logoutLink = onError(({ graphQLErrors, networkError }) => {
+const logoutLink = onError(({ graphQLErrors }) => {
   if (graphQLErrors) {
-    graphQLErrors.map(({ message }) => {
+    for (var { message } of graphQLErrors) {
       if (message == "Could not verify JWT: JWTExpired") {
-        auth.logout();
+        auth.logoutWithSessionExpiryMessage();
+        break;
       }
-      // console.log(
-      //   `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-      // )
-    });
+    }
   }
-
-  if (networkError && networkError.statusCode === 401) {
-    auth.logout();
-  }
+  // if (networkError && networkError.statusCode === 401) {
+  //   auth.logout();
+  // }
 });
 
 // Config
@@ -105,11 +102,11 @@ export function createProvider(options = {}) {
     },
     errorHandler(error) {
       // eslint-disable-next-line no-console
-      console.log(
-        "%cError",
-        "background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;",
-        error.message
-      );
+      // console.log(
+      //   "%cError",
+      //   "background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;",
+      //   error.message
+      // );
     }
   });
 
@@ -126,7 +123,7 @@ export async function onLogin(apolloClient, token) {
     await apolloClient.resetStore();
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.log("%cError on cache reset (login)", "color: orange;", e.message);
+    // console.log("%cError on cache reset (login)", "color: orange;", e.message);
   }
 }
 
@@ -140,6 +137,6 @@ export async function onLogout(apolloClient) {
     await apolloClient.resetStore();
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.log("%cError on cache reset (logout)", "color: orange;", e.message);
+    // console.log("%cError on cache reset (logout)", "color: orange;", e.message);
   }
 }
