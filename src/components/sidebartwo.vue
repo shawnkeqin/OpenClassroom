@@ -90,7 +90,16 @@ export default {
       loggedInUser: auth.getLoggedInUser()
     };
   },
+  created() {
+    auth.addListener("session-expired-event", this.onSessionExpiredEvent);
+  },
+  destroyed() {
+    auth.removeListener("session-expired-event", this.onSessionExpiredEvent);
+  },
   methods: {
+    onSessionExpiredEvent() {
+      this.$message.info("User session has expired, please log in again");
+    },
     onLoginEvent() {
       this.loggedInUser = auth.getLoggedInUser();
     },
@@ -114,7 +123,7 @@ export default {
       query: queries.get_seminars_with_visits_by_time_requested,
       variables() {
         return {
-          faculty_id: auth.getLoggedInUser(),
+          faculty_id: constants.loggedInUser,
           semester_code: constants.SEMESTER_CODE_AY1819_1
         };
       },

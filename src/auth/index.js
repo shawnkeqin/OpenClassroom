@@ -1,12 +1,19 @@
 const axios = require("axios").default;
 import router from "@/router";
+import { EventEmitter } from "events";
 const AUTH_TOKEN_KEY = "AUTH_TOKEN";
 const LOGGED_IN_KEY = "LOGGED_IN";
 
-class AuthService {
+class AuthService extends EventEmitter {
   authToken = null;
   loggedInUser = null;
   tokenExpiry = null;
+  logoutWithSessionExpiryMessage() {
+    this.emit("session-expired-event");
+    setTimeout(() => {
+      this.logout();
+    }, 2000);
+  }
   logout() {
     this.authToken = null;
     this.loggedInUser = null;
