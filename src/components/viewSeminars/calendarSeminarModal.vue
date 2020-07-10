@@ -6,6 +6,10 @@
         <u>Seminar Details</u>
       </p>
       <p align="center">
+        <b>Name: </b>
+        {{ event.extendedProps.name }}
+      </p>
+      <p align="center">
         <b>Start: </b>
         {{ event.start }}
       </p>
@@ -14,8 +18,8 @@
         {{ event.end }}
       </p>
       <p align="center">
-        <b>ID: </b>
-        {{ event.id }}
+        <b>Location: </b>
+        {{ event.extendedProps.location }}
       </p>
       <br />
     </fieldset>

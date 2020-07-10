@@ -14,35 +14,41 @@
         </h4>
       </div>
     </div>
-    <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px;">
+    <div
+      style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px;"
+    >
       <p style="margin: 3px;">
-        {{ seminar.module_code }}
+        <!--     {{ seminar.module_code }} -->
       </p>
       <h3 style="font-size: 24px;">
-        {{ course.title }}
+        {{ event.title }}
       </h3>
       <div style="margin-bottom: 3px;">
         <h4 style="display: inline; font-weight: bold;">
-          {{ utils.date_format(seminar.date) + " | " }}
+          <!--   {{ utils.date_format(seminar.date) + " | " }} -->
+          <!--   {{ utils.date_format(event.date) + " | " }} -->
         </h4>
         <h4 style="display: inline;">
-          {{
+          <!--    {{
             utils.time_format(seminar.start) +
               " - " +
               utils.time_format(seminar.end) +
               " | "
-          }}
+          }} -->
+          {{ event.start }}
+          {{ event.end }}
         </h4>
       </div>
-      <h5 style="display: inline">{{ seminar.location.full_name }}</h5>
+      <!--    <h5 style="display: inline">{{ seminar.location.full_name }}</h5> -->
+      <h5 style="display: inline">{{ event.title }}</h5>
     </div>
     <div style="margin-bottom: 20px;">
       <h5>Class title</h5>
-      <p>{{ seminar.title || "No seminar title" }}</p>
+      <p>{{ event.title || "No seminar title" }}</p>
       <h5>Class description</h5>
-      <p>{{ seminar.desc || "No seminar description" }}</p>
+      <!--   <p>{{ seminar.desc || "No seminar description" }}</p> -->
       <h5>Note for visitors</h5>
-      <p>{{ course_group.notes || "None" }}</p>
+      <!--   <p>{{ course_group.notes || "None" }}</p> -->
     </div>
     <template v-if="isMySeminar && confirmedVisits.length">
       <h4 class="accepted">
@@ -115,6 +121,7 @@ export default {
       type: Object,
       default: null
     },
+    event: [],
     isMySeminar: {
       type: Boolean,
       default: false
@@ -122,7 +129,7 @@ export default {
   },
   data: function() {
     return {
-      utils: utils,
+      utils: utils
     };
   },
   computed: {

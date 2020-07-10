@@ -4,7 +4,13 @@
       style="display: flex; align-items: center; justify-content: space-between; padding: 0 20px 0 20px; margin-bottom: 5px;"
     >
       <div style="display: flex; align-items: center;">
-        <p style="margin: 0 5px 0 0">This class is open to visit requests</p>
+        <p style="margin: 0 10px 0 0">
+          {{
+            `This class is ${
+              seminar.is_open ? `open` : `closed`
+            } to visit requests`
+          }}
+        </p>
         <a-switch
           :checked="seminar.is_open"
           checked-children="open"

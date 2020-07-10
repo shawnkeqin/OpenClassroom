@@ -27,14 +27,22 @@
         <a-list item-layout="horizontal" size="small">
           <a-list-item class="preference-item">
             <p>Email me when new requests for my seminars are created</p>
-            <a-switch default-checked />
+            <a-switch
+              :checked="faculty.notif_new_request"
+              :loading="isToggleNotifNewRequestLoading"
+              @click="toggleNotifNewRequest"
+            />
           </a-list-item>
           <a-list-item
             class="preference-item"
             style="background-color: #F6F6F6"
           >
             <p>Email me when my pending requests are accepted/declined</p>
-            <a-switch default-checked />
+            <a-switch
+              :checked="faculty.notif_request_update"
+              :loading="isToggleNotifRequestUpdatetLoading"
+              @click="toggleNotifRequestUpdate"
+            />
           </a-list-item>
           <a-list-item class="preference-item">
             <p>Email me 1 hour before the next visit</p>
@@ -54,7 +62,9 @@ export default {
   name: "Profile",
   data() {
     return {
-      faculty: {}
+      faculty: {},
+      isToggleNotifNewRequestLoading: false,
+      isToggleNotifRequestUpdatetLoading: false
     };
   },
   apollo: {
@@ -64,6 +74,36 @@ export default {
         faculty_id: constants.TEST_FACULTY_ID
       },
       update: data => data.faculty_by_pk
+    }
+  },
+  methods: {
+    async toggleNotifNewRequest() {
+      this.isToggleNotifNewRequestLoading = true;
+      const faculty_id = this.faculty.id;
+      const current_notif_new_request = this.faculty.notif_new_request;
+      await this.$apollo.mutate({
+        mutation: queries.update_faculty_notif_new_request,
+        variables: {
+          faculty_id,
+          notif_new_request: !current_notif_new_request
+        },
+        refetchQueries: ["getFacultyById"]
+      });
+      this.isToggleNotifNewRequestLoading = false;
+    },
+    async toggleNotifRequestUpdate() {
+      this.isToggleNotifRequestUpdateLoading = true;
+      const faculty_id = this.faculty.id;
+      const current_notif_request_update = this.faculty.notif_request_update;
+      await this.$apollo.mutate({
+        mutation: queries.update_faculty_notif_request_update,
+        variables: {
+          faculty_id,
+          notif_request_update: !current_notif_request_update
+        },
+        refetchQueries: ["getFacultyById"]
+      });
+      this.isToggleNotifRequestUpdateLoading = false;
     }
   }
 };

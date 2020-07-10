@@ -18,6 +18,8 @@ query getFacultyById($faculty_id: String!) {
     id
     name
     has_consented
+    notif_new_request
+    notif_request_update
   }
 }
 
@@ -85,7 +87,7 @@ query get_seminars_with_visits_by_time_requested(
     group_code
     visitor_capacity
     week
-    visits(order_by: { time_requested: desc }) {
+    visits(order_by: {time_requested: desc}) {
       id
       is_archived
       is_cancelled
@@ -108,6 +110,9 @@ query get_seminars_with_visits_by_time_requested(
       course {
         id
         title
+      }
+      faculty {
+        name
       }
     }
   }
@@ -193,23 +198,40 @@ query get_seminars_by_course_group($course_group_id: Int!) {
     desc
     visitor_capacity
     is_open
+    course_group {
+      id
+      faculty {
+        id
+        name
+      }
+    }
   }
 }
 
-query get_course_by_course_group($course_group_id: Int!) {
-  course(where: { course_groups: { id: { _eq: $course_group_id } } }) {
+query get_course_group_details($course_group_id: Int!) {
+  course_group(where: {id: {_eq: $course_group_id}}) {
     id
-    module_code
-    title
-    desc
-  }
-}
-
-query get_syllabus_by_course_group($course_group_id: Int!) {
-  course_group(where: {id: {_eq: $course_group_id }}) {
-    id
+    group_code
     syllabus
     course_group_desc
+    is_open
+    notes
+    course {
+      id
+      title
+      module_code
+      module_brief_link
+      desc
+    }
+  }
+}
+
+mutation update_course_group_and_seminars_is_open($course_group_id: Int!, $is_open: Boolean!) {
+  update_course_group(where: {id: {_eq: $course_group_id}}, _set: { is_open: $is_open}) {
+ 		affected_rows
+  }
+  update_seminar(where: {course_group: {id: {_eq: $course_group_id}}}, _set: {is_open: $is_open}) {
+    affected_rows
   }
 }
 
@@ -418,11 +440,6 @@ mutation close_all_course_seminars($course_group_id: Int!) {
   }
 }
 
-
-
-
-
-
 query get_my_visited_request_seminars($visitor_id: String!) {
   seminar(where: {visits: {visitor_id: {_eq: $visitor_id}}}) {
     date
@@ -434,5 +451,41 @@ query get_my_visited_request_seminars($visitor_id: String!) {
       }
     }
     id
+  }
+}
+
+query getSeminarById($seminar_id: Int!) {
+  seminar_by_pk(id: $seminar_id) {
+    id
+    date
+    start
+    end
+    title
+    desc
+    course_group {
+      id
+      course {
+        id
+        module_code
+        title
+      }
+      faculty {
+        id
+        email
+        name
+      }
+    }
+  }
+}
+
+mutation update_faculty_notif_new_request($faculty_id: String!, $notif_new_request: Boolean!) {
+  update_faculty(where: {id: {_eq: $faculty_id}}, _set: {notif_new_request: $notif_new_request}) {
+    affected_rows
+  }
+}
+
+mutation update_faculty_notif_request_update($faculty_id: String!, $notif_request_update: Boolean!) {
+  update_faculty(where: {id: {_eq: $faculty_id}}, _set: {notif_request_update: $notif_request_update}) {
+    affected_rows
   }
 }

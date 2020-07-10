@@ -5,7 +5,8 @@ import mycourses from "@/components/mycourses";
 import MyVisitorsPage from "@/components/MyVisitorsPage";
 //import searchcourses from './components/searchcourses.vue'
 import viewSeminars from "@/components/viewSeminars";
-import FacultyStatusPage from "@/components/FacultyStatusPage";
+import OptOutPage from "@/components/OptOutPage";
+import OptInPage from "@/components/OptInPage";
 import courseDetails from "@/components/mycourses/courseDetails";
 import auth from "@/auth/authService";
 import LoginPage from "@/components/LoginPage";
@@ -74,9 +75,14 @@ const router = new Router({
       component: MyVisitsPage
     },
     {
-      path: "/faculty-status",
-      name: "FacultyStatusPage",
-      component: FacultyStatusPage
+      path: "/opt-out",
+      name: "OptOutPage",
+      component: OptOutPage
+    },
+    {
+      path: "/opt-in",
+      name: "OptInPage",
+      component: OptInPage
     }
   ]
 });
