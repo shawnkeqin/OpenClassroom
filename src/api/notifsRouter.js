@@ -120,7 +120,7 @@ async function newRequestHandler(req, res) {
         <p>Click <a href="https://open-classroom-app-demo.herokuapp.com/my-visitors">here</a> to view it on the OpenClassroom portal.</p>`
     });
 
-    console.log("Message sent: %s", info.messageId);
+    console.log("Email sent: %s", info.messageId);
     return res.json({
       success: true,
       message: "Email sent successfully"
@@ -173,7 +173,7 @@ async function requestUpdateHandler(req, res) {
       html: visitStatusMsg + linkToPortal
     });
 
-    console.log("Message sent: %s", info.messageId);
+    console.log("Email sent: %s", info.messageId);
     return res.json({
       success: true,
       message: "Email sent successfully"
