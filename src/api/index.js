@@ -32,11 +32,10 @@ api.get("/", function(req, res) {
 });
 
 api.post("/login", (req, res, next) => {
-  console.log(process.env.NODE_ENV);
   if (process.env.NODE_ENV == "staging") {
     const payload = {
       exp: moment()
-        .add(30, "seconds")
+        .add(process.env.LDAP_TOKEN_EXP_DAYS, "days")
         .unix(),
       "https://hasura.io/jwt/claims": {
         "x-hasura-allowed-roles": ["user"],
@@ -57,10 +56,6 @@ api.post("/login", (req, res, next) => {
     return;
   }
   passport.authenticate("ldapauth", (err, user, info) => {
-    // console.log("API:");
-    // console.log(err);
-    console.log(user);
-    // console.log(info);
     if (err) {
       return next(err);
     }
@@ -72,7 +67,7 @@ api.post("/login", (req, res, next) => {
     } else {
       const payload = {
         exp: moment()
-          .add(30, "seconds")
+          .add(process.env.LDAP_TOKEN_EXP_DAYS, "days")
           .unix(),
         "https://hasura.io/jwt/claims": {
           "x-hasura-allowed-roles": ["user"],
