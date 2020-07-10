@@ -121,4 +121,4 @@ const service = new AuthService();
 
 service.setMaxListeners(5);
 
-export default service;
+// export default service;

@@ -8,7 +8,7 @@ import viewSeminars from "@/components/viewSeminars";
 import OptOutPage from "@/components/OptOutPage";
 import OptInPage from "@/components/OptInPage";
 import courseDetails from "@/components/mycourses/courseDetails";
-import auth from "@/auth/authService";
+import auth from "@/auth";
 import LoginPage from "@/components/LoginPage";
 import Callback from "@/components/Callback.vue";
 import MyVisitsPage from "@/components/MyVisitsPage";
@@ -88,11 +88,10 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.path == "/callback" || auth.isAuthenticated()) {
+  if (to.path == "/login" || auth.isAuthenticated()) {
     next();
   } else {
-    next();
-    // auth.login({ target: to.path });
+    next("/login");
   }
 });
 

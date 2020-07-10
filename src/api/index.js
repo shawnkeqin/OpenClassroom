@@ -32,17 +32,42 @@ api.get("/", function(req, res) {
 });
 
 api.post("/login", (req, res, next) => {
+  console.log(process.env.NODE_ENV);
+  if (process.env.NODE_ENV == "staging") {
+    const payload = {
+      exp: moment()
+        .add(30, "seconds")
+        .unix(),
+      "https://hasura.io/jwt/claims": {
+        "x-hasura-allowed-roles": ["user"],
+        "x-hasura-default-role": "user",
+        "x-hasura-user-id": req.body.username
+      }
+    };
+    jwt.sign(payload, process.env.JWT_SECRET, (err, token) => {
+      if (err) {
+        // console.log(err);;
+        res.send(err);
+      }
+      res.json({
+        success: true,
+        token: token
+      });
+    });
+    return;
+  }
   passport.authenticate("ldapauth", (err, user, info) => {
-    console.log(err);
+    // console.log("API:");
+    // console.log(err);
     console.log(user);
-    console.log(info);
+    // console.log(info);
     if (err) {
       return next(err);
     }
     if (!user) {
       res.status(401).json({
         success: false,
-        message: "info"
+        message: info
       });
     } else {
       const payload = {
@@ -52,17 +77,17 @@ api.post("/login", (req, res, next) => {
         "https://hasura.io/jwt/claims": {
           "x-hasura-allowed-roles": ["user"],
           "x-hasura-default-role": "user",
-          "x-hasura-user-id": "hihi"
+          "x-hasura-user-id": user[process.env.LDAP_RESP_USERNAME_FIELD]
         }
       };
       jwt.sign(payload, process.env.JWT_SECRET, (err, token) => {
         if (err) {
-          console.log(err);
+          // console.log(err);;
           res.send(err);
         }
         res.json({
           success: true,
-          token: "Bearer " + token
+          token: token
         });
       });
     }
@@ -81,5 +106,3 @@ module.exports = app => {
 //   console.log("Time: ", Date.now());
 //   next();
 // });
-
-// {"type": "RS512", "key": ";"}
