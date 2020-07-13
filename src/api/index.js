@@ -3,7 +3,8 @@ var passport = require("passport"),
   express = require("express"),
   LdapStrategy = require("passport-ldapauth"),
   jwt = require("jsonwebtoken"),
-  moment = require("moment");
+  moment = require("moment"),
+  cors = require("cors");
 
 const notifsRouter = require("./notifsRouter");
 
@@ -31,7 +32,7 @@ api.get("/", function(req, res) {
   res.send("API home");
 });
 
-api.post("/login", (req, res, next) => {
+api.post("/login", cors(), (req, res, next) => {
   if (process.env.VUE_APP_MODE == "staging") {
     const payload = {
       exp: moment()
