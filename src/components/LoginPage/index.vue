@@ -19,7 +19,7 @@
                 ]
               }
             ]"
-            placeholder="NUS Staff ID1"
+            placeholder="NUS Staff ID"
           >
             <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
           </a-input>
