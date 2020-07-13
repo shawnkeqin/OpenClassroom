@@ -32,7 +32,7 @@ api.get("/", function(req, res) {
 });
 
 api.post("/login", (req, res, next) => {
-  if (process.env.NODE_ENV == "staging") {
+  if (process.env.VUE_APP_MODE == "staging") {
     const payload = {
       exp: moment()
         .add(process.env.LDAP_TOKEN_EXP_DAYS, "days")
@@ -91,6 +91,14 @@ api.post("/login", (req, res, next) => {
 
 api.use(bodyParser.urlencoded({ extended: false }));
 api.use(passport.initialize());
+api.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 module.exports = app => {
   app.use(bodyParser.json());
   app.use(function(req, res, next) {
