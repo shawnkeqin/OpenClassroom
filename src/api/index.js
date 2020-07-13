@@ -32,7 +32,7 @@ api.get("/", function(req, res) {
   res.send("API home");
 });
 
-api.post("/login", cors(), (req, res, next) => {
+api.post("/login", (req, res, next) => {
   if (process.env.VUE_APP_MODE == "staging") {
     const payload = {
       exp: moment()
@@ -101,6 +101,7 @@ api.use(function(req, res, next) {
   next();
 });
 module.exports = app => {
+  app.use(cors);
   app.use(bodyParser.json());
   app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -118,3 +119,4 @@ module.exports = app => {
 //   console.log("Time: ", Date.now());
 //   next();
 // });
+console.log("Building node server API...");
