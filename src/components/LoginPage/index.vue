@@ -100,8 +100,9 @@ export default {
           })
           .catch(err => {
             console.log("here", err);
-            if (err.response.status == 401) {
+            if (err) {
               this.invalidCredentials = true;
+              this.$message.info(err.message);
             } else {
               this.$message.info(err.message);
             }
