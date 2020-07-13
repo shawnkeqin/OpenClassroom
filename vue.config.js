@@ -2,7 +2,10 @@ const api = require("./src/api");
 
 module.exports = {
   devServer: {
-    before: api
+    before: api,
+    headers: {
+      "Access-Control-Allow-Origin": "*"
+    }
   },
   pluginOptions: {
     apollo: {
