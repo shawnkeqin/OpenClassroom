@@ -192,10 +192,10 @@ li.nav-item.ant-menu-item {
   box-shadow: transparent;
 }
 
-.logged-in {
+.logged-in-status-box {
   position: fixed;
-  left: 30px;
-  bottom: 20px;
+  margin-left: 30px;
+  margin-bottom: 20px;
   width: 250px;
   height: 80px;
   color: #004b8d;
