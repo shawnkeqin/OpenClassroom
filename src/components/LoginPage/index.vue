@@ -99,6 +99,7 @@ export default {
             this.$emit("login-event");
           })
           .catch(err => {
+            console.log("here", err);
             if (err.response.status == 401) {
               this.invalidCredentials = true;
             } else {
