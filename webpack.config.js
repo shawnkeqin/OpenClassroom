@@ -1,5 +1,7 @@
 module.exports = {
-  output: {
-    filename: "[name].[hash].bundle.js"
+  configureWebpack: {
+    output: {
+      filename: "[name].[hash].bundle.js"
+    }
   }
 };
