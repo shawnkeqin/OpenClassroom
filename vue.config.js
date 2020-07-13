@@ -9,5 +9,6 @@ module.exports = {
       enableMocks: true,
       enableEngine: true
     }
-  }
+  },
+  configureWebpack: { output: { filename: "[name].[hash].bundle.js" } }
 };
