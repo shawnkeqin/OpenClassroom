@@ -99,10 +99,12 @@ export default {
             this.$emit("login-event");
           })
           .catch(err => {
-            if (err.response && err.response.status == 401) {
-              this.invalidCredentials = true;
+            if (err.response) {
+              this.$message.info(err.response);
+            } else if (err.request) {
+              this.$message.info(err.request);
             } else {
-              this.$message.info(err.message);
+              this.invalidCredentials = true;
             }
           })
           .finally(() => {
