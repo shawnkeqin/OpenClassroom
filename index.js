@@ -4,6 +4,8 @@ const configureAPI = require("./src/api");
 const express = require("express");
 const app = express();
 
+require("custom-env").env(true);
+
 // // API
 configureAPI(app);
 
@@ -16,4 +18,10 @@ app.use("/", history());
 
 console.log("env: PORT=", process.env.PORT);
 const PORT = process.env.PORT || 443;
-app.listen(PORT, () => console.log(`App running on port ${PORT}!`));
+app.listen(PORT, () =>
+  console.log(
+    `App running on port ${PORT} with:\n
+    NODE_ENV=${process.env.NODE_ENV}\n
+    `
+  )
+);
