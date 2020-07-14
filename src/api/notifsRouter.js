@@ -20,9 +20,7 @@ async function notifMiddleware(req, res, next) {
   const visit_status_old =
     req.body.event.data.old && req.body.event.data.old.visit_status;
   const visit_status_new = req.body.event.data.new.visit_status;
-
-  console.log(process.env.VUE_APP_HASURA_URI);
-  console.log(process.env.VUE_APP_HASURA_ADMIN_SECRET);
+  console.log('in notifsRouter.js: ' + process.env.VUE_APP_HASURA_URI);
   try {
     const visitor = (
       await apolloClient.query({
@@ -44,7 +42,6 @@ async function notifMiddleware(req, res, next) {
         // update: data => data.faculty_by_pk
       })
     ).data.faculty_by_pk;
-    console.log('fetch-1')
     const seminar = (
       await apolloClient.query({
         // query: queries.getSeminarById,
@@ -80,7 +77,6 @@ async function notifMiddleware(req, res, next) {
         // update: data => data.seminar_by_pk
       })
     ).data.seminar_by_pk;
-    console.log('fetch-2')
     const course = seminar.course_group.course;
     const instructor = seminar.course_group.faculty;
 
@@ -94,7 +90,7 @@ async function notifMiddleware(req, res, next) {
     };
     next();
   } catch (err) {
-    return res.send(err);
+    return res.status(500).send(err);
   }
 }
 
@@ -126,7 +122,7 @@ async function newRequestHandler(req, res) {
     });
   } catch (err) {
     console.log(err);
-    return res.send(err);
+    return res.status(500).send(err);
   }
 }
 
