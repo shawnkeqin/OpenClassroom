@@ -14,7 +14,7 @@ var getLDAPConfiguration = function(req, callback) {
   process.nextTick(function() {
     var opts = {
       server: {
-        url: process.env.VUE_APP_MODE == "staging" ? "" : process.env.LDAP_URL,
+        url: process.env.NODE_ENV == "staging" ? "" : process.env.LDAP_URL,
         bindDn:
           (`cn=${req.body.username},` + process.env.LDAP_BIND_DN_SUFFIX) | "",
         bindCredentials: req.body.password,
@@ -34,7 +34,7 @@ api.get("/", function(req, res) {
 });
 
 api.post("/login", (req, res, next) => {
-  if (process.env.VUE_APP_MODE == "staging") {
+  if (process.env.NODE_ENV == "staging") {
     const payload = {
       exp: moment()
         .add(process.env.LDAP_TOKEN_EXP_DAYS, "days")
