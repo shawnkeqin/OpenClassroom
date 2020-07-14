@@ -21,8 +21,8 @@ async function notifMiddleware(req, res, next) {
     req.body.event.data.old && req.body.event.data.old.visit_status;
   const visit_status_new = req.body.event.data.new.visit_status;
 
-  console.log(process.env.HASURA_URI);
-  console.log(process.env.HASURA_ADMIN_SECRET);
+  console.log(process.env.VUE_APP_HASURA_URI);
+  console.log(process.env.VUE_APP_HASURA_ADMIN_SECRET);
   try {
     const visitor = (
       await apolloClient.query({
