@@ -91,6 +91,8 @@ api.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
+api.use("/notifs", notifsRouter);
+
 api.use(bodyParser.urlencoded({ extended: false }));
 api.use(passport.initialize());
 api.use(function(req, res, next) {
@@ -113,7 +115,7 @@ module.exports = app => {
     next();
   });
   app.use("/api", api);
-  app.use("/notifs", notifsRouter);
+  // app.use("/notifs", notifsRouter);
 };
 // middleware that is specific to this router
 // api.use(function timeLog(req, res, next) {

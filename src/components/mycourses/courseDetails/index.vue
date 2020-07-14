@@ -14,7 +14,7 @@
     <div style="display: flex; align-items: center; padding-bottom: 5px;">
       <p style="margin: 0 10px 0 0">
         {{
-          `This course group is ${
+          `This course is ${
             course_group.is_open ? `open` : `closed`
           } to visit requests`
         }}
@@ -28,7 +28,7 @@
         style="margin-right: 5px;"
       />
       <a-tooltip
-        title="Closing/opening this course group will automatically close/open all of its classes."
+        title="Closing/opening this course will automatically close/open all of its classes."
       >
         <a-icon type="exclamation-circle" theme="filled" class="pending" />
       </a-tooltip>
