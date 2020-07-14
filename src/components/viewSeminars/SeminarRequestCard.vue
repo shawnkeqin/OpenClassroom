@@ -16,10 +16,21 @@
       </template>
     </div>
     <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag>
-    <a-card hoverable :class="{ closed: !seminar.is_open }">
+    <a-card hoverable>
       <div style="display: flex; flex-direction: column;">
         <div style="margin-bottom: 5px">
-          <h5 style="display: inline; font-weight: bold">
+          <h5
+            class="date-heading"
+            :class="is_past ? 'past' : 'red'"
+            style="display: inline;"
+          >
+            {{
+              `${utils.date_format(seminar.date)} from ${utils.time_format(
+                seminar.start
+              )}-${utils.time_format(seminar.end)} | `
+            }}
+          </h5>
+          <!-- <h5 style="display: inline; font-weight: bold">
             {{ utils.date_format(seminar.date) + " | " }}
           </h5>
           <h5 style="display: inline">
@@ -29,19 +40,21 @@
                 utils.time_format(seminar.end) +
                 " | "
             }}
-          </h5>
-          <h6 style="display: inline">{{ seminar.location.full_name }}</h6>
+          </h5> -->
+          <h6 :class="{ past: is_past }" style="display: inline;">
+            {{ seminar.location.full_name }}
+          </h6>
         </div>
         <div>
           <a-col :span="17" style="padding-right: 20px">
             <div style="margin-bottom: 5px">
-              <h3 style="display: inline">
+              <h3 :class="{ past: is_past }" style="display: inline">
                 {{ course.title }}
               </h3>
-              <p style="display: inline">
+              <p :class="{ past: is_past }" style="display: inline">
                 {{ seminar.module_code }}
               </p>
-              <h4 :class="{ placeholder: !seminar.title }">
+              <h4 :class="{ past: is_past, placeholder: !seminar.title }">
                 {{ seminar.title || "No class title" }}
               </h4>
             </div>
@@ -68,11 +81,21 @@
               {{ "Notes for visitors: " + (course_group.notes || "None") }}
             </h5>
           </a-col>
-          <a-col v-if="seminar.is_open" :span="7">
+          <a-col v-if="!is_past" :span="7">
             <div
               style="display: flex; flex-direction: column; align-items: center;"
             >
-              <template v-if="!visit_local">
+              <template v-if="!seminar.is_open">
+                <a-button
+                  @click="requestModalVisible = true"
+                  type="primary"
+                  block
+                  style="margin-bottom: 15px"
+                  disabled
+                  >Closed to visits</a-button
+                >
+              </template>
+              <template v-else-if="!visit_local">
                 <a-button
                   @click="requestModalVisible = true"
                   type="primary"
@@ -244,6 +267,10 @@ export default {
     },
     course() {
       return this.course_group.course;
+    },
+    is_past() {
+      // return new Date(this.seminar.date) < Date.now();
+      return new Date(this.seminar.date) < new Date("2018-11-01");
     }
   },
   methods: {
@@ -283,7 +310,14 @@ export default {
 .ant-card-hoverable {
   cursor: default;
 }
-.closed {
-  background-color: rgba(0, 0, 0, 0.12);
+.date-heading {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.red {
+  color: #f0284a;
+}
+.past {
+  color: rgba(0, 0, 0, 0.37);
 }
 </style>
