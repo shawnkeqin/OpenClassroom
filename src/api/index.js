@@ -119,4 +119,3 @@ module.exports = app => {
 //   console.log("Time: ", Date.now());
 //   next();
 // });
-console.log("Building node server API...");
