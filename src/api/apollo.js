@@ -4,10 +4,10 @@ const fetch = require("node-fetch");
 const InMemoryCache = require("apollo-cache-inmemory").InMemoryCache;
 
 const httpLink = new HttpLink({
-  uri: process.env.HASURA_URI,
+  uri: process.env.VUE_APP_HASURA_URI,
   fetch,
   headers: {
-    "x-hasura-admin-secret": process.env.HASURA_ADMIN_SECRET
+    "x-hasura-admin-secret": process.env.VUE_APP_HASURA_ADMIN_SECRET
   }
 });
 

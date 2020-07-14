@@ -7,8 +7,8 @@ const apolloClient = require("./apollo");
 
 // create reusable transporter object
 let transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT,
+  host: process.env.VUE_APP_SMTP_HOST,
+  port: process.env.VUE_APP_SMTP_PORT,
   auth: {
     user: process.env.EMAIL,
     pass: process.env.PASS
