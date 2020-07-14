@@ -57,7 +57,7 @@
               ></a>
             </a-menu-item>
           </a-menu>
-          <div class="logged-in" v-if="loggedInUserObj">
+          <div class="logged-in-status-box" v-if="loggedInUserObj">
             {{ loggedInUserObj.name }}
             <div>
               <a-button class="logout-button" icon="logout" @click="logout"
@@ -71,7 +71,6 @@
         </a-layout-content>
       </a-layout>
     </a-layout-content>
-    <a-layout-footer style="text-align: left"> </a-layout-footer>
   </a-layout>
 </template>
 <script>
@@ -194,14 +193,14 @@ li.nav-item.ant-menu-item {
 
 .logged-in-status-box {
   position: fixed;
-  margin-left: 30px;
-  margin-bottom: 20px;
+  padding-left: 25px;
+  bottom: 15px;
   width: 250px;
   height: 80px;
   color: #004b8d;
   background-color: white;
 }
 .logout-button {
-  margin-top: 5px;
+  margin-top: 10px;
 }
 </style>
