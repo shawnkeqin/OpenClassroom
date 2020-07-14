@@ -110,7 +110,7 @@ async function newRequestHandler(req, res) {
   try {
     const info = await transporter.sendMail({
       from: process.env.EMAIL,
-      to: process.env.EMAIL_TO,
+      to: process.env.EMAIL,
       // process.env.NODE_ENV === "production"
       //   ? instructor.email
       //   : process.env.EMAIL_TO,
@@ -161,7 +161,7 @@ async function requestUpdateHandler(req, res) {
   try {
     const info = await transporter.sendMail({
       from: process.env.EMAIL,
-      to: process.env.EMAIL_TO,
+      to: process.env.EMAIL,
       // process.env.NODE_ENV === "production"
       //   ? seminar.visitor.email
       //   : process.env.EMAIL_TO,
