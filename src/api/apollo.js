@@ -7,7 +7,7 @@ const httpLink = new HttpLink({
   uri: "https://open-classroom-hasura-test.herokuapp.com/v1/graphql",
   fetch,
   headers: {
-    "x-hasura-admin-secret": process.env.VUE_APP_HASURA_ADMIN_SECRET
+    "x-hasura-admin-secret": process.env.HASURA_ADMIN_SECRET
   }
 });
 
