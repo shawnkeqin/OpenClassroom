@@ -15,9 +15,10 @@ var getLDAPConfiguration = function(req, callback) {
     var opts = {
       server: {
         url: process.env.VUE_APP_MODE == "staging" ? "" : process.env.LDAP_URL,
-        bindDn: `cn=${req.body.username},` + process.env.LDAP_BIND_DN_SUFFIX,
-        bindCredentials: `${req.body.password}`,
-        searchBase: process.env.LDAP_SEARCH_BASE,
+        bindDn:
+          (`cn=${req.body.username},` + process.env.LDAP_BIND_DN_SUFFIX) | "",
+        bindCredentials: req.body.password,
+        searchBase: process.env.LDAP_SEARCH_BASE || "",
         searchFilter: `(cn=${req.body.username})`,
         reconnect: true
       }
