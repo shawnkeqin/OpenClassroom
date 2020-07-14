@@ -4,7 +4,6 @@ const configureAPI = require("./src/api");
 const express = require("express");
 const app = express();
 
-const PORT = 8080;
 // // API
 configureAPI(app);
 
@@ -14,7 +13,7 @@ const staticConf = { maxAge: "1d", etag: false };
 
 app.use(express.static(publicPath, staticConf));
 app.use("/", history());
-console.log("PORT=", "process.env.PORT");
-app.listen(process.env.PORT || 443, () =>
-  console.log(`App running on port ${PORT}!`)
-);
+
+console.log("env: PORT=", process.env.PORT);
+const PORT = process.env.PORT || 443;
+app.listen(PORT, () => console.log(`App running on port ${PORT}!`));
