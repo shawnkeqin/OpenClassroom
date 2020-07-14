@@ -2,7 +2,8 @@ var express = require("express");
 var router = express.Router();
 const nodemailer = require("nodemailer");
 const gql = require("graphql-tag");
-const apolloClient = require("./apollo");
+const createApolloClient = require("./apollo");
+const apolloClient = createApolloClient();
 // const queries = require("../graphql/queries.gql");
 
 // create reusable transporter object
