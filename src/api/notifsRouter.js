@@ -22,6 +22,7 @@ async function notifMiddleware(req, res, next) {
   const visit_status_new = req.body.event.data.new.visit_status;
 
   console.log(process.env.HASURA_URI);
+  console.log(process.env.HASURA_ADMIN_SECRET);
   try {
     const visitor = (
       await apolloClient.query({
@@ -43,7 +44,7 @@ async function notifMiddleware(req, res, next) {
         // update: data => data.faculty_by_pk
       })
     ).data.faculty_by_pk;
-
+    console.log('fetch-1')
     const seminar = (
       await apolloClient.query({
         // query: queries.getSeminarById,
@@ -79,6 +80,7 @@ async function notifMiddleware(req, res, next) {
         // update: data => data.seminar_by_pk
       })
     ).data.seminar_by_pk;
+    console.log('fetch-2')
     const course = seminar.course_group.course;
     const instructor = seminar.course_group.faculty;
 
