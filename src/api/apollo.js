@@ -4,10 +4,10 @@ const fetch = require("node-fetch");
 const InMemoryCache = require("apollo-cache-inmemory").InMemoryCache;
 
 const httpLink = new HttpLink({
-  uri: "https://open-classroom-hasura-test.herokuapp.com/v1/graphql",
+  uri: process.env.HASURA_URI,
   fetch,
   headers: {
-    "x-hasura-admin-secret": "openclassroom"
+    "x-hasura-admin-secret": process.env.HASURA_ADMIN_SECRET
   }
 });
 
