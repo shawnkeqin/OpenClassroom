@@ -32,8 +32,8 @@ const createApolloClient = () => {
 
 const createTransporter = () =>
   nodemailer.createTransport({
-    host: "smtp.office365.com",
-    port: 587,
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
     auth: {
       user: process.env.EMAIL,
       pass: process.env.PASS
