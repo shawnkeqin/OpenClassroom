@@ -2,10 +2,11 @@ const ApolloClient = require("apollo-client").ApolloClient;
 const HttpLink = require("apollo-link-http").HttpLink;
 const fetch = require("node-fetch");
 const InMemoryCache = require("apollo-cache-inmemory").InMemoryCache;
+const nodemailer = require("nodemailer");
 
 const createApolloClient = () => {
   const httpLink = new HttpLink({
-    uri: process.env.VUE_APP_HASURA_URI,
+    uri: process.env.HASURA_URI,
     // foo: console.log("in apollo.js: " + process.env.VUE_APP_HASURA_URI),
     fetch,
     headers: {
@@ -27,6 +28,19 @@ const createApolloClient = () => {
     }
     // connectToDevTools: true
   });
-}
+};
 
-module.exports = createApolloClient;
+const createTransporter = () =>
+  nodemailer.createTransport({
+    host: "smtp.office365.com",
+    port: 587,
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.PASS
+    }
+  });
+
+module.exports = {
+  createApolloClient,
+  createTransporter
+};

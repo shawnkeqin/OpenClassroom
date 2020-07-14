@@ -1,32 +1,18 @@
 var express = require("express");
 var router = express.Router();
-const nodemailer = require("nodemailer");
 const gql = require("graphql-tag");
-const createApolloClient = require("./apollo");
-
-// const queries = require("../graphql/queries.gql");
-
-// create reusable transporter object
-let transporter = nodemailer.createTransport({
-  host: "smtp.office365.com",
-  port: 587,
-  auth: {
-    user: process.env.EMAIL,
-    pass: process.env.PASS
-  }
-});
+const { createApolloClient, createTransporter } = require("./utility");
 
 async function notifMiddleware(req, res, next) {
-  const apolloClient = createApolloClient();
   const { seminar_id, visitor_id } = req.body.event.data.new;
   const visit_status_old =
     req.body.event.data.old && req.body.event.data.old.visit_status;
   const visit_status_new = req.body.event.data.new.visit_status;
-  console.log('in notifsRouter.js: ' + process.env.VUE_APP_HASURA_URI);
+  // console.log('in notifsRouter.js: ' + process.env.VUE_APP_HASURA_URI);
   try {
+    const apolloClient = createApolloClient();
     const visitor = (
       await apolloClient.query({
-        // query: queries.getFacultyById,
         query: gql`
           query getFacultyById($faculty_id: String!) {
             faculty_by_pk(id: $faculty_id) {
@@ -41,12 +27,10 @@ async function notifMiddleware(req, res, next) {
         variables: {
           faculty_id: visitor_id
         }
-        // update: data => data.faculty_by_pk
       })
     ).data.faculty_by_pk;
     const seminar = (
       await apolloClient.query({
-        // query: queries.getSeminarById,
         query: gql`
           query getSeminarById($seminar_id: Int!) {
             seminar_by_pk(id: $seminar_id) {
@@ -76,7 +60,6 @@ async function notifMiddleware(req, res, next) {
         variables: {
           seminar_id
         }
-        // update: data => data.seminar_by_pk
       })
     ).data.seminar_by_pk;
     const course = seminar.course_group.course;
@@ -92,7 +75,11 @@ async function notifMiddleware(req, res, next) {
     };
     next();
   } catch (err) {
-    return res.status(500).send(err);
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
   }
 }
 
@@ -106,12 +93,13 @@ async function newRequestHandler(req, res) {
     });
 
   try {
+    const transporter = createTransporter();
     const info = await transporter.sendMail({
       from: process.env.EMAIL,
-      to: process.env.EMAIL,
-      // process.env.NODE_ENV === "production"
-      //   ? instructor.email
-      //   : process.env.EMAIL_TO,
+      to:
+        process.env.NODE_ENV === "production"
+          ? "dantran.fcac@gmail.com"
+          : process.env.EMAIL_TO,
       subject: `New visit request to your class`,
       html: `<p>${visitor.name} made a visit request to your class ${course.module_code} ${course.title}, ${seminar.date}.</p>
         <p>Click <a href="https://open-classroom-app-demo.herokuapp.com/my-visitors">here</a> to view it on the OpenClassroom portal.</p>`
@@ -124,7 +112,10 @@ async function newRequestHandler(req, res) {
     });
   } catch (err) {
     console.log(err);
-    return res.status(500).send(err);
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
   }
 }
 
@@ -157,12 +148,13 @@ async function requestUpdateHandler(req, res) {
   const linkToPortal = `<p>Click <a href="https://open-classroom-app-demo.herokuapp.com/my-visits">here</a> to view your visit on the OpenClassroom portal.</p>`;
 
   try {
+    const transporter = createTransporter();
     const info = await transporter.sendMail({
       from: process.env.EMAIL,
-      to: process.env.EMAIL,
-      // process.env.NODE_ENV === "production"
-      //   ? seminar.visitor.email
-      //   : process.env.EMAIL_TO,
+      to:
+        process.env.NODE_ENV === "production"
+          ? "dantran.fcac@gmail.com"
+          : process.env.EMAIL_TO,
       subject: `Your visit request is ${visit_status_new}`,
       html: visitStatusMsg + linkToPortal
     });
@@ -174,7 +166,10 @@ async function requestUpdateHandler(req, res) {
     });
   } catch (err) {
     console.log(err);
-    return res.send(err);
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
   }
 }
 
