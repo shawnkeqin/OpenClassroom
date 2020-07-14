@@ -3,7 +3,7 @@ var router = express.Router();
 const nodemailer = require("nodemailer");
 const gql = require("graphql-tag");
 const createApolloClient = require("./apollo");
-const apolloClient = createApolloClient();
+
 // const queries = require("../graphql/queries.gql");
 
 // create reusable transporter object
@@ -17,6 +17,7 @@ let transporter = nodemailer.createTransport({
 });
 
 async function notifMiddleware(req, res, next) {
+  const apolloClient = createApolloClient();
   const { seminar_id, visitor_id } = req.body.event.data.new;
   const visit_status_old =
     req.body.event.data.old && req.body.event.data.old.visit_status;
