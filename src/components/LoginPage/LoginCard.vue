@@ -1,6 +1,10 @@
 <template>
   <a-card>
     <div id="card-wrapper">
+      <img
+        src="../../../public/logo_text.png"
+        style="width: 100%; margin-bottom: 1.5rem;"
+      />
       <h2>Log in</h2>
       <h5>Continue to Open Classroom with your NUS Staff ID</h5>
       <a-form

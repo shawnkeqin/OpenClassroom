@@ -48,7 +48,7 @@
       </div>
     </div>
     <div id="container-four" class="screen-wrapper">
-      <p style="width: 20rem;">
+      <p style="width: 20rem; text-align: center;">
         You control who can visit. Remove courses or individual meetings, set
         the number of visitors, or just leave the door open to colleagues and
         see who shows up!
