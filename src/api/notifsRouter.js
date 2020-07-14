@@ -91,10 +91,7 @@ async function notifMiddleware(req, res, next) {
     };
     next();
   } catch (err) {
-    return res.json({
-      success: false,
-      message: "Server error"
-    });
+    return res.send(err);
   }
 }
 
@@ -126,10 +123,7 @@ async function newRequestHandler(req, res) {
     });
   } catch (err) {
     console.log(err);
-    return res.json({
-      success: false,
-      message: "Server error"
-    });
+    return res.send(err);
   }
 }
 
@@ -179,10 +173,7 @@ async function requestUpdateHandler(req, res) {
     });
   } catch (err) {
     console.log(err);
-    return res.json({
-      success: false,
-      message: "Server error"
-    });
+    return res.send(err);
   }
 }
 
