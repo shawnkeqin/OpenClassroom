@@ -97,7 +97,7 @@ import updateCourseDetailsModal from "./updateCourseDetailsModal";
 // import closeCourseAndSeminarsToggle from "./closeCourseAndSeminarsToggle";
 export default {
   name: "courseDetails",
-  props: ["id"],
+  // props: ["id"],
   components: {
     seminarItem,
     // addNewSeminarModal,
@@ -107,6 +107,7 @@ export default {
   },
   data: function() {
     return {
+      id: this.$route.params.id,
       seminars: [],
       course_group: {},
       isToggleCourseGroupLoading: false,

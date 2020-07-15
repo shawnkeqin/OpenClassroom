@@ -7,7 +7,7 @@ var passport = require("passport"),
   cors = require("cors");
 
 const notifsRouter = require("./notifsRouter");
-
+const facultyStatusRouter = require('./facultyStatusRouter')
 var api = express.Router();
 
 var getLDAPConfiguration = function(req, callback) {
@@ -95,6 +95,7 @@ api.post("/login", (req, res, next) => {
 });
 
 api.use("/notifs", notifsRouter);
+api.use("/faculty-status", facultyStatusRouter);
 
 api.use(bodyParser.urlencoded({ extended: false }));
 api.use(passport.initialize());

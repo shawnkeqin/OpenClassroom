@@ -1,5 +1,5 @@
 <template>
-  <div class="spinner">
+  <div>
     <div class="section">
       <h1>Opt In</h1>
       <p>
@@ -65,20 +65,6 @@ export default {
 </script>
 
 <style scoped>
-.spinner {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100vw;
-  background-color: white;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
 .section {
   width: 80%;
   padding: 20px;
