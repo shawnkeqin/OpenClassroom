@@ -1,107 +1,118 @@
 <template>
-  <div>
-    <a-form
-      v-if="!isAuthenticated"
-      id="components-form-demo-normal-login"
-      :form="form"
-      class="login-form"
-      @submit="handleLoginEvent"
-    >
-      <a-form-item>
-        <a-input
-          v-decorator="[
-            'userName',
-            {
-              rules: [
-                { required: true, message: 'Please input your username!' }
-              ]
-            }
-          ]"
-          placeholder="Username"
+  <div id="page-wrapper">
+    <div id="container-one" class="screen-wrapper">
+      <div
+        style="display: flex; justify-content: space-between; height: 80vh; width: 100%;"
+      >
+        <div
+          class="big-text"
+          style="display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; height: 100%; padding: 2rem;"
         >
-          <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
-        </a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-input
-          v-decorator="[
-            'password',
-            {
-              rules: [
-                { required: true, message: 'Please input your Password!' }
-              ]
-            }
-          ]"
-          type="password"
-          placeholder="Password"
+          Class <br />observation <br />made easy
+        </div>
+        <div
+          style="display: flex; align-items: center; margin: 1rem; height: 100%;"
         >
-          <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
-        </a-input>
-      </a-form-item>
-      <a-form-item>
-        <a class="login-form-forgot" href="">
-          Forgot password
-        </a>
-        <a-button
-          type="primary"
-          html-type="submit"
-          class="login-form-button"
-          @click.prevent="login"
+          <LoginCard />
+        </div>
+      </div>
+      <div
+        style="height: 20vh; width: 100%; bottom: 0; background: white; padding: 2rem;"
+      >
+        <h3>What's your interest?</h3>
+        <p>
+          Search the schedule by course title, faculty member, major, or
+          <br />special feature and find out who's open to visitors!
+        </p>
+      </div>
+    </div>
+    <div id="container-two" class="screen-wrapper">
+      <div class="big-text" style="text-align: center;">
+        Make a request in <br />an instant
+      </div>
+      <p style="text-align: center;">
+        Automatic messaging requests a specific date and time to visit.
+        <br />Easy to request, easy to reply. No pressure.
+      </p>
+    </div>
+    <div id="container-three" class="screen-wrapper">
+      <div style="display: flex; width: 100%;">
+        <div
+          style="width: 40%; display: flex; flex-direction: column; justify-content: center;"
         >
-          Log in
-        </a-button>
-      </a-form-item>
-    </a-form>
+          <div style="height: 70%; background: orange;" />
+        </div>
+        <div class="big-text" style="padding: 2rem;">
+          Manage your <br />visits and <br />visitors. <br />Hassle-free.
+        </div>
+      </div>
+    </div>
+    <div id="container-four" class="screen-wrapper">
+      <p style="width: 20rem; text-align: center;">
+        You control who can visit. Remove courses or individual meetings, set
+        the number of visitors, or just leave the door open to colleagues and
+        see who shows up!
+      </p>
+    </div>
+    <div id="footer" class="screen-wrapper">
+      <div>Contact us</div>
+    </div>
   </div>
 </template>
 
 <script>
+import LoginCard from "./LoginCard";
 export default {
   name: "Login",
-  beforeCreate() {
-    this.form = this.$form.createForm(this, { name: "normal_login" });
-    // this.$auth.renewTokens();
-  },
-  methods: {
-    handleSubmit(e) {
-      e.preventDefault();
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log("Received values of form: ", values);
-        }
-        window.location.href = "http://localhost:8080/#/profile";
-      });
-    },
-    login() {
-      this.$auth.login();
-      // this.$router.push({ path: "/" });
-    },
-    logout() {
-      this.$auth.logOut();
-      //   this.$router.push({ path: "/login" });
-    },
-    handleLoginEvent(data) {
-      this.isAuthenticated = data.loggedIn;
-      this.profile = data.profile;
-    }
-  },
+  components: { LoginCard },
   data() {
-    return {
-      isAuthenticated: false,
-      profile: {}
-    };
-  }
+    return {};
+  },
+  methods: {}
 };
 </script>
 <style>
-#components-form-demo-normal-login .login-form {
-  max-width: 50px;
-  width: 40%;
+#page-wrapper {
+  position: absolute;
+  /* height: 100vh; */
+  width: 100vw;
+  background: white;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0;
+  margin: 0;
 }
-#components-form-demo-normal-login .login-form-forgot {
-  float: right;
+.screen-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 8rem;
 }
-#components-form-demo-normal-login .login-form-button {
-  width: 100%;
+#container-one {
+  height: 100vh;
+  background-image: linear-gradient(315deg, #f3c9bc 0%, #f5e4b3 74%);
+}
+#container-two {
+  height: 80vh;
+}
+#container-three {
+  height: 60vh;
+}
+#container-four {
+  padding: 6rem;
+}
+#footer {
+  background: #e0e0e0;
+  padding: 2rem;
+}
+.big-text {
+  font-size: 4rem;
+  font-family: "Open Sans", sans-serif;
+  color: #0077c8;
+  /* color: white; */
+  margin-bottom: 1.5rem;
 }
 </style>

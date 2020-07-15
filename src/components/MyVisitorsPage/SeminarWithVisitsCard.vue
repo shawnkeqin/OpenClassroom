@@ -42,7 +42,7 @@
             style="display: flex; flex-direction: column; align-items: center;"
           >
             <div
-              style="display: flex; justify-content: center; margin-bottom: 20px"
+              style="display: flex; justify-content: center; margin-bottom: 10px"
             >
               <a-icon
                 type="clock-circle"
@@ -53,6 +53,7 @@
                 {{ pendingCount + " request(s) pending" }}
               </h4>
             </div>
+            <AddToCalendar :seminar="seminar" :isMyVisit="false" />
             <a
               v-if="isRequestRowsOn"
               @click="handleHideRequests"
@@ -165,6 +166,7 @@
 
 <script>
 import VisitResponseModal from "./VisitResponseModal";
+import AddToCalendar from "@/components/viewSeminars/AddToCalendar";
 import utils from "@/utils";
 import constants from "@/utils/constants";
 import queries from "@/graphql/queries.gql";
@@ -172,7 +174,8 @@ import moment from "moment";
 
 export default {
   components: {
-    VisitResponseModal
+    VisitResponseModal,
+    AddToCalendar
   },
   props: {
     seminar: Object

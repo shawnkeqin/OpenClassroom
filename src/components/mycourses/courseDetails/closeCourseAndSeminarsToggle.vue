@@ -12,11 +12,10 @@ export default {
   data() {
     return {};
   },
-  apollo: {},
   methods: {
     async onChange(checked) {
       const course_group_id = this.course_group_id;
-      console.log(`a-switch to ${checked}`);
+      // console.log(`a-switch to ${checked}`);
       await this.$apollo.mutate({
         mutation: gql`
   mutation close_course_and_seminars($course_group_id: Int!) {
