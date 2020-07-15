@@ -122,7 +122,8 @@ export default {
       query: queries.get_seminars_with_visits_by_time_requested,
       variables() {
         return {
-          faculty_id: constants.loggedInUser,
+          faculty_id: constants.TEST_FACULTY_ID,
+          // faculty_id: this.loggedInUser;
           semester_code: constants.SEMESTER_CODE_AY1819_1
         };
       },
