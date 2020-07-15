@@ -34,7 +34,7 @@ api.get("/", function(req, res) {
 });
 
 api.post("/login", (req, res, next) => {
-  if (process.env.NODE_ENV == "staging") {
+  if (process.env.NODE_ENV != "production") {
     const payload = {
       exp: moment()
         .add(process.env.LDAP_TOKEN_EXP_DAYS, "days")
@@ -47,7 +47,7 @@ api.post("/login", (req, res, next) => {
     };
     jwt.sign(payload, process.env.JWT_SECRET, (err, token) => {
       if (err) {
-        // console.log(err);;
+         console.log(err);;
         res.send(err);
       }
       res.json({
@@ -56,7 +56,7 @@ api.post("/login", (req, res, next) => {
       });
     });
     return;
-  }
+  } 
   passport.authenticate("ldapauth", (err, user, info) => {
     if (err) {
       return next(err);
@@ -79,9 +79,10 @@ api.post("/login", (req, res, next) => {
       };
       jwt.sign(payload, process.env.JWT_SECRET, (err, token) => {
         if (err) {
-          // console.log(err);;
+        console.log(err);;
           res.send(err);
         }
+        console.log(token); 
         res.json({
           success: true,
           token: token

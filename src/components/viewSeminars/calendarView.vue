@@ -25,7 +25,7 @@
         My Seminars
       </a-checkbox>
       <a-checkbox @change="onChangeThree" v-model="checkedBoxThree">
-        My Vists
+        My Visits
       </a-checkbox>
     </div>
     <br />
@@ -53,7 +53,7 @@
       :visit="visit"
       :key="visit.id"
     /> -->
-    <modals-container :adaptive="true" :width="1000" :height="1000" />
+    <modals-container :adaptive="true"  />
   </div>
 </template>
 
@@ -65,7 +65,6 @@ import Fullcalendar from "@fullcalendar/vue";
 import DayGridPlugin from "@fullcalendar/daygrid";
 import TimeGridPlugin from "@fullcalendar/timegrid";
 import InteractionPlugin from "@fullcalendar/interaction";
-import ListPlugin from "@fullcalendar/list";
 import calendarSeminarModal from "./calendarSeminarModal";
 //import CalendarSeminar from "./CalendarSeminar";
 import queries from "@/graphql/queries.gql";
@@ -82,7 +81,6 @@ export default {
         DayGridPlugin,
         TimeGridPlugin,
         InteractionPlugin,
-        ListPlugin
       ],
       eventSources: [],
       checkedList: defaultCheckedList,
@@ -166,8 +164,6 @@ export default {
           end: a.seminar.date.toString() + "T" + a.seminar.end.toString(),
           title: a.seminar.course_group.course.title,
           id: a.id,
-          //  name: a.seminar.course_group.faculty.name,
-          //  location: a.seminar.location.full_name,
           className: "my_visits",
           color: "green",
           extendedProps: {
@@ -185,8 +181,6 @@ export default {
           end: a.date.toString() + "T" + a.end.toString(),
           title: a.course_group.course.title,
           id: a.id,
-          // name: a.course_group.faculty.name,
-          // location: a.location.full_name,
           className: "my_requests",
           color: "red",
           extendedProps: {
@@ -203,8 +197,6 @@ export default {
           start: a.date.toString() + "T" + a.start.toString(),
           end: a.date.toString() + "T" + a.end.toString(),
           title: a.course_group.course.title,
-          // name: a.course_group.faculty.name,
-          // location: a.location.full_name,
           className: "my_seminars",
           id: a.id,
           extendedProps: {
