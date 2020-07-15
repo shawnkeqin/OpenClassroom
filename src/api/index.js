@@ -14,9 +14,9 @@ var getLDAPConfiguration = function(req, callback) {
   process.nextTick(function() {
     var opts = {
       server: {
-        url: process.env.NODE_ENV == "staging" ? "" : process.env.LDAP_URL,
+        url: process.env.LDAP_URL,
         bindDn:
-          (`cn=${req.body.username},` + process.env.LDAP_BIND_DN_SUFFIX) | "",
+          `cn=${req.body.username},` + process.env.LDAP_BIND_DN_SUFFIX || "",
         bindCredentials: req.body.password,
         searchBase: process.env.LDAP_SEARCH_BASE || "",
         searchFilter: `(cn=${req.body.username})`,
@@ -27,7 +27,9 @@ var getLDAPConfiguration = function(req, callback) {
   });
 };
 
-passport.use(new LdapStrategy(getLDAPConfiguration));
+if (process.env.NODE_ENV == "production") {
+  passport.use(new LdapStrategy(getLDAPConfiguration));
+}
 
 api.get("/", function(req, res) {
   res.send("API home");
@@ -35,6 +37,10 @@ api.get("/", function(req, res) {
 
 api.post("/login", (req, res, next) => {
   if (process.env.NODE_ENV != "production") {
+<<<<<<< HEAD
+=======
+    // Send authorization for requested user regardless of password, without doing LDAP request.
+>>>>>>> 532d46eaafa2551ee867c1203b8fdea2d1aa14ea
     const payload = {
       exp: moment()
         .add(process.env.LDAP_TOKEN_EXP_DAYS, "days")
@@ -47,7 +53,11 @@ api.post("/login", (req, res, next) => {
     };
     jwt.sign(payload, process.env.JWT_SECRET, (err, token) => {
       if (err) {
+<<<<<<< HEAD
          console.log(err);;
+=======
+        console.log(err);
+>>>>>>> 532d46eaafa2551ee867c1203b8fdea2d1aa14ea
         res.send(err);
       }
       res.json({
