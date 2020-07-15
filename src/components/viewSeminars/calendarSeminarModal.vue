@@ -1,12 +1,72 @@
 <template>
-  <div>
-    <fieldset>
+  <div style="height: 100px;"> 
+        <div v-if="!isMySeminar" style="display: flex; margin-bottom: 10px;">
+      <div style="display: flex; align-items: center">
+        <a-icon
+          type="check-circle"
+          theme="filled"
+          class="status-icon accepted"
+        />
+      </div>
+      <div>
+        <h4 class="accepted" style="margin-bottom: 0">
+          Accepted visit request
+        </h4>
+      </div>
+    </div>
+    <div
+      style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px;"
+    >
+ 
+      <p style="margin: 3px;">
+        <!--     {{ seminar.module_code }} -->
+      </p>
+        <h3 style="font-size: 24px;">
+        {{ event.title }}
+      </h3>
+      <div style="margin-bottom: 3px;">
+        <h4 style="display: inline;">
+       <!--   {{ event.start }}
+          {{ event.end }} -->
+        </h4>
+        </div>
+          <h5 style="display: inline">{{ event.extendedProps.location  }}</h5>
+          </div>
+              <div style="margin-bottom: 20px;">
+      <h5>Class title</h5>
+      <p>{{ event.title || "No seminar title" }}</p>
+      <h5>Class description</h5>
+      <!--   <p>{{ seminar.desc || "No seminar description" }}</p> -->
+
+      <h5>Instructor</h5>
+        <div style="display: flex; align-items: center;">
+      
+          <p style="margin: 0 5px;">
+                 {{ event.extendedProps.name }}
+          </p>
+        </div>
+      <!--   <p>{{ course_group.notes || "None" }}</p> -->
+    </div>
+      <div style="margin-bottom: 20px;">
+       
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: left;">
+        <a
+          href="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg"
+          target="_blank"
+          >View campus map</a
+        >
+  
+      </div>
+
+    
+   <!-- <fieldset>
       <legend align="center">{{ event.title }}</legend>
       <p align="center">
         <u>Seminar Details</u>
       </p>
       <p align="center">
-        <b>Name: </b>
+        <b>Instructor: </b>
         {{ event.extendedProps.name }}
       </p>
       <p align="center">
@@ -22,7 +82,7 @@
         {{ event.extendedProps.location }}
       </p>
       <br />
-    </fieldset>
+    </fieldset> -->
   </div>
 </template>
 
@@ -33,8 +93,16 @@ import utils from "@/utils";
 //import constants from "@/utils/constants";
 export default {
   name: "calendarSeminarModal",
-  props: {
-    event: []
+   props: {
+    seminar: {
+      type: Object,
+      default: null
+    },
+    event: [],
+    isMySeminar: {
+      type: Boolean,
+      default: false
+    }
   },
   data: function() {
     return {
@@ -54,4 +122,20 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.ant-card-hoverable {
+  cursor: default;
+}
+.closed {
+  background-color: rgba(0, 0, 0, 0.12);
+}
+.request-status {
+  font-size: 16px;
+  font-family: "Lato", sans-serif;
+  font-weight: bold;
+}
+.placeholder {
+  color: rgba(0, 0, 0, 0.37);
+  font-weight: normal;
+}
+</style>
