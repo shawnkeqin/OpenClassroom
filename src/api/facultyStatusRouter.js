@@ -37,7 +37,7 @@ async function updateFacultyActiveStatus(req, res, options) {
   const token = req.query.token;
   // console.log(token);
   try {
-    const payload = await jwt.decode(token, process.env.JWT_SECRET);
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
     console.log(payload);
     const apolloClient = createApolloClient();
     await apolloClient.mutate({
