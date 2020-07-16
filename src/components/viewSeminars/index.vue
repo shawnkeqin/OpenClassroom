@@ -8,12 +8,12 @@
         :selected="SUGGESTED_SEARCH_STATE.SUGGESTED_SEARCH_1"
         @select-toggled="onSuggestedSearchSelectToggle"
       />
-      <suggestedSearchButton
+      <!-- <suggestedSearchButton
         :id="SUGGESTED_SEARCH_IDS.SUGGESTED_SEARCH_2"
         label="Suggested search 2"
         :selected="SUGGESTED_SEARCH_STATE.SUGGESTED_SEARCH_2"
         @select-toggled="onSuggestedSearchSelectToggle"
-      />
+      /> -->
     </div>
     <a-auto-complete
       :data-source="courseList"
@@ -77,14 +77,11 @@
               style="width:auto"
               show-time
               :ranges="{
-                Today: [moment(TEST_DATE), moment(TEST_DATE)],
-                'This week': [
-                  moment(TEST_DATE).startOf('week'),
-                  moment(TEST_DATE).endOf('week')
-                ],
+                Today: [moment(), moment()],
+                'This week': [moment().startOf('week'), moment().endOf('week')],
                 'This month': [
-                  moment(TEST_DATE).startOf('month'),
-                  moment(TEST_DATE).endOf('month')
+                  moment().startOf('month'),
+                  moment().endOf('month')
                 ]
               }"
               :format="utils.dateFormatStr"
@@ -173,7 +170,7 @@ import _ from "lodash";
 import store from "@/store";
 
 const DEFAULT_PAGE_SIZE = 10;
-const TEST_DATE = "2018-08-12";
+const TEST_DATE = "2020-08-09";
 const SUGGESTED_SEARCH_1 = "SUGGESTED_SEARCH_1";
 const SUGGESTED_SEARCH_2 = "SUGGESTED_SEARCH_2";
 const DEFAULT_FILTERS = {
@@ -315,7 +312,8 @@ export default {
             start_time,
             end_time,
             selected_tags: this.filters.selectedTags,
-            visitor_id: store.state.loggedInUser
+            visitor_id: store.state.loggedInUser,
+            semester_code: process.env.VUE_APP_SEMESTER_CODE
           }
         : {
             course_title,
@@ -324,7 +322,8 @@ export default {
             end_date,
             start_time,
             end_time,
-            visitor_id: store.state.loggedInUser
+            visitor_id: store.state.loggedInUser,
+            semester_code: process.env.VUE_APP_SEMESTER_CODE
           };
     }
   },
