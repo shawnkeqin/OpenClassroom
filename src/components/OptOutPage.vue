@@ -1,86 +1,68 @@
 <template>
-  <div class="spinner">
-    <div class="section">
-      <h1>Opt Out</h1>
-      <p>
-        App users will not be able to send visit requests to your class once you
-        have successfully opted out.
-      </p>
-      <div style="margin-bottom: 120px;">
-        <h5>Your YNC staff ID:</h5>
-        <a-input
-          v-model="faculty_id"
-          placeholder="Type your staffID here"
-          style="width: 200px;"
-        />
-        <a-button @click="handleOptOut">Confirm</a-button>
-      </div>
-      <p>
-        Or
-        <router-link to="/opt-in"><a href="#">opt in</a></router-link> instead.
-      </p>
+  <div id="wrapper">
+    <div id="container">
+      <template v-if="success">
+        <h1>You have opted out successfully</h1>
+        <p>
+          All your classes are now closed to visit requests by Open Classroom
+          Project users
+        </p>
+      </template>
+      <template v-else>
+        <h1>Unsuccessful request</h1>
+        <p>We could not process your opt-out request. Please try again.</p>
+      </template>
+      <img
+        src="../../public/logo_text.png"
+        style="width: 10rem; margin-top: 1.5rem;"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import queries from "@/graphql/queries.gql";
+import jwt from "jsonwebtoken";
 
 export default {
   name: "OptOutPage",
   data() {
     return {
-      faculty_id: ""
+      token: this.$route.query.token,
+      success: false
     };
   },
-  methods: {
-    async handleOptOut() {
-      const faculty_id = this.faculty_id;
-      const results = await this.$apollo.mutate({
-        mutation: queries.update_faculty_active_status,
-        variables: {
-          faculty_id,
-          active_status: false
-        }
-      });
-      if (results.data.update_faculty.affected_rows) {
-        this.$notification.success({
-          key: "OPT_OUT_SUCCESS",
-          message: "Succesful opt-out request",
-          description:
-            "All your classes are no longer open to visit requests in this app."
-        });
-        this.faculty_id = "";
-      } else {
-        this.$notification.error({
-          key: "OPT_OUT_ERROR",
-          message: "Opt-out error",
-          description:
-            "The server could not process your request. Please ensure that your staff ID is correct."
-        });
-      }
+  computed: {
+    faculty_id() {
+      return this.token && jwt.decode(this.token).faculty_id;
     }
+  },
+  async beforeMount() {
+    if (!this.token) return;
+    const optOutUrl = new URL(
+      `/api/faculty-status/opt-out?token=${this.token}`,
+      process.env.VUE_APP_BASE_URL
+    );
+    console.log(optOutUrl);
+    const response = await fetch(optOutUrl, {
+      method: "POST"
+    }).then(res => res.json());
+    if (response.success) this.success = true;
+    return;
   }
 };
 </script>
 
 <style scoped>
-.spinner {
-  position: absolute;
+#container {
+  background: white;
+  padding: 60px 80px;
+  text-align: center;
+}
+#wrapper {
+  background-image: linear-gradient(315deg, #f3c9bc 0%, #f5e4b3 74%);
+  height: 100vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100vw;
-  background-color: white;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-.section {
-  width: 80%;
-  padding: 20px;
 }
 </style>

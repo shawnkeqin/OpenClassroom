@@ -22,7 +22,7 @@
       <updateSeminarModal :seminar="seminar" />
     </div>
     <a-card
-      bodyStyle="padding-bottom: 5px;"
+      :bodyStyle="{ 'padding-bottom': '5px' }"
       :class="{ closed: !seminar.is_open }"
     >
       <a-col :span="7">
@@ -49,10 +49,10 @@
         <h5>Seminar description</h5>
         <p>{{ seminar.desc || "None" }}</p>
       </a-col>
-        <!-- <seminarStatusToggle :seminar_id="seminar.id" /> -->
-        <!-- <h5>Seminar Availability</h5>
+      <!-- <seminarStatusToggle :seminar_id="seminar.id" /> -->
+      <!-- <h5>Seminar Availability</h5>
         <p>{{ seminar.is_open }}</p> -->
-        <!-- <updateVisitorCapacityModal /> -->
+      <!-- <updateVisitorCapacityModal /> -->
     </a-card>
   </div>
 </template>
@@ -70,7 +70,7 @@ export default {
 
   // components: { archiveSeminarModal, deleteSeminarModal, updateSeminarModal, seminarStatusToggle },
   components: {
-    updateSeminarModal,
+    updateSeminarModal
     // seminarStatusToggle,
     // updateVisitorCapacityModal
   },

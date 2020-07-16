@@ -53,7 +53,9 @@
       :visit="visit"
       :key="visit.id"
     /> -->
+
     <modals-container />
+
   </div>
 </template>
 
@@ -71,17 +73,13 @@ import queries from "@/graphql/queries.gql";
 import constants from "@/utils/constants";
 const plainOptions = ["My Seminars", "My Visits", "My Requests"];
 const defaultCheckedList = ["My Seminars", "My Visits"];
+import store from "@/store";
 
 export default {
   name: "calendarView",
-
   data() {
     return {
-      calendarPlugins: [
-        DayGridPlugin,
-        TimeGridPlugin,
-        InteractionPlugin,
-      ],
+      calendarPlugins: [DayGridPlugin, TimeGridPlugin, InteractionPlugin],
       eventSources: [],
       checkedList: defaultCheckedList,
       checkedBox: false,
@@ -120,16 +118,20 @@ export default {
   apollo: {
     my_visits: {
       query: queries.get_my_visits,
-      variables: {
-        visitor_id: constants.TEST_FACULTY_ID
+      variables() {
+        return {
+          visitor_id: store.state.loggedInUser
+        };
       },
       update: data => data.visit
     },
     my_requests: {
       query: queries.get_seminars_with_visits_by_time_requested,
-      variables: {
-        faculty_id: constants.TEST_FACULTY_ID,
-        semester_code: constants.SEMESTER_CODE_AY1819_1
+      variables() {
+        return {
+          faculty_id: store.state.loggedInUser,
+          semester_code: constants.SEMESTER_CODE_AY1819_1
+        };
       },
       update: data => data.seminar
     },

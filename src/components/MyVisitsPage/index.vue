@@ -47,7 +47,7 @@
 <script>
 import SeminarRequestCard from "../viewSeminars/SeminarRequestCard";
 import queries from "@/graphql/queries.gql";
-import constants from "@/utils/constants";
+import store from "@/store";
 
 export default {
   name: "observelog",
@@ -63,8 +63,10 @@ export default {
   apollo: {
     myVisits: {
       query: queries.get_my_visits,
-      variables: {
-        visitor_id: constants.TEST_FACULTY_ID
+      variables() {
+        return {
+          visitor_id: store.state.loggedInUser
+        };
       },
       update: data => data.visit
     }

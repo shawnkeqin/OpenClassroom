@@ -12,7 +12,9 @@
 <script>
 import SeminarsWithVisitsCard from "./SeminarWithVisitsCard";
 import queries from "@/graphql/queries.gql";
+import store from "@/store";
 import constants from "@/utils/constants";
+
 export default {
   name: "MyVisitorsPage",
   components: {
@@ -33,10 +35,13 @@ export default {
   apollo: {
     seminarsWithVisits: {
       query: queries.get_seminars_with_visits_by_time_requested,
-      variables: {
-        faculty_id: constants.TEST_FACULTY_ID,
-        semester_code: constants.SEMESTER_CODE_AY1819_1
+      variables() {
+        return {
+          faculty_id: store.state.loggedInUser,
+          semester_code: constants.SEMESTER_CODE_AY1819_1
+        };
       },
+
       update: data => data.seminar
     }
   }

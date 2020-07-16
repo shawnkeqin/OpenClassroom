@@ -72,7 +72,7 @@
               <template slot="footer">
                 <a-button @click="descModalVisible = false">Close</a-button>
               </template>
-              <h4>Seminar description:</h4>
+              <h4>Class description:</h4>
               <p>{{ seminar.desc }}</p>
               <h4>Course description:</h4>
               <p>{{ course.desc }}</p>
@@ -221,7 +221,7 @@
 
 <script>
 import utils from "@/utils";
-import constants from "@/utils/constants";
+import store from "@/store";
 import queries from "@/graphql/queries.gql";
 import ColoredTag from "./ColoredTag";
 import AddToCalendar from "./AddToCalendar";
@@ -282,7 +282,7 @@ export default {
         mutation: queries.request_visit,
         variables: {
           seminar_id,
-          visitor_id: constants.TEST_FACULTY_ID,
+          visitor_id: store.state.loggedInUser,
           request_msg
         },
         refetchQueries: ["get_my_visits"]

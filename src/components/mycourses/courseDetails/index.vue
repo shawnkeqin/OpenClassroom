@@ -1,11 +1,11 @@
 <template>
   <div class="page-wrapper">
     <h2>
-      {{ course.title }}
+      {{ course ? course.title : "" }}
     </h2>
     <div style="display: flex; align-items: center; margin-bottom: 5px">
       <h3 style="display: inline; margin: 0 10px 0 0">
-        {{ course.module_code }}
+        {{ course ? course.module_code : "" }}
       </h3>
       <!--  <a-button type="danger" size="large" @click="setAllUnavailable">
         Close Course
@@ -33,14 +33,14 @@
         <a-icon type="exclamation-circle" theme="filled" class="pending" />
       </a-tooltip>
     </div>
-    <a-card style="width: 35rem" bodyStyle="padding: 0">
+    <a-card style="width: 35rem" :bodyStyle="{ padding: 0 }">
       <a-collapse default-active-key="1" :bordered="false">
         <a-collapse-panel key="2" header="Course description">
-          <p>{{ course.desc }}</p>
+          <p>{{ course ? course.desc : "" }}</p>
           <updateCourseDetailsModal :course="course" />
           <b>Additional Description: </b>
           <br />
-          <p>{{ course_group.course_group_desc }}</p>
+          <p>{{ course_group ? course_group.course_group_desc : "" }}</p>
         </a-collapse-panel>
       </a-collapse>
       <a-collapse default-active-key="1" :bordered="false">
@@ -50,7 +50,7 @@
       </a-collapse>
       <a-collapse default-active-key="1" :bordered="false">
         <a-collapse-panel key="3" header="Notes for observers">
-          <p>{{ course.notes }}</p>
+          <p>{{ course ? course.notes : "" }}</p>
         </a-collapse-panel>
       </a-collapse>
     </a-card>
@@ -97,19 +97,20 @@ import updateCourseDetailsModal from "./updateCourseDetailsModal";
 // import closeCourseAndSeminarsToggle from "./closeCourseAndSeminarsToggle";
 export default {
   name: "courseDetails",
-  props: ["id"],
+  // props: ["id"],
   components: {
     seminarItem,
     // addNewSeminarModal,
-    updateCourseDetailsModal,
+    updateCourseDetailsModal
     // closeCourseAndSeminarsToggle
     // courseModule
   },
   data: function() {
     return {
+      id: this.$route.params.id,
       seminars: [],
       course_group: {},
-      isToggleCourseGroupLoading: false,
+      isToggleCourseGroupLoading: false
     };
   },
   apollo: {
@@ -136,7 +137,7 @@ export default {
   },
   computed: {
     course() {
-      return this.course_group.course;
+      return this.course_group ? this.course_group.course : null;
     }
   },
   // computed: {

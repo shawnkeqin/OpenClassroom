@@ -74,10 +74,6 @@
 import auth from "@/auth";
 export default {
   name: "LoginCard",
-  // beforeCreate() {
-  //   // this.form = this.$form.createForm(this, { name: "normal_login" });
-  //   // this.$auth.renewTok;ens();;
-  // },
   data() {
     return {
       form: this.$form.createForm(this, { name: "form" }),
@@ -101,10 +97,9 @@ export default {
             } else {
               this.invalidCredentials = true;
             }
-            this.$emit("login-event");
           })
           .catch(err => {
-            if (err.response.status == 401) {
+            if (err.response && err.response.status == 401) {
               this.invalidCredentials = true;
             } else {
               this.$message.info(err.message);

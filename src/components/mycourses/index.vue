@@ -18,8 +18,7 @@
 
 <script>
 import queries from "@/graphql/queries.gql";
-import constants from "@/utils/constants";
-
+import store from "@/store";
 export default {
   name: "coursesList",
   data() {
@@ -29,11 +28,12 @@ export default {
   },
   apollo: {
     course_groups() {
-      const faculty_id = constants.TEST_FACULTY_ID;
       return {
         query: queries.get_course_groups_by_faculty,
-        variables: {
-          faculty_id
+        variables() {
+          return {
+            faculty_id: store.state.loggedInUser
+          };
         },
         update: data => data.course_group
       };

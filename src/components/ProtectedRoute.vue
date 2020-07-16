@@ -56,18 +56,26 @@
                 href="https://docs.google.com/forms/d/e/1FAIpQLScOfSV1ZIChd6IQJ9WLegujtfhlE-E5hG-tyDMBzEL-JUdEUQ/viewform?usp=sf_link"
               ></a>
             </a-menu-item>
+            <a-menu-item key="8" class="opt-in">
+              <a-icon type="book" />
+              <span class="nav-text">Opt-in</span>
+              <router-link to="/opt-in" />
+            </a-menu-item>
           </a-menu>
-          <div class="logged-in-status-box" v-if="loggedInUserObj">
-            {{ loggedInUserObj.name }}
-            <div>
+          <div class="logged-in-status-box">
+            <div v-if="loggedInUserObj">
+              {{ loggedInUserObj.name }}
               <a-button class="logout-button" icon="logout" @click="logout"
                 >Log Out</a-button
               >
             </div>
+            <div v-else>
+              <a-icon type="loading" />
+            </div>
           </div>
         </a-layout-sider>
-        <a-layout-content style="padding: 30px 50px 30px 50px; height: 100vh">
-          <router-view v-on:login-event="onLoginEvent" />
+        <a-layout-content style="padding: 30px 50px 30px 50px; height: 100vh;">
+          <component :is="component" />
         </a-layout-content>
       </a-layout>
     </a-layout-content>
@@ -78,16 +86,23 @@ import constants from "../utils/constants";
 import queries from "../graphql/queries.gql";
 import ConsentForm from "./ConsentForm";
 import auth from "@/auth";
+import store from "@/store";
 export default {
   components: { ConsentForm },
+  props: ["component"],
   data() {
     return {
       constants: constants,
       queries: queries,
       loggedInUserObj: null,
       seminarWithVisits: [],
-      loggedInUser: auth.getLoggedInUser()
+      loggedInUser: store.state.loggedInUser
     };
+  },
+  beforeCreate() {
+    if (!auth.isAuthenticated()) {
+      this.$router.push({ path: "/login" });
+    }
   },
   created() {
     auth.addListener("session-expired-event", this.onSessionExpiredEvent);
@@ -99,12 +114,8 @@ export default {
     onSessionExpiredEvent() {
       this.$message.info("User session has expired, please log in again");
     },
-    onLoginEvent() {
-      this.loggedInUser = auth.getLoggedInUser();
-    },
     logout() {
       auth.logout();
-      // this.$router.push({ path: "/login" });
     }
   },
   apollo: {
@@ -122,7 +133,7 @@ export default {
       query: queries.get_seminars_with_visits_by_time_requested,
       variables() {
         return {
-          faculty_id: constants.TEST_FACULTY_ID,
+          faculty_id: this.loggedInUser,
           // faculty_id: this.loggedInUser;
           semester_code: constants.SEMESTER_CODE_AY1819_1
         };

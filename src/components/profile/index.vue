@@ -23,7 +23,7 @@
     </div>
     <div class="content-block-wrapper">
       <h2>My Preferences</h2>
-      <a-card style="width: 40rem" bodyStyle="padding: 0">
+      <a-card style="width: 40rem" :bodyStyle="{ padding: '0px' }">
         <a-list item-layout="horizontal" size="small">
           <a-list-item class="preference-item">
             <p>Email me when new requests for my seminars are created</p>
@@ -56,7 +56,7 @@
 
 <script>
 import queries from "@/graphql/queries.gql";
-import constants from "@/utils/constants";
+import store from "@/store";
 
 export default {
   name: "Profile",
@@ -70,8 +70,10 @@ export default {
   apollo: {
     faculty: {
       query: queries.getFacultyById,
-      variables: {
-        faculty_id: constants.TEST_FACULTY_ID
+      variables() {
+        return {
+          faculty_id: store.state.loggedInUser
+        };
       },
       update: data => data.faculty_by_pk
     }
