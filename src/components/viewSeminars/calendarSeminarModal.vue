@@ -19,15 +19,15 @@
     >
  
       <p style="margin: 3px;">
-        <!--     {{ seminar.module_code }} -->
+         {{ event.extendedProps.module_code }}
       </p>
         <h3 style="font-size: 24px;">
         {{ event.title }}
       </h3>
       <div style="margin-bottom: 3px;">
         <h4 style="display: inline;">
-       <!--   {{ event.start }}
-          {{ event.end }} -->
+        {{ event.start }}
+          {{ event.end }}
         </h4>
         </div>
           <h5 style="display: inline">{{ event.extendedProps.location  }}</h5>
@@ -36,7 +36,7 @@
       <h5>Class title</h5>
       <p>{{ event.title || "No seminar title" }}</p>
       <h5>Class description</h5>
-      <!--   <p>{{ seminar.desc || "No seminar description" }}</p> -->
+       <p>{{  event.extendedProps.desc || "No seminar description" }}</p> 
 
       <h5>Instructor</h5>
         <div style="display: flex; align-items: center;">
@@ -50,14 +50,40 @@
       <div style="margin-bottom: 20px;">
        
       </div>
-      <div style="display: flex; flex-direction: column; align-items: left;">
+    <template>
+      <h4 class="accepted">
+        Confirmed visitors
+      </h4>
+      <div
+        style="display: flex; align-items: center; margin-bottom: 5px;"
+      >
+        <img
+          class="avatar-small"
+          :src="
+              'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
+          "
+        />
+        <p style="margin: 0 5px;">
+          {{ event.extendedProps.name }}
+        </p>
+        <div style="display: flex; align-items: center">
+          <a-icon
+            type="check-circle"
+            theme="filled"
+            class="status-icon accepted"
+            style="font-size: 15px;"
+          />
+        </div>
+      
+      </div>
+          <div style="display: flex; flex-direction: column; align-items: left;">
         <a
           href="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg"
           target="_blank"
           >View campus map</a
         >
-  
       </div>
+    </template>
 
     
    <!-- <fieldset>
