@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "stage": "env NODE_ENV=staging vue-cli-service serve --mode staging",
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --mode development",
     "build": "vue-cli-service build --mode staging",
     "lint": "vue-cli-service lint",
     "apollo": "vue-cli-service apollo:dev --generate-schema",
