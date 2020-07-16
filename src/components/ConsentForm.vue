@@ -103,6 +103,7 @@
 <script>
 import constants from "../utils/constants";
 import queries from "../graphql/queries.gql";
+import store from "@/store";
 export default {
   name: "ConsentForm",
   data() {
@@ -117,8 +118,10 @@ export default {
   apollo: {
     loggedInUser: {
       query: queries.getFacultyById,
-      variables: {
-        faculty_id: constants.TEST_FACULTY_ID
+      variables() {
+        return {
+          faculty_id: store.state.loggedInUser
+        };
       },
       update: data => data.faculty_by_pk
     }
@@ -127,9 +130,11 @@ export default {
     async handleSubmitConsent() {
       await this.$apollo.mutate({
         mutation: queries.update_faculty_consent,
-        variables: {
-          faculty_id: constants.TEST_FACULTY_ID,
-          has_consented: true
+        variables() {
+          return {
+            faculty_id: store.state.loggedInUser,
+            has_consented: true
+          };
         },
         refetchQueries: ["getFacultyById"]
       });

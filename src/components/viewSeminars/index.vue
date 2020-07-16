@@ -166,11 +166,12 @@
 <script>
 import moment from "moment";
 import utils from "@/utils";
-import constants from "@/utils/constants";
 import queries from "@/graphql/queries.gql";
 import SeminarRequestCard from "./SeminarRequestCard";
 import suggestedSearchButton from "./suggestedSearchButton";
 import _ from "lodash";
+import store from "@/store";
+
 const DEFAULT_PAGE_SIZE = 10;
 const TEST_DATE = "2018-08-12";
 const SUGGESTED_SEARCH_1 = "SUGGESTED_SEARCH_1";
@@ -222,8 +223,10 @@ export default {
   apollo: {
     loggedInUser: {
       query: queries.getFacultyById,
-      variables: {
-        faculty_id: constants.TEST_FACULTY_ID
+      variables() {
+        return {
+          faculty_id: store.state.loggedInUser
+        };
       },
       update: data => data.faculty_by_pk
     },
@@ -312,7 +315,7 @@ export default {
             start_time,
             end_time,
             selected_tags: this.filters.selectedTags,
-            visitor_id: constants.TEST_FACULTY_ID
+            visitor_id: store.state.loggedInUser
           }
         : {
             course_title,
@@ -321,7 +324,7 @@ export default {
             end_date,
             start_time,
             end_time,
-            visitor_id: constants.TEST_FACULTY_ID
+            visitor_id: store.state.loggedInUser
           };
     }
   },
