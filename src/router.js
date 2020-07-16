@@ -6,7 +6,6 @@ import MyVisitorsPage from "@/components/MyVisitorsPage";
 //import searchcourses from './components/searchcourses.vue'
 import viewSeminars from "@/components/viewSeminars";
 import OptOutPage from "@/components/OptOutPage";
-import OptInPage from "@/components/OptInPage";
 import courseDetails from "@/components/mycourses/courseDetails";
 // import auth from "@/auth";
 import LoginPage from "@/components/LoginPage";
@@ -96,11 +95,6 @@ const router = new Router({
       name: "OptOutPage",
       component: OptOutPage
     },
-    {
-      path: "/opt-in",
-      name: "OptInPage",
-      component: OptInPage
-    }
   ]
 });
 
