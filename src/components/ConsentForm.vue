@@ -130,11 +130,9 @@ export default {
     async handleSubmitConsent() {
       await this.$apollo.mutate({
         mutation: queries.update_faculty_consent,
-        variables() {
-          return {
-            faculty_id: store.state.loggedInUser,
-            has_consented: true
-          };
+        variables: {
+          faculty_id: this.loggedInUser.id,
+          has_consented: true
         },
         refetchQueries: ["getFacultyById"]
       });

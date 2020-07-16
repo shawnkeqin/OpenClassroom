@@ -56,6 +56,11 @@
                 href="https://docs.google.com/forms/d/e/1FAIpQLScOfSV1ZIChd6IQJ9WLegujtfhlE-E5hG-tyDMBzEL-JUdEUQ/viewform?usp=sf_link"
               ></a>
             </a-menu-item>
+            <!-- <a-menu-item key="8" class="opt-in">
+              <a-icon type="book" />
+              <span class="nav-text">Opt-in</span>
+              <router-link to="/opt-in" />
+            </a-menu-item> -->
           </a-menu>
           <div class="logged-in-status-box">
             <div v-if="loggedInUserObj">
