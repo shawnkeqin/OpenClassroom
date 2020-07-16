@@ -345,6 +345,7 @@ query searchSeminarsByFilters(
   $start_time: time!
   $end_time: time!
   $visitor_id: String
+  $semester_code: String
 ) {
   seminar(
     where: {
@@ -355,6 +356,7 @@ query searchSeminarsByFilters(
         { date: { _lte: $end_date } }
         { start: { _gte: $start_time } }
         { end: { _lte: $end_time } }
+        { semester_code: { _eq: $semester_code } }
       ]
     }
   ) {
@@ -406,6 +408,7 @@ query searchSeminarsByFiltersWithTags(
   $end_time: time!
   $selected_tags: [String!]
   $visitor_id: String
+  $semester_code: String
 ) {
   seminar(
     where: {
@@ -421,6 +424,7 @@ query searchSeminarsByFiltersWithTags(
             course: { tagged_as: { tag_label: { _in: $selected_tags } } }
           }
         }
+        { semester_code: { _eq: $semester_code } }
       ]
     }
   ) {
