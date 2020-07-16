@@ -63,18 +63,19 @@
             </a-menu-item>
           </a-menu>
           <div class="logged-in-status-box">
-            {{
-              loggedInUserObj ? loggedInUserObj.name : "(Error with login flow)"
-            }}
-            <div>
+            <div v-if="loggedInUserObj">
+              {{ loggedInUserObj.name }}
               <a-button class="logout-button" icon="logout" @click="logout"
                 >Log Out</a-button
               >
             </div>
+            <div v-else>
+              <a-icon type="loading" />
+            </div>
           </div>
         </a-layout-sider>
         <a-layout-content style="padding: 30px 50px 30px 50px; height: 100vh;">
-          <component :is="component"/>
+          <component :is="component" />
         </a-layout-content>
       </a-layout>
     </a-layout-content>
@@ -85,16 +86,17 @@ import constants from "../utils/constants";
 import queries from "../graphql/queries.gql";
 import ConsentForm from "./ConsentForm";
 import auth from "@/auth";
+import store from "@/store";
 export default {
   components: { ConsentForm },
-  props: ['component'],
+  props: ["component"],
   data() {
     return {
       constants: constants,
       queries: queries,
       loggedInUserObj: null,
       seminarWithVisits: [],
-      loggedInUser: auth.getLoggedInUser()
+      loggedInUser: store.state.loggedInUser
     };
   },
   beforeCreate() {
@@ -112,13 +114,8 @@ export default {
     onSessionExpiredEvent() {
       this.$message.info("User session has expired, please log in again");
     },
-    onLoginEvent() {
-      console.log("login-event received");
-      this.loggedInUser = auth.getLoggedInUser();
-    },
     logout() {
       auth.logout();
-      // this.$router.push({ path: "/login" });
     }
   },
   apollo: {
@@ -136,7 +133,7 @@ export default {
       query: queries.get_seminars_with_visits_by_time_requested,
       variables() {
         return {
-          faculty_id: constants.TEST_FACULTY_ID,
+          faculty_id: this.loggedInUser,
           // faculty_id: this.loggedInUser;
           semester_code: constants.SEMESTER_CODE_AY1819_1
         };
