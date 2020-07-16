@@ -57,8 +57,10 @@
               ></a>
             </a-menu-item>
           </a-menu>
-          <div class="logged-in-status-box" v-if="loggedInUserObj">
-            {{ loggedInUserObj.name }}
+          <div class="logged-in-status-box">
+            {{
+              loggedInUserObj ? loggedInUserObj.name : "(Error with login flow)"
+            }}
             <div>
               <a-button class="logout-button" icon="logout" @click="logout"
                 >Log Out</a-button
@@ -100,6 +102,7 @@ export default {
       this.$message.info("User session has expired, please log in again");
     },
     onLoginEvent() {
+      console.log("login-event received");
       this.loggedInUser = auth.getLoggedInUser();
     },
     logout() {
