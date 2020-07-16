@@ -53,7 +53,7 @@
       :visit="visit"
       :key="visit.id"
     /> -->
-    <modals-container :adaptive="true"  />
+    <modals-container />
   </div>
 </template>
 
@@ -108,7 +108,6 @@ export default {
       eventFilter: (evt,el) => true, */
       my_visits: [],
       my_requests: [],
-      course_group: [],
       my_seminars: []
     };
   },
@@ -119,16 +118,6 @@ export default {
   }, */
   components: { Fullcalendar },
   apollo: {
-    course_group() {
-      const faculty_id = constants.TEST_FACULTY_ID;
-      return {
-        query: queries.get_course_groups_by_faculty,
-        variables: {
-          faculty_id
-        },
-        update: data => data.course_group
-      };
-    },
     my_visits: {
       query: queries.get_my_visits,
       variables: {
@@ -144,15 +133,13 @@ export default {
       },
       update: data => data.seminar
     },
-    my_seminars() {
-      const course_group_id = this.course_group[0].id;
-      return {
-        query: queries.get_seminars_by_course_group,
+    my_seminars: {
+        query: queries.get_seminars_of_faculty_in_calendar,
         variables: {
-          course_group_id
+        faculty_id : constants.TEST_FACULTY_ID
         },
         update: data => data.seminar
-      };
+
     }
   },
   computed: {
@@ -168,7 +155,9 @@ export default {
           color: "green",
           extendedProps: {
             name: a.seminar.course_group.faculty.name.toString(),
-            location: a.seminar.location.full_name.toString()
+            location: a.seminar.location.full_name.toString(),
+            module_code: a.seminar.course_group.course.module_code.toString(),
+            desc: a.seminar.course_group.course.desc.toString()
           }
         };
       });
@@ -185,7 +174,9 @@ export default {
           color: "red",
           extendedProps: {
             name: a.course_group.faculty.name.toString(),
-            location: a.location.full_name.toString()
+            location: a.location.full_name.toString(),
+            module_code: a.course_group.course.module_code.toString(),
+            desc: a.course_group.course.desc.toString()
           }
         };
       });
@@ -201,7 +192,9 @@ export default {
           id: a.id,
           extendedProps: {
             name: a.course_group.faculty.name.toString(),
-            location: a.location.full_name.toString()
+            location: a.location.full_name.toString(),
+            module_code: a.course_group.course.module_code.toString(),
+             desc: a.course_group.course.desc.toString()
           }
         };
       });
@@ -216,8 +209,10 @@ export default {
   methods: {
     handleClick(arg) {
       this.$modal.show(calendarSeminarModal, {
-        event: arg.event
-      });
+        event: arg.event,
+        
+      },
+       { height: "600", width:"800" });
       /* this.$modal.show(CalendarSeminar, {
         event: arg.event
       }); */

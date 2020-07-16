@@ -122,6 +122,8 @@ query get_seminars_with_visits_by_time_requested(
       course {
         id
         title
+        module_code
+        desc
       }
       faculty {
         name
@@ -563,3 +565,34 @@ mutation update_faculty_notif_request_update(
     affected_rows
   }
 }
+
+query get_seminars_of_faculty_in_calendar( $faculty_id: String!) {
+  seminar(where: {course_group: {faculty_id: {_eq: $faculty_id}}}, order_by: {date: desc}) {
+    id
+    date
+    start
+    end
+    is_archived
+    location_code
+    location {
+      code
+      full_name
+    }
+    visitor_capacity
+    is_open
+    course_group {
+      faculty {
+        name
+        id
+      }
+      course {
+        id
+        title
+        module_code
+        desc
+      }
+      id
+    }
+  }
+}
+
