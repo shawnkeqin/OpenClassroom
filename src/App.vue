@@ -1,19 +1,20 @@
 <template>
   <div>
-    <sidebartwo />
+    <!-- <sidebartwo /> -->
+    <router-view />
   </div>
 </template>
 
 <script>
 //import sidebar from './components/sidebar'
-import sidebartwo from "./components/sidebartwo";
+// import sidebartwo from "./components/sidebartwo";
 //import Login from './components/login'
 //import incomingRequestsCard from "./components/incomingRequestsCard"
 export default {
   name: "App",
-  components: {
-    sidebartwo
-  },
+  // components: {
+  //   sidebartwo
+  // },
   async created() {
     try {
       // await this.$auth.renewTokens();

@@ -1,5 +1,5 @@
 <template>
-  <div id="page-wrapper">
+  <div>
     <div id="container-one" class="screen-wrapper">
       <div
         style="display: flex; justify-content: space-between; height: 80vh; width: 100%;"
@@ -72,18 +72,6 @@ export default {
 };
 </script>
 <style>
-#page-wrapper {
-  position: absolute;
-  /* height: 100vh; */
-  width: 100vw;
-  background: white;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 0;
-  margin: 0;
-}
 .screen-wrapper {
   display: flex;
   flex-direction: column;
