@@ -380,7 +380,9 @@ query searchSeminarsByFilters(
       course_group_desc
       id
       faculty {
+        id
         name
+        is_active
       }
       course {
         desc
@@ -448,6 +450,7 @@ query searchSeminarsByFiltersWithTags(
       faculty {
         id
         name
+        is_active
       }
       course {
         id
@@ -478,7 +481,6 @@ mutation request_visit(
       {
         seminar_id: $seminar_id
         visitor_id: $visitor_id
-        visit_status: "PENDING"
         request_msg: $request_msg
       }
     ]
