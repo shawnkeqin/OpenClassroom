@@ -133,7 +133,7 @@ query get_seminars_with_visits_by_time_requested(
 }
 
 query get_my_visits($visitor_id: String!) {
-  visit(where: { visitor_id: { _eq: $visitor_id } }) {
+  visit(where: {visitor_id: {_eq: $visitor_id}}, order_by: {seminar: {date: desc}}) {
     id
     seminar_id
     visit_status
