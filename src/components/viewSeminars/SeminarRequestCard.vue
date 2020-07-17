@@ -9,7 +9,7 @@
         "
       />
       <p style="margin: 0 5px;">
-        {{ `${course_group.faculty.name}'s class` }}
+        {{ `${faculty.name}'s class` }}
       </p>
       <template v-for="tag in course.tagged_as">
         <ColoredTag :key="tag.tag_label" :tag_label="tag.tag_label" />
@@ -85,7 +85,7 @@
             <div
               style="display: flex; flex-direction: column; align-items: center;"
             >
-              <template v-if="!seminar.is_open">
+              <template v-if="!seminar.is_open || !faculty.is_active">
                 <a-button
                   @click="requestModalVisible = true"
                   type="primary"
@@ -266,7 +266,10 @@ export default {
       return this.seminar.course_group;
     },
     course() {
-      return this.course_group.course;
+      return this.seminar.course_group.course;
+    },
+    faculty() {
+      return this.seminar.course_group.faculty;
     },
     is_past() {
       // return new Date(this.seminar.date) < Date.now();

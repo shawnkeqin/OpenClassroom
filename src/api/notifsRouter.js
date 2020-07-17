@@ -3,6 +3,45 @@ const router = express.Router();
 const gql = require("graphql-tag");
 const { createApolloClient, createTransporter } = require("./utility");
 
+const GET_FACULTY_BY_ID = gql`
+  query getFacultyById($faculty_id: String!) {
+    faculty_by_pk(id: $faculty_id) {
+      email
+      id
+      name
+      has_consented
+      notif_request_update
+    }
+  }
+`;
+
+const GET_SEMINAR_BY_ID = gql`
+  query getSeminarById($seminar_id: Int!) {
+    seminar_by_pk(id: $seminar_id) {
+      id
+      date
+      start
+      end
+      title
+      desc
+      course_group {
+        id
+        course {
+          id
+          module_code
+          title
+        }
+        faculty {
+          id
+          email
+          name
+          notif_new_request
+        }
+      }
+    }
+  }
+`;
+
 async function notifMiddleware(req, res, next) {
   const { seminar_id, visitor_id } = req.body.event.data.new;
   const visit_status_old =
@@ -13,17 +52,7 @@ async function notifMiddleware(req, res, next) {
     const apolloClient = createApolloClient();
     const visitor = (
       await apolloClient.query({
-        query: gql`
-          query getFacultyById($faculty_id: String!) {
-            faculty_by_pk(id: $faculty_id) {
-              email
-              id
-              name
-              has_consented
-              notif_request_update
-            }
-          }
-        `,
+        query: GET_FACULTY_BY_ID,
         variables: {
           faculty_id: visitor_id
         }
@@ -31,32 +60,7 @@ async function notifMiddleware(req, res, next) {
     ).data.faculty_by_pk;
     const seminar = (
       await apolloClient.query({
-        query: gql`
-          query getSeminarById($seminar_id: Int!) {
-            seminar_by_pk(id: $seminar_id) {
-              id
-              date
-              start
-              end
-              title
-              desc
-              course_group {
-                id
-                course {
-                  id
-                  module_code
-                  title
-                }
-                faculty {
-                  id
-                  email
-                  name
-                  notif_new_request
-                }
-              }
-            }
-          }
-        `,
+        query: GET_SEMINAR_BY_ID,
         variables: {
           seminar_id
         }
