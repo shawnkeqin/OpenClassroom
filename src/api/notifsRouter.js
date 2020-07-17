@@ -97,22 +97,23 @@ async function newRequestHandler(req, res) {
     });
 
   try {
-    const transporter = createTransporter();
-    const info = await transporter.sendMail({
-      from: process.env.EMAIL,
-      to:
-        process.env.NODE_ENV === "production"
-          ? "dantran.fcac@gmail.com"
-          : process.env.EMAIL_TO,
-      subject: `New visit request to your class`,
-      html: `<p>${visitor.name} made a visit request to your class ${course.module_code} ${course.title}, ${seminar.date}.</p>
-        <p>Click <a href="https://open-classroom-app-demo.herokuapp.com/my-visitors">here</a> to view it on the OpenClassroom portal.</p>`
-    });
+    // const transporter = createTransporter();
+    // const info = await transporter.sendMail({
+    //   from: process.env.EMAIL,
+    //   to:
+    //     process.env.NODE_ENV === "production"
+    //       ? "dantran.fcac@gmail.com"
+    //       : process.env.EMAIL_TO,
+    //   subject: `New visit request to your class`,
+    //   html: `<p>${visitor.name} made a visit request to your class ${course.module_code} ${course.title}, ${seminar.date}.</p>
+    //     <p>Click <a href="https://open-classroom-app-demo.herokuapp.com/my-visitors">here</a> to view it on the OpenClassroom portal.</p>`
+    // });
 
-    console.log("Email sent: %s", info.messageId);
+    // console.log("Email sent: %s", info.messageId);
     return res.json({
       success: true,
-      message: "Email sent successfully"
+      // message: "Email sent successfully"
+      message: ""
     });
   } catch (err) {
     console.log(err);
@@ -152,21 +153,22 @@ async function requestUpdateHandler(req, res) {
   const linkToPortal = `<p>Click <a href="https://open-classroom-app-demo.herokuapp.com/my-visits">here</a> to view your visit on the OpenClassroom portal.</p>`;
 
   try {
-    const transporter = createTransporter();
-    const info = await transporter.sendMail({
-      from: process.env.EMAIL,
-      to:
-        process.env.NODE_ENV === "production"
-          ? "dantran.fcac@gmail.com"
-          : process.env.EMAIL_TO,
-      subject: `Your visit request is ${visit_status_new}`,
-      html: visitStatusMsg + linkToPortal
-    });
+    // const transporter = createTransporter();
+    // const info = await transporter.sendMail({
+    //   from: process.env.EMAIL,
+    //   to:
+    //     process.env.NODE_ENV === "production"
+    //       ? "dantran.fcac@gmail.com"
+    //       : process.env.EMAIL_TO,
+    //   subject: `Your visit request is ${visit_status_new}`,
+    //   html: visitStatusMsg + linkToPortal
+    // });
 
-    console.log("Email sent: %s", info.messageId);
+    // console.log("Email sent: %s", info.messageId);
     return res.json({
       success: true,
-      message: "Email sent successfully"
+      // message: "Email sent successfully"
+      message: ""
     });
   } catch (err) {
     console.log(err);

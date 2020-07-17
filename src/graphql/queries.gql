@@ -126,6 +126,7 @@ query get_seminars_with_visits_by_time_requested(
         desc
       }
       faculty {
+        id
         name
       }
     }
@@ -150,6 +151,7 @@ query get_my_visits($visitor_id: String!) {
       end
       is_open
       location {
+        code
         full_name
       }
       title
@@ -161,6 +163,7 @@ query get_my_visits($visitor_id: String!) {
           id
           name
           email
+          is_active
         }
         course {
           id
@@ -215,6 +218,7 @@ query get_seminars_by_course_group($course_group_id: Int!, $semester_code: Strin
     course_group {
       id
       faculty {
+        id
         name
       }
       course {
@@ -576,8 +580,16 @@ mutation update_faculty_notif_request_update(
   }
 }
 
+<<<<<<< HEAD
 query get_seminars_of_faculty_in_calendar( $faculty_id: String!, $semester_code: String!) {
   seminar(where: {course_group: {faculty_id: {_eq: $faculty_id}, semester_code: {_eq: $semester_code}}}, order_by: {date: desc}){
+=======
+query get_seminars_of_faculty_in_calendar($faculty_id: String!) {
+  seminar(
+    where: { course_group: { faculty_id: { _eq: $faculty_id } } }
+    order_by: { date: desc }
+  ) {
+>>>>>>> 158efe2ef88395114fb4b9f7ca228493237ffe80
     id
     date
     start
@@ -605,4 +617,3 @@ query get_seminars_of_faculty_in_calendar( $faculty_id: String!, $semester_code:
     }
   }
 }
-
