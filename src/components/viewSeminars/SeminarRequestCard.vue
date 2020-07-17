@@ -288,7 +288,7 @@ export default {
           visitor_id: store.state.loggedInUser,
           request_msg
         },
-        refetchQueries: ["get_my_visits"]
+        refetchQueries: ["get_my_visits", "searchSeminarsByFilters"]
       });
       this.visit_local = result.data.insert_visit.returning[0];
       this.requestModalVisible = false;

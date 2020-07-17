@@ -150,6 +150,7 @@ query get_my_visits($visitor_id: String!) {
       end
       is_open
       location {
+        code
         full_name
       }
       title
@@ -161,6 +162,7 @@ query get_my_visits($visitor_id: String!) {
           id
           name
           email
+          is_active
         }
         course {
           id
