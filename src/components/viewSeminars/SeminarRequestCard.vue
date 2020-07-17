@@ -318,7 +318,16 @@ export default {
           },
           {
             query: queries.searchSeminarsByFilters,
-            variables: {}
+            variables: {
+              course_title: "%",
+              faculty_name: "%",
+              start_date: "2000-01-01",
+              end_date: "2050-01-01",
+              start_time: "00:00",
+              end_time: "23:59",
+              visitor_id: store.state.loggedInUser,
+              semester_code: process.env.VUE_APP_SEMESTER_CODE
+            }
           }]
       });
       this.visit_local = null;

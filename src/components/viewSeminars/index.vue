@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Search Courses</h1>
+    <h1>Search Classes</h1>
     <div style="padding: 5px 0px 10px 0px">
       <suggestedSearchButton
         :id="SUGGESTED_SEARCH_IDS.SUGGESTED_SEARCH_1"
