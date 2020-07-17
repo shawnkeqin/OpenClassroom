@@ -13,8 +13,8 @@ configureAPI(app);
 const publicPath = resolve(__dirname, "./dist");
 const staticConf = { maxAge: "1d", etag: false };
 
+app.use(history());
 app.use(express.static(publicPath, staticConf));
-app.use("/", history());
 
 console.log("env: PORT=", process.env.PORT);
 const PORT = process.env.PORT || 443;
