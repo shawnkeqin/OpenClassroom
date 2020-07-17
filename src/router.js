@@ -20,13 +20,7 @@ const router = new Router({
   mode: "history",
   // See https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode.
   routes: [
-    {
-      path: "/",
-      name: "mycourses",
-      component: ProtectedRoute,
-      props: { component: mycourses }
-      // component: mycourses
-    },
+    { path: "/", redirect: "/my-courses" },
     {
       path: "/profile",
       name: "profile",
@@ -88,13 +82,13 @@ const router = new Router({
       name: "callback",
       component: Callback
     },
-    // See https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode.
-    // { path: '*', component: NotFound }
+    // See https://router.vuejs.org/guide/essentials/dynamic-matching.html#catch-all-404-not-found-route.
+    { path: "*", redirect: "/my-courses" },
     {
       path: "/opt-out",
       name: "OptOutPage",
       component: OptOutPage
-    },
+    }
   ]
 });
 

@@ -7,7 +7,11 @@
           <a-col :xs="24" :sm="8" align="middle" justify="center">
             <a-avatar
               :size="160"
-              src="https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"
+              :src="
+                faculty.profilePic ||
+                  'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
+              "
+              style="color: #004b8d;"
             />
           </a-col>
           <a-col>
