@@ -580,16 +580,8 @@ mutation update_faculty_notif_request_update(
   }
 }
 
-<<<<<<< HEAD
 query get_seminars_of_faculty_in_calendar( $faculty_id: String!, $semester_code: String!) {
   seminar(where: {course_group: {faculty_id: {_eq: $faculty_id}, semester_code: {_eq: $semester_code}}}, order_by: {date: desc}){
-=======
-query get_seminars_of_faculty_in_calendar($faculty_id: String!) {
-  seminar(
-    where: { course_group: { faculty_id: { _eq: $faculty_id } } }
-    order_by: { date: desc }
-  ) {
->>>>>>> 158efe2ef88395114fb4b9f7ca228493237ffe80
     id
     date
     start
