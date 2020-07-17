@@ -81,9 +81,9 @@ export default {
       calendarPlugins: [DayGridPlugin, TimeGridPlugin, InteractionPlugin],
       eventSources: [],
       checkedList: defaultCheckedList,
-      checkedBox: false,
-      checkedBoxTwo: false,
-      checkedBoxThree: false,
+      checkedBox: true,
+      checkedBoxTwo: true,
+      checkedBoxThree: true,
       indeterminate: true,
       checkAll: false,
       plainOptions,
@@ -232,7 +232,34 @@ export default {
         checkAll: e.target.checked
       });
     }, */
-
+    onChange(e) {
+      console.log(`checked = ${e.target.checked}`);
+      this.checkedBox = e.target.checked;
+      if (this.checkedBox) {
+        this.eventSources.push(this.Requests);
+      } else {
+        this.eventSources.pop(this.Requests);
+      }
+    },
+    onChangeTwo(e) {
+      console.log(`checked = ${e.target.checked}`);
+      this.checkedBox = e.target.checked;
+      if (this.checkedBox) {
+        this.eventSources.push(this.Seminars);
+      } else {
+        this.eventSources.pop(this.Seminars);
+      }
+    },
+    onChangeThree(e) {
+      console.log(`checked = ${e.target.checked}`);
+      this.checkedBox = e.target.checked;
+      if (this.checkedBox) {
+        this.eventSources.push(this.Visits);
+      } else {
+        this.eventSources.pop(this.Visits);
+      }
+    }
+    /*
     onChange(e) {
       console.log(`checked = ${e.target.checked}`);
       Object.assign(this, {
@@ -259,7 +286,7 @@ export default {
           : this.eventSources.pop(this.Visits)
       });
       return this.eventSources;
-    }
+    } */
   }
 };
 </script>
