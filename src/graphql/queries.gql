@@ -126,6 +126,7 @@ query get_seminars_with_visits_by_time_requested(
         desc
       }
       faculty {
+        id
         name
       }
     }
@@ -574,8 +575,11 @@ mutation update_faculty_notif_request_update(
   }
 }
 
-query get_seminars_of_faculty_in_calendar( $faculty_id: String!) {
-  seminar(where: {course_group: {faculty_id: {_eq: $faculty_id}}}, order_by: {date: desc}) {
+query get_seminars_of_faculty_in_calendar($faculty_id: String!) {
+  seminar(
+    where: { course_group: { faculty_id: { _eq: $faculty_id } } }
+    order_by: { date: desc }
+  ) {
     id
     date
     start
@@ -603,4 +607,3 @@ query get_seminars_of_faculty_in_calendar( $faculty_id: String!) {
     }
   }
 }
-
