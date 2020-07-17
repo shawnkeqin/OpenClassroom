@@ -81,9 +81,9 @@ export default {
       calendarPlugins: [DayGridPlugin, TimeGridPlugin, InteractionPlugin],
       eventSources: [],
       checkedList: defaultCheckedList,
-      checkedBox: true,
-      checkedBoxTwo: true,
-      checkedBoxThree: true,
+      checkedBox: false,
+      checkedBoxTwo: false,
+      checkedBoxThree: false,
       indeterminate: true,
       checkAll: false,
       plainOptions,
@@ -243,8 +243,8 @@ export default {
     },
     onChangeTwo(e) {
       console.log(`checked = ${e.target.checked}`);
-      this.checkedBox = e.target.checked;
-      if (this.checkedBox) {
+      this.checkedBoxTwo = e.target.checked;
+      if (this.checkedBoxTwo) {
         this.eventSources.push(this.Seminars);
       } else {
         this.eventSources.pop(this.Seminars);
@@ -252,8 +252,8 @@ export default {
     },
     onChangeThree(e) {
       console.log(`checked = ${e.target.checked}`);
-      this.checkedBox = e.target.checked;
-      if (this.checkedBox) {
+      this.checkedBoxThree = e.target.checked;
+      if (this.checkedBoxThree) {
         this.eventSources.push(this.Visits);
       } else {
         this.eventSources.pop(this.Visits);
