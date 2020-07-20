@@ -55,7 +55,7 @@
                 {{ pendingCount + " request(s) pending" }}
               </h4>
             </div>
-            <!-- <AddToCalendar :seminar="seminar" :isMyVisit="false" /> -->
+            <AddToCalendar :seminar="seminar" :isMyVisit="false" />
             <a
               v-if="isRequestRowsOn"
               @click="handleHideRequests"
@@ -168,7 +168,7 @@
 
 <script>
 import VisitResponseModal from "./VisitResponseModal";
-// import AddToCalendar from "@/components/viewSeminars/AddToCalendar";
+import AddToCalendar from "@/components/viewSeminars/AddToCalendar";
 import utils from "@/utils";
 import constants from "@/utils/constants";
 import queries from "@/graphql/queries.gql";
@@ -177,7 +177,7 @@ import moment from "moment";
 export default {
   components: {
     VisitResponseModal,
-    // AddToCalendar
+    AddToCalendar
   },
   props: {
     seminar: Object
