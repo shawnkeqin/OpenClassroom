@@ -81,7 +81,7 @@
         @change="consentChecked = !consentChecked"
         style="margin-right: 5px;"
       />
-      <h4 style="display: inline;">
+      <h4 @click="consentChecked = !consentChecked" id="checkbox-desc">
         Please tick here to indicate that you understand the above clauses and
         agree to participate.
       </h4>
@@ -156,5 +156,11 @@ li {
   font-family: "Lato", sans-serif;
   font-weight: bold;
   color: rgba(0, 0, 0, 0.87);
+}
+#checkbox-desc {
+  display: inline;
+}
+#checkbox-desc:hover {
+  cursor: pointer;
 }
 </style>

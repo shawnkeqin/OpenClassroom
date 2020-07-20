@@ -85,7 +85,14 @@
             <div
               style="display: flex; flex-direction: column; align-items: center;"
             >
-              <template v-if="!seminar.is_open || !faculty.is_active">
+              <template
+                v-if="
+                  !faculty.is_active ||
+                    !faculty.has_consented ||
+                    !seminar.is_open ||
+                    !course_group.is_open
+                "
+              >
                 <a-button
                   @click="requestModalVisible = true"
                   type="primary"

@@ -390,6 +390,7 @@ query searchSeminarsByFilters(
         id
         name
         is_active
+        has_consented
       }
       course {
         desc
@@ -458,6 +459,7 @@ query searchSeminarsByFiltersWithTags(
         id
         name
         is_active
+        has_consented
       }
       course {
         id
