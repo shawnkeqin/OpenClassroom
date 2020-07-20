@@ -2,18 +2,20 @@
   <div style="width: 35rem">
     <a-card hoverable style="margin-bottom: 10px">
       <div style="margin-bottom: 5px">
-        <h5 style="display: inline; font-weight: bold">
-          {{ utils.date_format(seminar.date) + " | " }}
-        </h5>
-        <h5 style="display: inline">
+        <h5
+          class="date-heading"
+          :class="is_past ? 'past' : 'red'"
+          style="display: inline;"
+        >
           {{
-            utils.time_format(seminar.start) +
-              " - " +
-              utils.time_format(seminar.end) +
-              " | "
+            `${utils.date_format(seminar.date)} from ${utils.time_format(
+              seminar.start
+            )}-${utils.time_format(seminar.end)} | `
           }}
         </h5>
-        <h6 style="display: inline">{{ seminar.location.full_name }}</h6>
+        <h6 :class="{ past: is_past }" style="display: inline;">
+          {{ seminar.location.full_name }}
+        </h6>
       </div>
       <div>
         <a-col :span="17" style="padding-right: 20px">
@@ -53,7 +55,7 @@
                 {{ pendingCount + " request(s) pending" }}
               </h4>
             </div>
-            <AddToCalendar :seminar="seminar" :isMyVisit="false" />
+            <!-- <AddToCalendar :seminar="seminar" :isMyVisit="false" /> -->
             <a
               v-if="isRequestRowsOn"
               @click="handleHideRequests"
@@ -166,7 +168,7 @@
 
 <script>
 import VisitResponseModal from "./VisitResponseModal";
-import AddToCalendar from "@/components/viewSeminars/AddToCalendar";
+// import AddToCalendar from "@/components/viewSeminars/AddToCalendar";
 import utils from "@/utils";
 import constants from "@/utils/constants";
 import queries from "@/graphql/queries.gql";
@@ -175,7 +177,7 @@ import moment from "moment";
 export default {
   components: {
     VisitResponseModal,
-    AddToCalendar
+    // AddToCalendar
   },
   props: {
     seminar: Object
@@ -213,6 +215,9 @@ export default {
       return this.requests.filter(
         request => request.visit_status === constants.VISIT_STATUS_ACCEPTED
       ).length;
+    },
+    is_past() {
+      return new Date(this.seminar.date) < Date.now();
     }
   },
   methods: {
@@ -269,5 +274,15 @@ export default {
 }
 .ant-card-hoverable {
   cursor: default;
+}
+.date-heading {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.red {
+  color: #f0284a;
+}
+.past {
+  color: rgba(0, 0, 0, 0.37);
 }
 </style>

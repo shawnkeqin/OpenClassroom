@@ -283,8 +283,7 @@ export default {
       return this.seminar.course_group.faculty;
     },
     is_past() {
-      // return new Date(this.seminar.date) < Date.now();
-      return new Date(this.seminar.date) < new Date("2018-11-01");
+      return new Date(this.seminar.date) < Date.now();
     }
   },
   methods: {

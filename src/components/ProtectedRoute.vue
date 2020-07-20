@@ -238,7 +238,7 @@ li.nav-item.ant-menu-item {
 } */
 #mini-user-info {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   padding: 20px;
   background-image: linear-gradient(315deg, #f3c9bc 0%, #f5e4b3 74%);

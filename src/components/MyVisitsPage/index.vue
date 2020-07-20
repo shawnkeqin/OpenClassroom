@@ -2,7 +2,7 @@
   <div class="page-wrapper">
     <h1>My Visits</h1>
     <div style="display: flex;">
-      <div>
+      <div v-if="seminarsToVisit.length">
         <SeminarRequestCard
           v-for="seminarWithVisits in seminarsToVisit"
           :seminar="seminarWithVisits.seminar"
@@ -10,6 +10,13 @@
           :isMessagesVisible="true"
           :key="seminarWithVisits.seminar.id"
         />
+      </div>
+      <div v-else>
+        <div style="width: 35rem; margin-bottom: 30px">
+          <a-card hoverable>
+            <h3>You have no upcoming visits</h3>
+          </a-card>
+        </div>
       </div>
       <div>
         <div style="position: sticky; top: 20px; margin: 50px">
