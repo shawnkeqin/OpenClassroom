@@ -229,6 +229,7 @@ export default {
     },
     courses: {
       query: queries.getCourseList,
+      variables: { semester_code: process.env.VUE_APP_SEMESTER_CODE },
       update: data => data.course
     },
     seminar: {

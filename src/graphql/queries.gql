@@ -1,7 +1,11 @@
-query getCourseList {
-  course(order_by: { title: asc }) {
+query getCourseList($semester_code: String!) {
+  course(
+    order_by: { title: asc }
+    where: { semester_code: { _eq: $semester_code } }
+  ) {
     title
     module_code
+    semester_code
   }
 }
 
