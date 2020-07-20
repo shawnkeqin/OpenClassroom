@@ -96,7 +96,7 @@ async function newRequestHandler(req, res) {
     });
 
   try {
-    const transporter = createTransporter();
+    // const transporter = createTransporter();
     // const info = await transporter.sendMail({
     //   from: process.env.EMAIL,
     //   to:
