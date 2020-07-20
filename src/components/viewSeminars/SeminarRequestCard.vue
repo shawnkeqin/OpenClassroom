@@ -87,10 +87,12 @@
             >
               <template
                 v-if="
-                  !faculty.is_active ||
-                    !faculty.has_consented ||
-                    !seminar.is_open ||
-                    !course_group.is_open
+                  !(
+                    faculty.is_active &&
+                    faculty.has_consented &&
+                    seminar.is_open &&
+                    course_group.is_open
+                  )
                 "
               >
                 <a-button
@@ -102,7 +104,7 @@
                   >Closed to visits</a-button
                 >
               </template>
-              <template v-else-if="!visit_local">
+              <template v-else-if="!visit_local || visit_local.is_cancelled">
                 <a-button
                   @click="requestModalVisible = true"
                   type="primary"
@@ -289,7 +291,7 @@ export default {
       const seminar_id = this.seminar.id;
       const request_msg = this.request_msg;
       const result = await this.$apollo.mutate({
-        mutation: queries.request_visit,
+        mutation: queries.create_visit_request,
         variables: {
           seminar_id,
           visitor_id: store.state.loggedInUser,
@@ -312,7 +314,7 @@ export default {
     async handleCancelRequest() {
       const visit_id = this.visit_local.id;
       await this.$apollo.mutate({
-        mutation: queries.delete_visit,
+        mutation: queries.cancel_visit_request,
         variables: {
           visit_id
         },
