@@ -288,7 +288,16 @@ export default {
           visitor_id: store.state.loggedInUser,
           request_msg
         },
-        refetchQueries: ["get_my_visits", "searchSeminarsByFilters"]
+        refetchQueries: [
+          {
+            query: queries.get_my_visits,
+            variables: {
+              visitor_id: store.state.loggedInUser
+            },
+            foo: console.log("refetch get_my_visits query")
+          },
+          "searchSeminarsByFilters"
+        ]
       });
       this.visit_local = result.data.insert_visit.returning[0];
       this.requestModalVisible = false;
@@ -300,7 +309,26 @@ export default {
         variables: {
           visit_id
         },
-        refetchQueries: ["get_my_visits", "searchSeminarsByFilters"]
+        refetchQueries: [
+          {
+            query: queries.get_my_visits,
+            variables: {
+              visitor_id: store.state.loggedInUser
+            }
+          },
+          {
+            query: queries.searchSeminarsByFilters,
+            variables: {
+              course_title: "%",
+              faculty_name: "%",
+              start_date: "2000-01-01",
+              end_date: "2050-01-01",
+              start_time: "00:00",
+              end_time: "23:59",
+              visitor_id: store.state.loggedInUser,
+              semester_code: process.env.VUE_APP_SEMESTER_CODE
+            }
+          }]
       });
       this.visit_local = null;
       this.cancelRequestModalVisible = false;

@@ -64,7 +64,7 @@
           </a-menu>
           <div class="logged-in-status-box">
             <div v-if="loggedInUserObj">
-              {{ loggedInUserObj.name }}
+              <div>{{ loggedInUserObj.name }}</div>
               <a-button class="logout-button" icon="logout" @click="logout"
                 >Log Out</a-button
               >

@@ -119,7 +119,8 @@ export default {
       return {
         query: queries.get_seminars_by_course_group,
         variables: {
-          course_group_id
+          course_group_id,
+          semester_code: process.env.VUE_APP_SEMESTER_CODE
         },
         update: data => data.seminar
       };
@@ -129,7 +130,8 @@ export default {
       return {
         query: queries.get_course_group_details,
         variables: {
-          course_group_id
+          course_group_id,
+          semester_code: process.env.VUE_APP_SEMESTER_CODE
         },
         update: data => data.course_group[0]
       };

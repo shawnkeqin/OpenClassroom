@@ -55,7 +55,6 @@
     /> -->
 
     <modals-container />
-
   </div>
 </template>
 
@@ -130,18 +129,18 @@ export default {
       variables() {
         return {
           faculty_id: store.state.loggedInUser,
-          semester_code: constants.SEMESTER_CODE_AY1819_1
+          semester_code: process.env.VUE_APP_SEMESTER_CODE
         };
       },
       update: data => data.seminar
     },
     my_seminars: {
-        query: queries.get_seminars_of_faculty_in_calendar,
-        variables: {
-        faculty_id : constants.TEST_FACULTY_ID
-        },
-        update: data => data.seminar
-
+      query: queries.get_seminars_of_faculty_in_calendar,
+      variables: {
+        faculty_id: constants.TEST_FACULTY_ID,
+        semester_code: process.env.VUE_APP_SEMESTER_CODE
+      },
+      update: data => data.seminar
     }
   },
   computed: {
@@ -196,7 +195,7 @@ export default {
             name: a.course_group.faculty.name.toString(),
             location: a.location.full_name.toString(),
             module_code: a.course_group.course.module_code.toString(),
-             desc: a.course_group.course.desc.toString()
+            desc: a.course_group.course.desc.toString()
           }
         };
       });
@@ -210,11 +209,13 @@ export default {
   }, */
   methods: {
     handleClick(arg) {
-      this.$modal.show(calendarSeminarModal, {
-        event: arg.event,
-        
-      },
-       { height: "600", width:"800" });
+      this.$modal.show(
+        calendarSeminarModal,
+        {
+          event: arg.event
+        },
+        { height: "600", width: "800" }
+      );
       /* this.$modal.show(CalendarSeminar, {
         event: arg.event
       }); */
@@ -231,6 +232,34 @@ export default {
         checkAll: e.target.checked
       });
     }, */
+    onChange(e) {
+      console.log(`checked = ${e.target.checked}`);
+      this.checkedBox = e.target.checked;
+      if (this.checkedBox) {
+        this.eventSources.push(this.Requests);
+      } else {
+        this.eventSources.pop(this.Requests);
+      }
+    },
+    onChangeTwo(e) {
+      console.log(`checked = ${e.target.checked}`);
+      this.checkedBoxTwo = e.target.checked;
+      if (this.checkedBoxTwo) {
+        this.eventSources.push(this.Seminars);
+      } else {
+        this.eventSources.pop(this.Seminars);
+      }
+    },
+    onChangeThree(e) {
+      console.log(`checked = ${e.target.checked}`);
+      this.checkedBoxThree = e.target.checked;
+      if (this.checkedBoxThree) {
+        this.eventSources.push(this.Visits);
+      } else {
+        this.eventSources.pop(this.Visits);
+      }
+    }
+    /*
     onChange(e) {
       console.log(`checked = ${e.target.checked}`);
       Object.assign(this, {
@@ -257,7 +286,7 @@ export default {
           : this.eventSources.pop(this.Visits)
       });
       return this.eventSources;
-    }
+    } */
   }
 };
 </script>
