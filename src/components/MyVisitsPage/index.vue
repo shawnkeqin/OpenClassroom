@@ -4,11 +4,11 @@
     <div style="display: flex;">
       <div>
         <SeminarRequestCard
-          v-for="visit in myVisits"
-          :seminar="visit.seminar"
-          :visit="visit"
+          v-for="seminarWithVisits in seminarsToVisit"
+          :seminar="seminarWithVisits.seminar"
+          :visits="seminarWithVisits.visits"
           :isMessagesVisible="true"
-          :key="visit.id"
+          :key="seminarWithVisits.seminar.id"
         />
       </div>
       <div>
@@ -69,6 +69,28 @@ export default {
         };
       },
       update: data => data.visit
+    }
+  },
+  computed: {
+    seminarsToVisit() {
+      if (!this.myVisits.length) return [];
+      return this.myVisits.reduce((acc, cur) => {
+        const cur_seminar = cur.seminar;
+        const idx =
+          acc.length === 0
+            ? -1
+            : acc.findIndex(
+                seminarWithVisits =>
+                  seminarWithVisits.seminar.id === cur.seminar_id
+              );
+        if (idx === -1) {
+          acc.push({ seminar: cur_seminar, visits: [cur] });
+        } else {
+          const curr_seminarWithVisits = acc[idx];
+          curr_seminarWithVisits.visits.push(cur);
+        }
+        return acc;
+      }, []);
     }
   }
 };

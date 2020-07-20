@@ -220,8 +220,8 @@
           </a-col>
         </div>
         <div v-if="visit_local && isMessagesVisible" style="margin-top: 20px">
-          <div>{{ "Request message: " + visit.request_msg }}</div>
-          <div>{{ "Response message: " + visit.response_msg }}</div>
+          <div>{{ "Request message: " + visit_local.request_msg }}</div>
+          <div>{{ "Response message: " + visit_local.response_msg }}</div>
         </div>
       </div>
     </a-card>
@@ -242,9 +242,9 @@ export default {
     AddToCalendar
   },
   props: {
-    visit: {
-      type: Object,
-      default: null
+    visits: {
+      type: Array,
+      default: () => []
     },
     seminar: {
       type: Object,
@@ -262,7 +262,6 @@ export default {
   data: function() {
     return {
       utils: utils,
-      visit_local: this.visit,
       descModalVisible: false,
       requestModalVisible: false,
       request_msg: "",
@@ -271,6 +270,9 @@ export default {
     };
   },
   computed: {
+    visit_local() {
+      return this.visits.find(visit => !visit.is_cancelled)
+    },
     course_group() {
       return this.seminar.course_group;
     },
