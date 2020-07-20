@@ -32,6 +32,7 @@
       >
         <a-icon type="exclamation-circle" theme="filled" class="pending" />
       </a-tooltip>
+      <updateCourseVisitorCapacityModal :id="id" />
     </div>
     <a-card style="width: 35rem" :bodyStyle="{ padding: 0 }">
       <a-collapse default-active-key="1" :bordered="false">
@@ -93,6 +94,7 @@ import queries from "@/graphql/queries.gql";
 import seminarItem from "./seminarItem";
 // import addNewSeminarModal from "./addNewSeminarModal";
 import updateCourseDetailsModal from "./updateCourseDetailsModal";
+import updateCourseVisitorCapacityModal from "./courseVisitorCapacity";
 // import courseModule from "./courseModule";
 // import closeCourseAndSeminarsToggle from "./closeCourseAndSeminarsToggle";
 export default {
@@ -101,7 +103,8 @@ export default {
   components: {
     seminarItem,
     // addNewSeminarModal,
-    updateCourseDetailsModal
+    updateCourseDetailsModal,
+    updateCourseVisitorCapacityModal
     // closeCourseAndSeminarsToggle
     // courseModule
   },
@@ -119,8 +122,7 @@ export default {
       return {
         query: queries.get_seminars_by_course_group,
         variables: {
-          course_group_id,
-          semester_code: process.env.VUE_APP_SEMESTER_CODE
+          course_group_id
         },
         update: data => data.seminar
       };
@@ -130,8 +132,7 @@ export default {
       return {
         query: queries.get_course_group_details,
         variables: {
-          course_group_id,
-          semester_code: process.env.VUE_APP_SEMESTER_CODE
+          course_group_id
         },
         update: data => data.course_group[0]
       };

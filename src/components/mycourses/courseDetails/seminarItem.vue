@@ -39,7 +39,7 @@
           }}
         </p>
         <h5>Visitor capacity</h5>
-        <p>{{ seminar.visitor_capacity || "None" }}</p>
+        <p>{{ course_group.visitor_capacity || "None" }}</p>
       </a-col>
       <a-col>
         <h5>Venue</h5>
@@ -77,9 +77,23 @@ export default {
   props: ["seminar"],
   data: function() {
     return {
+      id: this.$route.params.id,
       utils: utils,
+      course_group: [],
       is_loading: false
     };
+  },
+  apollo: {
+    course_group() {
+      const id = this.id;
+      return {
+        query: queries.get_course_group_new_visitor_capacity,
+        variables: {
+          id
+        },
+        update: data => data.course_group[0]
+      };
+    }
   },
   methods: {
     async toggleSeminarIsOpen() {
