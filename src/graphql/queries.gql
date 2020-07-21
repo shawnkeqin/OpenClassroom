@@ -454,10 +454,11 @@ query searchSeminarsByFiltersWithTags(
       ]
     }
   ) {
+    id
     date
     start
     end
-    id
+    title
     is_open
     module_code
     group_code
