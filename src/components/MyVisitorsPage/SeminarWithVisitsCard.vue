@@ -168,7 +168,7 @@
 
 <script>
 import VisitResponseModal from "./VisitResponseModal";
-import AddToCalendar from "@/components/viewSeminars/AddToCalendar";
+import AddToCalendar from "@/components/SeminarVisitRequestCard/AddToCalendar";
 import utils from "@/utils";
 import constants from "@/utils/constants";
 import queries from "@/graphql/queries.gql";

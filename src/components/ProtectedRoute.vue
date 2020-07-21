@@ -155,8 +155,7 @@ export default {
       variables() {
         return {
           faculty_id: this.loggedInUser,
-          // faculty_id: this.loggedInUser;
-          semester_code: constants.SEMESTER_CODE_AY1819_1
+          semester_code: process.env.VUE_APP_SEMESTER_CODE
         };
       },
       update: data => data.seminar

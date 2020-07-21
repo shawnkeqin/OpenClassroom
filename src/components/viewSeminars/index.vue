@@ -58,11 +58,18 @@
         >
           <template v-if="$apollo.loading"><a-skeleton active/></template>
           <template v-else>
-            <SeminarRequestCard
+            <!-- <SeminarRequestCard
               v-for="seminar in seminarLimited"
               :key="seminar.id"
               :seminar="seminar"
-              :visits="seminar.visits"
+              :visit="seminar.visits[0]"
+              :has_consented="loggedInUser.has_consented"
+            /> -->
+            <SeminarVisitRequestCard
+              v-for="seminar in seminarLimited"
+              :key="seminar.id"
+              :seminar="seminar"
+              :visit="seminar.visits[0]"
               :has_consented="loggedInUser.has_consented"
             />
           </template>
@@ -164,7 +171,7 @@
 import moment from "moment";
 import utils from "@/utils";
 import queries from "@/graphql/queries.gql";
-import SeminarRequestCard from "./SeminarRequestCard";
+import SeminarVisitRequestCard from "@/components/SeminarVisitRequestCard";
 import suggestedSearchButton from "./suggestedSearchButton";
 import _ from "lodash";
 import store from "@/store";
@@ -193,7 +200,11 @@ const SUGGESTED_SEARCH_FILTERS = {
 };
 export default {
   name: "viewSeminars",
-  components: { SeminarRequestCard, suggestedSearchButton },
+  components: { 
+    // SeminarRequestCard, 
+    SeminarVisitRequestCard,
+    suggestedSearchButton 
+  },
   data() {
     return {
       loggedInUser: {},
@@ -214,7 +225,7 @@ export default {
         [SUGGESTED_SEARCH_1]: false,
         [SUGGESTED_SEARCH_2]: true
       },
-      SUGGESTED_SEARCH_FILTERS: _.cloneDeep(SUGGESTED_SEARCH_FILTERS)
+      SUGGESTED_SEARCH_FILTERS: _.cloneDeep(SUGGESTED_SEARCH_FILTERS),
     };
   },
   apollo: {
@@ -250,7 +261,13 @@ export default {
     }
   },
   watch: {
-    seminar() {
+    // seminar() {
+    //   this.page = 1;
+    // },
+    searchQuery() {
+      this.page = 1;
+    },
+    searchQueryVariables() {
       this.page = 1;
     },
     filters: {

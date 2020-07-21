@@ -104,7 +104,7 @@
                   >Closed to visits</a-button
                 >
               </template>
-              <template v-else-if="!visit_local || visit_local.is_cancelled">
+              <template v-else-if="!visit || visit.is_cancelled">
                 <a-button
                   @click="requestModalVisible = true"
                   type="primary"
@@ -122,7 +122,10 @@
                     <a-button key="cancel" @click="requestModalVisible = false"
                       >Cancel</a-button
                     >
-                    <a-button key="submit" @click="handleSubmitRequest"
+                    <a-button
+                      key="submit"
+                      @click="handleSubmitRequest"
+                      :loading="isRequesting"
                       >Submit</a-button
                     >
                   </template>
@@ -132,96 +135,22 @@
                 </a-modal>
               </template>
               <template v-else>
-                <a-button
-                  @click="cancelRequestModalVisible = true"
-                  type="primary"
-                  ghost
-                  block
-                  style="margin-bottom: 15px"
-                  :disabled="!has_consented"
-                  >Cancel request</a-button
-                >
-                <a-modal
-                  v-model="cancelRequestModalVisible"
-                  @ok="handleCancelRequest"
-                  title="Cancel visit request"
-                >
-                  <template slot="footer">
-                    <a-button
-                      key="cancel"
-                      @click="cancelRequestModalVisible = false"
-                      >Cancel</a-button
-                    >
-                    <a-button key="submit" @click="handleCancelRequest"
-                      >Confirm cancel request</a-button
-                    >
-                  </template>
-                  <p>Your are about to cancel your visit request</p>
-                </a-modal>
-                <template v-if="visit_local.visit_status === 'PENDING'">
-                  <div style="display: flex; justify-content: center">
-                    <a-icon
-                      type="clock-circle"
-                      theme="filled"
-                      class="status-icon pending"
-                    />
-                    <h4 class="pending" style="margin-bottom: 0">
-                      Request pending
-                    </h4>
-                  </div>
-                </template>
-                <template v-else-if="visit_local.visit_status === 'ACCEPTED'">
-                  <div
-                    style="display: flex; justify-content: center; margin-bottom: 5px;"
-                  >
-                    <div style="display: flex; align-items: center">
-                      <a-icon
-                        type="check-circle"
-                        theme="filled"
-                        class="status-icon accepted"
-                      />
-                    </div>
-                    <div>
-                      <h4 class="accepted" style="margin-bottom: 3px">
-                        Request accepted
-                      </h4>
-                      <h5 class="accepted">
-                        {{
-                          visit.time_responded &&
-                            utils.datetime_fromnow_format(visit.time_responded)
-                        }}
-                      </h5>
-                    </div>
-                  </div>
-                  <AddToCalendar :seminar="seminar" />
-                </template>
-                <template v-else-if="visit_local.visit_status === 'DECLINED'">
-                  <div style="display: flex; align-items: center">
-                    <a-icon
-                      type="close-circle"
-                      theme="filled"
-                      class="status-icon declined"
-                    />
-                  </div>
-                  <div>
-                    <h4 class="declined" style="margin-bottom: 3px">
-                      Request declined
-                    </h4>
-                    <h5 class="declined">
-                      {{
-                        visit.time_responded &&
-                          utils.datetime_fromnow_format(visit.time_responded)
-                      }}
-                    </h5>
-                  </div>
-                </template>
+                <CancelVisitAndStatus
+                  :visit="visit"
+                  :seminar="seminar"
+                  :has_consented="has_consented"
+                />
               </template>
             </div>
           </a-col>
         </div>
-        <div v-if="visit_local && isMessagesVisible" style="margin-top: 20px">
+        <!-- <div v-if="visit_local && isMessagesVisible" style="margin-top: 20px">
           <div>{{ "Request message: " + visit_local.request_msg }}</div>
           <div>{{ "Response message: " + visit_local.response_msg }}</div>
+        </div> -->
+        <div v-if="visit && isMessagesVisible" style="margin-top: 20px">
+          <div>{{ "Request message: " + visit.request_msg }}</div>
+          <div>{{ "Response message: " + visit.response_msg }}</div>
         </div>
       </div>
     </a-card>
@@ -233,18 +162,22 @@ import utils from "@/utils";
 import store from "@/store";
 import queries from "@/graphql/queries.gql";
 import ColoredTag from "./ColoredTag";
-import AddToCalendar from "./AddToCalendar";
+import CancelVisitAndStatus from "./CancelVisitAndStatus";
 
 export default {
   name: "SeminarRequestCard",
   components: {
     ColoredTag,
-    AddToCalendar
+    CancelVisitAndStatus
   },
   props: {
-    visits: {
-      type: Array,
-      default: () => []
+    // visits: {
+    //   type: Array,
+    //   default: () => []
+    // },
+    visit: {
+      type: Object,
+      default: null
     },
     seminar: {
       type: Object,
@@ -262,17 +195,19 @@ export default {
   data: function() {
     return {
       utils: utils,
+      isRequesting: false,
       descModalVisible: false,
       requestModalVisible: false,
       request_msg: "",
       cancelRequestModalVisible: false,
+      deleteRequestModalVisible: false,
       tag: this.makeTag
     };
   },
   computed: {
-    visit_local() {
-      return this.visits.find(visit => !visit.is_cancelled)
-    },
+    // visit_local() {
+    //   return this.visits.find(visit => !visit.is_cancelled)
+    // },
     course_group() {
       return this.seminar.course_group;
     },
@@ -288,60 +223,52 @@ export default {
   },
   methods: {
     async handleSubmitRequest() {
+      this.isRequesting = true;
       if (!this.seminar.is_open) return;
       const seminar_id = this.seminar.id;
+      // const seminar = this.seminar;
       const request_msg = this.request_msg;
-      const result = await this.$apollo.mutate({
+      await this.$apollo.mutate({
         mutation: queries.create_visit_request,
         variables: {
           seminar_id,
           visitor_id: store.state.loggedInUser,
           request_msg
         },
+        // update: (cache, { data: { insert_visit } }) => {
+        //   console.log(insert_visit);
+        //   const query = {
+        //     query: queries.get_my_visits,
+        //     variables: {
+        //       visitor_id: store.state.loggedInUser
+        //     }
+        //   }
+        //   const new_visit = insert_visit.returning[0];
+        //   const data = cache.readQuery(query);
+        //   data.visit.push({
+        //     ...new_visit,
+        //     visitor_id: store.state.loggedInUser,
+        //     seminar
+        //   });
+        //   cache.writeQuery({
+        //     ...query,
+        //     data
+        //   })
+        // },
         refetchQueries: [
           {
             query: queries.get_my_visits,
             variables: {
               visitor_id: store.state.loggedInUser
-            },
-            foo: console.log("refetch get_my_visits query")
+            }
           },
-          "searchSeminarsByFilters"
-        ]
+          "searchSeminarsByFilters",
+          // "searchSeminarsByFiltersWithTags"
+        ],
+        awaitRefetchQueries: true
       });
-      this.visit_local = result.data.insert_visit.returning[0];
+      this.isRequesting = false;
       this.requestModalVisible = false;
-    },
-    async handleCancelRequest() {
-      const visit_id = this.visit_local.id;
-      await this.$apollo.mutate({
-        mutation: queries.cancel_visit_request,
-        variables: {
-          visit_id
-        },
-        refetchQueries: [
-          {
-            query: queries.get_my_visits,
-            variables: {
-              visitor_id: store.state.loggedInUser
-            }
-          },
-          {
-            query: queries.searchSeminarsByFilters,
-            variables: {
-              course_title: "%",
-              faculty_name: "%",
-              start_date: "2000-01-01",
-              end_date: "2050-01-01",
-              start_time: "00:00",
-              end_time: "23:59",
-              visitor_id: store.state.loggedInUser,
-              semester_code: process.env.VUE_APP_SEMESTER_CODE
-            }
-          }]
-      });
-      this.visit_local = null;
-      this.cancelRequestModalVisible = false;
     }
   }
 };

@@ -142,7 +142,6 @@ query get_my_visits($visitor_id: String!) {
     id
     seminar_id
     visit_status
-    is_cancelled
     visitor_id
     request_msg
     response_msg
@@ -155,12 +154,12 @@ query get_my_visits($visitor_id: String!) {
       start
       end
       is_open
+      title
+      desc
       location {
         code
         full_name
       }
-      title
-      desc
       course_group {
         id
         is_open
@@ -187,16 +186,16 @@ query get_my_visits($visitor_id: String!) {
   }
 }
 
-mutation delete_visit($visit_id: Int!) {
-  delete_visit(where: { id: { _eq: $visit_id } }) {
-    affected_rows
+mutation delete_visit_request($visit_id: Int!) {
+  delete_visit_by_pk(id: $visit_id) {
+    id
+    visitor_id
   }
 }
 
 mutation cancel_visit_request($visit_id: Int!) {
-  update_visit_by_pk(pk_columns: {id: $visit_id}, _set: {is_cancelled: true}) {
+  update_visit_by_pk(pk_columns: {id: $visit_id}, _set: {visit_status: "CANCELLED"}) {
     id
-    is_cancelled
   }
 }
 
@@ -380,10 +379,11 @@ query searchSeminarsByFilters(
       ]
     }
   ) {
+    id
     date
     start
     end
-    id
+    title
     is_open
     module_code
     group_code

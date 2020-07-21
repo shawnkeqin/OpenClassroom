@@ -86,7 +86,7 @@ async function notifMiddleware(req, res, next) {
   }
 }
 
-async function newRequestHandler(req, res) {
+async function requestInsertHandler(req, res) {
   const { visitor, seminar, instructor, course } = req.visit;
 
   if (!instructor.notif_new_request)
@@ -96,19 +96,19 @@ async function newRequestHandler(req, res) {
     });
 
   try {
-    // const transporter = createTransporter();
-    // const info = await transporter.sendMail({
-    //   from: process.env.EMAIL,
-    //   to:
-    //     process.env.NODE_ENV === "production"
-    //       ? "dantran.fcac@gmail.com" // instructor.email
-    //       : process.env.EMAIL_TO,
-    //   subject: `New visit request to your class`,
-    //   html: `<p>${visitor.name} made a visit request to your class ${course.module_code} ${course.title}, ${seminar.date}.</p>
-    //     <p>Click <a href="https://open-classroom-app-demo.herokuapp.com/my-visitors">here</a> to view it on the OpenClassroom portal.</p>`
-    // });
+    const transporter = createTransporter();
+    const info = await transporter.sendMail({
+      from: process.env.EMAIL,
+      to:
+        process.env.NODE_ENV === "production"
+          ? instructor.email
+          : process.env.EMAIL_TO,
+      subject: `New visit request to your class`,
+      html: `<p>${visitor.name} made a visit request to your class ${course.module_code} ${course.title}, ${seminar.date}.</p>
+        <p>Click <a href="https://open-classroom-app-demo.herokuapp.com/my-visitors">here</a> to view it on the Open Classroom app.</p>`
+    });
 
-    // console.log("Email sent: %s", info.messageId);
+    console.log("Email sent: %s", info.messageId);
     return res.json({
       success: true,
       message: "Email sent successfully"
@@ -144,25 +144,45 @@ async function requestStatusUpdateHandler(req, res) {
       message: "No changes to notify"
     });
 
-  const visitStatusMsg =
-    visit_status_new === "PENDING"
-      ? `<p>your visit request to class ${course.module_code} ${course.title}, ${seminar.date}, is pending.`
-      : `<p>${instructor.name} has ${visit_status_new} your visit request to class ${course.module_code} ${course.title}, ${seminar.date}.</p>`;
-  const linkToPortal = `<p>Click <a href="https://open-classroom-app-demo.herokuapp.com/my-visits">here</a> to view your visit on the OpenClassroom portal.</p>`;
-
   try {
-    // const transporter = createTransporter();
-    // const info = await transporter.sendMail({
-    //   from: process.env.EMAIL,
-    //   to:
-    //     process.env.NODE_ENV === "production"
-    //       ? "dantran.fcac@gmail.com" // visitor.email
-    //       : process.env.EMAIL_TO,
-    //   subject: `Your visit request is ${visit_status_new}`,
-    //   html: visitStatusMsg + linkToPortal
-    // });
+    if (visit_status_new === "CANCELLED") {
+      // cancel is done by the visitor, so we need to inform the instructor
+      const transporter = createTransporter();
+      const info = await transporter.sendMail({
+        from: process.env.EMAIL,
+        to:
+          process.env.NODE_ENV === "production"
+            ? instructor.email
+            : process.env.EMAIL_TO,
+        subject: `A visit request to your class ${course.module_code} is cancelled`,
+        html: `<p>${visitor.name} has cancelled the request to visit your class ${course.module_code} ${course.title}, ${seminar.date}.</p>
+        <p>Click <a href="https://open-classroom-app-demo.herokuapp.com/my-visitors">here</a> to view it on the OpenClassroom portal.</p>`
+      });
 
-    // console.log("Email sent: %s", info.messageId);
+      console.log("Email sent: %s", info.messageId);
+
+    } else {
+      // for other cases, the status change is done by the instructor, so we inform the visitor
+      const visitStatusMsg =
+        visit_status_new === "PENDING"
+          ? `<p>your visit request to class ${course.module_code} ${course.title}, ${seminar.date}, is pending.`
+          : `<p>${instructor.name} has ${visit_status_new} your visit request to class ${course.module_code} ${course.title}, ${seminar.date}.</p>`;
+      const linkToPortal = `<p>Click <a href="https://open-classroom-app-demo.herokuapp.com/my-visits">here</a> to view your visit on the Open Classroom app.</p>`;
+
+      const transporter = createTransporter();
+      const info = await transporter.sendMail({
+        from: process.env.EMAIL,
+        to:
+          process.env.NODE_ENV === "production"
+            ? visitor.email
+            : process.env.EMAIL_TO,
+        subject: `Your visit request is ${visit_status_new}`,
+        html: visitStatusMsg + linkToPortal
+      });
+
+      console.log("Email sent: %s", info.messageId);
+    }
+
     return res.json({
       success: true,
       message: "Email sent successfully"
@@ -176,23 +196,23 @@ async function requestStatusUpdateHandler(req, res) {
   }
 }
 
-async function requestCancelHandler(req, res) {
+async function requestDeleteHandler(req, res) {
   const { visitor, seminar, course, instructor } = req.visit;
 
   try {
-    // const transporter = createTransporter();
-    // const info = await transporter.sendMail({
-    //   from: process.env.EMAIL,
-    //   to:
-    //     process.env.NODE_ENV === "production"
-    //       ? "dantran.fcac@gmail.com" // instructor.email
-    //       : process.env.EMAIL_TO,
-    //   subject: `A visit request to your class is cancelled`,
-    //   html: `<p>${visitor.name} has cancelled the request to visit your class ${course.module_code} ${course.title}, ${seminar.date}.</p>
-    //     <p>Click <a href="https://open-classroom-app-demo.herokuapp.com/my-visitors">here</a> to view it on the OpenClassroom portal.</p>`
-    // });
+    const transporter = createTransporter();
+    const info = await transporter.sendMail({
+      from: process.env.EMAIL,
+      to:
+        process.env.NODE_ENV === "production"
+          ? instructor.email
+          : process.env.EMAIL_TO,
+      subject: `A visit request to your class ${course.module_code} is cancelled`,
+      html: `<p>${visitor.name} has cancelled the request to visit your class ${course.module_code} ${course.title}, ${seminar.date}.</p>
+        <p>Click <a href="https://open-classroom-app-demo.herokuapp.com/my-visitors">here</a> to view it on the Open Classroom app.</p>`
+    });
 
-    // console.log("Email sent: %s", info.messageId);
+    console.log("Email sent: %s", info.messageId);
     return res.json({
       success: true,
       message: "Email sent successfully"
@@ -207,8 +227,8 @@ async function requestCancelHandler(req, res) {
 }
 
 router.use("/", notifMiddleware)
-router.post("/new-request", newRequestHandler);
+router.post("/request-insert", requestInsertHandler);
 router.post("/request-status-update", requestStatusUpdateHandler);
-router.post("/request-cancel", requestCancelHandler)
+router.post("/request-delete", requestDeleteHandler)
 
 module.exports = router;
