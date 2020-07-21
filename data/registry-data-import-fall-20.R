@@ -36,12 +36,18 @@ write.csv(course, "db_course.csv", row.names=FALSE)
 
 
 ################# Get course_group table. 
-COURSE_GROUP_SCHEMA <-  c("faculty_id", "module_code", "group_code", "semester_code")
+COURSE_GROUP_SCHEMA <-  c("faculty_id", "module_code", "group_code", "semester_code", "teaching_mode")
 course_group <- validated %>% 
   mutate(semester_code=SEMESTER_CODE) %>%
   rename(faculty_id=Staff.ID, 
          module_code=Module.Code, 
-         group_code=Section) %>%
+         group_code=Section,
+         teaching_mode=Mode.of.Teaching) %>%
+  mutate(teaching_mode=recode(teaching_mode,
+                    "Remote"="REMOTE",
+                    "Remote/\nF2F"="REMOTE_F2F",
+                    "Remote in YNC Classroom"="REMOTE_IN_YNC_CLASSROOM"
+                    )) %>% 
   distinct(faculty_id, module_code, group_code, .keep_all=TRUE) %>%
   select(COURSE_GROUP_SCHEMA)
 write.csv(course_group, "db_course_group.csv", row.names=FALSE)
