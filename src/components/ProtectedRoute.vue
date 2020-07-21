@@ -11,11 +11,29 @@
     <a-layout-content>
       <a-layout style="padding: 0; background: #f6f6f6">
         <a-layout-sider width="250px" style="background: #fff">
+          <div id="mini-user-info">
+            <template v-if="loggedInUserObj">
+              <img
+                class="avatar-medium"
+                :src="
+                  loggedInUserObj.profilePic ||
+                    'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
+                "
+                style="margin-right: 15px;"
+              />
+              <div style="font-weight: bold; color: #004b8d;">
+                {{ loggedInUserObj.name }}
+              </div>
+            </template>
+            <template v-else>
+              <a-icon type="loading" />
+            </template>
+          </div>
           <a-menu
             mode="inline"
             :default-selected-keys="['1']"
             :default-open-keys="['sub1']"
-            style="height: 100%"
+            style="height: 100%; padding-top: 10px;"
           >
             <a-menu-item :key="1" class="nav-item">
               <a-icon type="user" />
@@ -56,22 +74,25 @@
                 href="https://docs.google.com/forms/d/e/1FAIpQLScOfSV1ZIChd6IQJ9WLegujtfhlE-E5hG-tyDMBzEL-JUdEUQ/viewform?usp=sf_link"
               ></a>
             </a-menu-item>
-            <!-- <a-menu-item key="8" class="opt-in">
-              <a-icon type="book" />
-              <span class="nav-text">Opt-in</span>
-              <router-link to="/opt-in" />
-            </a-menu-item> -->
+            <a-menu-item key="8" class="nav-item" @click="logout">
+              <a-icon type="logout" />
+              <span class="nav-text">Log out</span>
+            </a-menu-item>
           </a-menu>
-          <div class="logged-in-status-box">
-            <div v-if="loggedInUserObj">
-              <div>{{ loggedInUserObj.name }}</div>
-              <a-button class="logout-button" icon="logout" @click="logout"
-                >Log Out</a-button
+          <div style="position: absolute; bottom: 0; padding: 15px;">
+            <!-- <template v-if="loggedInUserObj">
+              <a-button
+                @click="logout"
+                style="display: flex; justify-content: center; align-items: center; padding: 20px;"
               >
-            </div>
-            <div v-else>
+                <a-icon type="logout" style="margin-right: 10px;"/>
+                <h3 style="margin: 0;">Log out</h3>
+              </a-button>
+              <a-button icon="logout" @click="logout" style="margin: 0;">Log Out</a-button>
+            </template>
+            <template v-else>
               <a-icon type="loading" />
-            </div>
+            </template> -->
           </div>
         </a-layout-sider>
         <a-layout-content style="padding: 30px 50px 30px 50px; height: 100vh;">
@@ -203,7 +224,7 @@ li.nav-item.ant-menu-item {
   box-shadow: transparent;
 }
 
-.logged-in-status-box {
+/* .logged-in-status-box {
   position: fixed;
   padding-left: 25px;
   bottom: 15px;
@@ -214,5 +235,12 @@ li.nav-item.ant-menu-item {
 }
 .logout-button {
   margin-top: 10px;
+} */
+#mini-user-info {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  padding: 20px;
+  background-image: linear-gradient(315deg, #f3c9bc 0%, #f5e4b3 74%);
 }
 </style>

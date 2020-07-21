@@ -62,7 +62,7 @@
               v-for="seminar in seminarLimited"
               :key="seminar.id"
               :seminar="seminar"
-              :visit="seminar.visits[0]"
+              :visits="seminar.visits"
               :has_consented="loggedInUser.has_consented"
             />
           </template>

@@ -142,6 +142,7 @@ query get_my_visits($visitor_id: String!) {
     id
     seminar_id
     visit_status
+    is_cancelled
     visitor_id
     request_msg
     response_msg
@@ -162,12 +163,14 @@ query get_my_visits($visitor_id: String!) {
       desc
       course_group {
         id
+        is_open
         notes
         faculty {
           id
           name
           email
           is_active
+          has_consented
         }
         course {
           id
@@ -187,6 +190,13 @@ query get_my_visits($visitor_id: String!) {
 mutation delete_visit($visit_id: Int!) {
   delete_visit(where: { id: { _eq: $visit_id } }) {
     affected_rows
+  }
+}
+
+mutation cancel_visit_request($visit_id: Int!) {
+  update_visit_by_pk(pk_columns: {id: $visit_id}, _set: {is_cancelled: true}) {
+    id
+    is_cancelled
   }
 }
 
@@ -384,12 +394,15 @@ query searchSeminarsByFilters(
       full_name
     }
     course_group {
-      course_group_desc
       id
+      course_group_desc
+      is_open
       faculty {
         id
         name
+        email
         is_active
+        has_consented
       }
       course {
         desc
@@ -403,6 +416,7 @@ query searchSeminarsByFilters(
     visits(where: { visitor_id: { _eq: $visitor_id } }) {
       id
       visit_status
+      is_cancelled
       request_msg
       response_msg
       time_requested
@@ -454,10 +468,14 @@ query searchSeminarsByFiltersWithTags(
     }
     course_group {
       id
+      course_group_desc
+      is_open
       faculty {
         id
         name
+        email
         is_active
+        has_consented
       }
       course {
         id
@@ -470,6 +488,7 @@ query searchSeminarsByFiltersWithTags(
     visits(where: { visitor_id: { _eq: $visitor_id } }) {
       id
       visit_status
+      is_cancelled
       request_msg
       response_msg
       time_requested
@@ -478,7 +497,7 @@ query searchSeminarsByFiltersWithTags(
   }
 }
 
-mutation request_visit(
+mutation create_visit_request(
   $seminar_id: Int!
   $visitor_id: String!
   $request_msg: String

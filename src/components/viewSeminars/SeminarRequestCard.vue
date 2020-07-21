@@ -85,7 +85,16 @@
             <div
               style="display: flex; flex-direction: column; align-items: center;"
             >
-              <template v-if="!seminar.is_open || !faculty.is_active">
+              <template
+                v-if="
+                  !(
+                    faculty.is_active &&
+                    faculty.has_consented &&
+                    seminar.is_open &&
+                    course_group.is_open
+                  )
+                "
+              >
                 <a-button
                   @click="requestModalVisible = true"
                   type="primary"
@@ -95,7 +104,7 @@
                   >Closed to visits</a-button
                 >
               </template>
-              <template v-else-if="!visit_local">
+              <template v-else-if="!visit_local || visit_local.is_cancelled">
                 <a-button
                   @click="requestModalVisible = true"
                   type="primary"
@@ -211,8 +220,8 @@
           </a-col>
         </div>
         <div v-if="visit_local && isMessagesVisible" style="margin-top: 20px">
-          <div>{{ "Request message: " + visit.request_msg }}</div>
-          <div>{{ "Response message: " + visit.response_msg }}</div>
+          <div>{{ "Request message: " + visit_local.request_msg }}</div>
+          <div>{{ "Response message: " + visit_local.response_msg }}</div>
         </div>
       </div>
     </a-card>
@@ -233,9 +242,9 @@ export default {
     AddToCalendar
   },
   props: {
-    visit: {
-      type: Object,
-      default: null
+    visits: {
+      type: Array,
+      default: () => []
     },
     seminar: {
       type: Object,
@@ -253,7 +262,6 @@ export default {
   data: function() {
     return {
       utils: utils,
-      visit_local: this.visit,
       descModalVisible: false,
       requestModalVisible: false,
       request_msg: "",
@@ -262,6 +270,9 @@ export default {
     };
   },
   computed: {
+    visit_local() {
+      return this.visits.find(visit => !visit.is_cancelled)
+    },
     course_group() {
       return this.seminar.course_group;
     },
@@ -272,8 +283,7 @@ export default {
       return this.seminar.course_group.faculty;
     },
     is_past() {
-      // return new Date(this.seminar.date) < Date.now();
-      return new Date(this.seminar.date) < new Date("2018-11-01");
+      return new Date(this.seminar.date) < Date.now();
     }
   },
   methods: {
@@ -282,7 +292,7 @@ export default {
       const seminar_id = this.seminar.id;
       const request_msg = this.request_msg;
       const result = await this.$apollo.mutate({
-        mutation: queries.request_visit,
+        mutation: queries.create_visit_request,
         variables: {
           seminar_id,
           visitor_id: store.state.loggedInUser,
@@ -305,7 +315,7 @@ export default {
     async handleCancelRequest() {
       const visit_id = this.visit_local.id;
       await this.$apollo.mutate({
-        mutation: queries.delete_visit,
+        mutation: queries.cancel_visit_request,
         variables: {
           visit_id
         },
