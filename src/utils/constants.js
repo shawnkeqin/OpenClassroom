@@ -3,5 +3,11 @@ export default Object.freeze({
   VISIT_STATUS_PENDING: "PENDING",
   VISIT_STATUS_DECLINED: "DECLINED",
   SEMESTER_CODE_AY1819_1: "AY1819-1",
-  TEST_FACULTY_ID: "yncas"
+  TEST_FACULTY_ID: "yncas",
+  TEACHING_MODES: {
+    F2F: "F2F",
+    REMOTE: "Remote",
+    REMOTE_F2F: "Remote/F2F",
+    REMOTE_IN_YNC_CLASSROOM: "Remote in YNC Classroom"
+  }
 });

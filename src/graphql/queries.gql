@@ -138,7 +138,10 @@ query get_seminars_with_visits_by_time_requested(
 }
 
 query get_my_visits($visitor_id: String!) {
-  visit(where: {visitor_id: {_eq: $visitor_id}}, order_by: {seminar: {date: desc}}) {
+  visit(
+    where: { visitor_id: { _eq: $visitor_id } }
+    order_by: { seminar: { date: desc } }
+  ) {
     id
     seminar_id
     visit_status
@@ -194,13 +197,16 @@ mutation delete_visit_request($visit_id: Int!) {
 }
 
 mutation cancel_visit_request($visit_id: Int!) {
-  update_visit_by_pk(pk_columns: {id: $visit_id}, _set: {visit_status: "CANCELLED"}) {
+  update_visit_by_pk(
+    pk_columns: { id: $visit_id }
+    _set: { visit_status: "CANCELLED" }
+  ) {
     id
   }
 }
 
 query get_course_groups_by_faculty($faculty_id: String!) {
-  course_group(where: { faculty_id: { _eq: $faculty_id }}) {
+  course_group(where: { faculty_id: { _eq: $faculty_id } }) {
     id
     group_code
     course {
@@ -213,7 +219,7 @@ query get_course_groups_by_faculty($faculty_id: String!) {
 
 query get_seminars_by_course_group($course_group_id: Int!) {
   seminar(
-    where: { course_group: { id: { _eq: $course_group_id }}}, 
+    where: { course_group: { id: { _eq: $course_group_id } } }
     order_by: { date: desc }
   ) {
     id
@@ -243,7 +249,7 @@ query get_seminars_by_course_group($course_group_id: Int!) {
 }
 
 query get_course_group_details($course_group_id: Int!) {
-  course_group(where: { id: { _eq: $course_group_id }}) {
+  course_group(where: { id: { _eq: $course_group_id } }) {
     id
     group_code
     syllabus
@@ -271,7 +277,7 @@ mutation update_course_group_and_seminars_is_open(
     affected_rows
   }
   update_seminar(
-    where: { course_group: { id: { _eq: $course_group_id }} }
+    where: { course_group: { id: { _eq: $course_group_id } } }
     _set: { is_open: $is_open }
   ) {
     affected_rows
@@ -397,6 +403,7 @@ query searchSeminarsByFilters(
       id
       course_group_desc
       is_open
+      teaching_mode
       faculty {
         id
         name
@@ -470,6 +477,7 @@ query searchSeminarsByFiltersWithTags(
       id
       course_group_desc
       is_open
+      teaching_mode
       faculty {
         id
         name
@@ -603,8 +611,19 @@ mutation update_faculty_notif_request_update(
   }
 }
 
-query get_seminars_of_faculty_in_calendar( $faculty_id: String!, $semester_code: String!) {
-  seminar(where: {course_group: {faculty_id: {_eq: $faculty_id}, semester_code: {_eq: $semester_code}}}, order_by: {date: desc}){
+query get_seminars_of_faculty_in_calendar(
+  $faculty_id: String!
+  $semester_code: String!
+) {
+  seminar(
+    where: {
+      course_group: {
+        faculty_id: { _eq: $faculty_id }
+        semester_code: { _eq: $semester_code }
+      }
+    }
+    order_by: { date: desc }
+  ) {
     id
     date
     start
@@ -633,7 +652,10 @@ query get_seminars_of_faculty_in_calendar( $faculty_id: String!, $semester_code:
   }
 }
 
-mutation update_course_group_visitor_capacity($id: Int!, $visitor_capacity: Int!) {
+mutation update_course_group_visitor_capacity(
+  $id: Int!
+  $visitor_capacity: Int!
+) {
   update_course_group(
     where: { id: { _eq: $id } }
     _set: { visitor_capacity: $visitor_capacity }
@@ -643,7 +665,7 @@ mutation update_course_group_visitor_capacity($id: Int!, $visitor_capacity: Int!
 }
 
 query get_course_group_new_visitor_capacity($id: Int!) {
-  course_group(where: { id: { _eq: $id} }) {
+  course_group(where: { id: { _eq: $id } }) {
     id
     visitor_capacity
   }

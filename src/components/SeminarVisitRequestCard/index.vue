@@ -44,6 +44,16 @@
           <h6 :class="{ past: is_past }" style="display: inline;">
             {{ seminar.location.full_name }}
           </h6>
+          <h6
+            :class="{ past: is_past }"
+            class="teaching-mode"
+            style="display: inline;"
+          >
+            {{
+              constants.TEACHING_MODES[seminar.course_group.teaching_mode] ||
+                "NA"
+            }}
+          </h6>
         </div>
         <div>
           <a-col :span="17" style="padding-right: 20px">
@@ -163,7 +173,7 @@ import store from "@/store";
 import queries from "@/graphql/queries.gql";
 import ColoredTag from "./ColoredTag";
 import CancelVisitAndStatus from "./CancelVisitAndStatus";
-
+import constants from "@/utils/constants";
 export default {
   name: "SeminarRequestCard",
   components: {
@@ -201,7 +211,8 @@ export default {
       request_msg: "",
       cancelRequestModalVisible: false,
       deleteRequestModalVisible: false,
-      tag: this.makeTag
+      tag: this.makeTag,
+      constants
     };
   },
   computed: {
@@ -262,7 +273,7 @@ export default {
               visitor_id: store.state.loggedInUser
             }
           },
-          "searchSeminarsByFilters",
+          "searchSeminarsByFilters"
           // "searchSeminarsByFiltersWithTags"
         ],
         awaitRefetchQueries: true
@@ -281,6 +292,10 @@ export default {
 .date-heading {
   font-weight: bold;
   text-transform: uppercase;
+}
+.teaching-mode {
+  font-weight: bold;
+  float: right;
 }
 .red {
   color: #f0284a;
