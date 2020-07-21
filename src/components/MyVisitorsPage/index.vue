@@ -1,11 +1,20 @@
 <template>
   <div class="page-wrapper">
     <h1>My Visitors</h1>
-    <SeminarsWithVisitsCard
-      v-for="seminar in seminarsWithSomeVisits"
-      :seminar="seminar"
-      :key="seminar.id"
-    />
+    <div v-if="seminarsWithVisits.length">
+      <SeminarsWithVisitsCard
+        v-for="seminar in seminarsWithSomeVisits"
+        :seminar="seminar"
+        :key="seminar.id"
+      />
+    </div>
+    <div v-else>
+      <div style="width: 35rem; margin-bottom: 30px">
+        <a-card hoverable>
+          <p>You have no upcoming visitors</p>
+        </a-card>
+      </div>
+    </div>
   </div>
 </template>
 
