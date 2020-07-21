@@ -122,7 +122,10 @@
                     <a-button key="cancel" @click="requestModalVisible = false"
                       >Cancel</a-button
                     >
-                    <a-button key="submit" @click="handleSubmitRequest"
+                    <a-button
+                      key="submit"
+                      @click="handleSubmitRequest"
+                      :loading="isRequesting"
                       >Submit</a-button
                     >
                   </template>
@@ -192,7 +195,7 @@ export default {
   data: function() {
     return {
       utils: utils,
-      // visit_local: this.visit,
+      isRequesting: false,
       descModalVisible: false,
       requestModalVisible: false,
       request_msg: "",
@@ -220,10 +223,11 @@ export default {
   },
   methods: {
     async handleSubmitRequest() {
+      this.isRequesting = true;
       if (!this.seminar.is_open) return;
       const seminar_id = this.seminar.id;
+      // const seminar = this.seminar;
       const request_msg = this.request_msg;
-      // const result = await this.$apollo.mutate({
       await this.$apollo.mutate({
         mutation: queries.create_visit_request,
         variables: {
@@ -231,6 +235,26 @@ export default {
           visitor_id: store.state.loggedInUser,
           request_msg
         },
+        // update: (cache, { data: { insert_visit } }) => {
+        //   console.log(insert_visit);
+        //   const query = {
+        //     query: queries.get_my_visits,
+        //     variables: {
+        //       visitor_id: store.state.loggedInUser
+        //     }
+        //   }
+        //   const new_visit = insert_visit.returning[0];
+        //   const data = cache.readQuery(query);
+        //   data.visit.push({
+        //     ...new_visit,
+        //     visitor_id: store.state.loggedInUser,
+        //     seminar
+        //   });
+        //   cache.writeQuery({
+        //     ...query,
+        //     data
+        //   })
+        // },
         refetchQueries: [
           {
             query: queries.get_my_visits,
@@ -238,10 +262,12 @@ export default {
               visitor_id: store.state.loggedInUser
             }
           },
-          "searchSeminarsByFilters"
+          "searchSeminarsByFilters",
+          // "searchSeminarsByFiltersWithTags"
         ],
         awaitRefetchQueries: true
       });
+      this.isRequesting = false;
       this.requestModalVisible = false;
     }
   }

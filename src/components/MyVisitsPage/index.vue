@@ -23,7 +23,7 @@
       <div v-else>
         <div style="width: 35rem; margin-bottom: 30px">
           <a-card hoverable>
-            <h3>You have no upcoming visits</h3>
+            <p>You have no upcoming visits</p>
           </a-card>
         </div>
       </div>

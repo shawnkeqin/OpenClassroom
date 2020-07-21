@@ -20,7 +20,11 @@
           <a-button key="cancel" @click="cancelRequestModalVisible = false">
             Cancel
           </a-button>
-          <a-button key="submit" @click="handleCancelRequest">
+          <a-button
+            key="submit"
+            @click="handleCancelRequest"
+            :loading="isCancelling"
+          >
             Confirm cancel request
           </a-button>
         </template>
@@ -68,7 +72,11 @@
           <a-button key="cancel" @click="deleteRequestModalVisible = false">
             Cancel
           </a-button>
-          <a-button key="submit" @click="handleDeleteRequest">
+          <a-button
+            key="submit"
+            @click="handleDeleteRequest"
+            :loading="isCancelling"
+          >
             Confirm delete request
           </a-button>
         </template>
@@ -140,11 +148,13 @@ export default {
       utils: utils,
       cancelRequestModalVisible: false,
       deleteRequestModalVisible: false,
+      isCancelling: false,
       tag: this.makeTag
     };
   },
   methods: {
     async handleCancelRequest() {
+      this.isCancelling = true;
       const visit_id = this.visit.id;
       await this.$apollo.mutate({
         mutation: queries.cancel_visit_request,
@@ -158,13 +168,15 @@ export default {
               visitor_id: store.state.loggedInUser
             }
           },
-          "searchSeminarsByFilters"
+          "searchSeminarsByFilters",
         ],
         awaitRefetchQueries: true
       });
+      this.isCancelling = false;
       this.cancelRequestModalVisible = false;
     },
     async handleDeleteRequest() {
+      this.isCancelling = true;
       const visit_id = this.visit.id;
       await this.$apollo.mutate({
         mutation: queries.delete_visit_request,
@@ -182,6 +194,7 @@ export default {
         ],
         awaitRefetchQueries: true
       });
+      this.isCancelling = false;
       this.deleteRequestModalVisible = false;
     }
   }
