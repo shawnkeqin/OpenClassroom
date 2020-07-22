@@ -177,6 +177,7 @@ query get_my_visits($visitor_id: String!) {
         course {
           id
           module_code
+          semester_code
           title
           desc
           module_brief_link
