@@ -163,18 +163,19 @@ export default {
                 visitor_id: store.state.loggedInUser
               }
             },
-            "searchSeminarsByFilters"
+            "searchSeminarsByFilters",
+            "get_my_visits_by_date"
           ],
           awaitRefetchQueries: true
         });
         this.isCancelling = false;
         this.$notification.success({
-          key: "cancelSuccess",
+          key: `cancel_${visit_id}_success`,
           message: "Your visit request has been cancelled."
         });
       } catch (err) {
         this.$notification.error({
-          key: "cancelFailure",
+          key: `cancel_${visit_id}_failure`,
           message: "Failed to cancel your visit request",
           description: "Please try again."
         });
@@ -197,18 +198,19 @@ export default {
                 visitor_id: store.state.loggedInUser
               }
             },
-            "searchSeminarsByFilters"
+            "searchSeminarsByFilters",
+            "get_my_visits_by_date"
           ],
           awaitRefetchQueries: true
         });
         this.isCancelling = false;
         this.$notification.success({
-          key: "deleteSuccess",
+          key: `delete_${visit_id}_success`,
           message: "Your visit request has been deleted."
         });
       } catch (err) {
         this.$notification.error({
-          key: "deleteFailure",
+          key: `delete_${visit_id}_failure`,
           message: "Failed to delete your visit request",
           description: "Please try again."
         });
@@ -217,20 +219,21 @@ export default {
   },
   watch: {
     isCancelling(val) {
+      const visit_id = this.visit.id;
       if (val === true) {
         this.$notification.open({
-          key: "cancelLoading",
+          key: `cancel_${visit_id}_loading`,
           message: "Processing your changes",
           icon: <a-icon type="loading" />,
           duration: 0
         });
       } else {
-        this.$notification.close("cancelLoading");
+        this.$notification.close(`cancel_${visit_id}_loading`);
       }
     }
   },
   beforeDestroy() {
-    this.$notification.close("cancelLoading"); // after refetchQueries, this component will get destroyed by the parent component, so the watch for isCancelling might not execute fast enough to cloase the loading notif
+    this.$notification.close(`cancel_${this.visit.id}_loading`); // after refetchQueries, this component will get destroyed by the parent component, so the watch for isCancelling might not execute fast enough to cloase the loading notif
   }
 };
 </script>

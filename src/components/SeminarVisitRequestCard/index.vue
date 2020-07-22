@@ -116,7 +116,6 @@
               </template>
               <template v-else-if="!visit || visit.is_cancelled">
                 <RequestVisitButton
-                  :visit="visit"
                   :seminar="seminar"
                   :has_consented="has_consented"
                 />

@@ -155,11 +155,6 @@ export default {
     //       return acc;
     //     }, []);
     //   }
-  },
-  methods: {
-    handleSelectSemester(semester_code) {
-      this.selected_semester = semester_code;
-    }
   }
 };
 </script>
