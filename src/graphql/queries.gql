@@ -84,7 +84,6 @@ query get_seminars_with_visits_by_time_requested(
   seminar(
     where: {
       course_group: { faculty_id: { _eq: $faculty_id } }
-      _and: { semester_code: { _eq: $semester_code } }
     }
   ) {
     title

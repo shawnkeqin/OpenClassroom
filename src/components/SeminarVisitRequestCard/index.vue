@@ -185,8 +185,6 @@ export default {
     return {
       utils: utils,
       descModalVisible: false,
-      requestModalVisible: false,
-      request_msg: "",
       constants
     };
   },

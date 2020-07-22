@@ -51,6 +51,7 @@ export default {
     return {
       isRequesting: false,
       requestModalVisible: false,
+      request_msg: "",
     };
   },
   methods: {
@@ -103,12 +104,12 @@ export default {
         });
         this.isRequesting = false;
         this.$notification.success({
-          key: "requestSuccess",
+          key: `request_${seminar_id}_success`,
           message: "Your visit request has been sent."
         })
       } catch (err) {
         this.$notification.error({
-          key: "requestFailure",
+          key: `request_${seminar_id}_failure`,
           message: "Failed to make a new request",
           description: "Please try again."
         })
@@ -117,20 +118,21 @@ export default {
   },
   watch: {
     isRequesting(val) {
+      const seminar_id = this.seminar_id;
       if (val) {
         this.$notification.open({
-          key: "requestLoading",
+          key: `request_${seminar_id}_loading`,
           message: "Processing your visit request",
           icon: <a-icon type="loading" />,
           duration: 0
         });
       } else {
-        this.$notification.close("requestLoading");
+        this.$notification.close(`request_${seminar_id}_loading`);
       }
     }
   },
   beforeDestroy() {
-    this.$notification.close("requestLoading"); // after refetchQueries, this component will get destroyed by the parent component, so the watch for isCancelling might not execute fast enough to cloase the loading notif
+    this.$notification.close(`request_${this.seminar_id}_loading`); // after refetchQueries, this component will get destroyed by the parent component, so the watch for isCancelling might not execute fast enough to cloase the loading notif
   }
 };
 </script>

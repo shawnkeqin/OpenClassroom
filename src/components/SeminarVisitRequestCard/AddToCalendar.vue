@@ -1,7 +1,7 @@
 <template>
   <a-dropdown :trigger="['click']">
     <a class="ant-dropdown-link" @click="e => e.preventDefault()" href="#"
-      >Add to external calendar</a
+      >Export to external calendar</a
     >
     <a-menu slot="overlay">
       <a-menu-item key="0">

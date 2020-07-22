@@ -11,8 +11,7 @@
           :key="seminarWithVisits.seminar.id"
         />
       </div> -->
-      <!-- <div>{{ JSON.stringify(visitsBySelectedSemester )}}</div> -->
-      <div v-if="myVisits.length">
+      <div v-if="visitsBySelectedSemester.length">
         <SeminarVisitRequestCard
           v-for="visit in visitsBySelectedSemester"
           :seminar="visit.seminar"
@@ -22,15 +21,30 @@
         />
       </div>
       <div v-else>
-        <div style="width: 35rem; margin-bottom: 30px">
+        <div style="width: 35rem;">
           <a-card hoverable>
-            <p>You have no upcoming visits</p>
+            <p>
+              {{
+                `You have no upcoming visits for semester ${selectedSemester[0]}`
+              }}
+            </p>
           </a-card>
         </div>
       </div>
       <div>
-        <div style="position: sticky; top: 20px; margin: 45px 20px">
-          <a-card>
+        <div style="position: sticky; top: 20px; margin: 0 20px">
+          <a-card style="width: 100%; margin-bottom: 20px;">
+            <h4>Visits by semester</h4>
+            <a-menu v-model="selectedSemester">
+              <a-menu-item
+                v-for="semester in visitsGroupBySemester"
+                :key="semester.semester_code"
+              >
+                {{ semester.semester_code }}
+              </a-menu-item>
+            </a-menu>
+          </a-card>
+          <a-card style="width: 100%;">
             <p>
               View campus map <a @click="mapVisible = true" href="#">here</a>
             </p>
@@ -56,15 +70,6 @@
                 >here</a
               >
             </p>
-            <h4>Visits by semester</h4>
-            <a-menu v-model="selected_semester">
-              <a-menu-item
-                v-for="semester in visitsBySemester"
-                :key="semester.semester_code"
-              >
-                {{ semester.semester_code }}
-              </a-menu-item>
-            </a-menu>
           </a-card>
         </div>
       </div>
@@ -87,7 +92,7 @@ export default {
   data() {
     return {
       myVisits: [],
-      selected_semester: [process.env.VUE_APP_SEMESTER_CODE], // to use v-model for a-menu, the data must but an array
+      selectedSemester: [process.env.VUE_APP_SEMESTER_CODE], // to use v-model for a-menu, the data must but an array
       mapVisible: false
     };
   },
@@ -103,8 +108,11 @@ export default {
     }
   },
   computed: {
-    visitsBySemester() {
-      if (!this.myVisits.length) return [];
+    visitsGroupBySemester() {
+      const defaultVal = [
+        { semester_code: process.env.VUE_APP_SEMESTER_CODE, visits: [] }
+      ];
+      if (!this.myVisits.length) return defaultVal;
       return this.myVisits.reduce((acc, cur) => {
         const cur_semester_code = cur.seminar.course_group.course.semester_code;
         const idx =
@@ -120,11 +128,11 @@ export default {
           acc[idx].visits.push(cur);
         }
         return acc;
-      }, []);
+      }, defaultVal);
     },
     visitsBySelectedSemester() {
-      return this.visitsBySemester.find(
-        semester => semester.semester_code === this.selected_semester[0]
+      return this.visitsGroupBySemester.find(
+        semester => semester.semester_code === this.selectedSemester[0]
       ).visits;
     }
     //   seminarsToVisit() {
