@@ -159,8 +159,9 @@ export default {
                 visitor_id: store.state.loggedInUser
               }
             },
-            "searchSeminarsByFilters"
-            // "searchSeminarsByFiltersWithTags"
+            "searchSeminarsByFilters",
+            // "searchSeminarsByFiltersWithTags",
+            "get_my_visits_by_date"
           ],
           awaitRefetchQueries: true
         });
