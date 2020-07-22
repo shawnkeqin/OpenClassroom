@@ -16,7 +16,7 @@ const staticConf = { maxAge: "1d", etag: false };
 app.use(history());
 app.use(express.static(publicPath, staticConf));
 
-console.log("env: PORT=", process.env.PORT);
+// console.log("env: PORT=", process.env.PORT);
 const PORT = process.env.PORT || 443;
 app.listen(PORT, () =>
   console.log(
