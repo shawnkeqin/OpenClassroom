@@ -33,7 +33,7 @@
             mode="inline"
             :default-selected-keys="['1']"
             :default-open-keys="['sub1']"
-            style="height: 100%; padding-top: 10px;"
+            style="padding-top: 10px;"
           >
             <a-menu-item :key="1" class="nav-item">
               <a-icon type="user" />
