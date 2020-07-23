@@ -77,7 +77,7 @@ mutation update_visit_response(
   }
 }
 
-query getPendingVisits($visitor_id: String!, $semester_code: String!) {
+query getPendingVisitsCount($visitor_id: String!, $semester_code: String!) {
   visit_aggregate(
     where: {
       visitor_id: { _eq: $visitor_id }
@@ -92,7 +92,7 @@ query getPendingVisits($visitor_id: String!, $semester_code: String!) {
 }
 
 query get_seminars_with_visits_by_time_requested($faculty_id: String) {
-  seminar(where: {course_group: {faculty_id: {_eq: $faculty_id}}}) {
+  seminar(where: { course_group: { faculty_id: { _eq: $faculty_id } } }) {
     title
     start
     module_code
@@ -109,7 +109,7 @@ query get_seminars_with_visits_by_time_requested($faculty_id: String) {
     group_code
     visitor_capacity
     week
-    visits(order_by: {time_requested: desc}) {
+    visits(order_by: { time_requested: desc }) {
       id
       is_archived
       is_cancelled
@@ -142,7 +142,6 @@ query get_seminars_with_visits_by_time_requested($faculty_id: String) {
     }
   }
 }
-
 
 query get_my_visits($visitor_id: String!) {
   visit(
@@ -689,7 +688,12 @@ query get_course_group_new_visitor_capacity($id: Int!) {
 }
 
 query get_my_visits_by_date($visitor_id: String!, $date: date!) {
-  visit(where: {visitor_id: {_eq: $visitor_id}, seminar: {date: {_eq: $date}}}) {
+  visit(
+    where: {
+      visitor_id: { _eq: $visitor_id }
+      seminar: { date: { _eq: $date } }
+    }
+  ) {
     id
     seminar_id
     visit_status
@@ -713,7 +717,12 @@ query get_my_visits_by_date($visitor_id: String!, $date: date!) {
 }
 
 query get_my_seminars_by_date($faculty_id: String!, $date: date!) {
-  seminar(where: {course_group: {faculty_id: {_eq: $faculty_id}}, date: {_eq: $date}}) {
+  seminar(
+    where: {
+      course_group: { faculty_id: { _eq: $faculty_id } }
+      date: { _eq: $date }
+    }
+  ) {
     title
     start
     module_code

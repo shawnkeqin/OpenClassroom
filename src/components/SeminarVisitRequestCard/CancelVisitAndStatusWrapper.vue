@@ -142,7 +142,7 @@ export default {
       utils: utils,
       cancelRequestModalVisible: false,
       deleteRequestModalVisible: false,
-      isCancelling: false,
+      isCancelling: false
     };
   },
   methods: {
