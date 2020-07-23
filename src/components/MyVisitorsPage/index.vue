@@ -59,7 +59,8 @@ export default {
           // semester_code: process.env.VUE_APP_SEMESTER_CODE
         };
       },
-      update: data => data.seminar
+      update: data => data.seminar,
+      fetchPolicy: "network-only"
     }
   },
   computed: {

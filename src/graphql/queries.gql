@@ -77,14 +77,8 @@ mutation update_visit_response(
   }
 }
 
-query getPendingVisitsCount($visitor_id: String!, $semester_code: String!) {
-  visit_aggregate(
-    where: {
-      visitor_id: { _eq: $visitor_id }
-      seminar: { semester_code: { _eq: $semester_code } }
-      visit_status: { _eq: "PENDING" }
-    }
-  ) {
+query getPendingVisitsCount($faculty_id: String!, $semester_code: String!) {
+  visit_aggregate(where: {seminar: {semester_code: {_eq: $semester_code}, course_group: {faculty_id: {_eq: $faculty_id}}}, visit_status: {_eq: "PENDING"}}) {
     aggregate {
       count
     }
@@ -384,7 +378,7 @@ query searchSeminarsByFilters(
   seminar(
     where: {
       _and: [
-        { course_group: { course: { title: { _similar: $course_title } } } }
+        { course_group: { course: { title: { _ilike: $course_title } } } }
         { course_group: { faculty: { name: { _similar: $faculty_name } } } }
         { course_group: { teaching_mode: { _in: $teaching_modes } } }
         { date: { _gte: $start_date } }
@@ -459,7 +453,7 @@ query searchSeminarsByFiltersWithTags(
   seminar(
     where: {
       _and: [
-        { course_group: { course: { title: { _similar: $course_title } } } }
+        { course_group: { course: { title: { _ilike: $course_title } } } }
         { course_group: { faculty: { name: { _similar: $faculty_name } } } }
         { course_group: { teaching_mode: { _in: $teaching_modes } } }
         { date: { _gte: $start_date } }

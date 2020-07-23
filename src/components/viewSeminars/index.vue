@@ -20,12 +20,17 @@
       :filterOption="autoCompleteCourseTitle"
       style="width:100%; margin:10px 0px 20px 0px;"
       v-model="filters.course_title"
+      placeholder="Search by course title"
+      class="search-bar"
     >
-      <a-input-search
+      <!-- <a-inpuvt-search
         placeholder="Search by course title"
         size="large"
-        style=" height: 50px; .ant-input-lg { font-size: 18px} "
-      />
+        style=".ant-input-lg { font-size: 18px; } "
+      /> -->
+      <a-input>
+        <a-icon slot="suffix" type="search" class="certain-category-icon" />
+      </a-input>
     </a-auto-complete>
 
     <div style="display: flex;">
@@ -67,13 +72,24 @@
               :visit="seminar.visits[0]"
               :has_consented="loggedInUser.has_consented"
             /> -->
-            <SeminarVisitRequestCard
-              v-for="seminar in seminarLimited"
-              :key="seminar.id"
-              :seminar="seminar"
-              :visit="seminar.visits[0]"
-              :has_consented="loggedInUser.has_consented"
-            />
+            <template v-if="seminarLimited.length">
+              <SeminarVisitRequestCard
+                v-for="seminar in seminarLimited"
+                :key="seminar.id"
+                :seminar="seminar"
+                :visit="seminar.visits[0]"
+                :has_consented="loggedInUser.has_consented"
+              />
+            </template>
+            <template v-else>
+              <div style="width: 35rem;">
+                <a-card hoverable>
+                  <p>
+                    {{ `No results.` }}
+                  </p>
+                </a-card>
+              </div>
+            </template>
           </template>
         </div>
       </div>
@@ -98,27 +114,28 @@
               class="filter-field"
             />
             <h5 align="left">Time range</h5>
-            <a-time-picker
-              :minute-step="30"
-              use12-hours
-              format="h:mm A"
-              v-model="filters.startTime"
-              placeholder="Start"
-              style="width:100%; margin-bottom: 5px"
-              valueFormat="HH:mm"
-            >
-            </a-time-picker>
-            <a-time-picker
-              :minute-step="30"
-              use12-hours
-              format="h:mm A"
-              v-model="filters.endTime"
-              placeholder="End"
-              style="width:100%;"
-              valueFormat="HH:mm"
-              class="filter-field"
-            >
-            </a-time-picker>
+            <div style="display: flex; flex-direction: row; justify-content: space-between;">
+              <a-time-picker
+                :minute-step="30"
+                use12-hours
+                format="h:mm A"
+                v-model="filters.startTime"
+                placeholder="Start"
+                valueFormat="HH:mm"
+                class="filter-field"
+              >
+              </a-time-picker>
+              <a-time-picker
+                :minute-step="30"
+                use12-hours
+                format="h:mm A"
+                v-model="filters.endTime"
+                placeholder="End"
+                valueFormat="HH:mm"
+                class="filter-field"
+              >
+              </a-time-picker>
+            </div>
             <h5 align="left">Instructor</h5>
             <!-- <a-form-item> -->
             <a-select
@@ -449,6 +466,13 @@ export default {
 </script>
 
 <style scoped>
+.search-bar >>> .ant-input {
+  font-size: 1rem;
+  padding: 1.2rem;
+}
+.search-bar >>> .ant-select-selection__rendered {
+  height: 2.4rem;
+}
 .filter {
   position: fixed;
 }
