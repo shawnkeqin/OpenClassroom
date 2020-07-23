@@ -1,5 +1,5 @@
 <template>
-  <div class="page-wrapper">
+  <div style="width: 100%; padding: 0 20px;">
     <h1>My courses</h1>
     <div style="display: flex; align-content: flex-start">
       <template v-for="course_group in course_groups">
