@@ -371,12 +371,14 @@ query searchSeminarsByFilters(
   $end_time: time!
   $visitor_id: String
   $semester_code: String
+  $teaching_modes: [bpchar!]
 ) {
   seminar(
     where: {
       _and: [
         { course_group: { course: { title: { _similar: $course_title } } } }
         { course_group: { faculty: { name: { _similar: $faculty_name } } } }
+        { course_group: { teaching_mode: { _in: $teaching_modes } } }
         { date: { _gte: $start_date } }
         { date: { _lte: $end_date } }
         { start: { _gte: $start_time } }
@@ -442,12 +444,14 @@ query searchSeminarsByFiltersWithTags(
   $selected_tags: [String!]
   $visitor_id: String
   $semester_code: String
+  $teaching_modes: [bpchar!]
 ) {
   seminar(
     where: {
       _and: [
         { course_group: { course: { title: { _similar: $course_title } } } }
         { course_group: { faculty: { name: { _similar: $faculty_name } } } }
+        { course_group: { teaching_mode: { _in: $teaching_modes } } }
         { date: { _gte: $start_date } }
         { date: { _lte: $end_date } }
         { start: { _gte: $start_time } }

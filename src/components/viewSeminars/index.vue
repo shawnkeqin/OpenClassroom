@@ -155,11 +155,38 @@
                 style="position:absolute; right:35px; margin-top: 10px; color:rgba(0, 0, 0, 0.25)"
               />
             </div>
-            <a
-              href="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg"
-              target="_blank"
-              >View campus map</a
-            >
+            <div>
+              <h5 align="left">Teaching mode</h5>
+              <a-checkbox-group
+                class="teaching-mode-filter"
+                v-model="checkedTeachingModes"
+              >
+                <!-- <span
+                  style=" width: 500px"
+                  slot="label"
+                  slot-scope="{ _label }"
+                >
+                  {{ _label }}
+                </span> -->
+                <a-checkbox
+                  class="teaching-mode-checkbox"
+                  :value="value"
+                  v-for="{
+                    value,
+                    label
+                  } in constants.TEACHING_MODE_CHECKBOX_OPTIONS"
+                  v-bind:key="value"
+                  >{{ label }}</a-checkbox
+                >
+              </a-checkbox-group>
+            </div>
+            <div style="padding-top: 30px;">
+              <a
+                href="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg"
+                target="_blank"
+                >View campus map</a
+              >
+            </div>
           </a-form>
         </a-card>
       </div>
@@ -175,6 +202,7 @@ import SeminarVisitRequestCard from "@/components/SeminarVisitRequestCard";
 import suggestedSearchButton from "./suggestedSearchButton";
 import _ from "lodash";
 import store from "@/store";
+import constants from "@/utils/constants";
 
 const DEFAULT_PAGE_SIZE = 10;
 const TEST_DATE = "2020-08-09";
@@ -198,12 +226,13 @@ const SUGGESTED_SEARCH_FILTERS = {
   },
   [SUGGESTED_SEARCH_2]: {}
 };
+
 export default {
   name: "viewSeminars",
-  components: { 
-    // SeminarRequestCard, 
+  components: {
+    // SeminarRequestCard,
     SeminarVisitRequestCard,
-    suggestedSearchButton 
+    suggestedSearchButton
   },
   data() {
     return {
@@ -226,6 +255,8 @@ export default {
         [SUGGESTED_SEARCH_2]: true
       },
       SUGGESTED_SEARCH_FILTERS: _.cloneDeep(SUGGESTED_SEARCH_FILTERS),
+      constants,
+      checkedTeachingModes: []
     };
   },
   apollo: {
@@ -321,6 +352,11 @@ export default {
         : "2050-01-01";
       const start_time = this.filters.startTime || "00:00";
       const end_time = this.filters.endTime || "23:59";
+      // Default is none checked, but that means include all. If there is one or more specific values selected, then use those values.
+      const teaching_modes =
+        !this.checkedTeachingModes || this.checkedTeachingModes.length == 0
+          ? constants.TEACHING_MODE_LABELS
+          : this.checkedTeachingModes;
       return utils.isNonEmptyArray(this.filters.selectedTags)
         ? {
             course_title,
@@ -331,7 +367,8 @@ export default {
             end_time,
             selected_tags: this.filters.selectedTags,
             visitor_id: store.state.loggedInUser,
-            semester_code: process.env.VUE_APP_SEMESTER_CODE
+            semester_code: process.env.VUE_APP_SEMESTER_CODE,
+            teaching_modes
           }
         : {
             course_title,
@@ -341,7 +378,8 @@ export default {
             start_time,
             end_time,
             visitor_id: store.state.loggedInUser,
-            semester_code: process.env.VUE_APP_SEMESTER_CODE
+            semester_code: process.env.VUE_APP_SEMESTER_CODE,
+            teaching_modes
           };
     }
   },
@@ -350,7 +388,7 @@ export default {
     //   Object.keys(this.SUGGESTED_SEARCH_STATE).forEach(
     //     key => (this.SUGGESTED_SEARCH_STATE[key] = FALSE)
     //   );
-    // },
+    // },;
     onSuggestedSearchSelectToggle(data) {
       // Update which button is selected.
       const new_button_state = {};
@@ -399,5 +437,15 @@ export default {
 }
 .suggested-search-option .anticon-close {
   font-size: 30px;
+}
+
+.teaching-mode-filter {
+  display: block;
+}
+
+.teaching-mode-checkbox {
+  display: block;
+  color: rgba(0, 0, 0, 0.54);
+  margin-left: 0px;
 }
 </style>
