@@ -77,6 +77,20 @@ mutation update_visit_response(
   }
 }
 
+query getPendingVisits($visitor_id: String!, $semester_code: String!) {
+  visit_aggregate(
+    where: {
+      visitor_id: { _eq: $visitor_id }
+      seminar: { semester_code: { _eq: $semester_code } }
+      visit_status: { _eq: "PENDING" }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+
 query get_seminars_with_visits_by_time_requested($faculty_id: String) {
   seminar(where: {course_group: {faculty_id: {_eq: $faculty_id}}}) {
     title

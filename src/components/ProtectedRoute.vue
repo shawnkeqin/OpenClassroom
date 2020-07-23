@@ -118,7 +118,6 @@ export default {
       constants: constants,
       queries: queries,
       loggedInUserObj: null,
-      seminarWithVisits: [],
       loggedInUser: store.state.loggedInUser
     };
   },
@@ -152,15 +151,15 @@ export default {
         return this.loggedInUser === null;
       }
     },
-    seminarsWithVisits: {
-      query: queries.get_seminars_with_visits_by_time_requested,
+    pendingVisitsCount: {
+      query: queries.getPendingVisits,
       variables() {
         return {
-          faculty_id: this.loggedInUser,
+          visitor_id: this.loggedInUser,
           semester_code: process.env.VUE_APP_SEMESTER_CODE
         };
       },
-      update: data => data.seminar
+      update: data => data.visit_aggregate.aggregate.count
     }
   },
   computed: {
@@ -168,16 +167,16 @@ export default {
       return (
         this.loggedInUserObj && this.loggedInUserObj.has_consented == false
       );
-    },
-    pendingVisitsCount() {
-      const count =
-        this.seminarsWithVisits &&
-        this.seminarsWithVisits
-          .map(seminar => seminar.visits)
-          .flat()
-          .filter(visit => visit.visit_status === "PENDING").length;
-      return count;
     }
+    // pendingVisitsCount() {
+    //   const count =
+    //     this.pendingVisitsCount &&
+    //     this.pendingVisitsCount
+    //       .map(seminar => seminar.visits)
+    //       .flat()
+    //       .filter(visit => visit.visit_status === "PENDING").length;
+    //   return count;
+    // }
   },
   watch: {
     pendingVisitsCount() {
