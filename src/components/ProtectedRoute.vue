@@ -152,7 +152,7 @@ export default {
       }
     },
     pendingVisitsCount: {
-      query: queries.getPendingVisits,
+      query: queries.getPendingVisitsCount,
       variables() {
         return {
           visitor_id: this.loggedInUser,
