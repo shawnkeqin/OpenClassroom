@@ -1,17 +1,17 @@
 <template>
-  <div>
+  <div style="width:100%">
     <h1>Search Classes</h1>
     <div style="padding: 5px 0px 10px 0px">
       <suggestedSearchButton
-        :id="SUGGESTED_SEARCH_IDS.SUGGESTED_SEARCH_1"
-        label="CC classes (this week)"
-        :selected="SUGGESTED_SEARCH_STATE.SUGGESTED_SEARCH_1"
+        :id="SUGGESTED_SEARCH_IDS.SUGGESTED_SEARCH_2"
+        label="This Week: CC Lectures"
+        :selected="SUGGESTED_SEARCH_STATE.SUGGESTED_SEARCH_2"
         @select-toggled="onSuggestedSearchSelectToggle"
       />
       <!-- <suggestedSearchButton
-        :id="SUGGESTED_SEARCH_IDS.SUGGESTED_SEARCH_2"
-        label="Suggested search 2"
-        :selected="SUGGESTED_SEARCH_STATE.SUGGESTED_SEARCH_2"
+        :id="SUGGESTED_SEARCH_IDS.SUGGESTED_SEARCH_1"
+        label="This Week: CC Classes"
+        :selected="SUGGESTED_SEARCH_STATE.SUGGESTED_SEARCH_1"
         @select-toggled="onSuggestedSearchSelectToggle"
       /> -->
     </div>
@@ -157,19 +157,12 @@
                 style="position:absolute; right:35px; margin-top: 10px; color:rgba(0, 0, 0, 0.25)"
               />
             </div>
-            <div>
+            <div style="margin-bottom: 20px;">
               <h5 align="left">Teaching mode</h5>
               <a-checkbox-group
                 class="teaching-mode-filter"
-                v-model="checkedTeachingModes"
+                v-model="filters.checkedTeachingModes"
               >
-                <!-- <span
-                  style=" width: 500px"
-                  slot="label"
-                  slot-scope="{ _label }"
-                >
-                  {{ _label }}
-                </span> -->
                 <a-checkbox
                   class="teaching-mode-checkbox"
                   :value="value"
@@ -181,6 +174,14 @@
                   >{{ label }}</a-checkbox
                 >
               </a-checkbox-group>
+            </div>
+            <div>
+              <h5 align="left">Lectures</h5>
+              <a-checkbox
+                v-model="filters.lecturesOnly"
+                @change="checkedLecturesOnly"
+                >Show CC lectures only</a-checkbox
+              >
             </div>
             <div style="padding-top: 30px;">
               <a @click="mapVisible = true" href="#">
@@ -228,7 +229,9 @@ const DEFAULT_FILTERS = {
   startTime: null,
   endTime: null,
   facultyName: undefined,
-  selectedTags: []
+  selectedTags: [],
+  checkedTeachingModes: [],
+  lecturesOnly: false
 };
 const SUGGESTED_SEARCH_FILTERS = {
   [SUGGESTED_SEARCH_1]: {
@@ -238,7 +241,13 @@ const SUGGESTED_SEARCH_FILTERS = {
     ],
     selectedTags: ["Common Curriculum"]
   },
-  [SUGGESTED_SEARCH_2]: {}
+  [SUGGESTED_SEARCH_2]: {
+    selectedDateRange: [
+      moment(TEST_DATE).startOf("week"),
+      moment(TEST_DATE).endOf("week")
+    ],
+    lecturesOnly: true
+  }
 };
 
 export default {
@@ -258,8 +267,11 @@ export default {
       utils,
       page: 1,
       pageSize: DEFAULT_PAGE_SIZE,
-      // Search filters
-      filters: _.cloneDeep(DEFAULT_FILTERS),
+      // Search filters, default plus initial filter.
+      filters: _.assign(
+        _.cloneDeep(DEFAULT_FILTERS),
+        SUGGESTED_SEARCH_FILTERS.SUGGESTED_SEARCH_2
+      ),
       SUGGESTED_SEARCH_IDS: {
         SUGGESTED_SEARCH_1,
         SUGGESTED_SEARCH_2
@@ -270,7 +282,6 @@ export default {
       },
       SUGGESTED_SEARCH_FILTERS: _.cloneDeep(SUGGESTED_SEARCH_FILTERS),
       constants,
-      checkedTeachingModes: [],
       mapVisible: false
     };
   },
@@ -369,33 +380,27 @@ export default {
       const end_time = this.filters.endTime || "23:59";
       // Default is none checked, but that means include all. If there is one or more specific values selected, then use those values.
       const teaching_modes =
-        !this.checkedTeachingModes || this.checkedTeachingModes.length == 0
+        !this.filters.checkedTeachingModes ||
+        this.filters.checkedTeachingModes.length == 0
           ? constants.TEACHING_MODE_LABELS
-          : this.checkedTeachingModes;
-      return utils.isNonEmptyArray(this.filters.selectedTags)
-        ? {
-            course_title,
-            faculty_name,
-            start_date,
-            end_date,
-            start_time,
-            end_time,
-            selected_tags: this.filters.selectedTags,
-            visitor_id: store.state.loggedInUser,
-            semester_code: process.env.VUE_APP_SEMESTER_CODE,
-            teaching_modes
-          }
-        : {
-            course_title,
-            faculty_name,
-            start_date,
-            end_date,
-            start_time,
-            end_time,
-            visitor_id: store.state.loggedInUser,
-            semester_code: process.env.VUE_APP_SEMESTER_CODE,
-            teaching_modes
-          };
+          : this.filters.checkedTeachingModes;
+      const include_cc_lectures = this.filters.lecturesOnly ? "CC" : "%";
+      const queryVars = {
+        course_title,
+        faculty_name,
+        start_date,
+        end_date,
+        start_time,
+        end_time,
+        visitor_id: store.state.loggedInUser,
+        semester_code: process.env.VUE_APP_SEMESTER_CODE,
+        teaching_modes,
+        include_cc_lectures
+      };
+      if (utils.isNonEmptyArray(this.filters.selectedTags)) {
+        queryVars.selected_tags = this.filters.selected_tags;
+      }
+      return queryVars;
     }
   },
   methods: {
@@ -404,6 +409,9 @@ export default {
     //     key => (this.SUGGESTED_SEARCH_STATE[key] = FALSE)
     //   );
     // },;
+    checkedLecturesOnly(data) {
+      console.log(data.target.checked);
+    },
     onSuggestedSearchSelectToggle(data) {
       // Update which button is selected.
       const new_button_state = {};
@@ -447,12 +455,6 @@ export default {
 .filter-field {
   margin-bottom: 20px;
 }
-.suggested-search-option {
-  font-size: 30px;
-}
-.suggested-search-option .anticon-close {
-  font-size: 30px;
-}
 
 .teaching-mode-filter {
   display: block;
@@ -462,5 +464,5 @@ export default {
   display: block;
   color: rgba(0, 0, 0, 0.54);
   margin-left: 0px;
-}
-</style>
+}</style
+>;

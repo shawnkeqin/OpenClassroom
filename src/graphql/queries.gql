@@ -380,6 +380,7 @@ query searchSeminarsByFilters(
   $visitor_id: String
   $semester_code: String
   $teaching_modes: [bpchar!]
+  $include_cc_lectures: String!
 ) {
   seminar(
     where: {
@@ -392,6 +393,7 @@ query searchSeminarsByFilters(
         { start: { _gte: $start_time } }
         { end: { _lte: $end_time } }
         { semester_code: { _eq: $semester_code } }
+        { group_code: { _similar: $include_cc_lectures } }
       ]
     }
   ) {
@@ -453,6 +455,7 @@ query searchSeminarsByFiltersWithTags(
   $visitor_id: String
   $semester_code: String
   $teaching_modes: [bpchar!]
+  $include_cc_lectures: String!
 ) {
   seminar(
     where: {
@@ -470,6 +473,7 @@ query searchSeminarsByFiltersWithTags(
           }
         }
         { semester_code: { _eq: $semester_code } }
+        { group_code: { _similar: $include_cc_lectures } }
       ]
     }
   ) {

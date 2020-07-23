@@ -37,6 +37,7 @@ export default {
   border-radius: 30px;
   width: auto;
   padding: 5px 15px 6px 15px;
+  cursor: pointer;
 }
 .option-selected {
   background-color: #007bff;
