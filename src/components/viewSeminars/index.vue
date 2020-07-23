@@ -56,7 +56,7 @@
         <div
           style="display: flex; flex-direction: column; align-items: center;"
         >
-          <template v-if="$apollo.loading"><a-skeleton active/></template>
+          <template v-if="$apollo.loading"><a-skeleton style="width: 35rem;" active/></template>
           <template v-else>
             <!-- <SeminarRequestCard
               v-for="seminar in seminarLimited"
