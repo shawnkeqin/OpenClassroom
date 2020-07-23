@@ -77,16 +77,8 @@ mutation update_visit_response(
   }
 }
 
-query get_seminars_with_visits_by_time_requested(
-  $faculty_id: String
-  $semester_code: String
-) {
-  seminar(
-    where: {
-      course_group: { faculty_id: { _eq: $faculty_id } }
-      _and: { semester_code: { _eq: $semester_code } }
-    }
-  ) {
+query get_seminars_with_visits_by_time_requested($faculty_id: String) {
+  seminar(where: {course_group: {faculty_id: {_eq: $faculty_id}}}) {
     title
     start
     module_code
@@ -103,7 +95,7 @@ query get_seminars_with_visits_by_time_requested(
     group_code
     visitor_capacity
     week
-    visits(order_by: { time_requested: desc }) {
+    visits(order_by: {time_requested: desc}) {
       id
       is_archived
       is_cancelled
@@ -136,6 +128,7 @@ query get_seminars_with_visits_by_time_requested(
     }
   }
 }
+
 
 query get_my_visits($visitor_id: String!) {
   visit(
@@ -177,6 +170,7 @@ query get_my_visits($visitor_id: String!) {
         course {
           id
           module_code
+          semester_code
           title
           desc
           module_brief_link
@@ -465,10 +459,11 @@ query searchSeminarsByFiltersWithTags(
       ]
     }
   ) {
+    id
     date
     start
     end
-    id
+    title
     is_open
     module_code
     group_code
@@ -672,5 +667,50 @@ query get_course_group_new_visitor_capacity($id: Int!) {
   course_group(where: { id: { _eq: $id } }) {
     id
     visitor_capacity
+  }
+}
+
+query get_my_visits_by_date($visitor_id: String!, $date: date!) {
+  visit(where: {visitor_id: {_eq: $visitor_id}, seminar: {date: {_eq: $date}}}) {
+    id
+    seminar_id
+    visit_status
+    visitor_id
+    seminar {
+      id
+      date
+      start
+      end
+      title
+      course_group {
+        id
+        course {
+          id
+          module_code
+          title
+        }
+      }
+    }
+  }
+}
+
+query get_my_seminars_by_date($faculty_id: String!, $date: date!) {
+  seminar(where: {course_group: {faculty_id: {_eq: $faculty_id}}, date: {_eq: $date}}) {
+    title
+    start
+    module_code
+    date
+    end
+    id
+    group_code
+    course_group {
+      id
+      faculty_id
+      course {
+        id
+        title
+        module_code
+      }
+    }
   }
 }

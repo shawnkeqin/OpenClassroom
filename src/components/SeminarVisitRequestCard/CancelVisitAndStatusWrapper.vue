@@ -8,6 +8,7 @@
         block
         style="margin-bottom: 15px"
         :disabled="!has_consented"
+        :loading="isCancelling"
       >
         Cancel request
       </a-button>
@@ -20,11 +21,7 @@
           <a-button key="cancel" @click="cancelRequestModalVisible = false">
             Cancel
           </a-button>
-          <a-button
-            key="submit"
-            @click="handleCancelRequest"
-            :loading="isCancelling"
-          >
+          <a-button key="submit" @click="handleCancelRequest">
             Confirm cancel request
           </a-button>
         </template>
@@ -60,6 +57,7 @@
         block
         style="margin-bottom: 15px"
         :disabled="!has_consented"
+        :loading="isCancelling"
       >
         Delete request
       </a-button>
@@ -72,11 +70,7 @@
           <a-button key="cancel" @click="deleteRequestModalVisible = false">
             Cancel
           </a-button>
-          <a-button
-            key="submit"
-            @click="handleDeleteRequest"
-            :loading="isCancelling"
-          >
+          <a-button key="submit" @click="handleDeleteRequest">
             Confirm delete request
           </a-button>
         </template>
@@ -125,7 +119,7 @@ import queries from "@/graphql/queries.gql";
 import AddToCalendar from "./AddToCalendar";
 
 export default {
-  name: "CancelVisitAndStatus",
+  name: "CancelVisitAndStatusWrapper",
   components: {
     AddToCalendar
   },
@@ -143,60 +137,103 @@ export default {
       default: false
     }
   },
-  data: function() {
+  data() {
     return {
       utils: utils,
       cancelRequestModalVisible: false,
       deleteRequestModalVisible: false,
       isCancelling: false,
-      tag: this.makeTag
     };
   },
   methods: {
     async handleCancelRequest() {
+      this.cancelRequestModalVisible = false;
       this.isCancelling = true;
       const visit_id = this.visit.id;
-      await this.$apollo.mutate({
-        mutation: queries.cancel_visit_request,
-        variables: {
-          visit_id
-        },
-        refetchQueries: [
-          {
-            query: queries.get_my_visits,
-            variables: {
-              visitor_id: store.state.loggedInUser
-            }
+      try {
+        await this.$apollo.mutate({
+          mutation: queries.cancel_visit_request,
+          variables: {
+            visit_id
           },
-          "searchSeminarsByFilters",
-        ],
-        awaitRefetchQueries: true
-      });
-      this.isCancelling = false;
-      this.cancelRequestModalVisible = false;
+          refetchQueries: [
+            {
+              query: queries.get_my_visits,
+              variables: {
+                visitor_id: store.state.loggedInUser
+              }
+            },
+            "searchSeminarsByFilters",
+            "get_my_visits_by_date"
+          ],
+          awaitRefetchQueries: true
+        });
+        this.isCancelling = false;
+        this.$notification.success({
+          key: `cancel_${visit_id}_success`,
+          message: "Your visit request has been cancelled."
+        });
+      } catch (err) {
+        this.$notification.error({
+          key: `cancel_${visit_id}_failure`,
+          message: "Failed to cancel your visit request",
+          description: "Please try again."
+        });
+      }
     },
     async handleDeleteRequest() {
+      this.deleteRequestModalVisible = false;
       this.isCancelling = true;
       const visit_id = this.visit.id;
-      await this.$apollo.mutate({
-        mutation: queries.delete_visit_request,
-        variables: {
-          visit_id
-        },
-        refetchQueries: [
-          {
-            query: queries.get_my_visits,
-            variables: {
-              visitor_id: store.state.loggedInUser
-            }
+      try {
+        await this.$apollo.mutate({
+          mutation: queries.delete_visit_request,
+          variables: {
+            visit_id
           },
-          "searchSeminarsByFilters"
-        ],
-        awaitRefetchQueries: true
-      });
-      this.isCancelling = false;
-      this.deleteRequestModalVisible = false;
+          refetchQueries: [
+            {
+              query: queries.get_my_visits,
+              variables: {
+                visitor_id: store.state.loggedInUser
+              }
+            },
+            "searchSeminarsByFilters",
+            "get_my_visits_by_date"
+          ],
+          awaitRefetchQueries: true
+        });
+        this.isCancelling = false;
+        this.$notification.success({
+          key: `delete_${visit_id}_success`,
+          message: "Your visit request has been deleted."
+        });
+      } catch (err) {
+        this.$notification.error({
+          key: `delete_${visit_id}_failure`,
+          message: "Failed to delete your visit request",
+          description: "Please try again."
+        });
+      }
     }
+  },
+  watch: {
+    isCancelling(val) {
+      const visit_id = this.visit.id;
+      if (val === true) {
+        this.$notification.open({
+          key: `cancel_${visit_id}_loading`,
+          message: "Processing your changes",
+          icon: <a-icon type="loading" />,
+          duration: 0
+        });
+      } else {
+        this.$notification.close(`cancel_${visit_id}_loading`);
+      }
+    }
+  },
+  beforeDestroy() {
+    this.$notification.close(`cancel_${this.visit.id}_loading`); // after refetchQueries, this component will get destroyed by the parent component, so the watch for isCancelling might not execute fast enough to cloase the loading notif
   }
 };
 </script>

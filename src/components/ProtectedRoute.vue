@@ -33,7 +33,7 @@
             mode="inline"
             :default-selected-keys="['1']"
             :default-open-keys="['sub1']"
-            style="height: 100%; padding-top: 10px;"
+            style="padding-top: 10px;"
           >
             <a-menu-item :key="1" class="nav-item">
               <a-icon type="user" />
@@ -95,7 +95,9 @@
             </template> -->
           </div>
         </a-layout-sider>
-        <a-layout-content style="padding: 30px 50px 30px 50px; height: 100vh;">
+        <a-layout-content
+          style="display: flex; justify-content: center; padding: 30px 50px 30px 50px; height: 100vh;"
+        >
           <component :is="component" />
         </a-layout-content>
       </a-layout>

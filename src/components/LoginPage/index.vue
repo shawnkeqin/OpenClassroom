@@ -19,8 +19,8 @@
       <div
         style="height: 20vh; width: 100%; bottom: 0; background: white; padding: 2rem;"
       >
-        <h3>What's your interest?</h3>
-        <p>
+        <h3 class="desc">What's your interest?</h3>
+        <p class="desc">
           Search the schedule by course title, faculty member, major, or
           <br />special feature and find out who's open to visitors!
         </p>
@@ -30,7 +30,7 @@
       <div class="big-text" style="text-align: center;">
         Make a request in <br />an instant
       </div>
-      <p style="text-align: center;">
+      <p class="desc" style="text-align: center;">
         Automatic messaging requests a specific date and time to visit.
         <br />Easy to request, easy to reply. No pressure.
       </p>
@@ -48,7 +48,7 @@
       </div>
     </div>
     <div id="container-four" class="screen-wrapper">
-      <p style="width: 20rem; text-align: center;">
+      <p class="desc" style="width: 20rem; text-align: center;">
         You control who can visit. Remove courses or individual meetings, set
         the number of visitors, or just leave the door open to colleagues and
         see who shows up!
@@ -102,5 +102,8 @@ export default {
   color: #0077c8;
   /* color: white; */
   margin-bottom: 1.5rem;
+}
+.desc {
+  font-size: 1rem;
 }
 </style>

@@ -56,7 +56,9 @@
         <div
           style="display: flex; flex-direction: column; align-items: center;"
         >
-          <template v-if="$apollo.loading"><a-skeleton active/></template>
+          <template v-if="$apollo.loading"
+            ><a-skeleton style="width: 35rem;" active
+          /></template>
           <template v-else>
             <!-- <SeminarRequestCard
               v-for="seminar in seminarLimited"
@@ -75,8 +77,8 @@
           </template>
         </div>
       </div>
-      <div style="margin: 20px">
-        <a-card style="position: sticky; top: 50px;">
+      <div style="margin: 20px 0 0 20px;">
+        <a-card style="position: sticky; top: 20px;">
           <a-form>
             <h4 align="left">Filter by</h4>
             <h5 align="left">Date range</h5>
@@ -181,12 +183,24 @@
               </a-checkbox-group>
             </div>
             <div style="padding-top: 30px;">
-              <a
-                href="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg"
-                target="_blank"
-                >View campus map</a
-              >
+              <a @click="mapVisible = true" href="#">
+                View campus map
+              </a>
             </div>
+            <a-modal
+              title="Campus map"
+              :visible="mapVisible"
+              @cancel="mapVisible = false"
+              width="60vw"
+            >
+              <template slot="footer">
+                <div />
+              </template>
+              <img
+                src="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg"
+                width="100%"
+              />
+            </a-modal>
           </a-form>
         </a-card>
       </div>
@@ -256,7 +270,8 @@ export default {
       },
       SUGGESTED_SEARCH_FILTERS: _.cloneDeep(SUGGESTED_SEARCH_FILTERS),
       constants,
-      checkedTeachingModes: []
+      checkedTeachingModes: [],
+      mapVisible: false
     };
   },
   apollo: {

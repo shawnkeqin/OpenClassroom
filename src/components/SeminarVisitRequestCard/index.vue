@@ -115,37 +115,13 @@
                 >
               </template>
               <template v-else-if="!visit || visit.is_cancelled">
-                <a-button
-                  @click="requestModalVisible = true"
-                  type="primary"
-                  block
-                  style="margin-bottom: 15px"
-                  :disabled="!has_consented"
-                  >Request visit</a-button
-                >
-                <a-modal
-                  v-model="requestModalVisible"
-                  title="Making a vist request"
-                  @ok="handleSubmitRequest"
-                >
-                  <template slot="footer">
-                    <a-button key="cancel" @click="requestModalVisible = false"
-                      >Cancel</a-button
-                    >
-                    <a-button
-                      key="submit"
-                      @click="handleSubmitRequest"
-                      :loading="isRequesting"
-                      >Submit</a-button
-                    >
-                  </template>
-                  <a-form-model-item label="Your request message (optional)">
-                    <a-input v-model="request_msg" type="textarea" />
-                  </a-form-model-item>
-                </a-modal>
+                <RequestVisitButton
+                  :seminar="seminar"
+                  :has_consented="has_consented"
+                />
               </template>
               <template v-else>
-                <CancelVisitAndStatus
+                <CancelVisitAndStatusWrapper
                   :visit="visit"
                   :seminar="seminar"
                   :has_consented="has_consented"
@@ -172,13 +148,15 @@ import utils from "@/utils";
 import store from "@/store";
 import queries from "@/graphql/queries.gql";
 import ColoredTag from "./ColoredTag";
-import CancelVisitAndStatus from "./CancelVisitAndStatus";
+import CancelVisitAndStatusWrapper from "./CancelVisitAndStatusWrapper";
+import RequestVisitButton from "./RequestVisitButton";
 import constants from "@/utils/constants";
 export default {
   name: "SeminarRequestCard",
   components: {
     ColoredTag,
-    CancelVisitAndStatus
+    RequestVisitButton,
+    CancelVisitAndStatusWrapper
   },
   props: {
     // visits: {
@@ -202,16 +180,10 @@ export default {
       default: true
     }
   },
-  data: function() {
+  data() {
     return {
       utils: utils,
-      isRequesting: false,
       descModalVisible: false,
-      requestModalVisible: false,
-      request_msg: "",
-      cancelRequestModalVisible: false,
-      deleteRequestModalVisible: false,
-      tag: this.makeTag,
       constants
     };
   },
@@ -234,53 +206,82 @@ export default {
   },
   methods: {
     async handleSubmitRequest() {
+      this.requestModalVisible = false;
       this.isRequesting = true;
       if (!this.seminar.is_open) return;
       const seminar_id = this.seminar.id;
       // const seminar = this.seminar;
       const request_msg = this.request_msg;
-      await this.$apollo.mutate({
-        mutation: queries.create_visit_request,
-        variables: {
-          seminar_id,
-          visitor_id: store.state.loggedInUser,
-          request_msg
-        },
-        // update: (cache, { data: { insert_visit } }) => {
-        //   console.log(insert_visit);
-        //   const query = {
-        //     query: queries.get_my_visits,
-        //     variables: {
-        //       visitor_id: store.state.loggedInUser
-        //     }
-        //   }
-        //   const new_visit = insert_visit.returning[0];
-        //   const data = cache.readQuery(query);
-        //   data.visit.push({
-        //     ...new_visit,
-        //     visitor_id: store.state.loggedInUser,
-        //     seminar
-        //   });
-        //   cache.writeQuery({
-        //     ...query,
-        //     data
-        //   })
-        // },
-        refetchQueries: [
-          {
-            query: queries.get_my_visits,
-            variables: {
-              visitor_id: store.state.loggedInUser
-            }
+      try {
+        await this.$apollo.mutate({
+          mutation: queries.create_visit_request,
+          variables: {
+            seminar_id,
+            visitor_id: store.state.loggedInUser,
+            request_msg
           },
-          "searchSeminarsByFilters"
-          // "searchSeminarsByFiltersWithTags"
-        ],
-        awaitRefetchQueries: true
-      });
-      this.isRequesting = false;
-      this.requestModalVisible = false;
+          // update: (cache, { data: { insert_visit } }) => {
+          //   console.log(insert_visit);
+          //   const query = {
+          //     query: queries.get_my_visits,
+          //     variables: {
+          //       visitor_id: store.state.loggedInUser
+          //     }
+          //   }
+          //   const new_visit = insert_visit.returning[0];
+          //   const data = cache.readQuery(query);
+          //   data.visit.push({
+          //     ...new_visit,
+          //     visitor_id: store.state.loggedInUser,
+          //     seminar
+          //   });
+          //   cache.writeQuery({
+          //     ...query,
+          //     data
+          //   })
+          // },
+          refetchQueries: [
+            {
+              query: queries.get_my_visits,
+              variables: {
+                visitor_id: store.state.loggedInUser
+              }
+            },
+            "searchSeminarsByFilters",
+            // "searchSeminarsByFiltersWithTags"
+          ],
+          awaitRefetchQueries: true
+        });
+        this.isRequesting = false;
+        this.$notification.success({
+          key: "requestSuccess",
+          message: "Your visit request has been sent."
+        })
+      } catch (err) {
+        this.$notification.error({
+          key: "requestFailure",
+          message: "Failed to make a new request",
+          description: "Please try again."
+        })
+      }
     }
+  },
+  watch: {
+    isRequesting(val) {
+      if (val) {
+        this.$notification.open({
+          key: "requestLoading",
+          message: "Processing your visit request",
+          icon: <a-icon type="loading" />,
+          duration: 0
+        });
+      } else {
+        this.$notification.close("requestLoading");
+      }
+    }
+  },
+  beforeDestroy() {
+    this.$notification.close("requestLoading"); // if we navigate to another page, this component gets destroyed and may not close the notif under watch property
   }
 };
 </script>
