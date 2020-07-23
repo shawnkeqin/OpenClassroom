@@ -6,7 +6,7 @@
         style="width: 100%; margin-bottom: 1.5rem;"
       />
       <h2>Log in</h2>
-      <h5>Continue to Open Classroom with your NUS Staff ID</h5>
+      <h5>Continue to Open Classroom with your Yale-NUS Staff ID</h5>
       <a-form
         layout="horizontal"
         id="components-form-demo-normal-login"
@@ -22,7 +22,7 @@
                 ]
               }
             ]"
-            placeholder="NUS Staff ID"
+            placeholder="Yale-NUS Staff ID, e.g. YNCXXX"
           >
             <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
           </a-input>
