@@ -16,8 +16,8 @@
           </a-card>
         </div>
       </div>
-      <div style="position: sticky; width: 100%; top: 20px; margin: 0 20px;">
-        <a-card>
+      <div style="position: sticky; top: 20px; margin: 0 20px;">
+        <a-card style="width: 15rem;">
           <h4>Visits by semester</h4>
           <a-menu v-model="selectedSemester">
             <a-menu-item

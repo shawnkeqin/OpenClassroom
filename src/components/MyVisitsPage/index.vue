@@ -33,7 +33,7 @@
       </div>
       <div>
         <div style="position: sticky; top: 20px; margin: 0 20px">
-          <a-card style="width: 100%; margin-bottom: 20px;">
+          <a-card style="width: 15rem; margin-bottom: 20px;">
             <h4>Visits by semester</h4>
             <a-menu v-model="selectedSemester">
               <a-menu-item
@@ -44,7 +44,7 @@
               </a-menu-item>
             </a-menu>
           </a-card>
-          <a-card style="width: 100%;">
+          <a-card style="width: 15rem;">
             <p>
               View campus map <a @click="mapVisible = true" href="#">here</a>
             </p>

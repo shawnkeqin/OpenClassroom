@@ -1,6 +1,5 @@
 <template>
   <div style="width: 100%;">
-    <div>{{ seminar.date }}</div>
     <a-button
       @click="requestModalVisible = true"
       type="primary"
@@ -84,7 +83,7 @@ export default {
       default: false
     }
   },
-  data: function() {
+  data() {
     return {
       utils,
       isRequesting: false,

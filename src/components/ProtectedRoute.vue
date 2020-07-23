@@ -95,7 +95,9 @@
             </template> -->
           </div>
         </a-layout-sider>
-        <a-layout-content style="padding: 30px 50px 30px 50px; height: 100vh;">
+        <a-layout-content
+          style="display: flex; justify-content: center; padding: 30px 50px 30px 50px; height: 100vh;"
+        >
           <component :is="component" />
         </a-layout-content>
       </a-layout>

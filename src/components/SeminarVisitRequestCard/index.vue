@@ -180,7 +180,7 @@ export default {
       default: true
     }
   },
-  data: function() {
+  data() {
     return {
       utils: utils,
       descModalVisible: false,

@@ -137,7 +137,7 @@ export default {
       default: false
     }
   },
-  data: function() {
+  data() {
     return {
       utils: utils,
       cancelRequestModalVisible: false,
