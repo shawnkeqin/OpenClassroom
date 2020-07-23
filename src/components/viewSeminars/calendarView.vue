@@ -120,6 +120,7 @@ export default {
       variables() {
         return {
           visitor_id: store.state.loggedInUser
+          // Technically we should have a separate query that checks semester to be efficent as users will not view previous semesters (this query is used by other components such as my visit page that needs all semesters).
         };
       },
       update: data => data.visit
@@ -128,8 +129,8 @@ export default {
       query: queries.get_seminars_with_visits_by_time_requested,
       variables() {
         return {
-          faculty_id: store.state.loggedInUser,
-          semester_code: process.env.VUE_APP_SEMESTER_CODE
+          faculty_id: store.state.loggedInUser
+          // semester_code: process.env.VUE_APP_SEMESTER_CODE
         };
       },
       update: data => data.seminar
