@@ -60,7 +60,14 @@ export default {
         };
       },
       update: data => data.seminar,
-      fetchPolicy: "network-only"
+      fetchPolicy: "network-only",
+      error() {
+        this.$notification.error({
+          key: `server_error`,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     }
   },
   computed: {

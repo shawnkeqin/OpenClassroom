@@ -3,10 +3,17 @@
     <h2>
       {{ course ? course.title : "" }}
     </h2>
-    <div style="display: flex; align-items: center; margin-bottom: 5px">
-      <h3 style="display: inline; margin: 0 10px 0 0">
+    <div>
+      <h3 style="margin: 0 10px 0 0">
         {{ course ? course.module_code : "" }}
       </h3>
+      <p>
+        {{
+          `Teaching mode: ${constants.TEACHING_MODES[
+            course_group.teaching_mode
+          ] || "NA"}`
+        }}
+      </p>
       <!--  <a-button type="danger" size="large" @click="setAllUnavailable">
         Close Course
       </a-button> -->
@@ -91,6 +98,7 @@
 
 <script>
 import queries from "@/graphql/queries.gql";
+import constants from "@/utils/constants";
 import seminarItem from "./seminarItem";
 // import addNewSeminarModal from "./addNewSeminarModal";
 import updateCourseDetailsModal from "./updateCourseDetailsModal";
@@ -110,6 +118,7 @@ export default {
   },
   data: function() {
     return {
+      constants,
       id: this.$route.params.id,
       seminars: [],
       course_group: {},

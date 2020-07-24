@@ -16,8 +16,13 @@
         <h6 :class="{ past: is_past }" style="display: inline;">
           {{ seminar.location.full_name }}
         </h6>
-      </div>
-      <div>
+        <h6
+          :class="{ past: is_past }"
+          class="teaching-mode"
+          style="display: inline;"
+        >
+          {{ constants.TEACHING_MODES[course_group.teaching_mode] || "NA" }}
+        </h6>
         <a-col :span="17" style="padding-right: 20px">
           <div style="margin-bottom: 5px">
             <h3 style="display: inline">
@@ -265,5 +270,9 @@ export default {
 }
 .past {
   color: rgba(0, 0, 0, 0.37);
+}
+.teaching-mode {
+  font-weight: bold;
+  float: right;
 }
 </style>

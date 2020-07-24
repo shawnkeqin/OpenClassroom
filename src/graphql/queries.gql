@@ -255,6 +255,7 @@ query get_course_group_details($course_group_id: Int!) {
     group_code
     syllabus
     course_group_desc
+    teaching_mode
     is_open
     notes
     course {
