@@ -25,6 +25,20 @@
         </a-row>
       </a-card>
     </div>
+    <div>
+      <visitRequestChart
+        :number_of_visit_requests_made_by_user="
+          number_of_visit_requests_made_by_user
+        "
+        :number_of_completed_visit_requests_made_by_user="
+          number_of_completed_visit_requests_made_by_user
+        "
+        :number_of_hosted_visit_sessions_by_user="
+          number_of_hosted_visit_sessions_by_user
+        "
+        :number_of_hosted_visitors_by_user="number_of_hosted_visitors_by_user"
+      />
+    </div>
     <div class="content-block-wrapper">
       <h2>My Preferences</h2>
       <a-card style="width: 40rem" :bodyStyle="{ padding: '0px' }">
@@ -61,14 +75,17 @@
 <script>
 import queries from "@/graphql/queries.gql";
 import store from "@/store";
-
+import visitRequestChart from "./visitRequestChart";
+//import moment from "moment";
 export default {
   name: "Profile",
+  components: { visitRequestChart },
   data() {
     return {
       faculty: {},
       isToggleNotifNewRequestLoading: false,
-      isToggleNotifRequestUpdatetLoading: false
+      isToggleNotifRequestUpdatetLoading: false,
+      my_requests: []
     };
   },
   apollo: {
@@ -80,6 +97,75 @@ export default {
         };
       },
       update: data => data.faculty_by_pk
+    },
+    my_requests: {
+      query: queries.get_seminars_with_visits_by_time_requested,
+      variables() {
+        return {
+          faculty_id: store.state.loggedInUser
+        };
+      },
+      update: data => data.seminar
+    },
+    number_of_visit_requests_made_by_user: {
+      query: queries.number_of_visit_requests_made_by_user,
+      variables() {
+        return {
+          visitor_id: "yncas",
+          start_time: "2020-07-01T05:28:23.186523+00:00",
+          end_time: "2020-07-23T05:28:23.186523+00:00"
+          /* start_time: moment()
+            .subtract(30, "days")
+            .format(),
+          end_time: moment().format() */
+        };
+      },
+      update: data => data.seminar_aggregate
+    },
+    number_of_completed_visit_requests_made_by_user: {
+      query: queries.number_of_completed_visit_requests_made_by_user,
+      variables() {
+        return {
+          visitor_id: "yncas",
+          start_time: "2020-07-01T05:28:23.186523+00:00",
+          end_time: "2020-07-23T05:28:23.186523+00:00"
+          /*    start_time: moment()
+            .subtract(30, "days")
+            .format(),
+          end_time: moment().format()*/
+        };
+      },
+      update: data => data.seminar_aggregate
+    },
+    number_of_hosted_visit_sessions_by_user: {
+      query: queries.number_of_hosted_visit_sessions_by_user,
+      variables() {
+        return {
+          faculty_id: "yncas",
+          start_time: "2020-07-01T05:28:23.186523+00:00",
+          end_time: "2020-07-23T05:28:23.186523+00:00"
+          /*   start_time: moment()
+            .subtract(30, "days")
+            .format(),
+          end_time: moment().format() */
+        };
+      },
+      update: data => data.seminar_aggregate
+    },
+    number_of_hosted_visitors_by_user: {
+      query: queries.number_of_hosted_visitors_by_user,
+      variables() {
+        return {
+          faculty_id: "yncas",
+          start_time: "2020-07-01T05:28:23.186523+00:00",
+          end_time: "2020-07-23T05:28:23.186523+00:00"
+          /* start_time: moment()
+            .subtract(30, "days")
+            .format(),
+          end_time: moment().format() */
+        };
+      },
+      update: data => data.seminar
     }
   },
   methods: {
