@@ -31,18 +31,16 @@
         bordered
         :column="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }"
       >
-        <a-descriptions-item label="Average Number of Visit Requests Made">
+        <a-descriptions-item label="Average Visits Requested">
           0
         </a-descriptions-item>
-        <a-descriptions-item
-          label="Average Number of Completed Visit Requests Made"
-        >
+        <a-descriptions-item label="Average Completed Visits">
           0
         </a-descriptions-item>
-        <a-descriptions-item label="Average number of Hosted Visits Sessions">
+        <a-descriptions-item label="Average Hosted Visits Sessions">
           0
         </a-descriptions-item>
-        <a-descriptions-item label="Average number of Hosted Visitors">
+        <a-descriptions-item label="Average Hosted Visitors">
           0
         </a-descriptions-item>
       </a-descriptions>

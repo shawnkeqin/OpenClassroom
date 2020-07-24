@@ -23,7 +23,8 @@
 
             <!-- <input type="text" placeholder="Description" v-model="desc" /> -->
           </fieldset>
-          <input class="button-primary" type="submit" value="Send" />
+          <br />
+          <input class="button-primary" type="submit" value="Set Capacity" />
         </form>
       </div>
     </a-modal>
