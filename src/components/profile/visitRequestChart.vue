@@ -1,10 +1,12 @@
 <script>
-import { Line } from "vue-chartjs";
+import { Line, mixins } from "vue-chartjs";
+const { reactiveProp } = mixins;
 //import moment from "moment";
 //import queries from "@/graphql/queries.gql";
 export default {
   name: "visitRequestChart",
   extends: Line,
+  mixins: [reactiveProp],
   props: [
     "number_of_visit_requests_made_by_user",
     "number_of_completed_visit_requests_made_by_user",
@@ -97,6 +99,11 @@ export default {
       "December"
     ];
     var currentMonth = new Date().getMonth();
+    /*  var number_of_hosted_visitors = 0;
+    for (var i = 0; i < this.number_of_hosted_visitors_by_user.length; i++) {
+      number_of_hosted_visitors += this.number_of_hosted_visitors_by_user
+        .visits_aggregate[i].aggregate.count;
+    } */
     this.renderChart({
       labels: months
         .slice(currentMonth - 3)
@@ -105,12 +112,7 @@ export default {
         {
           label: "Visits Requested",
           backgroundColor: "#f87979",
-          data: [
-            0,
-            0,
-            0,
-            this.number_of_visit_requests_made_by_user.aggregate.count
-          ],
+          data: [0, 0, 0, this.number_of_visit_requests_made_by_user],
           lineTension: 0,
           fill: false,
           showLine: true,
@@ -119,12 +121,7 @@ export default {
         {
           label: "Completed Visits",
           backgroundColor: "#1E90FF",
-          data: [
-            0,
-            0,
-            0,
-            this.number_of_completed_visit_requests_made_by_user.aggregate.count
-          ],
+          data: [0, 0, 0, this.number_of_completed_visit_requests_made_by_user],
           lineTension: 0,
           fill: false,
           showLine: true,
@@ -133,12 +130,7 @@ export default {
         {
           label: "Hosted Visit Sessions",
           backgroundColor: "#1E90FF",
-          data: [
-            0,
-            0,
-            0,
-            this.number_of_hosted_visit_sessions_by_user.aggregate.count
-          ],
+          data: [0, 0, 0, this.number_of_hosted_visit_sessions_by_user],
           lineTension: 0,
           fill: false,
           showLine: true,
@@ -147,7 +139,7 @@ export default {
         {
           label: "Hosted Visitors",
           backgroundColor: "#1E90FF",
-          data: [0, 0, 0, 0],
+          data: [0, 0, 0, this.number_of_hosted_visitors_by_user],
           lineTension: 0,
           fill: false,
           showLine: true,
