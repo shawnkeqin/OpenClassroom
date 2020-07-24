@@ -77,16 +77,22 @@ mutation update_visit_response(
   }
 }
 
-query get_seminars_with_visits_by_time_requested(
-  $faculty_id: String
-  $semester_code: String
-) {
-  seminar(
+query getPendingVisitsCount($visitor_id: String!, $semester_code: String!) {
+  visit_aggregate(
     where: {
-      course_group: { faculty_id: { _eq: $faculty_id } }
-      _and: { semester_code: { _eq: $semester_code } }
+      visitor_id: { _eq: $visitor_id }
+      seminar: { semester_code: { _eq: $semester_code } }
+      visit_status: { _eq: "PENDING" }
     }
   ) {
+    aggregate {
+      count
+    }
+  }
+}
+
+query get_seminars_with_visits_by_time_requested($faculty_id: String) {
+  seminar(where: { course_group: { faculty_id: { _eq: $faculty_id } } }) {
     title
     start
     module_code
@@ -177,6 +183,7 @@ query get_my_visits($visitor_id: String!) {
         course {
           id
           module_code
+          semester_code
           title
           desc
           module_brief_link
@@ -371,17 +378,21 @@ query searchSeminarsByFilters(
   $end_time: time!
   $visitor_id: String
   $semester_code: String
+  $teaching_modes: [bpchar!]
+  $include_cc_lectures: String!
 ) {
   seminar(
     where: {
       _and: [
         { course_group: { course: { title: { _similar: $course_title } } } }
         { course_group: { faculty: { name: { _similar: $faculty_name } } } }
+        { course_group: { teaching_mode: { _in: $teaching_modes } } }
         { date: { _gte: $start_date } }
         { date: { _lte: $end_date } }
         { start: { _gte: $start_time } }
         { end: { _lte: $end_time } }
         { semester_code: { _eq: $semester_code } }
+        { group_code: { _similar: $include_cc_lectures } }
       ]
     }
   ) {
@@ -442,12 +453,15 @@ query searchSeminarsByFiltersWithTags(
   $selected_tags: [String!]
   $visitor_id: String
   $semester_code: String
+  $teaching_modes: [bpchar!]
+  $include_cc_lectures: String!
 ) {
   seminar(
     where: {
       _and: [
         { course_group: { course: { title: { _similar: $course_title } } } }
         { course_group: { faculty: { name: { _similar: $faculty_name } } } }
+        { course_group: { teaching_mode: { _in: $teaching_modes } } }
         { date: { _gte: $start_date } }
         { date: { _lte: $end_date } }
         { start: { _gte: $start_time } }
@@ -458,13 +472,15 @@ query searchSeminarsByFiltersWithTags(
           }
         }
         { semester_code: { _eq: $semester_code } }
+        { group_code: { _similar: $include_cc_lectures } }
       ]
     }
   ) {
+    id
     date
     start
     end
-    id
+    title
     is_open
     module_code
     group_code
@@ -671,6 +687,7 @@ query get_course_group_new_visitor_capacity($id: Int!) {
   }
 }
 
+<<<<<<< HEAD
 
 query number_of_visit_requests_made_by_user($visitor_id: String!,$start_time:timestamptz!, $end_time:timestamptz!) {
   seminar_aggregate(where: {visits: {visitor_id: {_eq: $visitor_id},  _and: [{time_requested: {_gte: $start_time}}, {time_requested: {_lte: $end_time}}]}}) {
@@ -684,10 +701,38 @@ query number_of_completed_visit_requests_made_by_user($visitor_id: String!, $sta
   seminar_aggregate(where: {visits: {visitor_id: {_eq: $visitor_id}, _and: [{time_requested: {_gte: $start_time}}, {time_requested: {_lte: $end_time}}, {visit_status:{_eq: "ACCEPTED"}}]}, }) {
     aggregate {
       count
+=======
+query get_my_visits_by_date($visitor_id: String!, $date: date!) {
+  visit(
+    where: {
+      visitor_id: { _eq: $visitor_id }
+      seminar: { date: { _eq: $date } }
+    }
+  ) {
+    id
+    seminar_id
+    visit_status
+    visitor_id
+    seminar {
+      id
+      date
+      start
+      end
+      title
+      course_group {
+        id
+        course {
+          id
+          module_code
+          title
+        }
+      }
+>>>>>>> c6be8f425db145d568d18eca4170aa3a3f17f528
     }
   }
 }
 
+<<<<<<< HEAD
 query number_of_hosted_visit_sessions_by_user($faculty_id: String!, $start_time:timestamptz!, $end_time:timestamptz! )  {
   seminar_aggregate(where: {visits: {_and: [{time_requested: {_gte: $start_time}}, {time_requested: {_lte: $end_time}}, {visit_status:{_eq: "ACCEPTED"}}]}, course_group: {faculty_id: {_eq: $faculty_id}}}) {
     aggregate {
@@ -709,3 +754,30 @@ query number_of_hosted_visitors_by_user($faculty_id: String!, $start_time:timest
 
 
 
+=======
+query get_my_seminars_by_date($faculty_id: String!, $date: date!) {
+  seminar(
+    where: {
+      course_group: { faculty_id: { _eq: $faculty_id } }
+      date: { _eq: $date }
+    }
+  ) {
+    title
+    start
+    module_code
+    date
+    end
+    id
+    group_code
+    course_group {
+      id
+      faculty_id
+      course {
+        id
+        title
+        module_code
+      }
+    }
+  }
+}
+>>>>>>> c6be8f425db145d568d18eca4170aa3a3f17f528

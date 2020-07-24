@@ -1,17 +1,17 @@
 <template>
-  <div>
+  <div style="width:100%">
     <h1>Search Classes</h1>
     <div style="padding: 5px 0px 10px 0px">
       <suggestedSearchButton
-        :id="SUGGESTED_SEARCH_IDS.SUGGESTED_SEARCH_1"
-        label="CC classes (this week)"
-        :selected="SUGGESTED_SEARCH_STATE.SUGGESTED_SEARCH_1"
+        :id="SUGGESTED_SEARCH_IDS.SUGGESTED_SEARCH_2"
+        label="This Week: CC Lectures"
+        :selected="SUGGESTED_SEARCH_STATE.SUGGESTED_SEARCH_2"
         @select-toggled="onSuggestedSearchSelectToggle"
       />
       <!-- <suggestedSearchButton
-        :id="SUGGESTED_SEARCH_IDS.SUGGESTED_SEARCH_2"
-        label="Suggested search 2"
-        :selected="SUGGESTED_SEARCH_STATE.SUGGESTED_SEARCH_2"
+        :id="SUGGESTED_SEARCH_IDS.SUGGESTED_SEARCH_1"
+        label="This Week: CC Classes"
+        :selected="SUGGESTED_SEARCH_STATE.SUGGESTED_SEARCH_1"
         @select-toggled="onSuggestedSearchSelectToggle"
       /> -->
     </div>
@@ -56,7 +56,9 @@
         <div
           style="display: flex; flex-direction: column; align-items: center;"
         >
-          <template v-if="$apollo.loading"><a-skeleton active/></template>
+          <template v-if="$apollo.loading"
+            ><a-skeleton style="width: 35rem;" active
+          /></template>
           <template v-else>
             <!-- <SeminarRequestCard
               v-for="seminar in seminarLimited"
@@ -75,8 +77,8 @@
           </template>
         </div>
       </div>
-      <div style="margin: 20px">
-        <a-card style="position: sticky; top: 50px;">
+      <div style="margin: 20px 0 0 20px;">
+        <a-card style="position: sticky; top: 20px;">
           <a-form>
             <h4 align="left">Filter by</h4>
             <h5 align="left">Date range</h5>
@@ -155,11 +157,51 @@
                 style="position:absolute; right:35px; margin-top: 10px; color:rgba(0, 0, 0, 0.25)"
               />
             </div>
-            <a
-              href="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg"
-              target="_blank"
-              >View campus map</a
+            <div style="margin-bottom: 20px;">
+              <h5 align="left">Teaching mode</h5>
+              <a-checkbox-group
+                class="teaching-mode-filter"
+                v-model="filters.checkedTeachingModes"
+              >
+                <a-checkbox
+                  class="teaching-mode-checkbox"
+                  :value="value"
+                  v-for="{
+                    value,
+                    label
+                  } in constants.TEACHING_MODE_CHECKBOX_OPTIONS"
+                  v-bind:key="value"
+                  >{{ label }}</a-checkbox
+                >
+              </a-checkbox-group>
+            </div>
+            <div>
+              <h5 align="left">Lectures</h5>
+              <a-checkbox
+                v-model="filters.lecturesOnly"
+                @change="checkedLecturesOnly"
+                >Show CC lectures only</a-checkbox
+              >
+            </div>
+            <div style="padding-top: 30px;">
+              <a @click="mapVisible = true" href="#">
+                View campus map
+              </a>
+            </div>
+            <a-modal
+              title="Campus map"
+              :visible="mapVisible"
+              @cancel="mapVisible = false"
+              width="60vw"
             >
+              <template slot="footer">
+                <div />
+              </template>
+              <img
+                src="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg"
+                width="100%"
+              />
+            </a-modal>
           </a-form>
         </a-card>
       </div>
@@ -175,6 +217,7 @@ import SeminarVisitRequestCard from "@/components/SeminarVisitRequestCard";
 import suggestedSearchButton from "./suggestedSearchButton";
 import _ from "lodash";
 import store from "@/store";
+import constants from "@/utils/constants";
 
 const DEFAULT_PAGE_SIZE = 10;
 const TEST_DATE = "2020-08-09";
@@ -186,7 +229,9 @@ const DEFAULT_FILTERS = {
   startTime: null,
   endTime: null,
   facultyName: undefined,
-  selectedTags: []
+  selectedTags: [],
+  checkedTeachingModes: [],
+  lecturesOnly: false
 };
 const SUGGESTED_SEARCH_FILTERS = {
   [SUGGESTED_SEARCH_1]: {
@@ -196,14 +241,21 @@ const SUGGESTED_SEARCH_FILTERS = {
     ],
     selectedTags: ["Common Curriculum"]
   },
-  [SUGGESTED_SEARCH_2]: {}
+  [SUGGESTED_SEARCH_2]: {
+    selectedDateRange: [
+      moment(TEST_DATE).startOf("week"),
+      moment(TEST_DATE).endOf("week")
+    ],
+    lecturesOnly: true
+  }
 };
+
 export default {
   name: "viewSeminars",
-  components: { 
-    // SeminarRequestCard, 
+  components: {
+    // SeminarRequestCard,
     SeminarVisitRequestCard,
-    suggestedSearchButton 
+    suggestedSearchButton
   },
   data() {
     return {
@@ -215,8 +267,11 @@ export default {
       utils,
       page: 1,
       pageSize: DEFAULT_PAGE_SIZE,
-      // Search filters
-      filters: _.cloneDeep(DEFAULT_FILTERS),
+      // Search filters, default plus initial filter.
+      filters: _.assign(
+        _.cloneDeep(DEFAULT_FILTERS),
+        SUGGESTED_SEARCH_FILTERS.SUGGESTED_SEARCH_2
+      ),
       SUGGESTED_SEARCH_IDS: {
         SUGGESTED_SEARCH_1,
         SUGGESTED_SEARCH_2
@@ -226,6 +281,8 @@ export default {
         [SUGGESTED_SEARCH_2]: true
       },
       SUGGESTED_SEARCH_FILTERS: _.cloneDeep(SUGGESTED_SEARCH_FILTERS),
+      constants,
+      mapVisible: false
     };
   },
   apollo: {
@@ -321,28 +378,29 @@ export default {
         : "2050-01-01";
       const start_time = this.filters.startTime || "00:00";
       const end_time = this.filters.endTime || "23:59";
-      return utils.isNonEmptyArray(this.filters.selectedTags)
-        ? {
-            course_title,
-            faculty_name,
-            start_date,
-            end_date,
-            start_time,
-            end_time,
-            selected_tags: this.filters.selectedTags,
-            visitor_id: store.state.loggedInUser,
-            semester_code: process.env.VUE_APP_SEMESTER_CODE
-          }
-        : {
-            course_title,
-            faculty_name,
-            start_date,
-            end_date,
-            start_time,
-            end_time,
-            visitor_id: store.state.loggedInUser,
-            semester_code: process.env.VUE_APP_SEMESTER_CODE
-          };
+      // Default is none checked, but that means include all. If there is one or more specific values selected, then use those values.
+      const teaching_modes =
+        !this.filters.checkedTeachingModes ||
+        this.filters.checkedTeachingModes.length == 0
+          ? constants.TEACHING_MODE_LABELS
+          : this.filters.checkedTeachingModes;
+      const include_cc_lectures = this.filters.lecturesOnly ? "CC" : "%";
+      const queryVars = {
+        course_title,
+        faculty_name,
+        start_date,
+        end_date,
+        start_time,
+        end_time,
+        visitor_id: store.state.loggedInUser,
+        semester_code: process.env.VUE_APP_SEMESTER_CODE,
+        teaching_modes,
+        include_cc_lectures
+      };
+      if (utils.isNonEmptyArray(this.filters.selectedTags)) {
+        queryVars.selected_tags = this.filters.selected_tags;
+      }
+      return queryVars;
     }
   },
   methods: {
@@ -350,7 +408,10 @@ export default {
     //   Object.keys(this.SUGGESTED_SEARCH_STATE).forEach(
     //     key => (this.SUGGESTED_SEARCH_STATE[key] = FALSE)
     //   );
-    // },
+    // },;
+    checkedLecturesOnly(data) {
+      console.log(data.target.checked);
+    },
     onSuggestedSearchSelectToggle(data) {
       // Update which button is selected.
       const new_button_state = {};
@@ -394,10 +455,14 @@ export default {
 .filter-field {
   margin-bottom: 20px;
 }
-.suggested-search-option {
-  font-size: 30px;
+
+.teaching-mode-filter {
+  display: block;
 }
-.suggested-search-option .anticon-close {
-  font-size: 30px;
-}
-</style>
+
+.teaching-mode-checkbox {
+  display: block;
+  color: rgba(0, 0, 0, 0.54);
+  margin-left: 0px;
+}</style
+>;
