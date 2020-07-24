@@ -124,7 +124,14 @@ export default {
         variables: {
           course_group_id
         },
-        update: data => data.seminar
+        update: data => data.seminar,
+        error(error, vm, key) {
+          this.$notification.error({
+            key,
+            message: "Failed to obtain data on your classes",
+            description: "Please try again."
+          });
+        }
       };
     },
     course_group() {
@@ -134,7 +141,14 @@ export default {
         variables: {
           course_group_id
         },
-        update: data => data.course_group[0]
+        update: data => data.course_group[0],
+        error(error, vm, key) {
+          this.$notification.error({
+            key,
+            message: "Failed to obtain data on your course",
+            description: "Please try again."
+          });
+        }
       };
     }
   },
@@ -156,46 +170,55 @@ export default {
       this.isToggleCourseGroupLoading = true;
       const course_group_id = this.id;
       const current_is_open = this.course_group.is_open;
-      await this.$apollo.mutate({
-        mutation: queries.update_course_group_and_seminars_is_open,
-        variables: {
-          course_group_id,
-          is_open: !current_is_open
-        },
-        refetchQueries: [
-          "get_course_group_details",
-          "get_seminars_by_course_group"
-        ]
-      });
-      this.isToggleCourseGroupLoading = false;
+      try {
+        await this.$apollo.mutate({
+          mutation: queries.update_course_group_and_seminars_is_open,
+          variables: {
+            course_group_id,
+            is_open: !current_is_open
+          },
+          refetchQueries: [
+            "get_course_group_details",
+            "get_seminars_by_course_group"
+          ]
+        });
+        this.isToggleCourseGroupLoading = false;
+      } catch (err) {
+        this.isToggleCourseGroupLoading = false;
+        this.$notification.error({
+          key: "toggle_course_group_is_open_error",
+          message: "Failed to update the open status of your course",
+          description: "Please try again."
+        });
+      }
     },
-    async setAllUnavailable() {
-      const course_group_id = this.id;
-      await this.$apollo.mutate({
-        mutation: queries.close_all_course_seminars,
-        variables: {
-          course_group_id
-        },
-        // update: (store, { data: { update_seminartest } }) => {
-        //   if (update_seminartest.affected_rows) {
-        //     const data = store.readQuery({
-        //       query: GET_MY_SEMINARS
-        //     });
-        //     const seminartest = data.seminartest;
-        //     const i = seminartest.findIndex(
-        //       seminar => seminar.id === this.seminartest.id
-        //     );
-        //     seminartest[i].archived = true;
-        //     store.writeQuery({
-        //       query: GET_MY_SEMINARS,
-        //       data
-        //     });
-        //   }
-        // },
-        refetchQueries: ["get_seminars_by_course_group"]
-      });
-      this.modal2Visible = false;
-    }
+    // async setAllUnavailable() {
+    //   const course_group_id = this.id;
+    //   await this.$apollo.mutate({
+    //     mutation: queries.close_all_course_seminars,
+    //     variables: {
+    //       course_group_id
+    //     },
+    //     update: (store, { data: { update_seminartest } }) => {
+    //       if (update_seminartest.affected_rows) {
+    //         const data = store.readQuery({
+    //           query: GET_MY_SEMINARS
+    //         });
+    //         const seminartest = data.seminartest;
+    //         const i = seminartest.findIndex(
+    //           seminar => seminar.id === this.seminartest.id
+    //         );
+    //         seminartest[i].archived = true;
+    //         store.writeQuery({
+    //           query: GET_MY_SEMINARS,
+    //           data
+    //         });
+    //       }
+    //     },
+    //     refetchQueries: ["get_seminars_by_course_group"]
+    //   });
+    //   this.modal2Visible = false;
+    // }
   }
 };
 </script>

@@ -114,7 +114,9 @@
               class="filter-field"
             />
             <h5 align="left">Time range</h5>
-            <div style="display: flex; flex-direction: row; justify-content: space-between;">
+            <div
+              style="display: flex; flex-direction: row; justify-content: space-between;"
+            >
               <a-time-picker
                 :minute-step="30"
                 use12-hours
@@ -310,12 +312,26 @@ export default {
           faculty_id: store.state.loggedInUser
         };
       },
-      update: data => data.faculty_by_pk
+      update: data => data.faculty_by_pk,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     },
     courses: {
       query: queries.getCourseList,
       variables: { semester_code: process.env.VUE_APP_SEMESTER_CODE },
-      update: data => data.course
+      update: data => data.course,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     },
     seminar: {
       query() {
@@ -323,15 +339,36 @@ export default {
       },
       variables() {
         return this.searchQueryVariables;
+      },
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
       }
     },
     faculty_list: {
       query: queries.getFacultyList,
-      update: data => data.faculty
+      update: data => data.faculty,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     },
     tags_list: {
       query: queries.getTagsList,
-      update: data => data.tag
+      update: data => data.tag,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     }
   },
   watch: {

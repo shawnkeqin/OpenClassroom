@@ -128,15 +128,25 @@ export default {
   },
   methods: {
     async handleSubmitConsent() {
-      await this.$apollo.mutate({
-        mutation: queries.update_faculty_consent,
-        variables: {
-          faculty_id: this.loggedInUser.id,
-          has_consented: true
-        },
-        refetchQueries: ["getFacultyById"]
-      });
-      this.consentModalVisible = false;
+      try {
+        await this.$apollo.mutate({
+          mutation: queries.update_faculty_consent,
+          variables: {
+            faculty_id: this.loggedInUser.id,
+            has_consented: true
+          },
+          refetchQueries: ["getFacultyById"]
+        });
+        this.consentModalVisible = false;
+      } catch (err) {
+        this.consentModalVisible = false;
+        this.$notification.error({
+          key: "consent_failure",
+          message: "Failed to update your consent",
+          description: "Please try again."
+        });
+      }
+
     },
     handleCloseConsentModal() {
       this.consentChecked = false;

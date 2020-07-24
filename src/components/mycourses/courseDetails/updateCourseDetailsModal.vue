@@ -45,33 +45,41 @@ export default {
   },
   apollo: {},
   methods: {
-    submit() {
+    async submit() {
       const { course_group_desc } = this.$data;
       const id = this.id;
-      this.$apollo.mutate({
-        mutation: queries.update_course_group_desc,
-        variables: {
-          id,
-          course_group_desc
-        },
-        update: (store, { data: { update_course_group } }) => {
-          if (update_course_group.affected_rows) {
-            if (this.type === "private") {
-              const data = store.readQuery({
-                query: queries.get_course_group_new_desc
-              });
-              const updateCourse = data.id.find(t => t.id === id);
-              updateCourse.course_group_desc = data.course_group_desc;
-              store.writeQuery({
-                query: queries.get_course_group_new_desc,
-                data
-              });
+      try {
+        await this.$apollo.mutate({
+          mutation: queries.update_course_group_desc,
+          variables: {
+            id,
+            course_group_desc
+          },
+          update: (store, { data: { update_course_group } }) => {
+            if (update_course_group.affected_rows) {
+              if (this.type === "private") {
+                const data = store.readQuery({
+                  query: queries.get_course_group_new_desc
+                });
+                const updateCourse = data.id.find(t => t.id === id);
+                updateCourse.course_group_desc = data.course_group_desc;
+                store.writeQuery({
+                  query: queries.get_course_group_new_desc,
+                  data
+                });
+              }
             }
-          }
-        },
-        refetchQueries: ["get_course_group_new_desc"]
-      });
-      this.course_group_desc = "";
+          },
+          refetchQueries: ["get_course_group_new_desc"]
+        });
+        this.course_group_desc = "";
+      } catch (err) {
+        this.$notification.error({
+          key: "update_class_error",
+          message: "Failed to update course group description",
+          description: "Please try again."
+        });
+      }
     }
   }
 };

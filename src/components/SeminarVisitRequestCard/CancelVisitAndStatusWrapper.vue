@@ -7,7 +7,7 @@
         ghost
         block
         style="margin-bottom: 15px"
-        :disabled="!has_consented"
+        :disabled="!has_consented || isLoading"
         :loading="isCancelling"
       >
         Cancel request
@@ -56,7 +56,7 @@
         ghost
         block
         style="margin-bottom: 15px"
-        :disabled="!has_consented"
+        :disabled="!has_consented || isLoading"
         :loading="isCancelling"
       >
         Delete request
@@ -135,6 +135,10 @@ export default {
     has_consented: {
       type: Boolean,
       default: false
+    },
+    isLoading: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -174,6 +178,7 @@ export default {
           message: "Your visit request has been cancelled."
         });
       } catch (err) {
+        this.isCancelling = false;
         this.$notification.error({
           key: `cancel_${visit_id}_failure`,
           message: "Failed to cancel your visit request",
@@ -184,6 +189,7 @@ export default {
     async handleDeleteRequest() {
       this.deleteRequestModalVisible = false;
       this.isCancelling = true;
+      store.setIsLoading(true);
       const visit_id = this.visit.id;
       try {
         await this.$apollo.mutate({
@@ -209,6 +215,7 @@ export default {
           message: "Your visit request has been deleted."
         });
       } catch (err) {
+        this.isCancelling = false;
         this.$notification.error({
           key: `delete_${visit_id}_failure`,
           message: "Failed to delete your visit request",

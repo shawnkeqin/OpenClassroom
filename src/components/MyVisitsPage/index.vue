@@ -103,7 +103,14 @@ export default {
           visitor_id: store.state.loggedInUser
         };
       },
-      update: data => data.visit
+      update: data => data.visit,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Failed to obtain data on your visits",
+          description: "Please try again."
+        });
+      }
     }
   },
   computed: {
