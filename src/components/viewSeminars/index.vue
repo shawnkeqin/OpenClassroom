@@ -183,7 +183,7 @@
                 v-model="filters.checkedTeachingModes"
               >
                 <a-checkbox
-                  class="teaching-mode-checkbox"
+                  class="checkbox-filter"
                   :value="value"
                   v-for="{
                     value,
@@ -195,12 +195,21 @@
               </a-checkbox-group>
             </div>
             <div>
-              <h5 align="left">Lectures</h5>
-              <a-checkbox
-                v-model="filters.lecturesOnly"
-                @change="checkedLecturesOnly"
-                >Show CC lectures only</a-checkbox
-              >
+              <h5 align="left">Additional filters</h5>
+              <div>
+                <a-checkbox
+                  v-model="filters.lecturesOnly"
+                  @change="checkedLecturesOnly"
+                  class="checkbox-filter"
+                  >Show CC lectures only</a-checkbox
+                >
+                <a-checkbox
+                  v-model="filters.openOnly"
+                  @change="handleCheckOpenOnly"
+                  class="checkbox-filter"
+                  >Show only open classes</a-checkbox
+                >
+              </div>
             </div>
             <div style="padding-top: 30px;">
               <a @click="mapVisible = true" href="#">
@@ -250,7 +259,8 @@ const DEFAULT_FILTERS = {
   facultyName: undefined,
   selectedTags: [],
   checkedTeachingModes: [],
-  lecturesOnly: false
+  lecturesOnly: false,
+  openOnly: false
 };
 const SUGGESTED_SEARCH_FILTERS = {
   [SUGGESTED_SEARCH_1]: {
@@ -415,8 +425,13 @@ export default {
         : [];
     },
     searchQuery() {
+      console.log(this.filters.openOnly);
       return utils.isNonEmptyArray(this.filters.selectedTags)
-        ? queries.searchSeminarsByFiltersWithTags
+        ? this.filters.openOnly
+          ? queries.searchOpenSeminarsByFiltersWithTags
+          : queries.searchSeminarsByFiltersWithTags
+        : this.filters.openOnly
+        ? queries.searchOpenSeminarsByFilters
         : queries.searchSeminarsByFilters;
     },
     searchQueryVariables() {
@@ -463,6 +478,10 @@ export default {
     //     key => (this.SUGGESTED_SEARCH_STATE[key] = FALSE)
     //   );
     // },;
+    handleCheckOpenOnly(val) {
+      console.log(val);
+      console.log(this.filters.openOnly);
+    },
     checkedLecturesOnly(data) {
       console.log(data.target.checked);
     },
@@ -521,7 +540,7 @@ export default {
   display: block;
 }
 
-.teaching-mode-checkbox {
+.checkbox-filter {
   display: block;
   color: rgba(0, 0, 0, 0.54);
   margin-left: 0px;

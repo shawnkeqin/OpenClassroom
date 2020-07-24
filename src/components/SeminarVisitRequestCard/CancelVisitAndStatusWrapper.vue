@@ -7,7 +7,7 @@
         ghost
         block
         style="margin-bottom: 15px"
-        :disabled="!has_consented || isLoading"
+        :disabled="!has_consented"
         :loading="isCancelling"
       >
         Cancel request
@@ -56,7 +56,7 @@
         ghost
         block
         style="margin-bottom: 15px"
-        :disabled="!has_consented || isLoading"
+        :disabled="!has_consented"
         :loading="isCancelling"
       >
         Delete request
@@ -135,10 +135,6 @@ export default {
     has_consented: {
       type: Boolean,
       default: false
-    },
-    isLoading: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
@@ -189,7 +185,6 @@ export default {
     async handleDeleteRequest() {
       this.deleteRequestModalVisible = false;
       this.isCancelling = true;
-      store.setIsLoading(true);
       const visit_id = this.visit.id;
       try {
         await this.$apollo.mutate({

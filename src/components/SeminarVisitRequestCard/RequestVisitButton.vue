@@ -1,14 +1,13 @@
 <template>
   <div style="width: 100%;">
     <a-button
-      @click="handleOpenModal"
+      @click="requestModalVisible = true"
       type="primary"
       block
       style="margin-bottom: 15px"
-      :disabled="!has_consented || isLoading"
+      :disabled="!has_consented"
       >Request visit</a-button
     >
-    <div>{{ JSON.stringify(isLoading) }}</div>
     <a-modal
       v-model="requestModalVisible"
       title="Making a vist request"
