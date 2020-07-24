@@ -687,7 +687,6 @@ query get_course_group_new_visitor_capacity($id: Int!) {
   }
 }
 
-<<<<<<< HEAD
 
 query number_of_visit_requests_made_by_user($visitor_id: String!,$start_time:timestamptz!, $end_time:timestamptz!) {
   seminar_aggregate(where: {visits: {visitor_id: {_eq: $visitor_id},  _and: [{time_requested: {_gte: $start_time}}, {time_requested: {_lte: $end_time}}]}}) {
@@ -701,7 +700,11 @@ query number_of_completed_visit_requests_made_by_user($visitor_id: String!, $sta
   seminar_aggregate(where: {visits: {visitor_id: {_eq: $visitor_id}, _and: [{time_requested: {_gte: $start_time}}, {time_requested: {_lte: $end_time}}, {visit_status:{_eq: "ACCEPTED"}}]}, }) {
     aggregate {
       count
-=======
+
+    }
+  }
+}
+
 query get_my_visits_by_date($visitor_id: String!, $date: date!) {
   visit(
     where: {
@@ -727,12 +730,10 @@ query get_my_visits_by_date($visitor_id: String!, $date: date!) {
           title
         }
       }
->>>>>>> c6be8f425db145d568d18eca4170aa3a3f17f528
     }
   }
 }
 
-<<<<<<< HEAD
 query number_of_hosted_visit_sessions_by_user($faculty_id: String!, $start_time:timestamptz!, $end_time:timestamptz! )  {
   seminar_aggregate(where: {visits: {_and: [{time_requested: {_gte: $start_time}}, {time_requested: {_lte: $end_time}}, {visit_status:{_eq: "ACCEPTED"}}]}, course_group: {faculty_id: {_eq: $faculty_id}}}) {
     aggregate {
@@ -754,7 +755,6 @@ query number_of_hosted_visitors_by_user($faculty_id: String!, $start_time:timest
 
 
 
-=======
 query get_my_seminars_by_date($faculty_id: String!, $date: date!) {
   seminar(
     where: {
@@ -780,4 +780,3 @@ query get_my_seminars_by_date($faculty_id: String!, $date: date!) {
     }
   }
 }
->>>>>>> c6be8f425db145d568d18eca4170aa3a3f17f528
