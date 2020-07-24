@@ -26,6 +26,28 @@
       </a-card>
     </div>
     <div>
+      <a-descriptions
+        title="Average Statistics"
+        bordered
+        :column="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }"
+      >
+        <a-descriptions-item label="Average Number of Visit Requests Made">
+          0
+        </a-descriptions-item>
+        <a-descriptions-item
+          label="Average Number of Completed Visit Requests Made"
+        >
+          0
+        </a-descriptions-item>
+        <a-descriptions-item label="Average number of Hosted Visits Sessions">
+          0
+        </a-descriptions-item>
+        <a-descriptions-item label="Average number of Hosted Visitors">
+          0
+        </a-descriptions-item>
+      </a-descriptions>
+      <br />
+
       <visitRequestChart
         :number_of_visit_requests_made_by_user="
           number_of_visit_requests_made_by_user
@@ -76,11 +98,12 @@
 import queries from "@/graphql/queries.gql";
 import store from "@/store";
 import visitRequestChart from "./visitRequestChart";
-//import moment from "moment";
+import moment from "moment";
 export default {
   name: "Profile",
   components: { visitRequestChart },
   data() {
+    console.log(moment().format());
     return {
       faculty: {},
       isToggleNotifNewRequestLoading: false,
@@ -126,15 +149,15 @@ export default {
       variables() {
         return {
           visitor_id: "yncas",
-          start_time: "2020-07-01T05:28:23.186523+00:00",
-          end_time: "2020-07-23T05:28:23.186523+00:00"
-          /* start_time: moment()
+          //    start_time: "2020-07-01T05:28:23.186523+00:00",
+          //    end_time: "2020-07-23T05:28:23.186523+00:00"
+          start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format() */
+          end_time: moment().format()
         };
       },
-      update: data => data.seminar_aggregate,
+      update: data => data.seminar_aggregate.aggregate.count,
       error(error, vm, key) {
         this.$notification.error({
           key,
@@ -148,15 +171,15 @@ export default {
       variables() {
         return {
           visitor_id: "yncas",
-          start_time: "2020-07-01T05:28:23.186523+00:00",
-          end_time: "2020-07-23T05:28:23.186523+00:00"
-          /*    start_time: moment()
+          //  start_time: "2020-07-01T05:28:23.186523+00:00",
+          //  end_time: "2020-07-23T05:28:23.186523+00:00"
+          start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()*/
+          end_time: moment().format()
         };
       },
-      update: data => data.seminar_aggregate,
+      update: data => data.seminar_aggregate.aggregate.count,
       error(error, vm, key) {
         this.$notification.error({
           key,
@@ -170,15 +193,15 @@ export default {
       variables() {
         return {
           faculty_id: "yncas",
-          start_time: "2020-07-01T05:28:23.186523+00:00",
-          end_time: "2020-07-23T05:28:23.186523+00:00"
-          /*   start_time: moment()
+          // start_time: "2020-07-01T05:28:23.186523+00:00",
+          // end_time: "2020-07-23T05:28:23.186523+00:00"
+          start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format() */
+          end_time: moment().format()
         };
       },
-      update: data => data.seminar_aggregate,
+      update: data => data.seminar_aggregate.aggregate.count,
       error(error, vm, key) {
         this.$notification.error({
           key,
@@ -192,15 +215,15 @@ export default {
       variables() {
         return {
           faculty_id: "yncas",
-          start_time: "2020-07-01T05:28:23.186523+00:00",
-          end_time: "2020-07-23T05:28:23.186523+00:00"
-          /* start_time: moment()
+          // start_time: "2020-07-01T05:28:23.186523+00:00",
+          // end_time: "2020-07-23T05:28:23.186523+00:00"
+          start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format() */
+          end_time: moment().format()
         };
       },
-      update: data => data.seminar,
+      update: data => data.visit_aggregate.aggregate.count,
       error(error, vm, key) {
         this.$notification.error({
           key,

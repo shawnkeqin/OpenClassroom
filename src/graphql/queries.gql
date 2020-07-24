@@ -899,14 +899,15 @@ query number_of_hosted_visit_sessions_by_user($faculty_id: String!, $start_time:
 
 
 query number_of_hosted_visitors_by_user($faculty_id: String!, $start_time:timestamptz!, $end_time:timestamptz! ) {
-  seminar(where: {visits: {_and: [{time_requested: {_gte: $start_time}}, {time_requested: {_lte: $end_time}}, {visit_status:{_eq: "ACCEPTED"}}]}, course_group: {faculty_id: {_eq: $faculty_id}}}) {
- visits_aggregate{
-  aggregate{
-    count
+  visit_aggregate(where: {time_requested: {_gt: $start_time}, time_responded: {_lt:  $end_time}, seminar: {course_group: {faculty_id: {_eq: $faculty_id}}}, visit_status: {_eq: "ACCEPTED"}}){
+    aggregate{
+      count
+    }
   }
 }
-  }
-}
+
+
+
 
 
 
