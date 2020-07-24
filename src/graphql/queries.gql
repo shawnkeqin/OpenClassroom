@@ -670,3 +670,42 @@ query get_course_group_new_visitor_capacity($id: Int!) {
     visitor_capacity
   }
 }
+
+
+query number_of_visit_requests_made_by_user($visitor_id: String!,$start_time:timestamptz!, $end_time:timestamptz!) {
+  seminar_aggregate(where: {visits: {visitor_id: {_eq: $visitor_id},  _and: [{time_requested: {_gte: $start_time}}, {time_requested: {_lte: $end_time}}]}}) {
+    aggregate {
+      count
+    }
+  }
+}
+
+query number_of_completed_visit_requests_made_by_user($visitor_id: String!, $start_time:timestamptz!, $end_time:timestamptz! )  {
+  seminar_aggregate(where: {visits: {visitor_id: {_eq: $visitor_id}, _and: [{time_requested: {_gte: $start_time}}, {time_requested: {_lte: $end_time}}, {visit_status:{_eq: "ACCEPTED"}}]}, }) {
+    aggregate {
+      count
+    }
+  }
+}
+
+query number_of_hosted_visit_sessions_by_user($faculty_id: String!, $start_time:timestamptz!, $end_time:timestamptz! )  {
+  seminar_aggregate(where: {visits: {_and: [{time_requested: {_gte: $start_time}}, {time_requested: {_lte: $end_time}}, {visit_status:{_eq: "ACCEPTED"}}]}, course_group: {faculty_id: {_eq: $faculty_id}}}) {
+    aggregate {
+      count
+    }
+  }
+}
+
+
+query number_of_hosted_visitors_by_user($faculty_id: String!, $start_time:timestamptz!, $end_time:timestamptz! ) {
+  seminar(where: {visits: {_and: [{time_requested: {_gte: $start_time}}, {time_requested: {_lte: $end_time}}, {visit_status:{_eq: "ACCEPTED"}}]}, course_group: {faculty_id: {_eq: $faculty_id}}}) {
+ visits_aggregate{
+  aggregate{
+    count
+  }
+}
+  }
+}
+
+
+
