@@ -46,10 +46,10 @@ export default {
   },
   apollo: {},
   methods: {
-    submit() {
+    async submit() {
       const { visitor_capacity } = this.$data;
       const id = this.id;
-      this.$apollo.mutate({
+      await this.$apollo.mutate({
         mutation: queries.update_course_group_visitor_capacity,
         variables: {
           id,
@@ -70,7 +70,10 @@ export default {
             }
           }
         },
-        refetchQueries: ["get_course_group_new_visitor_capacity"]
+        refetchQueries: [
+          // "get_course_group_new_visitor_capacity",
+          "get_course_group_details"
+        ]
       });
       this.visitor_capacity = "";
     }

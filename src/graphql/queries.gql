@@ -239,14 +239,6 @@ query get_seminars_by_course_group($course_group_id: Int!) {
     is_open
     course_group {
       id
-      faculty {
-        id
-        name
-      }
-      course {
-        id
-        title
-      }
     }
   }
 }
@@ -260,6 +252,7 @@ query get_course_group_details($course_group_id: Int!) {
     teaching_mode
     is_open
     notes
+    visitor_capacity
     course {
       id
       title

@@ -86,11 +86,12 @@
           :key="seminar.id"
           :seminar="seminar"
         /> -->
-        <seminarItem
+        <SeminarsTable :seminars="seminars" :course_group="course_group" />
+        <!-- <seminarItem
           v-for="seminar in seminars"
           :key="seminar.id"
           :seminar="seminar"
-        />
+        /> -->
       </div>
     </div>
   </div>
@@ -99,17 +100,20 @@
 <script>
 import queries from "@/graphql/queries.gql";
 import constants from "@/utils/constants";
-import seminarItem from "./seminarItem";
+// import seminarItem from "./seminarItem";
 // import addNewSeminarModal from "./addNewSeminarModal";
 import updateCourseDetailsModal from "./updateCourseDetailsModal";
 import updateCourseVisitorCapacityModal from "./courseVisitorCapacity";
 // import courseModule from "./courseModule";
 // import closeCourseAndSeminarsToggle from "./closeCourseAndSeminarsToggle";
+import SeminarsTable from "./SeminarsTable";
+
 export default {
   name: "courseDetails",
   // props: ["id"],
   components: {
-    seminarItem,
+    // seminarItem,
+    SeminarsTable,
     // addNewSeminarModal,
     updateCourseDetailsModal,
     updateCourseVisitorCapacityModal
