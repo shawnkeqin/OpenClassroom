@@ -22,3 +22,5 @@ pnpm-debug.log*
 *.sw?
 
 /live/
+/logs/*
+!logs/placeholder.log

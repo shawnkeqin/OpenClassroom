@@ -58,6 +58,6 @@ npm install
 npm run build
 sudo lsof -iTCP -sTCP:LISTEN -P
 sudo kill -9 1505
-sudo NODE_ENV=staging node index.js
+sudo DEBUG=express:* NODE_ENV=staging node index.js 2>81 | tee "./logs/deployment_$(date +'%d_%m__%H_%M').log" 
 ```
 5. Check other ports. `sudo lsof -iTCP -sTCP:LISTEN -P`
