@@ -39,7 +39,7 @@
           }}
         </p>
         <h5>Visitor capacity</h5>
-        <p>{{ course_group.visitor_capacity || "None" }}</p>
+        <p>{{ seminar.visitor_capacity || course_group.visitor_capacity }}</p>
       </a-col>
       <a-col>
         <h5>Venue</h5>

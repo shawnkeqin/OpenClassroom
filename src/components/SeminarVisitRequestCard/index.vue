@@ -106,7 +106,6 @@
                 "
               >
                 <a-button
-                  @click="requestModalVisible = true"
                   type="primary"
                   block
                   style="margin-bottom: 15px"
@@ -114,11 +113,16 @@
                   >Closed to visits</a-button
                 >
               </template>
-              <template v-else-if="!visit || visit.is_cancelled">
-                <RequestVisitButton
-                  :seminar="seminar"
-                  :has_consented="has_consented"
-                />
+              <template v-else-if="!visit">
+                <template v-if="visitsCountsForSeminar < visitorCapacity">
+                  <RequestVisitButton
+                    :seminar="seminar"
+                    :has_consented="has_consented"
+                  />
+                </template>
+                <template v-else>
+                  <a-button type="primary" block disabled>Class full</a-button>
+                </template>
               </template>
               <template v-else>
                 <CancelVisitAndStatusWrapper
@@ -201,6 +205,17 @@ export default {
     },
     is_past() {
       return new Date(this.seminar.date) < Date.now();
+    },
+    visitsCountForSeminar() {
+      return (
+        this.seminar.visits_aggregate &&
+        this.seminar.visits_aggregate.aggregate.count
+      );
+    },
+    visitorCapacity() {
+      return (
+        this.seminar.visitor_capacity || this.course_group.visitor_capacity
+      );
     }
   }
 };

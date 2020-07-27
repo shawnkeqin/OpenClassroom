@@ -49,7 +49,7 @@
       </div>
       <AddToCalendar :seminar="seminar" />
     </template>
-    <template v-else>
+    <template v-else-if="visit.visit_status !== 'CANCELLED'">
       <a-button
         @click="deleteRequestModalVisible = true"
         type="primary"
@@ -108,6 +108,20 @@
           </h5>
         </div>
       </template>
+    </template>
+    <template v-else>
+      <div style="display: flex; align-items: center">
+        <a-icon
+          type="close-circle"
+          theme="filled"
+          class="status-icon cancelled"
+        />
+      </div>
+      <div>
+        <h4 class="cancelled" style="margin-bottom: 3px">
+          Request cancelled
+        </h4>
+      </div>
     </template>
   </div>
 </template>
@@ -251,7 +265,7 @@ export default {
 .red {
   color: #f0284a;
 }
-.past {
+.past, .cancelled {
   color: rgba(0, 0, 0, 0.37);
 }
 </style>

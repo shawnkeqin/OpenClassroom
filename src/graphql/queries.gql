@@ -159,6 +159,7 @@ query get_my_visits($visitor_id: String!) {
       is_open
       title
       desc
+      visitor_capacity
       location {
         code
         full_name
@@ -167,6 +168,7 @@ query get_my_visits($visitor_id: String!) {
         id
         is_open
         notes
+        visitor_capacity
         faculty {
           id
           name
@@ -435,6 +437,11 @@ query searchSeminarsByFilters(
       time_requested
       time_responded
     }
+    visits_aggregate(distinct_on: id) {
+      aggregate {
+        count
+      }
+    }
   }
 }
 
@@ -512,6 +519,11 @@ query searchSeminarsByFiltersWithTags(
       response_msg
       time_requested
       time_responded
+    }
+    visits_aggregate(distinct_on: id) {
+      aggregate {
+        count
+      }
     }
   }
 }

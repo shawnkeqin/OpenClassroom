@@ -2,7 +2,7 @@
   <div id="components-modal-demo-position">
     <!-- <br /><br /> -->
     <a-button type="danger" @click="() => (modal2Visible = true)">
-      Set Visitor Capacity
+      Set visitor capacity for the whole course
     </a-button>
     <a-modal
       v-model="modal2Visible"
