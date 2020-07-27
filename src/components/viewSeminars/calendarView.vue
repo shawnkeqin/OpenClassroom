@@ -123,7 +123,14 @@ export default {
           // Technically we should have a separate query that checks semester to be efficent as users will not view previous semesters (this query is used by other components such as my visit page that needs all semesters).
         };
       },
-      update: data => data.visit
+      update: data => data.visit,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     },
     my_requests: {
       query: queries.get_seminars_with_visits_by_time_requested,
@@ -133,7 +140,14 @@ export default {
           // semester_code: process.env.VUE_APP_SEMESTER_CODE
         };
       },
-      update: data => data.seminar
+      update: data => data.seminarm,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     },
     my_seminars: {
       query: queries.get_seminars_of_faculty_in_calendar,
@@ -141,7 +155,14 @@ export default {
         faculty_id: constants.TEST_FACULTY_ID,
         semester_code: process.env.VUE_APP_SEMESTER_CODE
       },
-      update: data => data.seminar
+      update: data => data.seminar,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     }
   },
   computed: {

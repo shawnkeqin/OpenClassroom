@@ -16,7 +16,10 @@
       </template>
     </div>
     <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag>
-    <a-card hoverable>
+    <a-card
+      hoverable
+      :class="seminar.group_code == 'CC' ? 'cc-card' : 'seminar-card'"
+    >
       <div style="display: flex; flex-direction: column;">
         <div style="margin-bottom: 5px">
           <h5
@@ -59,7 +62,11 @@
           <a-col :span="17" style="padding-right: 20px">
             <div style="margin-bottom: 5px">
               <h3 :class="{ past: is_past }" style="display: inline">
-                {{ course.title }}
+                {{
+                  seminar.group_code == "CC"
+                    ? course.title + " (Lecture)"
+                    : course.title
+                }}
               </h3>
               <p :class="{ past: is_past }" style="display: inline">
                 {{ seminar.module_code }}
@@ -95,8 +102,18 @@
             <div
               style="display: flex; flex-direction: column; align-items: center;"
             >
+              <template v-if="seminar.group_code == 'CC'">
+                <a-button
+                  @click="requestModalVisible = true"
+                  type="primary"
+                  block
+                  style="margin-bottom: 15px; "
+                  disabled
+                  >No request required</a-button
+                >
+              </template>
               <template
-                v-if="
+                v-else-if="
                   !(
                     faculty.is_active &&
                     faculty.has_consented &&
@@ -145,8 +162,7 @@
 
 <script>
 import utils from "@/utils";
-import store from "@/store";
-import queries from "@/graphql/queries.gql";
+// import queries from "@/graphql/queries.gql";
 import ColoredTag from "./ColoredTag";
 import CancelVisitAndStatusWrapper from "./CancelVisitAndStatusWrapper";
 import RequestVisitButton from "./RequestVisitButton";
@@ -203,90 +219,13 @@ export default {
     is_past() {
       return new Date(this.seminar.date) < Date.now();
     }
-  },
-  methods: {
-    async handleSubmitRequest() {
-      this.requestModalVisible = false;
-      this.isRequesting = true;
-      if (!this.seminar.is_open) return;
-      const seminar_id = this.seminar.id;
-      // const seminar = this.seminar;
-      const request_msg = this.request_msg;
-      try {
-        await this.$apollo.mutate({
-          mutation: queries.create_visit_request,
-          variables: {
-            seminar_id,
-            visitor_id: store.state.loggedInUser,
-            request_msg
-          },
-          // update: (cache, { data: { insert_visit } }) => {
-          //   console.log(insert_visit);
-          //   const query = {
-          //     query: queries.get_my_visits,
-          //     variables: {
-          //       visitor_id: store.state.loggedInUser
-          //     }
-          //   }
-          //   const new_visit = insert_visit.returning[0];
-          //   const data = cache.readQuery(query);
-          //   data.visit.push({
-          //     ...new_visit,
-          //     visitor_id: store.state.loggedInUser,
-          //     seminar
-          //   });
-          //   cache.writeQuery({
-          //     ...query,
-          //     data
-          //   })
-          // },
-          refetchQueries: [
-            {
-              query: queries.get_my_visits,
-              variables: {
-                visitor_id: store.state.loggedInUser
-              }
-            },
-            "searchSeminarsByFilters",
-            // "searchSeminarsByFiltersWithTags"
-          ],
-          awaitRefetchQueries: true
-        });
-        this.isRequesting = false;
-        this.$notification.success({
-          key: "requestSuccess",
-          message: "Your visit request has been sent."
-        })
-      } catch (err) {
-        this.$notification.error({
-          key: "requestFailure",
-          message: "Failed to make a new request",
-          description: "Please try again."
-        })
-      }
-    }
-  },
-  watch: {
-    isRequesting(val) {
-      if (val) {
-        this.$notification.open({
-          key: "requestLoading",
-          message: "Processing your visit request",
-          icon: <a-icon type="loading" />,
-          duration: 0
-        });
-      } else {
-        this.$notification.close("requestLoading");
-      }
-    }
-  },
-  beforeDestroy() {
-    this.$notification.close("requestLoading"); // if we navigate to another page, this component gets destroyed and may not close the notif under watch property
   }
 };
 </script>
 
 <style scoped>
+.cc-card {
+}
 .ant-card-hoverable {
   cursor: default;
 }

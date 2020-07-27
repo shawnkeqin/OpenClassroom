@@ -59,7 +59,15 @@ export default {
           // semester_code: process.env.VUE_APP_SEMESTER_CODE
         };
       },
-      update: data => data.seminar
+      update: data => data.seminar,
+      fetchPolicy: "network-only",
+      error() {
+        this.$notification.error({
+          key: `server_error`,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     }
   },
   computed: {

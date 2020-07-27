@@ -109,21 +109,30 @@ export default {
         title,
         desc
       } = this.edit_seminar;
-      await this.$apollo.mutate({
-        mutation: queries.updateSeminar,
-        variables: {
-          seminar_id: id,
-          date,
-          start,
-          end,
-          visitor_capacity,
-          location_code,
-          title,
-          desc
-        },
-        refetchQueries: ["get_seminars_by_course_group"]
-      });
-      this.modal2Visible = false;
+      try {
+        await this.$apollo.mutate({
+          mutation: queries.updateSeminar,
+          variables: {
+            seminar_id: id,
+            date,
+            start,
+            end,
+            visitor_capacity,
+            location_code,
+            title,
+            desc
+          },
+          refetchQueries: ["get_seminars_by_course_group"]
+        });
+        this.modal2Visible = false;
+      } catch (err) {
+        this.modal2Visible = false;
+        this.$notification.error({
+          key: "update_class_error",
+          message: "Failed to update course group description",
+          description: "Please try again."
+        });
+      }
     }
   }
 };

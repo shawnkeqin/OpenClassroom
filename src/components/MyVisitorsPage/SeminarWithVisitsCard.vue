@@ -16,8 +16,13 @@
         <h6 :class="{ past: is_past }" style="display: inline;">
           {{ seminar.location.full_name }}
         </h6>
-      </div>
-      <div>
+        <h6
+          :class="{ past: is_past }"
+          class="teaching-mode"
+          style="display: inline;"
+        >
+          {{ constants.TEACHING_MODES[course_group.teaching_mode] || "NA" }}
+        </h6>
         <a-col :span="17" style="padding-right: 20px">
           <div style="margin-bottom: 5px">
             <h3 style="display: inline">
@@ -171,8 +176,6 @@ import VisitResponseModal from "./VisitResponseModal";
 import AddToCalendar from "@/components/SeminarVisitRequestCard/AddToCalendar";
 import utils from "@/utils";
 import constants from "@/utils/constants";
-import queries from "@/graphql/queries.gql";
-import moment from "moment";
 
 export default {
   components: {
@@ -229,23 +232,6 @@ export default {
             request.time_requested
           )})`;
     },
-    submitVisitResponse(visit_id, new_status) {
-      this.$apollo.mutate({
-        mutation: queries.update_visit_status,
-        variables: {
-          visit_id: visit_id,
-          visit_status: new_status,
-          time_responded: moment().format()
-        },
-        update: (store, { data: { update_visit_by_pk } }) => {
-          if (update_visit_by_pk) {
-            // We have not initialized Apollo Cache or VueX store. Or local data. So we should get the parent component to reload.
-            // this.$emit("visit-updated");
-          }
-        },
-        refetchQueries: ["get_seminars_with_visits_by_time_requested"]
-      });
-    },
     handleHideRequests() {
       this.isRequestRowsOn = false;
     },
@@ -284,5 +270,9 @@ export default {
 }
 .past {
   color: rgba(0, 0, 0, 0.37);
+}
+.teaching-mode {
+  font-weight: bold;
+  float: right;
 }
 </style>

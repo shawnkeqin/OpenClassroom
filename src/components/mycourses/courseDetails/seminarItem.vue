@@ -100,15 +100,24 @@ export default {
       this.is_loading = true;
       const seminar_id = this.seminar.id;
       const current_is_open = this.seminar.is_open;
-      await this.$apollo.mutate({
-        mutation: queries.updateSeminarIsOpen,
-        variables: {
-          seminar_id,
-          is_open: !current_is_open
-        },
-        refetchQueries: ["get_seminars_by_course_group"]
-      });
-      this.is_loading = false;
+      try {
+        await this.$apollo.mutate({
+          mutation: queries.updateSeminarIsOpen,
+          variables: {
+            seminar_id,
+            is_open: !current_is_open
+          },
+          refetchQueries: ["get_seminars_by_course_group"]
+        });
+        this.is_loading = false;
+      } catch (err) {
+        this.is_loading = false;
+        this.$notification.error({
+          key: "toggle_course_group_is_open_error",
+          message: "Failed to update the open status of your course",
+          description: "Please try again."
+        });
+      }
     }
   }
 };

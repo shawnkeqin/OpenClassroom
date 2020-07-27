@@ -1,6 +1,6 @@
 <template>
   <div id="wrapper">
-    <div id="container">
+    <div id="container" v-if="!isLoading">
       <template v-if="success">
         <h1>You have opted out successfully</h1>
         <p>
@@ -28,6 +28,7 @@ export default {
   data() {
     return {
       token: this.$route.query.token,
+      isLoading: false,
       success: false
     };
   },
@@ -36,18 +37,27 @@ export default {
       return this.token && jwt.decode(this.token).faculty_id;
     }
   },
-  async beforeMount() {
-    if (!this.token) return;
+  async created() {
+    if (!this.token) {
+      this.$router.push("login");
+    };
+    this.isLoading = true;
     const optOutUrl = new URL(
       `/api/faculty-status/opt-out?token=${this.token}`,
       process.env.VUE_APP_BASE_URL
     );
-    console.log(optOutUrl);
-    const response = await fetch(optOutUrl, {
-      method: "POST"
-    }).then(res => res.json());
-    if (response.success) this.success = true;
-    return;
+    try {
+      const response = await fetch(optOutUrl, {
+        method: "POST"
+      }).then(res => res.json());
+      if (response.success) {
+        this.success = true;
+        this.isLoading = false;
+      } else throw "err";
+    } catch (err) {
+      this.success = false;
+      this.isLoading = false;
+    }
   }
 };
 </script>

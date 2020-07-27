@@ -6,7 +6,6 @@
       block
       style="margin-bottom: 15px"
       :disabled="!has_consented"
-      :loading="isRequesting"
       >Request visit</a-button
     >
     <a-modal
@@ -83,7 +82,7 @@ export default {
       default: false
     }
   },
-  data() {
+  data: function() {
     return {
       utils,
       isRequesting: false,
@@ -102,7 +101,14 @@ export default {
           date: this.seminar.date
         };
       },
-      update: data => data.visit
+      update: data => data.visit,
+      error() {
+        this.$notification.error({
+          key: `server_error`,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     },
     mySeminarsOnTheSameDay: {
       query: queries.get_my_seminars_by_date,
@@ -112,7 +118,14 @@ export default {
           date: this.seminar.date
         };
       },
-      update: data => data.seminar
+      update: data => data.seminar,
+      error() {
+        this.$notification.error({
+          key: `server_error`,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     }
   },
   methods: {
@@ -170,6 +183,8 @@ export default {
           message: "Your visit request has been sent."
         });
       } catch (err) {
+        console.log(err)
+        this.isRequesting = false;
         this.$notification.error({
           key: `request_${seminar_id}_failure`,
           message: "Failed to make a new request",

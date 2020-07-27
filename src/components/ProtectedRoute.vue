@@ -149,17 +149,32 @@ export default {
       update: data => data.faculty_by_pk,
       skip() {
         return this.loggedInUser === null;
-      }
+      },
+      // error(error, vm, key) {
+      //   this.$notification.error({
+      //     key,
+      //     message: "Server error",
+      //     description: "Please try again."
+      //   });
+      // }
     },
     pendingVisitsCount: {
       query: queries.getPendingVisitsCount,
       variables() {
         return {
-          visitor_id: this.loggedInUser,
+          faculty_id: this.loggedInUser,
           semester_code: process.env.VUE_APP_SEMESTER_CODE
         };
       },
-      update: data => data.visit_aggregate.aggregate.count
+      update: data => data.visit_aggregate.aggregate.count,
+      fetchPolicy: "network-only",
+      // error(error, vm, key) {
+      //   this.$notification.error({
+      //     key,
+      //     message: "Server error",
+      //     description: "Please try again."
+      //   });
+      // }
     }
   },
   computed: {
@@ -179,12 +194,12 @@ export default {
     // }
   },
   watch: {
-    pendingVisitsCount() {
-      const count = this.pendingVisitsCount;
+    pendingVisitsCount(count) {
+      this.$notification.close("PENDING_VISITS");
       if (count) {
         this.$notification.warn({
           key: "PENDING_VISITS",
-          message: `${count} pending visit request${count > 1 && "s"}`,
+          message: `${count} pending visit request${count > 1 ? "s" : ""}`,
           description:
             "Head over to My Visitors page to review your incoming visit requests.",
           duration: 0

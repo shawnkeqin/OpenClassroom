@@ -77,14 +77,8 @@ mutation update_visit_response(
   }
 }
 
-query getPendingVisitsCount($visitor_id: String!, $semester_code: String!) {
-  visit_aggregate(
-    where: {
-      visitor_id: { _eq: $visitor_id }
-      seminar: { semester_code: { _eq: $semester_code } }
-      visit_status: { _eq: "PENDING" }
-    }
-  ) {
+query getPendingVisitsCount($faculty_id: String!, $semester_code: String!) {
+  visit_aggregate(where: {seminar: {semester_code: {_eq: $semester_code}, course_group: {faculty_id: {_eq: $faculty_id}}}, visit_status: {_eq: "PENDING"}}) {
     aggregate {
       count
     }
@@ -261,6 +255,7 @@ query get_course_group_details($course_group_id: Int!) {
     group_code
     syllabus
     course_group_desc
+    teaching_mode
     is_open
     notes
     course {
@@ -384,7 +379,7 @@ query searchSeminarsByFilters(
   seminar(
     where: {
       _and: [
-        { course_group: { course: { title: { _similar: $course_title } } } }
+        { course_group: { course: { title: { _ilike: $course_title } } } }
         { course_group: { faculty: { name: { _similar: $faculty_name } } } }
         { course_group: { teaching_mode: { _in: $teaching_modes } } }
         { date: { _gte: $start_date } }
@@ -459,7 +454,7 @@ query searchSeminarsByFiltersWithTags(
   seminar(
     where: {
       _and: [
-        { course_group: { course: { title: { _similar: $course_title } } } }
+        { course_group: { course: { title: { _ilike: $course_title } } } }
         { course_group: { faculty: { name: { _similar: $faculty_name } } } }
         { course_group: { teaching_mode: { _in: $teaching_modes } } }
         { date: { _gte: $start_date } }
@@ -473,6 +468,166 @@ query searchSeminarsByFiltersWithTags(
         }
         { semester_code: { _eq: $semester_code } }
         { group_code: { _similar: $include_cc_lectures } }
+      ]
+    }
+  ) {
+    id
+    date
+    start
+    end
+    title
+    is_open
+    module_code
+    group_code
+    semester_code
+    location {
+      code
+      full_name
+    }
+    course_group {
+      id
+      course_group_desc
+      is_open
+      teaching_mode
+      faculty {
+        id
+        name
+        email
+        is_active
+        has_consented
+      }
+      course {
+        id
+        title
+        tagged_as {
+          tag_label
+        }
+      }
+    }
+    visits(where: { visitor_id: { _eq: $visitor_id } }) {
+      id
+      visit_status
+      is_cancelled
+      request_msg
+      response_msg
+      time_requested
+      time_responded
+    }
+  }
+}
+
+query searchOpenSeminarsByFilters(
+  $course_title: String!
+  $faculty_name: String!
+  $start_date: date!
+  $end_date: date!
+  $start_time: time!
+  $end_time: time!
+  $visitor_id: String
+  $semester_code: String
+  $teaching_modes: [bpchar!]
+  $include_cc_lectures: String!
+) {
+  seminar(
+    where: {
+      _and: [
+        { course_group: { course: { title: { _ilike: $course_title } } } }
+        { course_group: { faculty: { name: { _similar: $faculty_name } } } }
+        { course_group: { teaching_mode: { _in: $teaching_modes } } }
+        { date: { _gte: $start_date } }
+        { date: { _lte: $end_date } }
+        { start: { _gte: $start_time } }
+        { end: { _lte: $end_time } }
+        { semester_code: { _eq: $semester_code } }
+        { group_code: { _similar: $include_cc_lectures } }
+        { course_group: { faculty: { has_consented: { _eq: true } } } }
+        { course_group: { faculty: { is_active: { _eq: true } } } }
+        { course_group: { is_open: { _eq: true } } }
+        { is_open: { _eq: true } }
+      ]
+    }
+  ) {
+    id
+    date
+    start
+    end
+    title
+    is_open
+    module_code
+    group_code
+    semester_code
+    desc
+    location {
+      code
+      full_name
+    }
+    course_group {
+      id
+      course_group_desc
+      is_open
+      teaching_mode
+      faculty {
+        id
+        name
+        email
+        is_active
+        has_consented
+      }
+      course {
+        desc
+        id
+        title
+        tagged_as {
+          tag_label
+        }
+      }
+    }
+    visits(where: { visitor_id: { _eq: $visitor_id } }) {
+      id
+      visit_status
+      is_cancelled
+      request_msg
+      response_msg
+      time_requested
+      time_responded
+    }
+  }
+}
+
+query searchOpenSeminarsByFiltersWithTags(
+  $course_title: String!
+  $faculty_name: String!
+  $start_date: date!
+  $end_date: date!
+  $start_time: time!
+  $end_time: time!
+  $selected_tags: [String!]
+  $visitor_id: String
+  $semester_code: String
+  $teaching_modes: [bpchar!]
+  $include_cc_lectures: String!
+) {
+  seminar(
+    where: {
+      _and: [
+        { course_group: { course: { title: { _ilike: $course_title } } } }
+        { course_group: { faculty: { name: { _similar: $faculty_name } } } }
+        { course_group: { teaching_mode: { _in: $teaching_modes } } }
+        { date: { _gte: $start_date } }
+        { date: { _lte: $end_date } }
+        { start: { _gte: $start_time } }
+        { end: { _lte: $end_time } }
+        {
+          course_group: {
+            course: { tagged_as: { tag_label: { _in: $selected_tags } } }
+          }
+        }
+        { semester_code: { _eq: $semester_code } }
+        { group_code: { _similar: $include_cc_lectures } }
+        { course_group: { faculty: { has_consented: { _eq: true } } } }
+        { course_group: { faculty: { is_active: { _eq: true } } } }
+        { course_group: { is_open: { _eq: true } } }
+        { is_open: { _eq: true } }
       ]
     }
   ) {

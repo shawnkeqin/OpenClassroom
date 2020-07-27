@@ -16,3 +16,15 @@ UPDATE course_group c
 SET course_group_desc = null
 FROM course_group_temp t
 WHERE c.module_code = t.module_code and c.group_code = t.group_code and c.semester_code=t.semester_code;
+
+DELETE 
+FROM seminar
+WHERE semester_code = 'AY1819-1' AND                 
+      date > '2018-09-01';
+
+DELETE 
+FROM visit v  
+     USING seminar s
+WHERE v.seminar_id = s.id AND
+      s.semester_code = 'AY1819-1' AND                 
+      s.date > '2018-09-01';
