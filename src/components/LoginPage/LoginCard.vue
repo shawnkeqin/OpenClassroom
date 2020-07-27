@@ -102,7 +102,12 @@ export default {
             if (err.response && err.response.status == 401) {
               this.invalidCredentials = true;
             } else {
-              this.$message.info(err.message);
+              // this.$message.info(err.message);
+              this.$notification.error({
+                key: "login_error",
+                message: "Failed to log in",
+                description: "Please try again."
+              });
             }
           })
           .finally(() => {

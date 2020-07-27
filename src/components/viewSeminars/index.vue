@@ -20,12 +20,17 @@
       :filterOption="autoCompleteCourseTitle"
       style="width:100%; margin:10px 0px 20px 0px;"
       v-model="filters.course_title"
+      placeholder="Search by course title"
+      class="search-bar"
     >
-      <a-input-search
+      <!-- <a-inpuvt-search
         placeholder="Search by course title"
         size="large"
-        style=" height: 50px; .ant-input-lg { font-size: 18px} "
-      />
+        style=".ant-input-lg { font-size: 18px; } "
+      /> -->
+      <a-input>
+        <a-icon slot="suffix" type="search" class="certain-category-icon" />
+      </a-input>
     </a-auto-complete>
 
     <div style="display: flex;">
@@ -67,13 +72,24 @@
               :visit="seminar.visits[0]"
               :has_consented="loggedInUser.has_consented"
             /> -->
-            <SeminarVisitRequestCard
-              v-for="seminar in seminarLimited"
-              :key="seminar.id"
-              :seminar="seminar"
-              :visit="seminar.visits[0]"
-              :has_consented="loggedInUser.has_consented"
-            />
+            <template v-if="seminarLimited.length">
+              <SeminarVisitRequestCard
+                v-for="seminar in seminarLimited"
+                :key="seminar.id"
+                :seminar="seminar"
+                :visit="seminar.visits[0]"
+                :has_consented="loggedInUser.has_consented"
+              />
+            </template>
+            <template v-else>
+              <div style="width: 35rem;">
+                <a-card hoverable>
+                  <p>
+                    {{ `No results.` }}
+                  </p>
+                </a-card>
+              </div>
+            </template>
           </template>
         </div>
       </div>
@@ -98,27 +114,30 @@
               class="filter-field"
             />
             <h5 align="left">Time range</h5>
-            <a-time-picker
-              :minute-step="30"
-              use12-hours
-              format="h:mm A"
-              v-model="filters.startTime"
-              placeholder="Start"
-              style="width:100%; margin-bottom: 5px"
-              valueFormat="HH:mm"
+            <div
+              style="display: flex; flex-direction: row; justify-content: space-between;"
             >
-            </a-time-picker>
-            <a-time-picker
-              :minute-step="30"
-              use12-hours
-              format="h:mm A"
-              v-model="filters.endTime"
-              placeholder="End"
-              style="width:100%;"
-              valueFormat="HH:mm"
-              class="filter-field"
-            >
-            </a-time-picker>
+              <a-time-picker
+                :minute-step="30"
+                use12-hours
+                format="h:mm A"
+                v-model="filters.startTime"
+                placeholder="Start"
+                valueFormat="HH:mm"
+                class="filter-field"
+              >
+              </a-time-picker>
+              <a-time-picker
+                :minute-step="30"
+                use12-hours
+                format="h:mm A"
+                v-model="filters.endTime"
+                placeholder="End"
+                valueFormat="HH:mm"
+                class="filter-field"
+              >
+              </a-time-picker>
+            </div>
             <h5 align="left">Instructor</h5>
             <!-- <a-form-item> -->
             <a-select
@@ -164,7 +183,7 @@
                 v-model="filters.checkedTeachingModes"
               >
                 <a-checkbox
-                  class="teaching-mode-checkbox"
+                  class="checkbox-filter"
                   :value="value"
                   v-for="{
                     value,
@@ -176,12 +195,21 @@
               </a-checkbox-group>
             </div>
             <div>
-              <h5 align="left">Lectures</h5>
-              <a-checkbox
-                v-model="filters.lecturesOnly"
-                @change="checkedLecturesOnly"
-                >Show CC lectures only</a-checkbox
-              >
+              <h5 align="left">Additional filters</h5>
+              <div>
+                <a-checkbox
+                  v-model="filters.lecturesOnly"
+                  @change="checkedLecturesOnly"
+                  class="checkbox-filter"
+                  >Show CC lectures only</a-checkbox
+                >
+                <a-checkbox
+                  v-model="filters.openOnly"
+                  @change="handleCheckOpenOnly"
+                  class="checkbox-filter"
+                  >Show only open classes</a-checkbox
+                >
+              </div>
             </div>
             <div style="padding-top: 30px;">
               <a @click="mapVisible = true" href="#">
@@ -231,7 +259,8 @@ const DEFAULT_FILTERS = {
   facultyName: undefined,
   selectedTags: [],
   checkedTeachingModes: [],
-  lecturesOnly: false
+  lecturesOnly: false,
+  openOnly: false
 };
 const SUGGESTED_SEARCH_FILTERS = {
   [SUGGESTED_SEARCH_1]: {
@@ -293,12 +322,26 @@ export default {
           faculty_id: store.state.loggedInUser
         };
       },
-      update: data => data.faculty_by_pk
+      update: data => data.faculty_by_pk,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     },
     courses: {
       query: queries.getCourseList,
       variables: { semester_code: process.env.VUE_APP_SEMESTER_CODE },
-      update: data => data.course
+      update: data => data.course,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     },
     seminar: {
       query() {
@@ -306,15 +349,36 @@ export default {
       },
       variables() {
         return this.searchQueryVariables;
+      },
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
       }
     },
     faculty_list: {
       query: queries.getFacultyList,
-      update: data => data.faculty
+      update: data => data.faculty,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     },
     tags_list: {
       query: queries.getTagsList,
-      update: data => data.tag
+      update: data => data.tag,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     }
   },
   watch: {
@@ -361,8 +425,13 @@ export default {
         : [];
     },
     searchQuery() {
+      console.log(this.filters.openOnly);
       return utils.isNonEmptyArray(this.filters.selectedTags)
-        ? queries.searchSeminarsByFiltersWithTags
+        ? this.filters.openOnly
+          ? queries.searchOpenSeminarsByFiltersWithTags
+          : queries.searchSeminarsByFiltersWithTags
+        : this.filters.openOnly
+        ? queries.searchOpenSeminarsByFilters
         : queries.searchSeminarsByFilters;
     },
     searchQueryVariables() {
@@ -409,6 +478,10 @@ export default {
     //     key => (this.SUGGESTED_SEARCH_STATE[key] = FALSE)
     //   );
     // },;
+    handleCheckOpenOnly(val) {
+      console.log(val);
+      console.log(this.filters.openOnly);
+    },
     checkedLecturesOnly(data) {
       console.log(data.target.checked);
     },
@@ -449,6 +522,13 @@ export default {
 </script>
 
 <style scoped>
+.search-bar >>> .ant-input {
+  font-size: 1rem;
+  padding: 1.2rem;
+}
+.search-bar >>> .ant-select-selection__rendered {
+  height: 2.4rem;
+}
 .filter {
   position: fixed;
 }
@@ -460,7 +540,7 @@ export default {
   display: block;
 }
 
-.teaching-mode-checkbox {
+.checkbox-filter {
   display: block;
   color: rgba(0, 0, 0, 0.54);
   margin-left: 0px;

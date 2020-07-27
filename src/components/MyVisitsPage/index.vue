@@ -46,7 +46,7 @@
           </a-card>
           <a-card style="width: 15rem;">
             <p>
-              View campus map <a @click="mapVisible = true" href="#">here</a>
+              <a @click="mapVisible = true" href="#">View campus map here</a>
             </p>
             <a-modal
               title="Campus map"
@@ -62,12 +62,11 @@
                 width="100%"
               />
             </a-modal>
-            <p>
-              CTL best practices for Peer Observation: download
+            <p style="margin-bottom: 0">
               <a
                 href="https://teaching.yale-nus.edu.sg/wp-content/uploads/sites/25/2019/04/Peer-Observation-Booklet-web-version-edited-linked.pdf#page=20"
-                target="_blank"
-                >here</a
+              >
+                CTL best practices for Peer Observation</a
               >
             </p>
           </a-card>
@@ -104,7 +103,14 @@ export default {
           visitor_id: store.state.loggedInUser
         };
       },
-      update: data => data.visit
+      update: data => data.visit,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Failed to obtain data on your visits",
+          description: "Please try again."
+        });
+      }
     }
   },
   computed: {
