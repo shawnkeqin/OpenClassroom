@@ -26,27 +26,13 @@
       </a-card>
     </div>
     <div>
-      <a-descriptions
-        title="Average Statistics"
-        bordered
-        :column="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }"
-      >
-        <a-descriptions-item label="Average Visits Requested">
-          0
-        </a-descriptions-item>
-        <a-descriptions-item label="Average Completed Visits">
-          0
-        </a-descriptions-item>
-        <a-descriptions-item label="Average Hosted Visits Sessions">
-          0
-        </a-descriptions-item>
-        <a-descriptions-item label="Average Hosted Visitors">
-          0
-        </a-descriptions-item>
-      </a-descriptions>
+      <div id="components-table-demo-size">
+        <h4>Average Statistics</h4>
+        <a-table :columns="columns" :data-source="data" size="middle" />
+      </div>
       <br />
 
-      <visitRequestChart
+      <!-- <visitRequestChart
         :number_of_visit_requests_made_by_user="
           number_of_visit_requests_made_by_user
         "
@@ -57,7 +43,50 @@
           number_of_hosted_visit_sessions_by_user
         "
         :number_of_hosted_visitors_by_user="number_of_hosted_visitors_by_user"
-      />
+      /> -->
+      <a-button v-on:click="isShowRequestsMade = !isShowRequestsMade">
+        Average Requests Made
+      </a-button>
+      &nbsp;
+      <a-button v-on:click="isShowRequestsReceived = !isShowRequestsReceived">
+        Average Requests Received
+      </a-button>
+      &nbsp;
+      <a-button v-on:click="isShowHostedVisits = !isShowHostedVisits">
+        Average Hosted Visits
+      </a-button>
+      &nbsp;
+      <a-button v-on:click="isShowCompletedVisits = !isShowCompletedVisits">
+        Average Completed Visits
+      </a-button>
+      <div v-show="isShowRequestsMade">
+        <LineExample
+          v-if="isShowRequestsMade"
+          :labels="labels"
+          :datasets="datasets"
+        />
+      </div>
+      <div v-show="isShowRequestsReceived">
+        <LineExample
+          v-if="isShowRequestsReceived"
+          :labels="labels2"
+          :datasets="datasets2"
+        />
+      </div>
+      <div v-show="isShowHostedVisits">
+        <LineExample
+          v-if="isShowHostedVisits"
+          :labels="labels3"
+          :datasets="datasets3"
+        />
+      </div>
+      <div v-show="isShowCompletedVisits">
+        <LineExample
+          v-if="isShowCompletedVisits"
+          :labels="labels4"
+          :datasets="datasets4"
+        />
+      </div>
     </div>
     <div class="content-block-wrapper">
       <h2>My Preferences</h2>
@@ -95,18 +124,142 @@
 <script>
 import queries from "@/graphql/queries.gql";
 import store from "@/store";
-import visitRequestChart from "./visitRequestChart";
+//import visitRequestChart from "./visitRequestChart";
 import moment from "moment";
+import LineExample from "./LineChart";
+var months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+];
+var currentMonth = new Date().getMonth();
+const columns = [
+  {
+    title: "Stats",
+    dataIndex: "name"
+  },
+  {
+    title: "Average Requests Made",
+    dataIndex: "age"
+  },
+  {
+    title: "Average Requests Received",
+    dataIndex: "age"
+  },
+  {
+    title: "Average Hosted Visits",
+    dataIndex: "age"
+  },
+  {
+    title: "Average Completed Visits",
+    dataIndex: "age"
+  }
+];
+const data = [
+  {
+    key: "1",
+    name: "Data for User",
+    age: 32,
+    address: "New York No. 1 Lake Park"
+  },
+  {
+    key: "2",
+    name: "Data across Divisions",
+    age: 42,
+    address: "London No. 1 Lake Park"
+  },
+  {
+    key: "3",
+    name: "Data Across All Users",
+    age: 32,
+    address: "Sidney No. 1 Lake Park"
+  }
+];
 export default {
   name: "Profile",
-  components: { visitRequestChart },
+  components: {
+    //visitRequestChart,
+    LineExample
+  },
   data() {
     console.log(moment().format());
     return {
+      isShowRequestsMade: false,
+      isShowRequestsReceived: false,
+      isShowHostedVisits: false,
+      isShowCompletedVisits: false,
+      labels: months
+        .slice(currentMonth - 3)
+        .concat(months.slice(0, currentMonth)),
+      labels2: months
+        .slice(currentMonth - 3)
+        .concat(months.slice(0, currentMonth)),
+      labels3: months
+        .slice(currentMonth - 3)
+        .concat(months.slice(0, currentMonth)),
+      labels4: months
+        .slice(currentMonth - 3)
+        .concat(months.slice(0, currentMonth)),
       faculty: {},
       isToggleNotifNewRequestLoading: false,
       isToggleNotifRequestUpdatetLoading: false,
-      my_requests: []
+      my_requests: [],
+      number_of_visit_requests_made_by_user: null,
+      data,
+      columns,
+      datasets: [
+        {
+          label: "Average Requests Made",
+          backgroundColor: "#1E90FF",
+          data: [0, 0, 0, 4],
+          lineTension: 0,
+          fill: false,
+          showLine: true,
+          borderColor: "rgb(0, 255, 0)"
+        }
+      ],
+      datasets2: [
+        {
+          label: "Average Requests Received",
+          backgroundColor: "#f87979",
+          data: [0, 0, 0, 3],
+          lineTension: 0,
+          fill: false,
+          showLine: true,
+          borderColor: "rgb(255, 0, 0)"
+        }
+      ],
+      datasets3: [
+        {
+          label: "Average Hosted Visits",
+          backgroundColor: "#f87979",
+          data: [0, 0, 2, 1],
+          lineTension: 0,
+          fill: false,
+          showLine: true,
+          borderColor: "rgb(0, 0, 255)"
+        }
+      ],
+      datasets4: [
+        {
+          label: "Average Completed Visits",
+          backgroundColor: "#f87979",
+          data: [0, 0, 5, 2],
+          lineTension: 0,
+          fill: false,
+          showLine: true,
+          borderColor: "rgba(255, 0, 0, 0.2)"
+        }
+      ]
     };
   },
   apollo: {
@@ -235,5 +388,9 @@ export default {
 }
 .preference-item p {
   margin: 0;
+}
+
+#components-table-demo-size h4 {
+  margin-bottom: 16px;
 }
 </style>
