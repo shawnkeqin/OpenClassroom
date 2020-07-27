@@ -34,7 +34,7 @@
             class="respond-button accept-button"
             :loading="loading"
             @click="
-              submitVisitResponse(visit.id, constants.VISIT_STATUS_ACCEPTED)
+              submitVisitResponse(constants.VISIT_STATUS_ACCEPTED)
             "
           >
             Accept
@@ -54,7 +54,7 @@
             class="respond-button decline-button"
             :loading="loading"
             @click="
-              submitVisitResponse(visit.id, constants.VISIT_STATUS_DECLINED)
+              submitVisitResponse(constants.VISIT_STATUS_DECLINED)
             "
           >
             Decline
@@ -111,26 +111,37 @@ export default {
     onClickRespond() {
       this.visible = true;
     },
-    submitVisitResponse(visit_id, new_status) {
+    async submitVisitResponse(new_status) {
+      const visit_id = this.visit.id;
       this.loading = true;
-      this.$apollo.mutate({
-        mutation: queries.update_visit_response,
-        variables: {
-          visit_id: visit_id,
-          visit_status: new_status,
-          time_responded: moment().format(),
-          response_msg: this.form.response_msg
-        },
-        update: (store, { data: { update_visit_by_pk } }) => {
-          if (update_visit_by_pk) {
-            setTimeout(() => {
-              this.visible = false;
-            }, 1000);
-            this.loading = false;
-          }
-        },
-        refetchQueries: ["get_seminars_with_visits_by_time_requested"]
-      });
+      try {
+        await this.$apollo.mutate({
+          mutation: queries.update_visit_response,
+          variables: {
+            visit_id,
+            visit_status: new_status,
+            time_responded: moment().format(),
+            response_msg: this.form.response_msg
+          },
+          update: (store, { data: { update_visit_by_pk } }) => {
+            if (update_visit_by_pk) {
+              setTimeout(() => {
+                this.visible = false;
+              }, 1000);
+              this.loading = false;
+            }
+          },
+          refetchQueries: ["get_seminars_with_visits_by_time_requested"],
+        });
+        this.loading = false;
+      } catch (err) {
+        this.loading = false;
+        this.$notification.error({
+          key: `reqsponse_${visit_id}_failure`,
+          message: "Failed to respond to the visit request",
+          description: "Please try again."
+        });
+      }
     }
   }
 };

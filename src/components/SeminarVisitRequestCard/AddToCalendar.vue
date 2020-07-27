@@ -93,7 +93,11 @@ export default {
       };
       const { error, value } = ics.createEvent(event);
       if (error) {
-        return "#";
+        this.$notification.error({
+          key: `calendar_export_error`,
+          message: "Could not export to external calendar",
+          description: "Please try again."
+        });
       }
       return `data:text/calendar;charset=utf8,${escape(value)}`;
     }

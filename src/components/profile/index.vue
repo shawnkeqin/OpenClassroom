@@ -31,18 +31,16 @@
         bordered
         :column="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }"
       >
-        <a-descriptions-item label="Average Number of Visit Requests Made">
+        <a-descriptions-item label="Average Visits Requested">
           0
         </a-descriptions-item>
-        <a-descriptions-item
-          label="Average Number of Completed Visit Requests Made"
-        >
+        <a-descriptions-item label="Average Completed Visits">
           0
         </a-descriptions-item>
-        <a-descriptions-item label="Average number of Hosted Visits Sessions">
+        <a-descriptions-item label="Average Hosted Visits Sessions">
           0
         </a-descriptions-item>
-        <a-descriptions-item label="Average number of Hosted Visitors">
+        <a-descriptions-item label="Average Hosted Visitors">
           0
         </a-descriptions-item>
       </a-descriptions>
@@ -119,7 +117,14 @@ export default {
           faculty_id: store.state.loggedInUser
         };
       },
-      update: data => data.faculty_by_pk
+      update: data => data.faculty_by_pk,
+      error() {
+        this.$notification.error({
+          key: `fetch_faculty_data_failure`,
+          message: "Failed to obtain data on your profile",
+          description: "Please try again."
+        });
+      }
     },
     my_requests: {
       query: queries.get_seminars_with_visits_by_time_requested,
@@ -128,7 +133,14 @@ export default {
           faculty_id: store.state.loggedInUser
         };
       },
-      update: data => data.seminar
+      update: data => data.seminar,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     },
     number_of_visit_requests_made_by_user: {
       query: queries.number_of_visit_requests_made_by_user,
@@ -143,7 +155,14 @@ export default {
           end_time: moment().format()
         };
       },
-      update: data => data.seminar_aggregate.aggregate.count
+      update: data => data.seminar_aggregate.aggregate.count,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     },
     number_of_completed_visit_requests_made_by_user: {
       query: queries.number_of_completed_visit_requests_made_by_user,
@@ -158,7 +177,14 @@ export default {
           end_time: moment().format()
         };
       },
-      update: data => data.seminar_aggregate.aggregate.count
+      update: data => data.seminar_aggregate.aggregate.count,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     },
     number_of_hosted_visit_sessions_by_user: {
       query: queries.number_of_hosted_visit_sessions_by_user,
@@ -173,7 +199,14 @@ export default {
           end_time: moment().format()
         };
       },
-      update: data => data.seminar_aggregate.aggregate.count
+      update: data => data.seminar_aggregate.aggregate.count,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     },
     number_of_hosted_visitors_by_user: {
       query: queries.number_of_hosted_visitors_by_user,
@@ -188,7 +221,14 @@ export default {
           end_time: moment().format()
         };
       },
-      update: data => data.visit_aggregate.aggregate.count
+      update: data => data.visit_aggregate.aggregate.count,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
     }
   },
   methods: {
@@ -196,29 +236,47 @@ export default {
       this.isToggleNotifNewRequestLoading = true;
       const faculty_id = this.faculty.id;
       const current_notif_new_request = this.faculty.notif_new_request;
-      await this.$apollo.mutate({
-        mutation: queries.update_faculty_notif_new_request,
-        variables: {
-          faculty_id,
-          notif_new_request: !current_notif_new_request
-        },
-        refetchQueries: ["getFacultyById"]
-      });
-      this.isToggleNotifNewRequestLoading = false;
+      try {
+        await this.$apollo.mutate({
+          mutation: queries.update_faculty_notif_new_request,
+          variables: {
+            faculty_id,
+            notif_new_request: !current_notif_new_request
+          },
+          refetchQueries: ["getFacultyById"]
+        });
+        this.isToggleNotifNewRequestLoading = false;
+      } catch (err) {
+        this.isToggleNotifRequestUpdateLoading = false;
+        this.$notification.error({
+          key: `toggle_notif_new_request_error`,
+          message: "The server could not update your user preference",
+          description: "Please try again."
+        });
+      }
     },
     async toggleNotifRequestUpdate() {
       this.isToggleNotifRequestUpdateLoading = true;
       const faculty_id = this.faculty.id;
       const current_notif_request_update = this.faculty.notif_request_update;
-      await this.$apollo.mutate({
-        mutation: queries.update_faculty_notif_request_update,
-        variables: {
-          faculty_id,
-          notif_request_update: !current_notif_request_update
-        },
-        refetchQueries: ["getFacultyById"]
-      });
-      this.isToggleNotifRequestUpdateLoading = false;
+      try {
+        await this.$apollo.mutate({
+          mutation: queries.update_faculty_notif_request_update,
+          variables: {
+            faculty_id,
+            notif_request_update: !current_notif_request_update
+          },
+          refetchQueries: ["getFacultyById"]
+        });
+        this.isToggleNotifRequestUpdateLoading = false;
+      } catch (err) {
+        this.isToggleNotifRequestUpdateLoading = false;
+        this.$notification.error({
+          key: `toggle_notif_request_update_error`,
+          message: "The server could not update your user preference",
+          description: "Please try again."
+        });
+      }
     }
   }
 };

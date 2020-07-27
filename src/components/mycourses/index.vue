@@ -35,7 +35,14 @@ export default {
             faculty_id: store.state.loggedInUser
           };
         },
-        update: data => data.course_group
+        update: data => data.course_group,
+        error(error, vm, key) {
+          this.$notification.error({
+            key,
+            message: "Failed to obtain data on your courses",
+            description: "Please try again."
+          });
+        }
       };
     }
   }

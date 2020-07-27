@@ -174,6 +174,7 @@ export default {
           message: "Your visit request has been cancelled."
         });
       } catch (err) {
+        this.isCancelling = false;
         this.$notification.error({
           key: `cancel_${visit_id}_failure`,
           message: "Failed to cancel your visit request",
@@ -209,6 +210,7 @@ export default {
           message: "Your visit request has been deleted."
         });
       } catch (err) {
+        this.isCancelling = false;
         this.$notification.error({
           key: `delete_${visit_id}_failure`,
           message: "Failed to delete your visit request",
