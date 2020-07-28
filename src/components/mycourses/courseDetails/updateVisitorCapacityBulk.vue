@@ -56,7 +56,6 @@ export default {
         this.isLoading = false;
         this.modal2Visible = false;
       } catch (err) {
-        console.log(err)
         this.isLoading = false;
         this.modal2Visible = false;
         this.$notification.error({
@@ -69,12 +68,4 @@ export default {
   }
 };
 </script>
-<style scoped>
-form {
-  width: 50%;
-}
-.submit-form {
-  display: flex;
-  justify-content: center;
-}
-</style>
+<style scoped></style>

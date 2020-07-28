@@ -237,15 +237,17 @@ export default {
       );
     },
     fullCourseDesc() {
-      return !(this.course.desc || this.course_group.desc ) ? 'None' : `${this.course.desc}\r\n${this.course_group.desc}`
+      return !(this.course.desc || this.course_group.desc)
+        ? "None"
+        : `${this.course.desc}\r\n${this.course_group.desc}`;
     }
   }
 };
 </script>
 
 <style scoped>
-.cc-card {
-}
+/* .cc-card {
+} */
 .ant-card-hoverable {
   cursor: default;
 }

@@ -263,7 +263,8 @@ export default {
 .red {
   color: #f0284a;
 }
-.past, .cancelled {
+.past,
+.cancelled {
   color: rgba(0, 0, 0, 0.37);
 }
 </style>

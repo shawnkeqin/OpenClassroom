@@ -43,7 +43,7 @@
           <template slot="header">
             <h4 style="margin: 0;">Course Description</h4>
           </template>
-          <p>{{ course.desc || "None" }}</p>
+          <p>{{ course && (course.desc || "None") }}</p>
           <h5 style="margin: 0; margin-right: 10px;">
             Additional Description
           </h5>
@@ -62,7 +62,7 @@
               Notes for Observers
             </h4>
           </template>
-          <p>{{ course.notes || "None" }}</p>
+          <p>{{ course && (course.notes || "None") }}</p>
           <updateCourseGroupNotesModal :course_group="course_group" />
         </a-collapse-panel>
       </a-collapse>
@@ -80,13 +80,9 @@
 <script>
 import queries from "@/graphql/queries.gql";
 import constants from "@/utils/constants";
-// import seminarItem from "./seminarItem";
-// import addNewSeminarModal from "./addNewSeminarModal";
 import updateCourseGroupDescModal from "./updateCourseGroupDescModal";
 import updateCourseGroupNotesModal from "./updateCourseGroupNotesModal";
 import updateVisitorCapacityBulk from "./updateVisitorCapacityBulk";
-// import courseModule from "./courseModule";
-// import closeCourseAndSeminarsToggle from "./closeCourseAndSeminarsToggle";
 import SeminarsTable from "./SeminarsTable";
 
 export default {
@@ -148,14 +144,6 @@ export default {
       return this.course_group ? this.course_group.course : null;
     }
   },
-  // computed: {
-  //   archived_seminars() {
-  //     return this.seminars.filter(seminar => seminar.is_archived);
-  //   },
-  //   active_seminars() {
-  //     return this.seminars.filter(seminar => !seminar.is_archived);
-  //   }
-  // },
   methods: {
     async toggleCourseGroupIsOpen() {
       this.isToggleCourseGroupLoading = true;
@@ -182,34 +170,7 @@ export default {
           description: "Please try again."
         });
       }
-    },
-    // async setAllUnavailable() {
-    //   const course_group_id = this.id;
-    //   await this.$apollo.mutate({
-    //     mutation: queries.close_all_course_seminars,
-    //     variables: {
-    //       course_group_id
-    //     },
-    //     update: (store, { data: { update_seminartest } }) => {
-    //       if (update_seminartest.affected_rows) {
-    //         const data = store.readQuery({
-    //           query: GET_MY_SEMINARS
-    //         });
-    //         const seminartest = data.seminartest;
-    //         const i = seminartest.findIndex(
-    //           seminar => seminar.id === this.seminartest.id
-    //         );
-    //         seminartest[i].archived = true;
-    //         store.writeQuery({
-    //           query: GET_MY_SEMINARS,
-    //           data
-    //         });
-    //       }
-    //     },
-    //     refetchQueries: ["get_seminars_by_course_group"]
-    //   });
-    //   this.modal2Visible = false;
-    // }
+    }
   }
 };
 </script>

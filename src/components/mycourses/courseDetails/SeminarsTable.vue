@@ -1,7 +1,8 @@
 <template>
   <a-table
     :columns="columns"
-    :data-source="seminars"
+    :data-source="reversedSeminars"
+    :row-key="record => record.id"
     :pagination="false"
     style="background: white;"
   >
@@ -25,8 +26,8 @@
         :checked="record.is_open"
         checked-children="open"
         un-checked-children="closed"
-        :loading="is_loading"
-        @click="toggleSeminarIsOpen"
+        :loading="isLoading.seminar_id === record.id && isLoading.isLoading"
+        @click="() => toggleSeminarIsOpen(record)"
       />
     </template>
     <template slot="edit" slot-scope="text, record">
@@ -110,29 +111,33 @@ export default {
     return {
       columns,
       utils,
-      is_loading: false
+      isLoading: { seminar_id: null, isLoading: false }
     };
   },
+  computed: {
+    reversedSeminars() {
+      return this.seminars.slice().reverse();
+    }
+  },
   methods: {
-    async toggleSeminarIsOpen() {
-      this.is_loading = true;
-      const seminar_id = this.seminar.id;
-      const current_is_open = this.seminar.is_open;
+    async toggleSeminarIsOpen(seminar) {
+      this.isLoading = { seminar_id: seminar.id, isLoading: true };
+      // const current_is_open = this.seminar.is_open;
       try {
         await this.$apollo.mutate({
           mutation: queries.updateSeminarIsOpen,
           variables: {
-            seminar_id,
-            is_open: !current_is_open
+            seminar_id: seminar.id,
+            is_open: !seminar.is_open
           },
           refetchQueries: ["get_seminars_by_course_group"]
         });
-        this.is_loading = false;
+        this.isLoading = { seminar_id: seminar.id, isLoading: false };
       } catch (err) {
-        this.is_loading = false;
+        this.isLoading = { seminar_id: seminar.id, isLoading: false };
         this.$notification.error({
           key: "toggle_course_group_is_open_error",
-          message: "Failed to update the open status of your course",
+          message: "Failed to update the open status of your class",
           description: "Please try again."
         });
       }
