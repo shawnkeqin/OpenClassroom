@@ -368,33 +368,8 @@ mutation unarchive_seminar($seminar_id: Int!) {
   }
 }
 
-query searchSeminarsByFilters(
-  $course_title: String!
-  $faculty_name: String!
-  $start_date: date!
-  $end_date: date!
-  $start_time: time!
-  $end_time: time!
-  $visitor_id: String
-  $semester_code: String
-  $teaching_modes: [bpchar!]
-  $include_cc_lectures: String!
-) {
-  seminar(
-    where: {
-      _and: [
-        { course_group: { course: { title: { _ilike: $course_title } } } }
-        { course_group: { faculty: { name: { _similar: $faculty_name } } } }
-        { course_group: { teaching_mode: { _in: $teaching_modes } } }
-        { date: { _gte: $start_date } }
-        { date: { _lte: $end_date } }
-        { start: { _gte: $start_time } }
-        { end: { _lte: $end_time } }
-        { semester_code: { _eq: $semester_code } }
-        { group_code: { _similar: $include_cc_lectures } }
-      ]
-    }
-  ) {
+query searchSeminarsByFilters($course_title: String!, $faculty_name: String!, $start_date: date!, $end_date: date!, $start_time: time!, $end_time: time!, $visitor_id: String, $semester_code: String, $teaching_modes: [bpchar!], $include_cc_lectures: String!) {
+  seminar(where: {_and: [{course_group: {course: {title: {_ilike: $course_title}}}}, {course_group: {faculty: {name: {_similar: $faculty_name}}}}, {course_group: {teaching_mode: {_in: $teaching_modes}}}, {date: {_gte: $start_date}}, {date: {_lte: $end_date}}, {start: {_gte: $start_time}}, {end: {_lte: $end_time}}, {semester_code: {_eq: $semester_code}}, {group_code: {_similar: $include_cc_lectures}}]}, order_by: {date: asc, start: asc}) {
     id
     date
     start
@@ -432,7 +407,7 @@ query searchSeminarsByFilters(
         }
       }
     }
-    visits(where: { visitor_id: { _eq: $visitor_id } }) {
+    visits(where: {visitor_id: {_eq: $visitor_id}}) {
       id
       visit_status
       is_cancelled
@@ -449,39 +424,8 @@ query searchSeminarsByFilters(
   }
 }
 
-query searchSeminarsByFiltersWithTags(
-  $course_title: String!
-  $faculty_name: String!
-  $start_date: date!
-  $end_date: date!
-  $start_time: time!
-  $end_time: time!
-  $selected_tags: [String!]
-  $visitor_id: String
-  $semester_code: String
-  $teaching_modes: [bpchar!]
-  $include_cc_lectures: String!
-) {
-  seminar(
-    where: {
-      _and: [
-        { course_group: { course: { title: { _ilike: $course_title } } } }
-        { course_group: { faculty: { name: { _similar: $faculty_name } } } }
-        { course_group: { teaching_mode: { _in: $teaching_modes } } }
-        { date: { _gte: $start_date } }
-        { date: { _lte: $end_date } }
-        { start: { _gte: $start_time } }
-        { end: { _lte: $end_time } }
-        {
-          course_group: {
-            course: { tagged_as: { tag_label: { _in: $selected_tags } } }
-          }
-        }
-        { semester_code: { _eq: $semester_code } }
-        { group_code: { _similar: $include_cc_lectures } }
-      ]
-    }
-  ) {
+query searchSeminarsByFiltersWithTags($course_title: String!, $faculty_name: String!, $start_date: date!, $end_date: date!, $start_time: time!, $end_time: time!, $selected_tags: [String!], $visitor_id: String, $semester_code: String, $teaching_modes: [bpchar!], $include_cc_lectures: String!) {
+  seminar(where: {_and: [{course_group: {course: {title: {_ilike: $course_title}}}}, {course_group: {faculty: {name: {_similar: $faculty_name}}}}, {course_group: {teaching_mode: {_in: $teaching_modes}}}, {date: {_gte: $start_date}}, {date: {_lte: $end_date}}, {start: {_gte: $start_time}}, {end: {_lte: $end_time}}, {course_group: {course: {tagged_as: {tag_label: {_in: $selected_tags}}}}}, {semester_code: {_eq: $semester_code}}, {group_code: {_similar: $include_cc_lectures}}]}, order_by: {date: asc, start: asc}) {
     id
     date
     start
@@ -517,7 +461,7 @@ query searchSeminarsByFiltersWithTags(
         }
       }
     }
-    visits(where: { visitor_id: { _eq: $visitor_id } }) {
+    visits(where: {visitor_id: {_eq: $visitor_id}}) {
       id
       visit_status
       is_cancelled
@@ -533,6 +477,7 @@ query searchSeminarsByFiltersWithTags(
     }
   }
 }
+
 
 query searchOpenSeminarsByFilters(
   $course_title: String!
