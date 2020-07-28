@@ -1,5 +1,10 @@
 <template>
-  <a-table :columns="columns" :data-source="seminars">
+  <a-table
+    :columns="columns"
+    :data-source="seminars"
+    :pagination="false"
+    style="background: white;"
+  >
     <template slot="date" slot-scope="text">
       <div>{{ utils.date_format(text) }}</div>
     </template>

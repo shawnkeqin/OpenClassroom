@@ -90,9 +90,11 @@
                 <a-button @click="descModalVisible = false">Close</a-button>
               </template>
               <h4>Class description:</h4>
-              <p>{{ seminar.desc }}</p>
+              <p>{{ seminar.desc || "None" }}</p>
               <h4>Course description:</h4>
-              <p>{{ course.desc }}</p>
+              <p>{{ fullCourseDesc }}</p>
+              <h4>Schedule description:</h4>
+              <p>{{ course_group.schedule_desc || "None" }}</p>
             </a-modal>
             <h5>
               {{ "Notes for visitors: " + (course_group.notes || "None") }}
@@ -233,6 +235,9 @@ export default {
       return (
         this.seminar.visitor_capacity || this.course_group.visitor_capacity
       );
+    },
+    fullCourseDesc() {
+      return !(this.course.desc || this.course_group.desc ) ? 'None' : `${this.course.desc}\r\n${this.course_group.desc}`
     }
   }
 };

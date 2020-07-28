@@ -1,5 +1,5 @@
 <template>
-  <div class="page-wrapper">
+  <div style="width: 80%;">
     <h2>
       {{ course ? course.title : "" }}
     </h2>
@@ -14,9 +14,6 @@
           ] || "NA"}`
         }}
       </p>
-      <!--  <a-button type="danger" size="large" @click="setAllUnavailable">
-        Close Course
-      </a-button> -->
     </div>
     <div style="display: flex; align-items: center; padding-bottom: 5px;">
       <p style="margin: 0 10px 0 0">
@@ -39,59 +36,42 @@
       >
         <a-icon type="exclamation-circle" theme="filled" class="pending" />
       </a-tooltip>
-      <updateCourseVisitorCapacityModal :id="id" />
     </div>
-    <a-card style="width: 35rem" :bodyStyle="{ padding: 0 }">
-      <a-collapse default-active-key="1" :bordered="false">
-        <a-collapse-panel key="2" header="Course description">
-          <p>{{ course ? course.desc : "" }}</p>
-          <updateCourseDetailsModal :course="course" />
-          <b>Additional Description: </b>
-          <br />
-          <p>{{ course_group ? course_group.course_group_desc : "" }}</p>
+    <a-card style="width:100%" :bodyStyle="{ padding: 0 }">
+      <a-collapse v-model="activeKey" :bordered="false">
+        <a-collapse-panel key="1">
+          <template slot="header">
+            <h4 style="margin: 0;">Course Description</h4>
+          </template>
+          <p>{{ course.desc || "None" }}</p>
+          <h5 style="margin: 0; margin-right: 10px;">
+            Additional Description
+          </h5>
+          <p>{{ course_group.course_group_desc || "" }}</p>
+          <updateCourseGroupDescModal :course_group="course_group" />
         </a-collapse-panel>
-      </a-collapse>
-      <a-collapse default-active-key="1" :bordered="false">
-        <a-collapse-panel key="2" header="Course Syllabus">
-          <p>{{ course_group.syllabus }}</p>
+        <a-collapse-panel key="2">
+          <template slot="header">
+            <h4 style="margin: 0;">Course Syllabus</h4>
+          </template>
+          <p>{{ course_group.syllabus || "None" }}</p>
         </a-collapse-panel>
-      </a-collapse>
-      <a-collapse default-active-key="1" :bordered="false">
-        <a-collapse-panel key="3" header="Notes for observers">
-          <p>{{ course ? course.notes : "" }}</p>
+        <a-collapse-panel key="3">
+          <template slot="header">
+            <h4 style="margin: 0;">
+              Notes for Observers
+            </h4>
+          </template>
+          <p>{{ course.notes || "None" }}</p>
+          <updateCourseGroupNotesModal :course_group="course_group" />
         </a-collapse-panel>
       </a-collapse>
     </a-card>
-    <div style="padding-top: 20px">
+    <div style="padding-top: 40px">
       <h2>Upcoming classes</h2>
-      <!-- <addNewSeminarModal /> -->
+      <updateVisitorCapacityBulk :id="id" />
       <div class="list-of-seminars">
-        <!-- <a-button
-          :type="isActiveOn ? 'primary' : 'default'"
-          @click="isActiveOn = true"
-          >Active</a-button
-        >
-        <a-button
-          :type="!isActiveOn ? 'primary' : 'default'"
-          @click="isActiveOn = false"
-          >Archived</a-button
-        > -->
-        <!-- <seminar-item
-          v-for="seminar in active_seminars"
-          :key="seminar.id"
-          :seminar="seminar"
-        />
-        <seminar-item
-          v-for="seminar in archived_seminars"
-          :key="seminar.id"
-          :seminar="seminar"
-        /> -->
         <SeminarsTable :seminars="seminars" :course_group="course_group" />
-        <!-- <seminarItem
-          v-for="seminar in seminars"
-          :key="seminar.id"
-          :seminar="seminar"
-        /> -->
       </div>
     </div>
   </div>
@@ -102,28 +82,26 @@ import queries from "@/graphql/queries.gql";
 import constants from "@/utils/constants";
 // import seminarItem from "./seminarItem";
 // import addNewSeminarModal from "./addNewSeminarModal";
-import updateCourseDetailsModal from "./updateCourseDetailsModal";
-import updateCourseVisitorCapacityModal from "./courseVisitorCapacity";
+import updateCourseGroupDescModal from "./updateCourseGroupDescModal";
+import updateCourseGroupNotesModal from "./updateCourseGroupNotesModal";
+import updateVisitorCapacityBulk from "./updateVisitorCapacityBulk";
 // import courseModule from "./courseModule";
 // import closeCourseAndSeminarsToggle from "./closeCourseAndSeminarsToggle";
 import SeminarsTable from "./SeminarsTable";
 
 export default {
   name: "courseDetails",
-  // props: ["id"],
   components: {
-    // seminarItem,
     SeminarsTable,
-    // addNewSeminarModal,
-    updateCourseDetailsModal,
-    updateCourseVisitorCapacityModal
-    // closeCourseAndSeminarsToggle
-    // courseModule
+    updateCourseGroupDescModal,
+    updateCourseGroupNotesModal,
+    updateVisitorCapacityBulk
   },
-  data: function() {
+  data() {
     return {
       constants,
       id: this.$route.params.id,
+      activeKey: ["1", "2", "3"],
       seminars: [],
       course_group: {},
       isToggleCourseGroupLoading: false
@@ -245,6 +223,7 @@ export default {
 }
 .list-of-seminars {
   justify-content: center;
+  margin-bottom: 80px;
 }
 .seminar-item {
   margin: 0 10px;
