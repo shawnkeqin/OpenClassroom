@@ -13,7 +13,7 @@ export default {
     "number_of_hosted_visit_sessions_by_user",
     "number_of_hosted_visitors_by_user"
   ],
-  /* computed: {
+  /*computed: {
     chartData: function() {
       return (
         this.number_of_visit_requests_made_by_user,
@@ -95,13 +95,13 @@ export default {
       },
       { responsive: true, maintainAspectRatio: false }
     );
-  },
-  watch: {
+  }
+  /*watch: {
     data: function() {
       this._chart.destroy();
       //this.renderChart(this.data, this.options);
       this.renderChart();
     }
-  }
+  } */
 };
 </script>

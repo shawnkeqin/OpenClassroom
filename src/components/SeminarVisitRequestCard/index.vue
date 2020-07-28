@@ -16,7 +16,10 @@
       </template>
     </div>
     <a-tag v-for="tag in seminar.tags" :key="tag">{{ tag }}</a-tag>
-    <a-card hoverable>
+    <a-card
+      hoverable
+      :class="seminar.group_code == 'CC' ? 'cc-card' : 'seminar-card'"
+    >
       <div style="display: flex; flex-direction: column;">
         <div style="margin-bottom: 5px">
           <h5
@@ -59,7 +62,11 @@
           <a-col :span="17" style="padding-right: 20px">
             <div style="margin-bottom: 5px">
               <h3 :class="{ past: is_past }" style="display: inline">
-                {{ course.title }}
+                {{
+                  seminar.group_code == "CC"
+                    ? course.title + " (Lecture)"
+                    : course.title
+                }}
               </h3>
               <p :class="{ past: is_past }" style="display: inline">
                 {{ seminar.module_code }}
@@ -95,8 +102,18 @@
             <div
               style="display: flex; flex-direction: column; align-items: center;"
             >
+              <template v-if="seminar.group_code == 'CC'">
+                <a-button
+                  @click="requestModalVisible = true"
+                  type="primary"
+                  block
+                  style="margin-bottom: 15px; "
+                  disabled
+                  >No request required</a-button
+                >
+              </template>
               <template
-                v-if="
+                v-else-if="
                   !(
                     faculty.is_active &&
                     faculty.has_consented &&
@@ -222,6 +239,8 @@ export default {
 </script>
 
 <style scoped>
+.cc-card {
+}
 .ant-card-hoverable {
   cursor: default;
 }
