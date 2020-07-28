@@ -19,7 +19,7 @@
       <div style="width: 5rem;">{{ record.location.full_name }}</div>
     </template>
     <template slot="visitor_capacity" slot-scope="text, record">
-      <div>{{ record.visitor_capacity || course_group.visitor_capacity }}</div>
+      <div>{{ record.visitor_capacity }}</div>
     </template>
     <template slot="set_open" slot-scope="text, record">
       <a-switch

@@ -168,7 +168,6 @@ query get_my_visits($visitor_id: String!) {
         id
         is_open
         notes
-        visitor_capacity
         faculty {
           id
           name
@@ -252,7 +251,6 @@ query get_course_group_details($course_group_id: Int!) {
     teaching_mode
     is_open
     notes
-    visitor_capacity
     course {
       id
       title
@@ -662,15 +660,6 @@ mutation create_visit_request(
       time_requested
       time_responded
     }
-  }
-}
-
-mutation edit_capacity($id: Int!, $visitor_capacity: Int!) {
-  update_seminar(
-    where: { id: { _eq: $id } }
-    _set: { visitor_capacity: $visitor_capacity }
-  ) {
-    affected_rows
   }
 }
 

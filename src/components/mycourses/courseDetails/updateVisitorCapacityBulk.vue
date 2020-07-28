@@ -26,7 +26,6 @@
   </div>
 </template>
 <script>
-//import { InMemoryCache } from "apollo-cache-inmemory";
 import queries from "@/graphql/queries.gql";
 export default {
   name: "updateVisitorCapacityBulk",

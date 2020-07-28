@@ -33,17 +33,6 @@
               )}-${utils.time_format(seminar.end)} | `
             }}
           </h5>
-          <!-- <h5 style="display: inline; font-weight: bold">
-            {{ utils.date_format(seminar.date) + " | " }}
-          </h5>
-          <h5 style="display: inline">
-            {{
-              utils.time_format(seminar.start) +
-                " - " +
-                utils.time_format(seminar.end) +
-                " | "
-            }}
-          </h5> -->
           <h6 :class="{ past: is_past }" style="display: inline;">
             {{ seminar.location.full_name }}
           </h6>
@@ -133,7 +122,9 @@
                 >
               </template>
               <template v-else-if="!visit">
-                <template v-if="visitsCountsForSeminar < visitorCapacity">
+                <template
+                  v-if="visitsCountsForSeminar < seminar.visitor_capacity"
+                >
                   <RequestVisitButton
                     :seminar="seminar"
                     :has_consented="has_consented"
@@ -153,10 +144,6 @@
             </div>
           </a-col>
         </div>
-        <!-- <div v-if="visit_local && isMessagesVisible" style="margin-top: 20px">
-          <div>{{ "Request message: " + visit_local.request_msg }}</div>
-          <div>{{ "Response message: " + visit_local.response_msg }}</div>
-        </div> -->
         <div v-if="visit && isMessagesVisible" style="margin-top: 20px">
           <div>{{ "Request message: " + visit.request_msg }}</div>
           <div>{{ "Response message: " + visit.response_msg }}</div>
@@ -181,10 +168,6 @@ export default {
     CancelVisitAndStatusWrapper
   },
   props: {
-    // visits: {
-    //   type: Array,
-    //   default: () => []
-    // },
     visit: {
       type: Object,
       default: null
@@ -210,9 +193,6 @@ export default {
     };
   },
   computed: {
-    // visit_local() {
-    //   return this.visits.find(visit => !visit.is_cancelled)
-    // },
     course_group() {
       return this.seminar.course_group;
     },
@@ -229,11 +209,6 @@ export default {
       return (
         this.seminar.visits_aggregate &&
         this.seminar.visits_aggregate.aggregate.count
-      );
-    },
-    visitorCapacity() {
-      return (
-        this.seminar.visitor_capacity || this.course_group.visitor_capacity
       );
     },
     fullCourseDesc() {
