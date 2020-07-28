@@ -41,7 +41,7 @@ Put non-sensitive env specific variables in `.env.development` or  `.env.staging
 
 Place sensitive variables like secrets, client id's, passwords etc in an `.env.local` file, which will automatically be ignored by git. Request for this file from the team. 
 
-## Deployment to NUS test server 
+## Frontend Deployment
 1. Connect to NUS VPN.
 2. `ssh -i ~/.ssh/open-classroom/id_rsa -xvv jeremy@172.25.20.25`, enter passcode. 
 3. Add all env variables, including `NODE_ENV=staging`.
@@ -58,6 +58,21 @@ npm install
 npm run build
 sudo lsof -iTCP -sTCP:LISTEN -P
 sudo kill -9 1505
-sudo DEBUG=express:* NODE_ENV=staging node index.js 2>81 | tee "./logs/deployment_$(date +'%d_%m__%H_%M').log" 
+sudo DEBUG=express:* NODE_ENV=staging node index.js 2>&1 | tee "./logs/deployment_$(date +'%d_%m__%H_%M').log" 
 ```
-5. Check other ports. `sudo lsof -iTCP -sTCP:LISTEN -P`
+## Backend Deployment
+```
+
+
+```
+
+
+## Environments
+| Purpose               | Environments    | Label          | Production build?  | Email notifications active? | Login server connection? |
+| --------------------- | --------------- | -------------- | ------------------ | --------------------------- | ------------------------ |
+| Development           | Local machine   | "development"  | :x:                | :x:                         | :x:                      |
+| Demo app              | Heroku platform | "staging"      | :x:                | :x:                         | :x:                      |
+| Test deployment       | NUS test server | "staging-test" | :x:                | :x:                         | :white_check_mark:       |
+| Production deployment | NUS live server | "production"   | :white_check_mark: | :white_check_mark:          | :white_check_mark:       |
+
+  ;
