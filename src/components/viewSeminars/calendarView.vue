@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="display: flex;">
     <!-- <div>
       <div :style="{ borderBottom: '1px solid #E9E9E9' }">
         <a-checkbox
@@ -17,18 +17,6 @@
         @change="onChange"
       />
     </div> -->
-    <div>
-      <a-checkbox @change="onChange" v-model="checkedBox">
-        My Requests
-      </a-checkbox>
-      <a-checkbox @change="onChangeTwo" v-model="checkedBoxTwo">
-        My Seminars
-      </a-checkbox>
-      <a-checkbox @change="onChangeThree" v-model="checkedBoxThree">
-        My Visits
-      </a-checkbox>
-    </div>
-    <br />
     <Fullcalendar
       ref="calendar"
       :plugins="calendarPlugins"
@@ -48,6 +36,33 @@
       :selectable="true"
       @eventClick="handleClick"
     />
+    <div style="margin: 0 10px;">
+      <a-card style="width: 15rem;">
+        <div>
+          <a-checkbox
+            @change="onChange"
+            v-model="checkedBox"
+            class="checkbox-filter"
+          >
+            My Requests
+          </a-checkbox>
+          <a-checkbox
+            @change="onChangeTwo"
+            v-model="checkedBoxTwo"
+            class="checkbox-filter"
+          >
+            My Seminars
+          </a-checkbox>
+          <a-checkbox
+            @change="onChangeThree"
+            v-model="checkedBoxThree"
+            class="checkbox-filter"
+          >
+            My Visits
+          </a-checkbox>
+        </div>
+      </a-card>
+    </div>
     <!--  <calendarSeminarModal
       v-for="visit in myVisits"
       :visit="visit"
@@ -60,8 +75,8 @@
 
 <script>
 require("@fullcalendar/core/main.min.css");
-require("@fullcalendar/daygrid/main.min.css");
-require("@fullcalendar/timegrid/main.min.css");
+// require("@fullcalendar/daygrid/main.min.css");
+// require("@fullcalendar/timegrid/main.min.css");
 import Fullcalendar from "@fullcalendar/vue";
 import DayGridPlugin from "@fullcalendar/daygrid";
 import TimeGridPlugin from "@fullcalendar/timegrid";
@@ -313,4 +328,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.checkbox-filter {
+  display: block;
+  color: rgba(0, 0, 0, 0.54);
+  margin-left: 0px;
+}
+</style>

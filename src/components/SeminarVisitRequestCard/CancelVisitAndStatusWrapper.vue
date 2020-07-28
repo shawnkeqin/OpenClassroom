@@ -110,15 +110,13 @@
       </template>
     </template>
     <template v-else>
-      <div style="display: flex; align-items: center">
+      <div style="display: flex; justify-content: center">
         <a-icon
           type="close-circle"
           theme="filled"
           class="status-icon cancelled"
         />
-      </div>
-      <div>
-        <h4 class="cancelled" style="margin-bottom: 3px">
+        <h4 class="cancelled" style="margin-bottom: 0px">
           Request cancelled
         </h4>
       </div>
