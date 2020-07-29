@@ -1,1 +1,1 @@
-web: NODE_ENV=staging node index.js
+web: DEBUG=express:* VUE_APP_MODE=staging node index.js 2>&1 | tee './logs/deployment_$(date +'%d_%m__%H_%M').log'
