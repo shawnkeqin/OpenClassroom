@@ -535,14 +535,12 @@ export default {
 .filter-field {
   margin-bottom: 20px;
 }
-
 .teaching-mode-filter {
   display: block;
 }
-
 .checkbox-filter {
   display: block;
   color: rgba(0, 0, 0, 0.54);
   margin-left: 0px;
-}</style
->;
+}
+</style>;
