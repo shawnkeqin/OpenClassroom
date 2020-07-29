@@ -6,8 +6,11 @@ var passport = require("passport"),
   moment = require("moment"),
   cors = require("cors");
 
+const LDAP_CONNECTED =
+  process.env.VUE_APP_MODE == "production" ||
+  process.env.VUE_APP_MODE == "staging-test";
 const notifsRouter = require("./notifsRouter");
-const facultyStatusRouter = require('./facultyStatusRouter')
+const facultyStatusRouter = require("./facultyStatusRouter");
 var api = express.Router();
 
 var getLDAPConfiguration = function(req, callback) {
@@ -27,7 +30,7 @@ var getLDAPConfiguration = function(req, callback) {
   });
 };
 
-if (process.env.NODE_ENV == "production") {
+if (LDAP_CONNECTED) {
   passport.use(new LdapStrategy(getLDAPConfiguration));
 }
 
@@ -36,7 +39,7 @@ api.get("/", function(req, res) {
 });
 
 api.post("/login", (req, res, next) => {
-  if (process.env.NODE_ENV != "production") {
+  if (!LDAP_CONNECTED) {
     // Send authorization for requested user regardless of password, without doing LDAP request.
     const payload = {
       exp: moment()
@@ -59,7 +62,7 @@ api.post("/login", (req, res, next) => {
       });
     });
     return;
-  } 
+  }
   passport.authenticate("ldapauth", (err, user, info) => {
     if (err) {
       return next(err);
@@ -82,10 +85,10 @@ api.post("/login", (req, res, next) => {
       };
       jwt.sign(payload, process.env.JWT_SECRET, (err, token) => {
         if (err) {
-        console.log(err);;
+          console.log(err);
           res.send(err);
         }
-        console.log(token); 
+        console.log(token);
         res.json({
           success: true,
           token: token

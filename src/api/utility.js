@@ -6,8 +6,7 @@ const nodemailer = require("nodemailer");
 
 const createApolloClient = () => {
   const httpLink = new HttpLink({
-    uri: process.env.HASURA_URI,
-    // foo: console.log("in apollo.js: " + process.env.VUE_APP_HASURA_URI),
+    uri: process.env.VUE_APP_GRAPHQL_HTTP,
     fetch,
     headers: {
       "x-hasura-admin-secret": process.env.HASURA_ADMIN_SECRET

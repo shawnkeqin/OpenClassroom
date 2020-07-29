@@ -1,1 +1,1 @@
-web: NODE_ENV=staging node index.js
+web: VUE_APP_MODE=staging node index.js
