@@ -1,22 +1,5 @@
 <template>
   <div style="display: flex;">
-    <!-- <div>
-      <div :style="{ borderBottom: '1px solid #E9E9E9' }">
-        <a-checkbox
-          :indeterminate="indeterminate"
-          :checked="checkAll"
-          @change="onCheckAllChange"
-        >
-          Check all
-        </a-checkbox>
-      </div>
-      <br />
-      <a-checkbox-group
-        v-model="checkedList"
-        :options="plainOptions"
-        @change="onChange"
-      />
-    </div> -->
     <Fullcalendar
       ref="calendar"
       :plugins="calendarPlugins"
@@ -37,44 +20,40 @@
       @eventClick="handleClick"
     />
     <div style="margin: 0 10px;">
-      <a-card style="width: 15rem;">
+      <a-card style="width: 10rem; margin-bottom: 20px;">
         <div>
-          <a-checkbox
-            @change="onChange"
-            v-model="checkedBox"
-            class="checkbox-filter"
-          >
-            My Requests
+          <a-checkbox v-model="showMySeminars" class="checkbox-filter">
+            My Classes
           </a-checkbox>
-          <a-checkbox
-            @change="onChangeTwo"
-            v-model="checkedBoxTwo"
-            class="checkbox-filter"
-          >
-            My Seminars
-          </a-checkbox>
-          <a-checkbox
-            @change="onChangeThree"
-            v-model="checkedBoxThree"
-            class="checkbox-filter"
-          >
+          <a-checkbox v-model="showMyVisits" class="checkbox-filter">
             My Visits
           </a-checkbox>
         </div>
       </a-card>
+      <a-card style="width: 10rem;">
+        <div>
+          <h4>Legend</h4>
+          <div
+            v-for="item in legendData"
+            :key="item.id"
+            style="display: flex; margin-bottom: 5px;"
+          >
+            <div
+              :style="
+                `background-color: ${item.color}; width: 1rem; height: 1rem; margin-right: 5px;`
+              "
+            />
+            <div>{{ item.label }}</div>
+          </div>
+        </div>
+      </a-card>
     </div>
-    <!--  <calendarSeminarModal
-      v-for="visit in myVisits"
-      :visit="visit"
-      :key="visit.id"
-    /> -->
-
     <modals-container />
   </div>
 </template>
 
 <script>
-require("@fullcalendar/core/main.min.css");
+// require("@fullcalendar/core/main.min.css");
 // require("@fullcalendar/daygrid/main.min.css");
 // require("@fullcalendar/timegrid/main.min.css");
 import Fullcalendar from "@fullcalendar/vue";
@@ -84,43 +63,55 @@ import InteractionPlugin from "@fullcalendar/interaction";
 import calendarSeminarModal from "./calendarSeminarModal";
 //import CalendarSeminar from "./CalendarSeminar";
 import queries from "@/graphql/queries.gql";
-import constants from "@/utils/constants";
-const plainOptions = ["My Seminars", "My Visits", "My Requests"];
-const defaultCheckedList = ["My Seminars", "My Visits"];
+// import constants from "@/utils/constants";
 import store from "@/store";
+
+const legendData = [
+  {
+    id: 1,
+    label: "Pending visit",
+    color: "#ffb74d"
+  },
+  {
+    id: 2,
+    label: "Accepted visit",
+    color: "#81c784"
+  },
+  {
+    id: 3,
+    label: "Declined visit",
+    color: "#e57373"
+  },
+  {
+    id: 4,
+    label: "Cancelled visit",
+    color: "rgba(0, 0, 0, 0.37)"
+  },
+  {
+    id: 5,
+    label: "Class without visitors",
+    color: "#69c0ff"
+  },
+  {
+    id: 6,
+    label: "Class with visitors",
+    color: "#1890ff"
+  },
+]
 
 export default {
   name: "calendarView",
   data() {
     return {
       calendarPlugins: [DayGridPlugin, TimeGridPlugin, InteractionPlugin],
-      eventSources: [],
-      checkedList: defaultCheckedList,
-      checkedBox: false,
-      checkedBoxTwo: false,
-      checkedBoxThree: false,
+      showMySeminars: true,
+      showMyVisits: true,
       indeterminate: true,
       checkAll: false,
-      plainOptions,
-      /*      config: {
-        eventRender: function(event,element){
-          var eventSources = []; 
-          if("toggle" == checked){
-              eventSources.push(this.Visits);
-          }
-          displayEvent = false; 
-          event.className.forEach(function(element){
-            if($.inArray(element,eventSources) != -1){
-              displayEvent = true; 
-            }
-          }); 
-      return displayEvent;
-        }
-      }, 
-      eventFilter: (evt,el) => true, */
       my_visits: [],
       my_requests: [],
-      my_seminars: []
+      my_seminars: [],
+      legendData 
     };
   },
   /*watch: {
@@ -147,28 +138,13 @@ export default {
         });
       }
     },
-    my_requests: {
+    my_seminars: {
       query: queries.get_seminars_with_visits_by_time_requested,
       variables() {
         return {
           faculty_id: store.state.loggedInUser
           // semester_code: process.env.VUE_APP_SEMESTER_CODE
         };
-      },
-      update: data => data.seminarm,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
-      }
-    },
-    my_seminars: {
-      query: queries.get_seminars_of_faculty_in_calendar,
-      variables: {
-        faculty_id: constants.TEST_FACULTY_ID,
-        semester_code: process.env.VUE_APP_SEMESTER_CODE
       },
       update: data => data.seminar,
       error(error, vm, key) {
@@ -178,72 +154,106 @@ export default {
           description: "Please try again."
         });
       }
-    }
+    },
+    // my_seminars: {
+    //   query: queries.get_seminars_of_faculty_in_calendar,
+    //   variables() {
+    //     return {
+    //       faculty_id: store.state.loggedInUser,
+    //       semester_code: process.env.VUE_APP_SEMESTER_CODE
+    //     };
+    //   },
+    //   update: data => data.seminar,
+    //   error(error, vm, key) {
+    //     console.log(error);
+    //     this.$notification.error({
+    //       key,
+    //       message: "Server error",
+    //       description: "Please try again."
+    //     });
+    //   }
+    // }
   },
   computed: {
     Visits() {
-      return this.my_visits.map(a => {
+      const events = this.my_visits.map(a => {
         return {
           date: a.seminar.date,
           start: a.seminar.date.toString() + "T" + a.seminar.start.toString(),
           end: a.seminar.date.toString() + "T" + a.seminar.end.toString(),
           title: a.seminar.course_group.course.title,
           id: a.id,
-          className: "my_visits",
-          color: "green",
+          // className: "my_visits",
+          color: this.getVisitColor(a.visit_status),
           extendedProps: {
-            name: a.seminar.course_group.faculty.name.toString(),
-            location: a.seminar.location.full_name.toString(),
-            module_code: a.seminar.course_group.course.module_code.toString(),
-            desc: a.seminar.course_group.course.desc.toString()
+            faculty: a.seminar.course_group.faculty,
+            course_group: a.seminar.course_group,
+            seminar: a.seminar
+            // location: a.seminar.location.full_name.toString(),
+            // module_code: a.seminar.course_group.course.module_code.toString(),
+            // desc: a.seminar.course_group.course.desc.toString()
           }
         };
       });
+      return {
+        events,
+        textColor: "rgba(0, 0, 0, 0.87)"
+      };
     },
-    Requests() {
-      return this.my_requests.map(a => {
-        return {
-          date: a.date,
-          start: a.date.toString() + "T" + a.start.toString(),
-          end: a.date.toString() + "T" + a.end.toString(),
-          title: a.course_group.course.title,
-          id: a.id,
-          className: "my_requests",
-          color: "red",
-          extendedProps: {
-            name: a.course_group.faculty.name.toString(),
-            location: a.location.full_name.toString(),
-            module_code: a.course_group.course.module_code.toString(),
-            desc: a.course_group.course.desc.toString()
-          }
-        };
-      });
-    },
+    // Requests() {
+    //   const events = this.my_requests.map(a => {
+    //     return {
+    //       date: a.date,
+    //       start: a.date.toString() + "T" + a.start.toString(),
+    //       end: a.date.toString() + "T" + a.end.toString(),
+    //       title: a.course_group.course.title,
+    //       id: a.id,
+    //       className: "my_requests",
+    //       // color: "red",
+    //       extendedProps: {
+    //         name: a.course_group.faculty.name.toString(),
+    //         location: a.location.full_name.toString(),
+    //         module_code: a.course_group.course.module_code.toString(),
+    //         desc: a.course_group.course.desc.toString()
+    //       }
+    //     };
+    //   });
+    //   return {
+    //     events,
+    //     color: "blue",
+    //     textColor: "white"
+    //   };
+    // },
     Seminars() {
-      return this.my_seminars.map(a => {
+      const events = this.my_seminars.map(a => {
+        console.log(a)
         return {
           date: a.date,
           start: a.date.toString() + "T" + a.start.toString(),
           end: a.date.toString() + "T" + a.end.toString(),
           title: a.course_group.course.title,
-          className: "my_seminars",
+          // className: "my_seminars",
+          color: a.visits.length > 0 ? '#1890ff' : '#69c0ff',
           id: a.id,
           extendedProps: {
-            name: a.course_group.faculty.name.toString(),
-            location: a.location.full_name.toString(),
-            module_code: a.course_group.course.module_code.toString(),
-            desc: a.course_group.course.desc.toString()
+            faculty: a.course_group.faculty,
+            course_group: a.course_group,
+            seminar: a
           }
         };
       });
+      return {
+        events,
+        textColor: "white"
+      };
+    },
+    eventSources() {
+      const requests = this.showMyRequests ? this.Requests : null;
+      const seminars = this.showMySeminars ? this.Seminars : null;
+      const visits = this.showMyVisits ? this.Visits : null;
+      return [requests, seminars, visits].filter(x => x);
     }
   },
-  /* created() {
-    this.eventSources.push(this.Visits);
-    this.eventSources.push(this.Requests);
-    this.eventSources.push(this.Seminars);
-    return this.eventSources;
-  }, */
   methods: {
     handleClick(arg) {
       this.$modal.show(
@@ -251,84 +261,30 @@ export default {
         {
           event: arg.event
         },
-        { height: "600", width: "800" }
+        { height: "600" }
       );
       /* this.$modal.show(CalendarSeminar, {
         event: arg.event
       }); */
     },
-    /* onChange(checkedList) {
-      this.indeterminate =
-        !!checkedList.length && checkedList.length < plainOptions.length;
-      this.checkAll = checkedList.length === plainOptions.length;
-    }, */
-    /*  onCheckAllChange(e) {
-      Object.assign(this, {
-        checkedList: e.target.checked ? plainOptions : [],
-        indeterminate: false,
-        checkAll: e.target.checked
-      });
-    }, */
-    onChange(e) {
-      console.log(`checked = ${e.target.checked}`);
-      this.checkedBox = e.target.checked;
-      if (this.checkedBox) {
-        this.eventSources.push(this.Requests);
-      } else {
-        this.eventSources.pop(this.Requests);
-      }
-    },
-    onChangeTwo(e) {
-      console.log(`checked = ${e.target.checked}`);
-      this.checkedBoxTwo = e.target.checked;
-      if (this.checkedBoxTwo) {
-        this.eventSources.push(this.Seminars);
-      } else {
-        this.eventSources.pop(this.Seminars);
-      }
-    },
-    onChangeThree(e) {
-      console.log(`checked = ${e.target.checked}`);
-      this.checkedBoxThree = e.target.checked;
-      if (this.checkedBoxThree) {
-        this.eventSources.push(this.Visits);
-      } else {
-        this.eventSources.pop(this.Visits);
+    getVisitColor(visit_status) {
+      switch (visit_status) {
+        case "PENDING":
+          return "#ffb74d";
+        case "ACCEPTED":
+          return "#81c784";
+        case "DECLINED":
+          return "#e57373";
+        default:
+          return "rgba(0, 0, 0, 0.37)";
       }
     }
-    /*
-    onChange(e) {
-      console.log(`checked = ${e.target.checked}`);
-      Object.assign(this, {
-        checkedBox: e.target.checked
-          ? this.eventSources.push(this.Requests)
-          : this.eventSources.pop(this.Requests)
-      });
-      return this.eventSources;
-    },
-    onChangeTwo(e) {
-      console.log(`checked = ${e.target.checked}`);
-      Object.assign(this, {
-        checkedBoxTwo: e.target.checked
-          ? this.eventSources.push(this.Seminars)
-          : this.eventSources.pop(this.Seminars)
-      });
-      return this.eventSources;
-    },
-    onChangeThree(e) {
-      console.log(`checked = ${e.target.checked}`);
-      Object.assign(this, {
-        checkedBoxThree: e.target.checked
-          ? this.eventSources.push(this.Visits)
-          : this.eventSources.pop(this.Visits)
-      });
-      return this.eventSources;
-    } */
   }
 };
 </script>
 
 <style scoped>
+@import "./calendar.css";
 .checkbox-filter {
   display: block;
   color: rgba(0, 0, 0, 0.54);

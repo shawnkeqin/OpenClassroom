@@ -32,7 +32,8 @@ export default {
         query: queries.get_course_groups_by_faculty,
         variables() {
           return {
-            faculty_id: store.state.loggedInUser
+            faculty_id: store.state.loggedInUser,
+            semester_code: process.env.VUE_APP_SEMESTER_CODE
           };
         },
         update: data => data.course_group,

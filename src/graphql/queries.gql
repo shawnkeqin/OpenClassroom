@@ -123,6 +123,7 @@ query get_seminars_with_visits_by_time_requested($faculty_id: String) {
     course_group {
       id
       notes
+      teaching_mode
       course {
         id
         title
@@ -168,6 +169,7 @@ query get_my_visits($visitor_id: String!) {
         id
         is_open
         notes
+        teaching_mode
         faculty {
           id
           name
@@ -207,8 +209,8 @@ mutation cancel_visit_request($visit_id: Int!) {
   }
 }
 
-query get_course_groups_by_faculty($faculty_id: String!) {
-  course_group(where: { faculty_id: { _eq: $faculty_id } }) {
+query get_course_groups_by_faculty($faculty_id: String!, $semester_code: String!) {
+  course_group(where: {faculty_id: {_eq: $faculty_id}, course: {semester_code: {_eq: $semester_code}}}) {
     id
     group_code
     course {
@@ -751,15 +753,14 @@ query get_seminars_of_faculty_in_calendar(
     date
     start
     end
-    is_archived
-    location_code
+    is_open
+    visitor_capacity
     location {
       code
       full_name
     }
-    visitor_capacity
-    is_open
     course_group {
+      id
       faculty {
         name
         id
@@ -769,8 +770,7 @@ query get_seminars_of_faculty_in_calendar(
         title
         module_code
         desc
-      }
-      id
+      }     
     }
   }
 }

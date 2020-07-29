@@ -1,7 +1,5 @@
 <template>
-  <div
-    style="height: 100px;padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px"
-  >
+  <div style="padding: 35px; height: 100%;">
     <div v-if="!isMySeminar" style="display: flex; margin-bottom: 10px;">
       <div style="display: flex; align-items: center">
         <a-icon
@@ -20,47 +18,47 @@
       style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px;"
     >
       <p style="margin: 3px;">
-        {{ event.extendedProps.module_code }}
+        {{ seminar.module_code }}
       </p>
-      <h3 style="font-size: 24px;">
-        {{ event.title }}
-      </h3>
+      <h3>{{ course.title }}</h3>
       <div style="margin-bottom: 3px;">
         <h4 style="display: inline;">
-          {{ event.start }}
-          {{ event.end }}
+          {{
+            `${utils.date_format(seminar.date)} | ${utils.time_format(
+              seminar.start
+            )} - ${utils.time_format(seminar.end)}`
+          }}
         </h4>
       </div>
-      <h5 style="display: inline">{{ event.extendedProps.location }}</h5>
+      <h5>{{ seminar.location.full_name }}</h5>
+      <h5>{{ course_group.teaching_mode }}</h5>
     </div>
     <div style="margin-bottom: 20px;">
       <h5>Class title</h5>
-      <p>{{ event.title || "No seminar title" }}</p>
+      <p>{{ seminar.title || "None" }}</p>
       <h5>Class description</h5>
-      <p>{{ event.extendedProps.desc || "No seminar description" }}</p>
-
-      <h5>Instructor</h5>
-      <div style="display: flex; align-items: center;">
-        <p style="margin: 0 5px;">
-          {{ event.extendedProps.name }}
-        </p>
-      </div>
-      <!--   <p>{{ course_group.notes || "None" }}</p> -->
+      <p>{{ seminar.desc || "None" }}</p>
+      <h5>Note for visitors</h5>
+      <p>{{ course_group.notes || "None" }}</p>
     </div>
-    <div style="margin-bottom: 20px;"></div>
-    <template>
+    <template v-if="isMySeminar && confirmedVisits.length">
       <h4 class="accepted">
         Confirmed visitors
       </h4>
-      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+      <div
+        v-for="visit in confirmedVisits"
+        :key="visit.id"
+        style="display: flex; align-items: center; margin-bottom: 5px;"
+      >
         <img
           class="avatar-small"
           :src="
-            'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
+            visit.visitor.profilePic ||
+              'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
           "
         />
         <p style="margin: 0 5px;">
-          {{ event.extendedProps.name }}
+          {{ visit.visitor.name }}
         </p>
         <div style="display: flex; align-items: center">
           <a-icon
@@ -71,72 +69,76 @@
           />
         </div>
       </div>
-      <div style="display: flex; flex-direction: column; align-items: left;">
+    </template>
+    <template v-else>
+      <div style="margin-bottom: 20px;">
+        <h5>Instructor</h5>
+        <div style="display: flex; align-items: center;">
+          <img
+            class="avatar-medium"
+            :src="
+              course_group.faculty.profilePic ||
+                'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
+            "
+          />
+          <p style="margin: 0 5px;">
+            {{ course_group.faculty.name }}
+          </p>
+        </div>
+      </div>
+      <!-- <div style="display: flex; flex-direction: column; align-items: left;">
         <a
           href="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg"
           target="_blank"
           >View campus map</a
         >
-      </div>
+        <AddToCalendar :seminar="seminar" />
+      </div> -->
     </template>
-
-    <!-- <fieldset>
-      <legend align="center">{{ event.title }}</legend>
-      <p align="center">
-        <u>Seminar Details</u>
-      </p>
-      <p align="center">
-        <b>Instructor: </b>
-        {{ event.extendedProps.name }}
-      </p>
-      <p align="center">
-        <b>Start: </b>
-        {{ event.start }}
-      </p>
-      <p align="center">
-        <b>End: </b>
-        {{ event.end }}
-      </p>
-      <p align="center">
-        <b>Location: </b>
-        {{ event.extendedProps.location }}
-      </p>
-      <br />
-    </fieldset> -->
   </div>
 </template>
 
 <script>
-//import {mapGetters} from "vuex";
 import utils from "@/utils";
-//import queries from "@/graphql/queries.gql";
-//import constants from "@/utils/constants";
+import store from "@/store";
+// import AddToCalendar from "./AddToCalendar";
+
 export default {
-  name: "calendarSeminarModal",
+  name: "CalendarSeminar",
+  // components: {
+  //   AddToCalendar
+  // },
   props: {
-    seminar: {
+    event: {
       type: Object,
       default: null
-    },
-    event: [],
-    isMySeminar: {
-      type: Boolean,
-      default: false
     }
   },
-  data: function() {
+  data() {
     return {
-      selected: "",
       utils: utils
-      //  seminar: {}
     };
   },
   computed: {
+    faculty() {
+      return this.event.extendedProps.faculty;
+    },
+    isMySeminar() {
+      return this.faculty.id === store.state.loggedInUser;
+    },
+    seminar() {
+      return this.event.extendedProps.seminar;
+    },
     course_group() {
-      return this.seminar.course_group;
+      return this.event.extendedProps.course_group;
     },
     course() {
       return this.course_group.course;
+    },
+    confirmedVisits() {
+      return this.isMySeminar
+        ? this.seminar.visits.filter(visit => visit.visit_status === "ACCEPTED")
+        : [];
     }
   }
 };
