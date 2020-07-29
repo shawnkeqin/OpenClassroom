@@ -66,10 +66,12 @@ sudo DEBUG=express:* VUE_APP_MODE=staging-test node index.js 2>&1 | tee "./logs/
 
 
 ## Environments
-The `vue-cli-service` mode used in `vue-cli-service serve` or `vue-cli-service build` will cause `customenv` to select the corresponding env file of the same name (see https://cli.vuejs.org/guide/mode-and-env.html#modes), and also automatically sets `NODE_ENV` unless it is declared explicitly in the env file. `NODE_ENV` determines webpack config (only "development, "production", or "test"). We set it explicitly in each env file to the same value as the mode for simplicity sake. We also set `VUE_APP_MODE` as the same value. 
-**Technically we can mostly use either of them in client side but it's best to use `VUE_APP_MODE` since it will always correspond to our own custom environment name, whereas `NODE_ENV` might not.**
+See https://cli.vuejs.org/guide/mode-and-env.html#modes.
 
-(Should we also set `NODE_ENV` when running the server since that might not be initialized yet?)
+The `vue-cli-service` mode used in `vue-cli-service serve` or `vue-cli-service build` will load the corresponding env file of the same name, ONLY during build time/while `vue-cli-service` is serving. It also automatically sets `NODE_ENV` unless it is declared explicitly in the env file. `NODE_ENV` determines webpack config (only recognizes "development, "production", or "test"), its not meant for custom modes. So we just let `vue-cli-service` set it for us. We also set `VUE_APP_MODE` as the same value as the mode for the client to access. 
+**Therefore we should use `VUE_APP_MODE` since it will always correspond to our own custom environment name, whereas `NODE_ENV` might not.**
+
+The custom environment file (as well as the automatically set `NODE_ENV`) was only loaded during the building phase. When running `index.js` after building, we need to again load the correct env file, therefore we use `custom-env`. But we need to tell it which env file, and since there is no concept of 'mode' and `NODE_ENV` is not set, we bootstrap by explicitly setting `VUE_APP_MODE`. 
 
 | Purpose               | Environments    | Vue-cli-service mode | Production build?  | Email notifications active? | Login server connection? | `VUE_APP_BASE_URL` | `VUE_APP_AUTH_ENDPOINT` |  `VUE_APP_GRAPHQL_HTTP` |
 | --------------------- | --------------- | -------------- | ------------------ | --------------------------- | ------------------------ | ------------------------ | ------------------------ | ------------------------ |
