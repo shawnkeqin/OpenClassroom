@@ -8,6 +8,7 @@
     "build": "vue-cli-service build",
     "build-staging": "vue-cli-service build --mode staging",
     "build-staging-test": "vue-cli-service build --mode staging-test",
+    "serve-staging-test":"sudo DEBUG=express:* VUE_APP_MODE=staging-test node index.js 2>&1 | tee './logs/deployment_$(date +'%d_%m__%H_%M').log'",
     "lint": "vue-cli-service lint",
     "apollo": "vue-cli-service apollo:dev --generate-schema",
     "apollo:schema:generate": "vue-cli-service apollo:schema:generate",
