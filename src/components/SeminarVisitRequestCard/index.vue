@@ -33,17 +33,6 @@
               )}-${utils.time_format(seminar.end)} | `
             }}
           </h5>
-          <!-- <h5 style="display: inline; font-weight: bold">
-            {{ utils.date_format(seminar.date) + " | " }}
-          </h5>
-          <h5 style="display: inline">
-            {{
-              utils.time_format(seminar.start) +
-                " - " +
-                utils.time_format(seminar.end) +
-                " | "
-            }}
-          </h5> -->
           <h6 :class="{ past: is_past }" style="display: inline;">
             {{ seminar.location.full_name }}
           </h6>
@@ -90,9 +79,11 @@
                 <a-button @click="descModalVisible = false">Close</a-button>
               </template>
               <h4>Class description:</h4>
-              <p>{{ seminar.desc }}</p>
+              <p>{{ seminar.desc || "None" }}</p>
               <h4>Course description:</h4>
-              <p>{{ course.desc }}</p>
+              <p>{{ fullCourseDesc }}</p>
+              <h4>Schedule description:</h4>
+              <p>{{ course_group.schedule_desc || "None" }}</p>
             </a-modal>
             <h5>
               {{ "Notes for visitors: " + (course_group.notes || "None") }}
@@ -123,7 +114,6 @@
                 "
               >
                 <a-button
-                  @click="requestModalVisible = true"
                   type="primary"
                   block
                   style="margin-bottom: 15px"
@@ -131,11 +121,18 @@
                   >Closed to visits</a-button
                 >
               </template>
-              <template v-else-if="!visit || visit.is_cancelled">
-                <RequestVisitButton
-                  :seminar="seminar"
-                  :has_consented="has_consented"
-                />
+              <template v-else-if="!visit">
+                <template
+                  v-if="visitsCountsForSeminar < seminar.visitor_capacity"
+                >
+                  <RequestVisitButton
+                    :seminar="seminar"
+                    :has_consented="has_consented"
+                  />
+                </template>
+                <template v-else>
+                  <a-button type="primary" block disabled>Class full</a-button>
+                </template>
               </template>
               <template v-else>
                 <CancelVisitAndStatusWrapper
@@ -147,10 +144,6 @@
             </div>
           </a-col>
         </div>
-        <!-- <div v-if="visit_local && isMessagesVisible" style="margin-top: 20px">
-          <div>{{ "Request message: " + visit_local.request_msg }}</div>
-          <div>{{ "Response message: " + visit_local.response_msg }}</div>
-        </div> -->
         <div v-if="visit && isMessagesVisible" style="margin-top: 20px">
           <div>{{ "Request message: " + visit.request_msg }}</div>
           <div>{{ "Response message: " + visit.response_msg }}</div>
@@ -175,10 +168,6 @@ export default {
     CancelVisitAndStatusWrapper
   },
   props: {
-    // visits: {
-    //   type: Array,
-    //   default: () => []
-    // },
     visit: {
       type: Object,
       default: null
@@ -204,9 +193,6 @@ export default {
     };
   },
   computed: {
-    // visit_local() {
-    //   return this.visits.find(visit => !visit.is_cancelled)
-    // },
     course_group() {
       return this.seminar.course_group;
     },
@@ -218,14 +204,25 @@ export default {
     },
     is_past() {
       return new Date(this.seminar.date) < Date.now();
+    },
+    visitsCountForSeminar() {
+      return (
+        this.seminar.visits_aggregate &&
+        this.seminar.visits_aggregate.aggregate.count
+      );
+    },
+    fullCourseDesc() {
+      return !(this.course.desc || this.course_group.desc)
+        ? "None"
+        : `${this.course.desc}\r\n${this.course_group.desc}`;
     }
   }
 };
 </script>
 
 <style scoped>
-.cc-card {
-}
+/* .cc-card {
+} */
 .ant-card-hoverable {
   cursor: default;
 }

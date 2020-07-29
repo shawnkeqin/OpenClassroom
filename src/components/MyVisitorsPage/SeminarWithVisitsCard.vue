@@ -158,6 +158,20 @@
                     </h5>
                   </div>
                 </template>
+                <template v-else-if="request.visit_status === 'CANCELLED'">
+                  <div style="display: flex; align-items: center">
+                    <a-icon
+                      type="close-circle"
+                      theme="filled"
+                      class="status-icon past"
+                    />
+                  </div>
+                  <div>
+                    <h4 class="past" style="margin-bottom: 3px">
+                      Request cancelled
+                    </h4>
+                  </div>
+                </template>
               </div>
             </a-col>
           </div>
