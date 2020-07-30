@@ -18,6 +18,7 @@
       :event-sources="eventSources"
       :selectable="true"
       @eventClick="handleClick"
+      :slotEventOverlap="false"
     />
     <a-modal v-model="isModalVisible" :footer="null">
       <calendarSeminarModal :event="modalData" />
@@ -59,9 +60,9 @@
 </template>
 
 <script>
-// require("@fullcalendar/core/main.min.css");
-// require("@fullcalendar/daygrid/main.min.css");
-// require("@fullcalendar/timegrid/main.min.css");
+// require("@fullcalendar/core/main.min.css"); // we are using the style from ./calendar.css instead
+require("@fullcalendar/daygrid/main.min.css");
+require("@fullcalendar/timegrid/main.min.css");
 import Fullcalendar from "@fullcalendar/vue";
 import DayGridPlugin from "@fullcalendar/daygrid";
 import TimeGridPlugin from "@fullcalendar/timegrid";
