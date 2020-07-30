@@ -123,7 +123,10 @@
               </template>
               <template v-else-if="!visit">
                 <template
-                  v-if="visitsCountsForSeminar < seminar.visitor_capacity"
+                  v-if="
+                    seminar.visitor_capacity === -1 ||
+                      accepetedVisitsCountsForSeminar < seminar.visitor_capacity
+                  "
                 >
                   <RequestVisitButton
                     :seminar="seminar"
@@ -205,7 +208,7 @@ export default {
     is_past() {
       return new Date(this.seminar.date) < Date.now();
     },
-    visitsCountForSeminar() {
+    acceptedVisitsCountForSeminar() {
       return (
         this.seminar.visits_aggregate &&
         this.seminar.visits_aggregate.aggregate.count

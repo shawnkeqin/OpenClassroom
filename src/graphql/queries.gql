@@ -413,7 +413,7 @@ query searchSeminarsByFilters($course_title: String!, $faculty_name: String!, $s
       time_requested
       time_responded
     }
-    visits_aggregate(distinct_on: id) {
+    visits_aggregate(distinct_on: id, where: {visit_status: {_eq: "ACCEPTED"}}) {
       aggregate {
         count
       }
@@ -467,7 +467,7 @@ query searchSeminarsByFiltersWithTags($course_title: String!, $faculty_name: Str
       time_requested
       time_responded
     }
-    visits_aggregate(distinct_on: id) {
+    visits_aggregate(distinct_on: id, where: {visit_status: {_eq: "ACCEPTED"}}) {
       aggregate {
         count
       }
