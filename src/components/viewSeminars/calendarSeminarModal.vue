@@ -1,18 +1,62 @@
 <template>
-  <div style="padding: 35px; height: 100%;">
+  <div style="padding: 10px;">
     <div v-if="!isMySeminar" style="display: flex; margin-bottom: 10px;">
-      <div style="display: flex; align-items: center">
-        <a-icon
-          type="check-circle"
-          theme="filled"
-          class="status-icon accepted"
-        />
-      </div>
-      <div>
-        <h4 class="accepted" style="margin-bottom: 0">
-          Accepted visit request
-        </h4>
-      </div>
+      <template v-if="my_visit.visit_status === 'PENDING'">
+        <div style="display: flex; align-items: center">
+          <a-icon
+            type="clock-circle"
+            theme="filled"
+            class="status-icon pending"
+          />
+        </div>
+        <div>
+          <h4 class="pending" style="margin-bottom: 0">
+            Pending visit request
+          </h4>
+        </div>
+      </template>
+      <template v-if="my_visit.visit_status === 'ACCEPTED'">
+        <div style="display: flex; align-items: center">
+          <a-icon
+            type="check-circle"
+            theme="filled"
+            class="status-icon accepted"
+          />
+        </div>
+        <div>
+          <h4 class="accepted" style="margin-bottom: 0">
+            Accepted visit request
+          </h4>
+        </div>
+      </template>
+      <template v-if="my_visit.visit_status === 'DECLINED'">
+        <div style="display: flex; align-items: center">
+          <a-icon
+            type="close-circle"
+            theme="filled"
+            class="status-icon declined"
+          />
+        </div>
+        <div>
+          <h4 class="declined" style="margin-bottom: 0">
+            Declined visit request
+          </h4>
+        </div>
+      </template>
+      <template v-if="my_visit.visit_status === 'CANCELLED'">
+        <div style="display: flex; align-items: center">
+          <a-icon
+            type="close-circle"
+            theme="filled"
+            class="status-icon cancelled"
+          />
+        </div>
+        <div>
+          <h4 class="cancelled" style="margin-bottom: 0">
+            Cancelled visit request
+          </h4>
+        </div>
+      </template>
     </div>
     <div
       style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px;"
@@ -41,33 +85,50 @@
       <h5>Note for visitors</h5>
       <p>{{ course_group.notes || "None" }}</p>
     </div>
-    <template v-if="isMySeminar && confirmedVisits.length">
-      <h4 class="accepted">
-        Confirmed visitors
-      </h4>
+    <template v-if="isMySeminar">
       <div
-        v-for="visit in confirmedVisits"
-        :key="visit.id"
-        style="display: flex; align-items: center; margin-bottom: 5px;"
+        v-for="item in my_visitors_by_status"
+        :key="item.status"
+        style="margin-top: 20px;"
       >
-        <img
-          class="avatar-small"
-          :src="
-            visit.visitor.profilePic ||
-              'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
-          "
-        />
-        <p style="margin: 0 5px;">
-          {{ visit.visitor.name }}
-        </p>
-        <div style="display: flex; align-items: center">
-          <a-icon
-            type="check-circle"
-            theme="filled"
-            class="status-icon accepted"
-            style="font-size: 15px;"
-          />
-        </div>
+        <template v-if="item.visitors.length">
+          <template v-if="item.status === 'PENDING'">
+            <h4 class="pending">
+              Pending visitors
+            </h4>
+          </template>
+          <template v-else-if="item.status === 'ACCEPTED'">
+            <h4 class="accepted">
+              Accepted visitors
+            </h4>
+          </template>
+          <template v-if="item.status === 'DECLINED'">
+            <h4 class="declined">
+              Declined visitors
+            </h4>
+          </template>
+          <template v-else-if="item.status === 'CANCELLED'">
+            <h4 class="cancelled">
+              Cancelled visitors
+            </h4>
+          </template>
+          <div
+            v-for="visit in item.visitors"
+            :key="visit.id"
+            style="display: flex; align-items: center; margin-bottom: 5px;"
+          >
+            <img
+              class="avatar-small"
+              :src="
+                visit.visitor.profilePic ||
+                  'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
+              "
+            />
+            <p style="margin: 0 5px;">
+              {{ visit.visitor.name }}
+            </p>
+          </div>
+        </template>
       </div>
     </template>
     <template v-else>
@@ -132,14 +193,50 @@ export default {
     course_group() {
       return this.event.extendedProps.course_group;
     },
+    my_visit() {
+      return this.event.extendedProps.my_visit || null;
+    },
+    my_visitors() {
+      return this.event.extendedProps.my_visitors || [];
+    },
+    my_visitors_by_status() {
+      return this.my_visitors.reduce(
+        (acc, cur) => {
+          const idx = acc.findIndex(item => item.status === cur.visit_status);
+          if (idx !== -1) {
+            const targetItem = acc[idx];
+            targetItem.visitors.push(cur);
+          }
+          return acc;
+        },
+        [
+          {
+            status: "PENDING",
+            visitors: []
+          },
+          {
+            status: "ACCEPTED",
+            visitors: []
+          },
+          {
+            status: "DECLINED",
+            visitors: []
+          },
+          {
+            status: "CANCELLED",
+            visitors: []
+          }
+        ]
+      );
+    },
     course() {
       return this.course_group.course;
-    },
-    confirmedVisits() {
-      return this.isMySeminar
-        ? this.seminar.visits.filter(visit => visit.visit_status === "ACCEPTED")
-        : [];
     }
+    // confirmedVisits() {
+    //   return this.isMySeminar
+    //     ? this.seminar.visits.filter(visit => visit.visit_status === "ACCEPTED")
+    //     : [];
+    // }
   }
 };
 </script>

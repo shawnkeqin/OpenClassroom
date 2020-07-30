@@ -33,9 +33,7 @@
             "
             class="respond-button accept-button"
             :loading="loading"
-            @click="
-              submitVisitResponse(constants.VISIT_STATUS_ACCEPTED)
-            "
+            @click="submitVisitResponse(constants.VISIT_STATUS_ACCEPTED)"
           >
             Accept
           </a-button>
@@ -53,9 +51,7 @@
             "
             class="respond-button decline-button"
             :loading="loading"
-            @click="
-              submitVisitResponse(constants.VISIT_STATUS_DECLINED)
-            "
+            @click="submitVisitResponse(constants.VISIT_STATUS_DECLINED)"
           >
             Decline
           </a-button>
@@ -131,7 +127,7 @@ export default {
               this.loading = false;
             }
           },
-          refetchQueries: ["get_seminars_with_visits_by_time_requested"],
+          refetchQueries: ["get_seminars_with_visits_by_time_requested"]
         });
         this.loading = false;
       } catch (err) {

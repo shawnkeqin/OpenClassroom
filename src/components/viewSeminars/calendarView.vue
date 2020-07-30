@@ -19,6 +19,9 @@
       :selectable="true"
       @eventClick="handleClick"
     />
+    <a-modal v-model="isModalVisible" :footer="null">
+      <calendarSeminarModal :event="modalData" />
+    </a-modal>
     <div style="margin: 0 10px;">
       <a-card style="width: 10rem; margin-bottom: 20px;">
         <div>
@@ -33,17 +36,20 @@
       <a-card style="width: 10rem;">
         <div>
           <h4>Legend</h4>
-          <div
-            v-for="item in legendData"
-            :key="item.id"
-            style="display: flex; margin-bottom: 5px;"
-          >
+          <div v-for="item in legendData" :key="item.value">
+            <h5>{{ item.label }}</h5>
             <div
-              :style="
-                `background-color: ${item.color}; width: 1rem; height: 1rem; margin-right: 5px;`
-              "
-            />
-            <div>{{ item.label }}</div>
+              v-for="option in item.options"
+              :key="option.label"
+              style="display: flex; margin: 0 0 5px 10px;"
+            >
+              <div
+                :style="
+                  `background-color: ${option.color}; width: 1rem; height: 1rem; margin-right: 5px;`
+                "
+              />
+              <div>{{ option.label }}</div>
+            </div>
           </div>
         </div>
       </a-card>
@@ -61,43 +67,49 @@ import DayGridPlugin from "@fullcalendar/daygrid";
 import TimeGridPlugin from "@fullcalendar/timegrid";
 import InteractionPlugin from "@fullcalendar/interaction";
 import calendarSeminarModal from "./calendarSeminarModal";
-//import CalendarSeminar from "./CalendarSeminar";
 import queries from "@/graphql/queries.gql";
 // import constants from "@/utils/constants";
 import store from "@/store";
 
 const legendData = [
   {
-    id: 1,
-    label: "Pending visit",
-    color: "#ffb74d"
+    value: "visit",
+    label: "My visits",
+    options: [
+      {
+        label: "pending",
+        color: "#ffb74d"
+      },
+      {
+        label: "accepted",
+        color: "#81c784"
+      },
+      {
+        label: "declined",
+        color: "#e57373"
+      },
+      {
+        label: "cancelled",
+        color: "rgba(0, 0, 0, 0.37)"
+      }
+    ]
   },
   {
-    id: 2,
-    label: "Accepted visit",
-    color: "#81c784"
-  },
-  {
-    id: 3,
-    label: "Declined visit",
-    color: "#e57373"
-  },
-  {
-    id: 4,
-    label: "Cancelled visit",
-    color: "rgba(0, 0, 0, 0.37)"
-  },
-  {
-    id: 5,
-    label: "Class without visitors",
-    color: "#69c0ff"
-  },
-  {
-    id: 6,
-    label: "Class with visitors",
-    color: "#1890ff"
-  },
-]
+    value: "class",
+    label: "My classes",
+    options: [
+      {
+        label: "no visitors",
+        color: "#69c0ff"
+      },
+      {
+        id: 6,
+        label: "with visitors",
+        color: "#1890ff"
+      }
+    ]
+  }
+];
 
 export default {
   name: "calendarView",
@@ -106,20 +118,16 @@ export default {
       calendarPlugins: [DayGridPlugin, TimeGridPlugin, InteractionPlugin],
       showMySeminars: true,
       showMyVisits: true,
-      indeterminate: true,
       checkAll: false,
       my_visits: [],
       my_requests: [],
       my_seminars: [],
-      legendData 
+      legendData,
+      isModalVisible: false,
+      modalData: null
     };
   },
-  /*watch: {
-    eventFilter(){
-      this.$refs.calendar.fireMethod('rerenderEvents'); 
-    }
-  }, */
-  components: { Fullcalendar },
+  components: { Fullcalendar, calendarSeminarModal },
   apollo: {
     my_visits: {
       query: queries.get_my_visits,
@@ -154,25 +162,7 @@ export default {
           description: "Please try again."
         });
       }
-    },
-    // my_seminars: {
-    //   query: queries.get_seminars_of_faculty_in_calendar,
-    //   variables() {
-    //     return {
-    //       faculty_id: store.state.loggedInUser,
-    //       semester_code: process.env.VUE_APP_SEMESTER_CODE
-    //     };
-    //   },
-    //   update: data => data.seminar,
-    //   error(error, vm, key) {
-    //     console.log(error);
-    //     this.$notification.error({
-    //       key,
-    //       message: "Server error",
-    //       description: "Please try again."
-    //     });
-    //   }
-    // }
+    }
   },
   computed: {
     Visits() {
@@ -188,10 +178,8 @@ export default {
           extendedProps: {
             faculty: a.seminar.course_group.faculty,
             course_group: a.seminar.course_group,
-            seminar: a.seminar
-            // location: a.seminar.location.full_name.toString(),
-            // module_code: a.seminar.course_group.course.module_code.toString(),
-            // desc: a.seminar.course_group.course.desc.toString()
+            seminar: a.seminar,
+            my_visit: a
           }
         };
       });
@@ -200,45 +188,21 @@ export default {
         textColor: "rgba(0, 0, 0, 0.87)"
       };
     },
-    // Requests() {
-    //   const events = this.my_requests.map(a => {
-    //     return {
-    //       date: a.date,
-    //       start: a.date.toString() + "T" + a.start.toString(),
-    //       end: a.date.toString() + "T" + a.end.toString(),
-    //       title: a.course_group.course.title,
-    //       id: a.id,
-    //       className: "my_requests",
-    //       // color: "red",
-    //       extendedProps: {
-    //         name: a.course_group.faculty.name.toString(),
-    //         location: a.location.full_name.toString(),
-    //         module_code: a.course_group.course.module_code.toString(),
-    //         desc: a.course_group.course.desc.toString()
-    //       }
-    //     };
-    //   });
-    //   return {
-    //     events,
-    //     color: "blue",
-    //     textColor: "white"
-    //   };
-    // },
     Seminars() {
       const events = this.my_seminars.map(a => {
-        console.log(a)
         return {
           date: a.date,
           start: a.date.toString() + "T" + a.start.toString(),
           end: a.date.toString() + "T" + a.end.toString(),
           title: a.course_group.course.title,
           // className: "my_seminars",
-          color: a.visits.length > 0 ? '#1890ff' : '#69c0ff',
+          color: a.visits.length > 0 ? "#1890ff" : "#69c0ff",
           id: a.id,
           extendedProps: {
             faculty: a.course_group.faculty,
             course_group: a.course_group,
-            seminar: a
+            seminar: a,
+            my_visitors: a.visits
           }
         };
       });
@@ -256,16 +220,8 @@ export default {
   },
   methods: {
     handleClick(arg) {
-      this.$modal.show(
-        calendarSeminarModal,
-        {
-          event: arg.event
-        },
-        { height: "600" }
-      );
-      /* this.$modal.show(CalendarSeminar, {
-        event: arg.event
-      }); */
+      this.modalData = arg.event;
+      this.isModalVisible = true;
     },
     getVisitColor(visit_status) {
       switch (visit_status) {

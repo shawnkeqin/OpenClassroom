@@ -221,10 +221,8 @@
               :visible="mapVisible"
               @cancel="mapVisible = false"
               width="60vw"
+              :footer="null"
             >
-              <template slot="footer">
-                <div />
-              </template>
               <img
                 src="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg"
                 width="100%"

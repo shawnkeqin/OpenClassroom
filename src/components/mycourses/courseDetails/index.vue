@@ -106,10 +106,16 @@ export default {
   apollo: {
     seminars() {
       const course_group_id = this.id;
+      const date_lower_bound = new Date(Date.now())
+        .toLocaleDateString("en-GB", { timeZone: "Asia/Singapore" })
+        .split("/")
+        .reverse()
+        .join("-");
       return {
         query: queries.get_seminars_by_course_group,
         variables: {
-          course_group_id
+          course_group_id,
+          date_lower_bound
         },
         update: data => data.seminar,
         error(error, vm, key) {

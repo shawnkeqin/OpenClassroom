@@ -111,6 +111,10 @@ button span {
 .declined {
   color: #e57373;
 }
+.past,
+.cancelled {
+  color: rgba(0, 0, 0, 0.37);
+}
 .placeholder {
   color: rgba(0, 0, 0, 0.37);
   font-weight: normal;

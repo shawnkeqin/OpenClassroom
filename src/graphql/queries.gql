@@ -221,11 +221,8 @@ query get_course_groups_by_faculty($faculty_id: String!, $semester_code: String!
   }
 }
 
-query get_seminars_by_course_group($course_group_id: Int!) {
-  seminar(
-    where: { course_group: { id: { _eq: $course_group_id } } }
-    order_by: { date: desc }
-  ) {
+query get_seminars_by_course_group($course_group_id: Int!, $date_lower_bound: date) {
+  seminar(where: {course_group: {id: {_eq: $course_group_id}}, date: {_gte: $date_lower_bound}}, order_by: {date: desc}) {
     id
     date
     start

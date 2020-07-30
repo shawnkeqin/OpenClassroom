@@ -2,14 +2,23 @@
   <div style="width: 100%; padding: 0 20px;">
     <h1>My courses</h1>
     <div style="display: flex; align-content: flex-start">
-      <template v-for="course_group in course_groups">
-        <a-card :key="course_group.id" style="margin-right: 20px; width: 350px">
+      <template v-if="course_groups && course_groups.length">
+        <a-card
+          v-for="course_group in course_groups"
+          :key="course_group.id"
+          style="margin-right: 20px; width: 350px"
+        >
           <h3>{{ course_group.course.title }}</h3>
           <p>{{ course_group.course.module_code }}</p>
           <p>{{ "Group " + course_group.group_code }}</p>
           <router-link :to="'/coursedetails/' + course_group.id"
             >Course details</router-link
           >
+        </a-card>
+      </template>
+      <template v-else>
+        <a-card>
+          <p>You don't teach any course this semester</p>
         </a-card>
       </template>
     </div>
