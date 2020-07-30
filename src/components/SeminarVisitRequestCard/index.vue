@@ -19,6 +19,7 @@
     <a-card
       hoverable
       :class="seminar.group_code == 'CC' ? 'cc-card' : 'seminar-card'"
+      style="padding: 0.2rem;"
     >
       <div style="display: flex; flex-direction: column;">
         <div style="margin-bottom: 5px">
@@ -228,6 +229,9 @@ export default {
 } */
 .ant-card-hoverable {
   cursor: default;
+}
+.ant-btn span {
+  font-size: 2rem;
 }
 .date-heading {
   font-weight: bold;

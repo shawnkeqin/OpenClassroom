@@ -1,79 +1,82 @@
 <template>
   <div style="width: 80%;">
-    <h2>
-      {{ course ? course.title : "" }}
-    </h2>
-    <div>
-      <h3 style="margin: 0 10px 0 0">
-        {{ course ? course.module_code : "" }}
-      </h3>
-      <p>
-        {{
-          `Teaching mode: ${constants.TEACHING_MODES[
-            course_group.teaching_mode
-          ] || "NA"}`
-        }}
-      </p>
-    </div>
-    <div style="display: flex; align-items: center; padding-bottom: 5px;">
-      <p style="margin: 0 10px 0 0">
-        {{
-          `This course is ${
-            course_group.is_open ? `open` : `closed`
-          } to visit requests`
-        }}
-      </p>
-      <a-switch
-        :checked="course_group.is_open"
-        checked-children="open"
-        un-checked-children="closed"
-        :loading="isToggleCourseGroupLoading"
-        @click="toggleCourseGroupIsOpen"
-        style="margin-right: 5px;"
-      />
-      <a-tooltip
-        title="Closing/opening this course will automatically close/open all of its classes."
-      >
-        <a-icon type="exclamation-circle" theme="filled" class="pending" />
-      </a-tooltip>
-    </div>
-    <a-card style="width:100%" :bodyStyle="{ padding: 0 }">
-      <a-collapse v-model="activeKey" :bordered="false">
-        <a-collapse-panel key="1">
-          <template slot="header">
-            <h4 style="margin: 0;">Course Description</h4>
-          </template>
-          <p>{{ course && (course.desc || "None") }}</p>
-          <h5 style="margin: 0; margin-right: 10px;">
-            Additional Description
-          </h5>
-          <p>{{ course_group.course_group_desc || "" }}</p>
-          <updateCourseGroupDescModal :course_group="course_group" />
-        </a-collapse-panel>
-        <a-collapse-panel key="2">
-          <template slot="header">
-            <h4 style="margin: 0;">Course Syllabus</h4>
-          </template>
-          <p>{{ course_group.syllabus || "None" }}</p>
-        </a-collapse-panel>
-        <a-collapse-panel key="3">
-          <template slot="header">
-            <h4 style="margin: 0;">
-              Notes for Observers
-            </h4>
-          </template>
-          <p>{{ course && (course.notes || "None") }}</p>
-          <updateCourseGroupNotesModal :course_group="course_group" />
-        </a-collapse-panel>
-      </a-collapse>
-    </a-card>
-    <div style="padding-top: 40px">
-      <h2>Upcoming classes</h2>
-      <updateVisitorCapacityBulk :id="id" />
-      <div class="list-of-seminars">
-        <SeminarsTable :seminars="seminars" :course_group="course_group" />
+    <template v-if="$apollo.loading"><a-skeleton active/></template>
+    <template v-else>
+      <h1>
+        {{ course ? course.title : "" }}
+      </h1>
+      <div>
+        <h3 style="margin: 0 10px 0 0">
+          {{ course ? course.module_code : "" }}
+        </h3>
+        <p>
+          {{
+            `Teaching mode: ${constants.TEACHING_MODES[
+              course_group.teaching_mode
+            ] || "NA"}`
+          }}
+        </p>
       </div>
-    </div>
+      <div style="display: flex; align-items: center; padding-bottom: 5px;">
+        <p style="margin: 0 10px 0 0">
+          {{
+            `This course is ${
+              course_group.is_open ? `open` : `closed`
+            } to visit requests`
+          }}
+        </p>
+        <a-switch
+          :checked="course_group.is_open"
+          checked-children="open"
+          un-checked-children="closed"
+          :loading="isToggleCourseGroupLoading"
+          @click="toggleCourseGroupIsOpen"
+          style="margin-right: 5px;"
+        />
+        <a-tooltip
+          title="Closing/opening this course will automatically close/open all of its classes."
+        >
+          <a-icon type="exclamation-circle" theme="filled" class="pending" />
+        </a-tooltip>
+      </div>
+      <a-card style="width:100%" :bodyStyle="{ padding: 0 }">
+        <a-collapse v-model="activeKey" :bordered="false">
+          <a-collapse-panel key="1">
+            <template slot="header">
+              <h4 style="margin: 0;">Course Description</h4>
+            </template>
+            <p>{{ course && (course.desc || "None") }}</p>
+            <h5 style="margin: 0; margin-right: 10px;">
+              Additional Description
+            </h5>
+            <p>{{ course_group.course_group_desc || "" }}</p>
+            <updateCourseGroupDescModal :course_group="course_group" />
+          </a-collapse-panel>
+          <a-collapse-panel key="2">
+            <template slot="header">
+              <h4 style="margin: 0;">Course Syllabus</h4>
+            </template>
+            <p>{{ course_group.syllabus || "None" }}</p>
+          </a-collapse-panel>
+          <a-collapse-panel key="3">
+            <template slot="header">
+              <h4 style="margin: 0;">
+                Notes for Observers
+              </h4>
+            </template>
+            <p>{{ course && (course.notes || "None") }}</p>
+            <updateCourseGroupNotesModal :course_group="course_group" />
+          </a-collapse-panel>
+        </a-collapse>
+      </a-card>
+      <div style="padding-top: 40px">
+        <h2>Upcoming classes</h2>
+        <updateVisitorCapacityBulk :id="id" />
+        <div class="list-of-seminars">
+          <SeminarsTable :seminars="seminars" :course_group="course_group" />
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 

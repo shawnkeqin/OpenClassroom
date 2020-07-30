@@ -1,5 +1,6 @@
 <template>
-  <div style="display: flex;">
+  <div v-if="$apollo.loading" style="width: 100%;"><a-skeleton active /></div>
+  <div v-else style="display: flex">
     <Fullcalendar
       ref="calendar"
       :plugins="calendarPlugins"
@@ -23,7 +24,7 @@
     <a-modal v-model="isModalVisible" :footer="null">
       <calendarSeminarModal :event="modalData" />
     </a-modal>
-    <div style="margin: 0 10px;">
+    <div style="margin-left: 2rem;">
       <a-card style="width: 10rem; margin-bottom: 20px;">
         <div>
           <a-checkbox v-model="showMySeminars" class="checkbox-filter">
@@ -55,7 +56,6 @@
         </div>
       </a-card>
     </div>
-    <modals-container />
   </div>
 </template>
 

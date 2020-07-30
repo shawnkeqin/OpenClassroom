@@ -1,5 +1,5 @@
 <template>
-  <div style="width:100%">
+  <div style="width:60rem;">
     <h1>Search Classes</h1>
     <div style="padding: 5px 0px 10px 0px">
       <suggestedSearchButton
@@ -94,7 +94,7 @@
         </div>
       </div>
       <div style="margin: 20px 0 0 20px;">
-        <a-card style="position: sticky; top: 20px;">
+        <a-card style="position: sticky; top: 20px; padding: 0.4rem;">
           <a-form>
             <h4 align="left">Filter by</h4>
             <h5 align="left">Date range</h5>
