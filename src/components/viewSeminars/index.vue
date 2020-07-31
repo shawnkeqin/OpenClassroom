@@ -96,11 +96,8 @@
               show-time
               :ranges="{
                 Today: [moment(), moment()],
-                'This week': [moment().startOf('week'), moment().endOf('week')],
-                'This month': [
-                  moment().startOf('month'),
-                  moment().endOf('month')
-                ]
+                'This week': [moment(), moment().add(1, 'week')],
+                'This month': [moment(), moment().add(1, 'month')]
               }"
               :format="utils.dateFormatStr"
               :disabled-date="disabledDate"
@@ -243,7 +240,7 @@ const SUGGESTED_SEARCH_1 = "SUGGESTED_SEARCH_1";
 const SUGGESTED_SEARCH_2 = "SUGGESTED_SEARCH_2";
 const DEFAULT_FILTERS = {
   courseTitle: undefined,
-  selectedDateRange: [moment(TEST_DATE), moment(TEST_DATE).add(7, "d")],
+  selectedDateRange: [moment(TEST_DATE), moment(TEST_DATE).add(1, "week")],
   startTime: null,
   endTime: null,
   facultyName: undefined,
@@ -267,6 +264,10 @@ const SUGGESTED_SEARCH_FILTERS = {
     // ],
     lecturesOnly: true
   }
+};
+const EMPTY_SEARCH_STATES = {
+  [SUGGESTED_SEARCH_1]: false,
+  [SUGGESTED_SEARCH_2]: false
 };
 
 export default {
@@ -381,26 +382,57 @@ export default {
     searchQueryVariables() {
       this.page = 1;
     },
-    filters: {
-      handler(newFilters) {
-        // Check if new filter still matches current suggested search, if any.
-        _.entries(SUGGESTED_SEARCH_FILTERS).forEach(([key, suggested]) => {
-          suggested = _.assign(_.cloneDeep(DEFAULT_FILTERS), suggested);
-          if (
-            this.SUGGESTED_SEARCH_STATE[key] === true &&
-            _.isEqual(newFilters, suggested) == false
-          ) {
-            // this.SUGGESTED_SEARCH_STATE[key] = false;
-            this.SUGGESTED_SEARCH_STATE = _.assign(
-              _.cloneDeep(this.SUGGESTED_SEARCH_STATE),
-              { [key]: false }
+    SUGGESTED_SEARCH_STATE: {
+      // if any search state is active, set filters to that preset. otherwise, set filters to default
+      handler(newStates) {
+        let noPresetSelected = true;
+        _.forOwn(newStates, (val, key) => {
+          if (val) {
+            this.filters = _.assign(
+              _.cloneDeep(DEFAULT_FILTERS),
+              SUGGESTED_SEARCH_FILTERS[key]
             );
+            noPresetSelected = false;
+            return false;
           }
         });
+        if (noPresetSelected) {
+          this.filters = _.cloneDeep(DEFAULT_FILTERS);
+        }
       },
-      // This observes nested properties of filter.
       deep: true
+    },
+    filters() {
+      // clear any active suggested search state if user inputs anything
+      _.forOwn(this.SUGGESTED_SEARCH_STATE, (val, key) => {
+        if (val) {
+          this.SUGGESTED_SEARCH_STATE = _.assign(
+            _.cloneDeep(this.SUGGESTED_SEARCH_STATE),
+            { [key]: false }
+          );
+        }
+      });
     }
+    // filters: {
+    //   handler(newFilters) {
+    //     // Check if new filter still matches current suggested search, if any.
+    //     _.entries(SUGGESTED_SEARCH_FILTERS).forEach(([key, suggested]) => {
+    //       suggested = _.assign(_.cloneDeep(DEFAULT_FILTERS), suggested);
+    //       if (
+    //         this.SUGGESTED_SEARCH_STATE[key] === true &&
+    //         _.isEqual(newFilters, suggested) == false
+    //       ) {
+    //         // this.SUGGESTED_SEARCH_STATE[key] = false;
+    //         this.SUGGESTED_SEARCH_STATE = _.assign(
+    //           _.cloneDeep(this.SUGGESTED_SEARCH_STATE),
+    //           { [key]: false }
+    //         );
+    //       }
+    //     });
+    //   },
+    //   // This observes nested properties of filter.
+    //   deep: true
+    // }
   },
   computed: {
     courseList() {
@@ -419,7 +451,6 @@ export default {
         : [];
     },
     searchQuery() {
-      console.log(this.filters.openOnly);
       return utils.isNonEmptyArray(this.filters.selectedTags)
         ? this.filters.openOnly
           ? queries.searchOpenSeminarsByFiltersWithTags
@@ -472,29 +503,32 @@ export default {
     //     key => (this.SUGGESTED_SEARCH_STATE[key] = FALSE)
     //   );
     // },;
-    handleCheckOpenOnly(val) {
-      console.log(val);
-      console.log(this.filters.openOnly);
-    },
-    checkedLecturesOnly(data) {
-      console.log(data.target.checked);
-    },
+    // handleCheckOpenOnly(val) {
+    //   console.log(val);
+    //   console.log(this.filters.openOnly);
+    // },
+    // checkedLecturesOnly(data) {
+    //   console.log(data.target.checked);
+    // },
     onSuggestedSearchSelectToggle(data) {
-      // Update which button is selected.
-      const new_button_state = {};
-      Object.keys(this.SUGGESTED_SEARCH_STATE).forEach(key => {
-        new_button_state[key] = false;
+      this.SUGGESTED_SEARCH_STATE = _.assign(_.cloneDeep(EMPTY_SEARCH_STATES), {
+        [data.id]: data.value
       });
-      if (data.value === true) {
-        new_button_state[data.id] = true;
-      }
-      this.SUGGESTED_SEARCH_STATE = new_button_state;
+      // Update which button is selected.
+      // const new_button_state = {};
+      // Object.keys(this.SUGGESTED_SEARCH_STATE).forEach(key => {
+      //   new_button_state[key] = false;
+      // });
+      // if (data.value === true) {
+      //   new_button_state[data.id] = true;
+      // }
+      // this.SUGGESTED_SEARCH_STATE = new_button_state;
       // Update filter values
-      const new_filters = { ...DEFAULT_FILTERS };
-      if (data.value) {
-        Object.assign(new_filters, SUGGESTED_SEARCH_FILTERS[data.id]);
-      }
-      this.filters = new_filters;
+      // const new_filters = { ...DEFAULT_FILTERS };
+      // if (data.value) {
+      //   Object.assign(new_filters, SUGGESTED_SEARCH_FILTERS[data.id]);
+      // }
+      // this.filters = new_filters;
     },
     autoCompleteCourseTitle(input, option) {
       return (
@@ -539,5 +573,5 @@ export default {
   display: block;
   color: rgba(0, 0, 0, 0.54);
   margin-left: 0px;
-}
-</style>;
+}</style
+>;
