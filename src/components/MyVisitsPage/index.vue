@@ -1,83 +1,74 @@
 <template>
-  <div>
+  <div style="width: 50rem;">
     <h1>My Visits</h1>
-    <div style="display: flex;">
-      <!-- <div v-if="seminarsToVisit.length">
-        <SeminarRequestCard
-          v-for="seminarWithVisits in seminarsToVisit"
-          :seminar="seminarWithVisits.seminar"
-          :visits="seminarWithVisits.visits"
-          :isMessagesVisible="true"
-          :key="seminarWithVisits.seminar.id"
-        />
-      </div> -->
-      <div v-if="visitsBySelectedSemester.length">
-        <SeminarVisitRequestCard
-          v-for="visit in visitsBySelectedSemester"
-          :seminar="visit.seminar"
-          :visit="visit"
-          :isMessagesVisible="true"
-          :key="visit.id"
-        />
-      </div>
-      <div v-else>
-        <div style="width: 35rem;">
-          <a-card hoverable>
-            <p>
-              {{
-                `You have no upcoming visits for semester ${selectedSemester[0]}`
-              }}
-            </p>
-          </a-card>
+    <template v-if="$apollo.loading"><a-skeleton active/></template>
+    <template v-else>
+      <div style="display: flex;">
+        <div v-if="visitsBySelectedSemester.length">
+          <SeminarVisitRequestCard
+            v-for="visit in visitsBySelectedSemester"
+            :seminar="visit.seminar"
+            :visit="visit"
+            :isMessagesVisible="true"
+            :key="visit.id"
+          />
+        </div>
+        <div v-else>
+          <div style="width: 35rem;">
+            <a-card hoverable>
+              <p>
+                {{
+                  `You have no upcoming visits for semester ${selectedSemester[0]}`
+                }}
+              </p>
+            </a-card>
+          </div>
+        </div>
+        <div>
+          <div style="position: sticky; top: 20px; margin: 0 20px">
+            <a-card style="width: 15rem; margin-bottom: 20px;">
+              <h4>Visits by semester</h4>
+              <a-menu v-model="selectedSemester">
+                <a-menu-item
+                  v-for="semester in visitsGroupBySemester"
+                  :key="semester.semester_code"
+                >
+                  {{ semester.semester_code }}
+                </a-menu-item>
+              </a-menu>
+            </a-card>
+            <a-card style="width: 15rem;">
+              <p>
+                <a @click="mapVisible = true" href="#">View campus map here</a>
+              </p>
+              <a-modal
+                title="Campus map"
+                :visible="mapVisible"
+                @cancel="mapVisible = false"
+                width="60vw"
+                :footer="null"
+              >
+                <img
+                  src="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg"
+                  width="100%"
+                />
+              </a-modal>
+              <p style="margin-bottom: 0">
+                <a
+                  href="https://teaching.yale-nus.edu.sg/wp-content/uploads/sites/25/2019/04/Peer-Observation-Booklet-web-version-edited-linked.pdf#page=20"
+                >
+                  CTL best practices for Peer Observation</a
+                >
+              </p>
+            </a-card>
+          </div>
         </div>
       </div>
-      <div>
-        <div style="position: sticky; top: 20px; margin: 0 20px">
-          <a-card style="width: 15rem; margin-bottom: 20px;">
-            <h4>Visits by semester</h4>
-            <a-menu v-model="selectedSemester">
-              <a-menu-item
-                v-for="semester in visitsGroupBySemester"
-                :key="semester.semester_code"
-              >
-                {{ semester.semester_code }}
-              </a-menu-item>
-            </a-menu>
-          </a-card>
-          <a-card style="width: 15rem;">
-            <p>
-              <a @click="mapVisible = true" href="#">View campus map here</a>
-            </p>
-            <a-modal
-              title="Campus map"
-              :visible="mapVisible"
-              @cancel="mapVisible = false"
-              width="60vw"
-            >
-              <template slot="footer">
-                <div />
-              </template>
-              <img
-                src="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg"
-                width="100%"
-              />
-            </a-modal>
-            <p style="margin-bottom: 0">
-              <a
-                href="https://teaching.yale-nus.edu.sg/wp-content/uploads/sites/25/2019/04/Peer-Observation-Booklet-web-version-edited-linked.pdf#page=20"
-              >
-                CTL best practices for Peer Observation</a
-              >
-            </p>
-          </a-card>
-        </div>
-      </div>
-    </div>
+    </template>
   </div>
 </template>
 
 <script>
-// import SeminarRequestCard from "../viewSeminars/SeminarRequestCard";
 import SeminarVisitRequestCard from "@/components/SeminarVisitRequestCard";
 import queries from "@/graphql/queries.gql";
 import store from "@/store";
@@ -85,7 +76,6 @@ import store from "@/store";
 export default {
   name: "observelog",
   components: {
-    // SeminarRequestCard
     SeminarVisitRequestCard
   },
   data() {

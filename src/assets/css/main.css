@@ -1,25 +1,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Open+Sans:wght@600&display=swap');
-/* Extra small devices (phones, less than 768px) */
-/* No media query since this is the default in Bootstrap */
 
-/* Small devices (tablets, 768px and up) */
+/* Small devices (tablets) */
 @media (min-width: 768px) {
   html {
     font-size: 80%;
   }
 }
-/* Medium devices (desktops, 992px and up) */
-@media (min-width: 992px) {
+/* Medium devices (desktops) */
+@media (min-width: 1024px) {
   html {
     font-size: 100%;
   }
 }
-/* Large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
+/* Large devices (large desktops) */
+@media (min-width: 1366px) {
   html {
     font-size: 120%;
   }
 }
+
+@media (min-width: 1920px) {
+  html {
+    font-size: 140%;
+  }
+}
+
+@media (min-width: 2560px) {
+  html {
+    font-size: 140%;
+  }
+}
+
 h1 {
   font-size: 2.5rem;
   font-family: "Open Sans", sans-serif;
@@ -33,39 +44,43 @@ h2 {
   margin-bottom: 1rem;
 }
 h3 {
-  font-size: 18px;
+  font-size: 1rem;
   font-family: "Lato", sans-serif;
   font-weight: bold;
   color: rgba(0, 0, 0, 0.87);
 }
 h4 {
-  font-size: 16px;
+  font-size: 0.9rem;
   font-family: "Lato", sans-serif;
   font-weight: bold;
   color: rgba(0, 0, 0, 0.87);
 }
 h5 {
-  font-size: 14px;
+  font-size: 0.8rem;
   font-family: "Lato", sans-serif;
   color: rgba(0, 0, 0, 0.54);
   margin-bottom: 3px;
 }
 h6 {
-  font-size: 12px;
+  font-size: 0.7rem;
   font-family: "Lato", sans-serif;
   color: rgba(0, 0, 0, 0.54);
   margin-bottom: 0;
 }
 p {
-  font-size: 16px;
+  font-size: 0.9rem;
   font-family: "Lato", sans-serif;
   color: rgba(0, 0, 0, 0.87);
 }
-div {
+div, span, button, input, input::placeholder {
+  font-size: 0.8rem;
   font-family: "Lato", sans-serif;
 }
-span {
-  font-family: "Lato", sans-serif;
+button span {
+  font-weight: bold;
+}
+button {
+  padding: 5px;
 }
 .truncate {
   white-space: nowrap;
@@ -79,10 +94,6 @@ span {
 }
 .content-block-wrapper {
   padding: 20px
-}
-button span {
-  font-size: 14px;
-  font-weight: bold;
 }
 .status-icon {
   font-size: 20px;
@@ -110,6 +121,10 @@ button span {
 }
 .declined {
   color: #e57373;
+}
+.past,
+.cancelled {
+  color: rgba(0, 0, 0, 0.37);
 }
 .placeholder {
   color: rgba(0, 0, 0, 0.37);

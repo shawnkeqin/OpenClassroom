@@ -77,7 +77,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 8rem;
+  padding: 0 10rem;
 }
 #container-one {
   height: 100vh;
@@ -100,10 +100,9 @@ export default {
   font-size: 4rem;
   font-family: "Open Sans", sans-serif;
   color: #0077c8;
-  /* color: white; */
   margin-bottom: 1.5rem;
 }
-.desc {
+/* .desc {
   font-size: 1rem;
-}
+} */
 </style>

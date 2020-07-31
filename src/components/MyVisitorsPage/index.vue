@@ -1,34 +1,37 @@
 <template>
-  <div>
+  <div style="width: 50rem;">
     <h1>My Visitors</h1>
     <div style="display: flex;">
-      <div v-if="seminarsBySelectedSemester.length">
-        <SeminarsWithVisitsCard
-          v-for="seminar in seminarsBySelectedSemester"
-          :seminar="seminar"
-          :key="seminar.id"
-        />
-      </div>
-      <div v-else>
-        <div style="width: 35rem;">
-          <a-card hoverable>
-            <p>You have no upcoming visitors</p>
+      <template v-if="$apollo.loading"><a-skeleton active/></template>
+      <template v-else>
+        <div v-if="seminarsBySelectedSemester.length">
+          <SeminarsWithVisitsCard
+            v-for="seminar in seminarsBySelectedSemester"
+            :seminar="seminar"
+            :key="seminar.id"
+          />
+        </div>
+        <div v-else>
+          <div style="width: 35rem;">
+            <a-card hoverable>
+              <p>You have no upcoming visitors</p>
+            </a-card>
+          </div>
+        </div>
+        <div style="position: sticky; top: 20px; margin: 0 20px;">
+          <a-card style="width: 15rem;">
+            <h4>Visits by semester</h4>
+            <a-menu v-model="selectedSemester">
+              <a-menu-item
+                v-for="semester in seminarsGroupBySemester"
+                :key="semester.semester_code"
+              >
+                {{ semester.semester_code }}
+              </a-menu-item>
+            </a-menu>
           </a-card>
         </div>
-      </div>
-      <div style="position: sticky; top: 20px; margin: 0 20px;">
-        <a-card style="width: 15rem;">
-          <h4>Visits by semester</h4>
-          <a-menu v-model="selectedSemester">
-            <a-menu-item
-              v-for="semester in seminarsGroupBySemester"
-              :key="semester.semester_code"
-            >
-              {{ semester.semester_code }}
-            </a-menu-item>
-          </a-menu>
-        </a-card>
-      </div>
+      </template>
     </div>
   </div>
 </template>

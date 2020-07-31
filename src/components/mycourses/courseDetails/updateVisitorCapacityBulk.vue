@@ -18,23 +18,33 @@
         </a-button>
       </template>
       <h5>
-        This will set the visitor capacity for all classes to the value
-        indicated in the input box below
+        This will set the visitor capacity for all classes to the value aas
+        indicated in the box below
       </h5>
-      <a-input v-model="visitor_capacity" />
+      <a-select v-model="visitor_capacity" style="width: 120px;">
+        <a-select-option
+          v-for="option in visitor_capacity_options"
+          :key="option"
+          :value="option"
+        >
+          {{ option === -1 ? "Unlimited" : option }}
+        </a-select-option>
+      </a-select>
     </a-modal>
   </div>
 </template>
 <script>
 import queries from "@/graphql/queries.gql";
+const visitor_capacity_options = [1, 2, 3, 4, 5, 6, -1]
 export default {
   name: "updateVisitorCapacityBulk",
   data() {
     return {
       id: this.$route.params.id,
-      visitor_capacity: "",
+      visitor_capacity: 2,
       modal2Visible: false,
-      isLoading: false
+      isLoading: false,
+      visitor_capacity_options
     };
   },
   methods: {
@@ -55,11 +65,12 @@ export default {
         this.isLoading = false;
         this.modal2Visible = false;
       } catch (err) {
+        console.log(err)
         this.isLoading = false;
         this.modal2Visible = false;
         this.$notification.error({
           key: "update_class_error",
-          message: "Failed to update notes for visitors",
+          message: "Failed to set visitor capacity",
           description: "Please try again."
         });
       }

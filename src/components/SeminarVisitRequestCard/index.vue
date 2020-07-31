@@ -19,6 +19,7 @@
     <a-card
       hoverable
       :class="seminar.group_code == 'CC' ? 'cc-card' : 'seminar-card'"
+      style="padding: 0.2rem;"
     >
       <div style="display: flex; flex-direction: column;">
         <div style="margin-bottom: 5px">
@@ -123,7 +124,10 @@
               </template>
               <template v-else-if="!visit">
                 <template
-                  v-if="visitsCountsForSeminar < seminar.visitor_capacity"
+                  v-if="
+                    seminar.visitor_capacity === -1 ||
+                      accepetedVisitsCountsForSeminar < seminar.visitor_capacity
+                  "
                 >
                   <RequestVisitButton
                     :seminar="seminar"
@@ -205,7 +209,7 @@ export default {
     is_past() {
       return new Date(this.seminar.date) < Date.now();
     },
-    visitsCountForSeminar() {
+    acceptedVisitsCountForSeminar() {
       return (
         this.seminar.visits_aggregate &&
         this.seminar.visits_aggregate.aggregate.count
@@ -225,6 +229,9 @@ export default {
 } */
 .ant-card-hoverable {
   cursor: default;
+}
+.ant-btn span {
+  font-size: 2rem;
 }
 .date-heading {
   font-weight: bold;
