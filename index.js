@@ -5,6 +5,8 @@ const express = require("express");
 const app = express();
 
 // The server isn't run by vue-cli-service so we need to tell it what mode we want explicitly.
+require("custom-env").env();
+require("custom-env").env("local");
 require("custom-env").env(process.env.VUE_APP_MODE);
 
 // // API
@@ -16,7 +18,6 @@ const staticConf = { maxAge: "1d", etag: false };
 
 app.use(history());
 app.use(express.static(publicPath, staticConf));
-
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () =>
   console.log(
