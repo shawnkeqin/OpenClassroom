@@ -781,7 +781,6 @@ mutation update_visitor_capacity_for_all_seminars($course_group_id: Int!, $visit
   }
 }
 
-<<<<<<< HEAD
 query get_course_group_new_visitor_capacity($id: Int!) {
   course_group(where: { id: { _eq: $id } }) {
     id
@@ -793,10 +792,6 @@ query get_course_group_new_visitor_capacity($id: Int!) {
 
 query number_of_visit_requests_made_by_user($visitor_id: String!, $start_time: timestamptz!, $end_time: timestamptz!) {
   visit_aggregate(where: {visitor_id: {_eq: $visitor_id}, time_requested: {_gt: $start_time, _lt: $end_time}}) {
-=======
-query number_of_visit_requests_made_by_user($visitor_id: String!,$start_time:timestamptz!, $end_time:timestamptz!) {
-  seminar_aggregate(where: {visits: {visitor_id: {_eq: $visitor_id},  _and: [{time_requested: {_gte: $start_time}}, {time_requested: {_lte: $end_time}}]}}) {
->>>>>>> 69050ab5ba2e807759d2ddedfe0e234ca0875049
     aggregate {
       count
     }
