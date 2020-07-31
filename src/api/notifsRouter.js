@@ -100,7 +100,7 @@ async function requestInsertHandler(req, res) {
     const info = await transporter.sendMail({
       from: process.env.EMAIL,
       to:
-        process.env.NODE_ENV === "production"
+        process.env.VUE_APP_MODE === "production"
           ? instructor.email
           : process.env.EMAIL_TO,
       subject: `New visit request to your class`,
@@ -151,7 +151,7 @@ async function requestStatusUpdateHandler(req, res) {
       const info = await transporter.sendMail({
         from: process.env.EMAIL,
         to:
-          process.env.NODE_ENV === "production"
+          process.env.VUE_APP_MODE === "production"
             ? instructor.email
             : process.env.EMAIL_TO,
         subject: `A visit request to your class ${course.module_code} is cancelled`,
@@ -160,7 +160,6 @@ async function requestStatusUpdateHandler(req, res) {
       });
 
       console.log("Email sent: %s", info.messageId);
-
     } else {
       // for other cases, the status change is done by the instructor, so we inform the visitor
       const visitStatusMsg =
@@ -173,7 +172,7 @@ async function requestStatusUpdateHandler(req, res) {
       const info = await transporter.sendMail({
         from: process.env.EMAIL,
         to:
-          process.env.NODE_ENV === "production"
+          process.env.VUE_APP_MODE === "production"
             ? visitor.email
             : process.env.EMAIL_TO,
         subject: `Your visit request is ${visit_status_new}`,
@@ -204,7 +203,7 @@ async function requestDeleteHandler(req, res) {
     const info = await transporter.sendMail({
       from: process.env.EMAIL,
       to:
-        process.env.NODE_ENV === "production"
+        process.env.VUE_APP_MODE === "production"
           ? instructor.email
           : process.env.EMAIL_TO,
       subject: `A visit request to your class ${course.module_code} is cancelled`,
@@ -226,9 +225,9 @@ async function requestDeleteHandler(req, res) {
   }
 }
 
-router.use("/", notifMiddleware)
+router.use("/", notifMiddleware);
 router.post("/request-insert", requestInsertHandler);
 router.post("/request-status-update", requestStatusUpdateHandler);
-router.post("/request-delete", requestDeleteHandler)
+router.post("/request-delete", requestDeleteHandler);
 
 module.exports = router;

@@ -1,8 +1,6 @@
 <template>
   <div>
-    <a-button type="danger" @click="modal2Visible = true">
-      Update class
-    </a-button>
+    <a-icon type="edit" @click="modal2Visible = true" />
     <a-modal
       v-model="modal2Visible"
       title="Update class"

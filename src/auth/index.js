@@ -24,8 +24,6 @@ class AuthService extends EventEmitter {
     localStorage.setItem(LOGGED_IN_USER_KEY, username);
   }
   handleAuthentication(username, password) {
-    // console.log(process.env.NODE_ENV);
-    // console.info(`Requesting from ${process.env.VUE_APP_AUTH_ENDPOINT}`);
     return axios
       .post(process.env.VUE_APP_AUTH_ENDPOINT, {
         username: username,
