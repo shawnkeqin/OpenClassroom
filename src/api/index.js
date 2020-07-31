@@ -68,9 +68,9 @@ api.post("/login", (req, res, next) => {
   console.info("Contacting NUS LDAP servers...");
   passport.authenticate("ldapauth", (err, user, info) => {
     console.info(`NUS LDAP server response:\n
-      err:${err ? JSON.toString(err) : err}\n
-      user:${user ? JSON.toString(user) : user}\n
-      info:${JSON.toString(info)}`);
+      err:${err ? JSON.stringify(err) : err}\n
+      user:${user ? JSON.stringify(user) : user}\n
+      info:${JSON.stringify(info)}`);
     if (err) {
       console.info(err);
       return next(err);
@@ -83,7 +83,9 @@ api.post("/login", (req, res, next) => {
       });
     } else {
       console.info(
-        `Constructing auth response payload with user object returned by LDAP: ${user}`
+        `Constructing auth response payload with user object returned by LDAP: ${JSON.stringify(
+          user
+        )}`
       );
       const payload = {
         exp: moment()
