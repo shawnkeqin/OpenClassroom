@@ -59,8 +59,8 @@
             Next
           </a-button>
           <a-alert
-            v-if="invalidCredentials"
-            message="Invalid username and/or password."
+            v-if="showInvalidCredentials"
+            :message="invalidCredentialsMessage"
             type="error"
             show-icon
           />
@@ -78,7 +78,8 @@ export default {
     return {
       form: this.$form.createForm(this, { name: "form" }),
       loading: false,
-      invalidCredentials: false
+      showInvalidCredentials: false,
+      invalidCredentialsMessage: ""
     };
   },
   methods: {
@@ -92,23 +93,20 @@ export default {
           .handleAuthentication(values.username, values.password)
           .then(resp => {
             if (resp.data.success == true) {
-              this.invalidCredentials = false;
+              this.showInvalidCredentials = false;
               this.$router.push({ path: "/" });
             } else {
-              this.invalidCredentials = true;
+              this.invalidCredentialsMessage = resp.data.message;
+              this.showInvalidCredentials = true;
             }
           })
           .catch(err => {
-            if (err.response && err.response.status == 401) {
-              this.invalidCredentials = true;
-            } else {
-              // this.$message.info(err.message);
-              this.$notification.error({
-                key: "login_error",
-                message: "Error: " + err.response.message,
-                description: "Please try again."
-              });
-            }
+            // this.$message.info(err.message);
+            this.$notification.error({
+              key: "login_error",
+              message: "Error: " + err.response.message,
+              description: "Please try again."
+            });
           })
           .finally(() => {
             this.loading = false;
