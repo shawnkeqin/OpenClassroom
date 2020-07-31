@@ -65,13 +65,6 @@
             ><a-skeleton style="width: 35rem;" active
           /></template>
           <template v-else>
-            <!-- <SeminarRequestCard
-              v-for="seminar in seminarLimited"
-              :key="seminar.id"
-              :seminar="seminar"
-              :visit="seminar.visits[0]"
-              :has_consented="loggedInUser.has_consented"
-            /> -->
             <template v-if="seminarLimited.length">
               <SeminarVisitRequestCard
                 v-for="seminar in seminarLimited"
@@ -110,6 +103,7 @@
                 ]
               }"
               :format="utils.dateFormatStr"
+              :disabled-date="disabledDate"
               v-model="filters.selectedDateRange"
               class="filter-field"
             />
@@ -139,7 +133,6 @@
               </a-time-picker>
             </div>
             <h5 align="left">Instructor</h5>
-            <!-- <a-form-item> -->
             <a-select
               v-model="filters.facultyName"
               show-search
@@ -155,7 +148,6 @@
                 {{ faculty.name.toString() }}
               </a-select-option>
             </a-select>
-            <!-- </a-form-item> -->
             <h5 align="left">Tags</h5>
             <div style="width:100%; display:flex">
               <a-select
@@ -246,12 +238,12 @@ import store from "@/store";
 import constants from "@/utils/constants";
 
 const DEFAULT_PAGE_SIZE = 10;
-const TEST_DATE = "2020-08-09";
+const TEST_DATE = "2020-08-10";
 const SUGGESTED_SEARCH_1 = "SUGGESTED_SEARCH_1";
 const SUGGESTED_SEARCH_2 = "SUGGESTED_SEARCH_2";
 const DEFAULT_FILTERS = {
   courseTitle: undefined,
-  selectedDateRange: [],
+  selectedDateRange: [moment(TEST_DATE), moment(TEST_DATE).add(7, "d")],
   startTime: null,
   endTime: null,
   facultyName: undefined,
@@ -262,17 +254,17 @@ const DEFAULT_FILTERS = {
 };
 const SUGGESTED_SEARCH_FILTERS = {
   [SUGGESTED_SEARCH_1]: {
-    selectedDateRange: [
-      moment(TEST_DATE).startOf("week"),
-      moment(TEST_DATE).endOf("week")
-    ],
+    // selectedDateRange: [
+    //   moment(TEST_DATE).startOf("week"),
+    //   moment(TEST_DATE).endOf("week")
+    // ],
     selectedTags: ["Common Curriculum"]
   },
   [SUGGESTED_SEARCH_2]: {
-    selectedDateRange: [
-      moment(TEST_DATE).startOf("week"),
-      moment(TEST_DATE).endOf("week")
-    ],
+    // selectedDateRange: [
+    //   moment(TEST_DATE).startOf("week"),
+    //   moment(TEST_DATE).endOf("week")
+    // ],
     lecturesOnly: true
   }
 };
@@ -398,7 +390,11 @@ export default {
             this.SUGGESTED_SEARCH_STATE[key] === true &&
             _.isEqual(newFilters, suggested) == false
           ) {
-            this.SUGGESTED_SEARCH_STATE[key] = false;
+            // this.SUGGESTED_SEARCH_STATE[key] = false;
+            this.SUGGESTED_SEARCH_STATE = _.assign(
+              _.cloneDeep(this.SUGGESTED_SEARCH_STATE),
+              { [key]: false }
+            );
           }
         });
       },
@@ -514,6 +510,9 @@ export default {
     handleClose() {
       this.open = false;
       this.open2 = false;
+    },
+    disabledDate(cur) {
+      return cur < moment().startOf("day");
     }
   }
 };
