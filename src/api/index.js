@@ -68,9 +68,9 @@ api.post("/login", (req, res, next) => {
   console.info("Contacting NUS LDAP servers...");
   passport.authenticate("ldapauth", (err, user, info) => {
     console.info(`NUS LDAP server response:\n
-      err:${err}\n
-      user:${user}\n
-      info:${info}`);
+      err:${err ? JSON.toString(err) : err}\n
+      user:${user ? JSON.toString(user) : user}\n
+      info:${JSON.toString(info)}`);
     if (err) {
       console.info(err);
       return next(err);
