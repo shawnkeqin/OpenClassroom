@@ -24,4 +24,5 @@ pnpm-debug.log*
 /live/
 /logs/*
 !logs/placeholder.log
-files-to-test
+files-to-scan
+files-to-scan.zip
