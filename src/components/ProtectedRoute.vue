@@ -1,5 +1,5 @@
 <template>
-  <a-layout id="components-layout-demo-top-side">
+  <a-layout>
     <a-alert v-if="showConsent" type="info" show-icon>
       <template slot="message">
         <p style="margin-bottom: 5px;">
@@ -10,7 +10,7 @@
     </a-alert>
     <a-layout-content>
       <a-layout style="padding: 0; background: #f6f6f6">
-        <a-layout-sider width="250px" style="background: #fff">
+        <a-layout-sider width="12rem" style="background: #fff;">
           <div id="mini-user-info">
             <template v-if="loggedInUserObj">
               <img
@@ -79,21 +79,6 @@
               <span class="nav-text">Log out</span>
             </a-menu-item>
           </a-menu>
-          <div style="position: absolute; bottom: 0; padding: 15px;">
-            <!-- <template v-if="loggedInUserObj">
-              <a-button
-                @click="logout"
-                style="display: flex; justify-content: center; align-items: center; padding: 20px;"
-              >
-                <a-icon type="logout" style="margin-right: 10px;"/>
-                <h3 style="margin: 0;">Log out</h3>
-              </a-button>
-              <a-button icon="logout" @click="logout" style="margin: 0;">Log Out</a-button>
-            </template>
-            <template v-else>
-              <a-icon type="loading" />
-            </template> -->
-          </div>
         </a-layout-sider>
         <a-layout-content
           style="display: flex; justify-content: center; padding: 30px 50px 30px 50px; height: 100vh;"
@@ -210,13 +195,6 @@ export default {
 };
 </script>
 <style>
-#components-layout-demo-top-side .logo {
-  width: 120px;
-  height: 31px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px 28px 16px 0;
-  float: left;
-}
 li.nav-item.ant-menu-item {
   display: flex;
   align-items: center;
@@ -227,7 +205,7 @@ li.nav-item.ant-menu-item {
 }
 .nav-text {
   font-family: "Open Sans", sans-serif;
-  font-size: 20px;
+  font-size: 1rem;
 }
 .ant-scroll-number-only-unit {
   color: white;
@@ -238,22 +216,8 @@ li.nav-item.ant-menu-item {
 .ant-badge-count {
   box-shadow: transparent;
 }
-
-/* .logged-in-status-box {
-  position: fixed;
-  padding-left: 25px;
-  bottom: 15px;
-  width: 250px;
-  height: 80px;
-  color: #004b8d;
-  background-color: white;
-}
-.logout-button {
-  margin-top: 10px;
-} */
 #mini-user-info {
   display: flex;
-  /* justify-content: center; */
   align-items: center;
   padding: 20px;
   background-image: linear-gradient(315deg, #f3c9bc 0%, #f5e4b3 74%);

@@ -40,7 +40,7 @@ export default {
   async created() {
     if (!this.token) {
       this.$router.push("login");
-    };
+    }
     this.isLoading = true;
     const optOutUrl = new URL(
       `/api/faculty-status/opt-out?token=${this.token}`,

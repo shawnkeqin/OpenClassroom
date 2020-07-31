@@ -24,31 +24,42 @@
         />
       </div>
       <div>
-        <a-col :span="18">
-          <h5>Time</h5>
-          <div style="display: flex; align-items: center;">
-            <a-time-picker
-              :value="moment(edit_seminar.start, 'HH:mm:ss')"
-              format="HH:mm"
-              placeholder="Start"
-              class="input-field"
-            />
-            <h5 style="display: inline; margin: 5px;">to</h5>
-            <a-time-picker
-              :value="moment(edit_seminar.end, 'HH:mm:ss')"
-              format="HH:mm"
-              placeholder="End"
-              class="input-field"
-            />
-          </div>
-        </a-col>
-        <a-col>
-          <h5>Visitor capacity</h5>
-          <a-input-number
-            v-model="edit_seminar.visitor_capacity"
+        <h5>Time</h5>
+        <div style="display: flex; align-items: center;">
+          <a-time-picker
+            :value="moment(edit_seminar.start, 'HH:mm:ss')"
+            format="HH:mm"
+            placeholder="Start"
             class="input-field"
           />
-        </a-col>
+          <h5 style="display: inline; margin: 5px;">to</h5>
+          <a-time-picker
+            :value="moment(edit_seminar.end, 'HH:mm:ss')"
+            format="HH:mm"
+            placeholder="End"
+            class="input-field"
+          />
+        </div>
+      </div>
+      <div>
+        <a-tooltip
+          title="Please be aware of social distancing and classroom limitations for F2F courses"
+          placement="right"
+        >
+          <h5>Visitor capacity</h5>
+          <a-select
+            v-model="edit_seminar.visitor_capacity"
+            style="width: 120px;"
+          >
+            <a-select-option
+              v-for="option in visitor_capacity_options"
+              :key="option"
+              :value="option"
+            >
+              {{ option === -1 ? "Unlimited" : option }}
+            </a-select-option>
+          </a-select>
+        </a-tooltip>
       </div>
       <div>
         <h5>Venue</h5>
@@ -76,12 +87,14 @@
 <script>
 import moment from "moment";
 import queries from "@/graphql/queries.gql";
+const visitor_capacity_options = [1, 2, 3, 4, 5, 6, -1]
 export default {
   name: "updateSeminarModal",
   props: ["seminar"],
   data() {
     return {
       moment,
+      visitor_capacity_options,
       locations: [],
       edit_seminar: this.seminar,
       modal2Visible: false
