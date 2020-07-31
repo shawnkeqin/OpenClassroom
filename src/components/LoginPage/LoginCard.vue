@@ -105,7 +105,7 @@ export default {
               // this.$message.info(err.message);
               this.$notification.error({
                 key: "login_error",
-                message: "Failed to log in",
+                message: "Error: " + err.response.message,
                 description: "Please try again."
               });
             }

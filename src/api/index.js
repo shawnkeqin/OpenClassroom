@@ -40,6 +40,9 @@ api.get("/", function(req, res) {
 api.post("/login", (req, res, next) => {
   if (!LDAP_CONNECTED) {
     // Send authorization for requested user regardless of password, without doing LDAP request.
+    console.info(
+      "Not in producting or staging-test, so responding with mock authorization."
+    );
     const payload = {
       exp: moment()
         .add(process.env.LDAP_TOKEN_EXP_DAYS, "days")
@@ -62,16 +65,21 @@ api.post("/login", (req, res, next) => {
     });
     return;
   }
+  console.info("Contacting NUS LDAP servers...");
   passport.authenticate("ldapauth", (err, user, info) => {
     if (err) {
+      console.info(err);
       return next(err);
     }
     if (!user) {
       res.status(401).json({
         success: false,
-        message: info
+        message: info.message || ""
       });
     } else {
+      console.info(
+        `Constructing auth response payload with user object returned by LDAP: ${user}`
+      );
       const payload = {
         exp: moment()
           .add(process.env.LDAP_TOKEN_EXP_DAYS, "days")
@@ -82,12 +90,13 @@ api.post("/login", (req, res, next) => {
           "x-hasura-user-id": user[process.env.LDAP_RESP_USERNAME_FIELD]
         }
       };
+      console.info("Signing JWT claim...");
       jwt.sign(payload, process.env.JWT_SECRET, (err, token) => {
         if (err) {
-          console.log(err);
+          console.info(err);
           res.send(err);
         }
-        console.log(token);
+        console.info("Returning JWT: " + token);
         res.json({
           success: true,
           token: token
