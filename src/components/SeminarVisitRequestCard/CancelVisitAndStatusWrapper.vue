@@ -49,7 +49,7 @@
       </div>
       <AddToCalendar :seminar="seminar" />
     </template>
-    <template v-if="visit.visit_status === 'PENDING'">
+    <template v-else-if="visit.visit_status === 'PENDING'">
       <a-button
         @click="deleteRequestModalVisible = true"
         type="primary"
