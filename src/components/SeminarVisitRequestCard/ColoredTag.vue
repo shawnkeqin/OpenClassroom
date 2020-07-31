@@ -13,7 +13,7 @@ const tagStyles = [
     backgroundColor: "#7FB3D5" // dark blue
   },
   {
-    tag_labels: ["Chinese Studies", "Anthropology", "Languages"],
+    tag_labels: ["Chinese Studies", "Anthropology", "Language"],
     backgroundColor: "#F1948A" // pink
   }, 
   {
@@ -21,14 +21,15 @@ const tagStyles = [
       "Arts and Humanities",
       "Literature",
       "Psychology",
-      "Philosophy"
+      "Philosophy",
+      "Liberal Arts"
     ],
     backgroundColor: "#BB8FCE" // purple
   },
   {
-    tag_labels: ["PPE", "Global Affairs", "Urban Studies"],
+    tag_labels: ["PPE", "Global Affairs", "Urban Studies", "Social Sciences"],
     backgroundColor: "#73C6B6" // cyan
-  }, 
+  },
   {
     tag_labels: ["Global Antiquity", "History", "Historical Immersion"],
     backgroundColor: "#E59866" // brown
@@ -62,10 +63,10 @@ export default {
     tagColor() {
       const tagStyle = tagStyles.find(
         tagStyle =>
-          tagStyle.tag_labels.findIndex(label => label === this.tag_label) !==
+          tagStyle.tag_labels.findIndex(label => this.tag_label.includes(label)) !==
           -1
       );
-      return tagStyle.backgroundColor;
+      return tagStyle ? tagStyle.backgroundColor : 'grey';
     }
   }
 };
