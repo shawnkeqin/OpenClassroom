@@ -37,7 +37,7 @@
           >
             <a-menu-item :key="1" class="nav-item">
               <a-icon type="user" />
-              <span class="nav-text">My profile</span>
+              <span class="nav-text">My Profile</span>
               <router-link to="/profile" />
             </a-menu-item>
             <a-menu-item :ey="2" class="nav-item">
@@ -134,7 +134,7 @@ export default {
       update: data => data.faculty_by_pk,
       skip() {
         return this.loggedInUser === null;
-      },
+      }
       // error(error, vm, key) {
       //   this.$notification.error({
       //     key,
@@ -152,7 +152,7 @@ export default {
         };
       },
       update: data => data.visit_aggregate.aggregate.count,
-      fetchPolicy: "network-only",
+      fetchPolicy: "network-only"
       // error(error, vm, key) {
       //   this.$notification.error({
       //     key,

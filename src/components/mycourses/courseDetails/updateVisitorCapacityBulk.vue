@@ -1,7 +1,7 @@
 <template>
   <div>
     <a @click="() => (modal2Visible = true)" href="#">
-      Set visitor capacity for all classses
+      Set visitor capacity for all classses <a-icon type="edit" />
     </a>
     <a-modal
       v-model="modal2Visible"
@@ -35,7 +35,7 @@
 </template>
 <script>
 import queries from "@/graphql/queries.gql";
-const visitor_capacity_options = [1, 2, 3, 4, 5, 6, -1]
+const visitor_capacity_options = [1, 2, 3, 4, 5, 6, -1];
 export default {
   name: "updateVisitorCapacityBulk",
   data() {
@@ -65,7 +65,7 @@ export default {
         this.isLoading = false;
         this.modal2Visible = false;
       } catch (err) {
-        console.log(err)
+        console.log(err);
         this.isLoading = false;
         this.modal2Visible = false;
         this.$notification.error({

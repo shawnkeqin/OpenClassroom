@@ -51,7 +51,11 @@
         <div>
           <a-col :span="17" style="padding-right: 20px">
             <div style="margin-bottom: 5px">
-              <h3 :class="{ past: is_past }" style="display: inline">
+              <h3
+                :class="{ past: is_past }"
+                style="display: inline"
+                @click="descModalVisible = true"
+              >
                 {{
                   seminar.group_code == "CC"
                     ? course.title + " (Lecture)"
@@ -61,6 +65,11 @@
               <p :class="{ past: is_past }" style="display: inline">
                 {{ seminar.module_code }}
               </p>
+              <h6>
+                <a @click="descModalVisible = true" href="#"
+                  >View full course description and class details</a
+                >
+              </h6>
               <h4 :class="{ past: is_past, placeholder: !seminar.title }">
                 {{ seminar.title || "No class title" }}
               </h4>
@@ -69,11 +78,6 @@
               <h5 class="truncate" :class="{ placeholder: !seminar.desc }">
                 {{ seminar.desc || "No class description" }}
               </h5>
-              <h6>
-                <a @click="descModalVisible = true" href="#"
-                  >View full course description and class details</a
-                >
-              </h6>
             </div>
             <a-modal v-model="descModalVisible" @ok="descModalVisible = false">
               <template slot="footer">

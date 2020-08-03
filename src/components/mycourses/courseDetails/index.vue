@@ -2,9 +2,33 @@
   <div style="width: 80%;">
     <template v-if="$apollo.loading"><a-skeleton active/></template>
     <template v-else>
-      <h1>
-        {{ course ? course.title : "" }}
-      </h1>
+      <div style="display: flex; align-items: center; padding-bottom: 5px;">
+        <h1 style="margin: 0 10px 0 0">
+          {{ course ? course.title : "" }}
+        </h1>
+        <a-card style="width: 250px; margin-right: 10px;">
+          <p style="margin: 0 10px 0 0">
+            {{
+              `This course is ${
+                course_group.is_open ? `open` : `closed`
+              } to visit requests`
+            }}
+          </p>
+          <a-switch
+            :checked="course_group.is_open"
+            checked-children="open"
+            un-checked-children="closed"
+            :loading="isToggleCourseGroupLoading"
+            @click="toggleCourseGroupIsOpen"
+            style="margin-right: 5px;"
+          />
+          <a-tooltip
+            title="Closing/opening this course will automatically close/open all of its classes."
+          >
+            <a-icon type="exclamation-circle" theme="filled" class="pending" />
+          </a-tooltip>
+        </a-card>
+      </div>
       <div>
         <h3 style="margin: 0 10px 0 0">
           {{ course ? course.module_code : "" }}
@@ -17,7 +41,7 @@
           }}
         </p>
       </div>
-      <div style="display: flex; align-items: center; padding-bottom: 5px;">
+      <!--    <div style="display: flex; align-items: center; padding-bottom: 5px;">
         <p style="margin: 0 10px 0 0">
           {{
             `This course is ${
@@ -38,7 +62,7 @@
         >
           <a-icon type="exclamation-circle" theme="filled" class="pending" />
         </a-tooltip>
-      </div>
+      </div> -->
       <a-card style="width:100%" :bodyStyle="{ padding: 0 }">
         <a-collapse v-model="activeKey" :bordered="false">
           <a-collapse-panel key="1">
@@ -71,7 +95,9 @@
       </a-card>
       <div style="padding-top: 40px">
         <h2>Upcoming classes</h2>
-        <updateVisitorCapacityBulk :id="id" />
+        <div style="margin-left:700px;">
+          <updateVisitorCapacityBulk :id="id" />
+        </div>
         <div class="list-of-seminars">
           <SeminarsTable :seminars="seminars" :course_group="course_group" />
         </div>

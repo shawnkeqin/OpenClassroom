@@ -26,7 +26,15 @@
       </a-card>
     </div>
     <div>
-      <div id="components-table-demo-size">
+      <a-spin v-if="$apollo.loading">
+        <a-icon
+          slot="indicator"
+          type="loading"
+          style="font-size: 26px; padding-left: 10px"
+          spin
+        />
+      </a-spin>
+      <div v-else id="components-table-demo-size">
         <h4>Average Statistics</h4>
         <a-table bordered :columns="columns" :data-source="data"> </a-table>
       </div>
@@ -44,7 +52,7 @@
         "
         :number_of_hosted_visitors_by_user="number_of_hosted_visitors_by_user"
       /> -->
-      <div style="width:800px; margin:0 auto;">
+      <div>
         <a-button v-on:click="isShowRequestsMade = !isShowRequestsMade">
           Average Requests Made
         </a-button>
@@ -920,7 +928,7 @@ export default {
 
       average = sum / count;
 
-      return average;
+      return average.toFixed(2);
     },
     average_completed_visit_requests_made_across_all_users: function() {
       var count =
@@ -939,7 +947,7 @@ export default {
 
       average = sum / count;
 
-      return average;
+      return average.toFixed(2);
     },
     average_visit_requests_received_across_all_users: function() {
       var count =
@@ -956,7 +964,7 @@ export default {
 
       average = sum / count;
 
-      return average;
+      return average.toFixed(2);
     },
     average_hosted_visits_across_all_users: function() {
       var count =
@@ -974,7 +982,7 @@ export default {
       var average = 0;
 
       average = sum / count;
-      return average;
+      return average.toFixed(2);
     },
 
     average_visit_requests_made_across_division_science: function() {
@@ -992,7 +1000,7 @@ export default {
       var average = 0;
 
       average = sum / count;
-      return average;
+      return average.toFixed(2);
     },
     average_visit_requests_made_across_division_social_sciences: function() {
       var count =
@@ -1009,7 +1017,7 @@ export default {
       var average = 0;
 
       average = sum / count;
-      return average;
+      return average.toFixed(2);
     },
     average_visit_requests_made_across_division_humanities: function() {
       var count =
@@ -1026,7 +1034,7 @@ export default {
       var average = 0;
 
       average = sum / count;
-      return average;
+      return average.toFixed(2);
     },
     average_completed_visit_requests_made_across_division_science: function() {
       var count =
@@ -1041,7 +1049,7 @@ export default {
           : 0;
       var average = 0;
       average = sum / count;
-      return average;
+      return average.toFixed(2);
     },
     average_completed_visit_requests_made_across_division_social_sciences: function() {
       var count =
@@ -1058,7 +1066,7 @@ export default {
           : 0;
       var average = 0;
       average = sum / count;
-      return average;
+      return average.toFixed(2);
     },
     average_completed_visit_requests_made_across_division_humanities: function() {
       var count =
@@ -1075,7 +1083,7 @@ export default {
           : 0;
       var average = 0;
       average = sum / count;
-      return average;
+      return average.toFixed(2);
     },
     average_visit_requests_received_across_division_science: function() {
       var count =
@@ -1090,7 +1098,7 @@ export default {
               .aggregate.count
           : 0;
       average = sum / count;
-      return average;
+      return average.toFixed(2);
     },
     average_visit_requests_received_across_division_social_sciences: function() {
       var count =
@@ -1107,7 +1115,7 @@ export default {
               .visit_aggregate.aggregate.count
           : 0;
       average = sum / count;
-      return average;
+      return average.toFixed(2);
     },
     average_visit_requests_received_across_division_humanities: function() {
       var count =
@@ -1122,7 +1130,7 @@ export default {
               .visit_aggregate.aggregate.count
           : 0;
       average = sum / count;
-      return average;
+      return average.toFixed(2);
     },
     average_hosted_visits_across_divison_science: function() {
       var count =
@@ -1137,7 +1145,7 @@ export default {
               .count
           : 0;
       average = sum / count;
-      return average;
+      return average.toFixed(2);
     },
     average_hosted_visits_across_divison_social_sciences: function() {
       var count =
@@ -1152,7 +1160,7 @@ export default {
               .aggregate.count
           : 0;
       average = sum / count;
-      return average;
+      return average.toFixed(2);
     },
     average_hosted_visits_across_divison_humanities: function() {
       var count =
@@ -1167,7 +1175,7 @@ export default {
               .aggregate.count
           : 0;
       average = sum / count;
-      return average;
+      return average.toFixed(2);
     },
     data() {
       return [
