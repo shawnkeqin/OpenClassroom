@@ -126,7 +126,7 @@
                 <template
                   v-if="
                     seminar.visitor_capacity === -1 ||
-                      accepetedVisitsCountsForSeminar < seminar.visitor_capacity
+                      acceptedVisitsCountForSeminar < seminar.visitor_capacity
                   "
                 >
                   <RequestVisitButton
