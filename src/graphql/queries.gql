@@ -78,7 +78,15 @@ mutation update_visit_response(
 }
 
 query getPendingVisitsCount($faculty_id: String!, $semester_code: String!) {
-  visit_aggregate(where: {seminar: {semester_code: {_eq: $semester_code}, course_group: {faculty_id: {_eq: $faculty_id}}}, visit_status: {_eq: "PENDING"}}) {
+  visit_aggregate(
+    where: {
+      seminar: {
+        semester_code: { _eq: $semester_code }
+        course_group: { faculty_id: { _eq: $faculty_id } }
+      }
+      visit_status: { _eq: "PENDING" }
+    }
+  ) {
     aggregate {
       count
     }
@@ -209,8 +217,16 @@ mutation cancel_visit_request($visit_id: Int!) {
   }
 }
 
-query get_course_groups_by_faculty($faculty_id: String!, $semester_code: String!) {
-  course_group(where: {faculty_id: {_eq: $faculty_id}, course: {semester_code: {_eq: $semester_code}}}) {
+query get_course_groups_by_faculty(
+  $faculty_id: String!
+  $semester_code: String!
+) {
+  course_group(
+    where: {
+      faculty_id: { _eq: $faculty_id }
+      course: { semester_code: { _eq: $semester_code } }
+    }
+  ) {
     id
     group_code
     course {
@@ -221,8 +237,17 @@ query get_course_groups_by_faculty($faculty_id: String!, $semester_code: String!
   }
 }
 
-query get_seminars_by_course_group($course_group_id: Int!, $date_lower_bound: date) {
-  seminar(where: {course_group: {id: {_eq: $course_group_id}}, date: {_gte: $date_lower_bound}}, order_by: {date: desc}) {
+query get_seminars_by_course_group(
+  $course_group_id: Int!
+  $date_lower_bound: date
+) {
+  seminar(
+    where: {
+      course_group: { id: { _eq: $course_group_id } }
+      date: { _gte: $date_lower_bound }
+    }
+    order_by: { date: desc }
+  ) {
     id
     date
     start
@@ -288,10 +313,7 @@ mutation update_course_group_desc($id: Int!, $course_group_desc: String!) {
 }
 
 mutation update_course_group_notes($id: Int!, $notes: String!) {
-  update_course_group(
-    where: { id: { _eq: $id } }
-    _set: { notes: $notes }
-  ) {
+  update_course_group(where: { id: { _eq: $id } }, _set: { notes: $notes }) {
     affected_rows
   }
 }
@@ -365,8 +387,34 @@ mutation unarchive_seminar($seminar_id: Int!) {
   }
 }
 
-query searchSeminarsByFilters($course_title: String!, $faculty_name: String!, $start_date: date!, $end_date: date!, $start_time: time!, $end_time: time!, $visitor_id: String, $semester_code: String, $teaching_modes: [bpchar!], $include_cc_lectures: String!) {
-  seminar(where: {_and: [{course_group: {course: {title: {_ilike: $course_title}}}}, {course_group: {faculty: {name: {_similar: $faculty_name}}}}, {course_group: {teaching_mode: {_in: $teaching_modes}}}, {date: {_gte: $start_date}}, {date: {_lte: $end_date}}, {start: {_gte: $start_time}}, {end: {_lte: $end_time}}, {semester_code: {_eq: $semester_code}}, {group_code: {_similar: $include_cc_lectures}}]}, order_by: {date: asc, start: asc}) {
+query searchSeminarsByFilters(
+  $course_title: String!
+  $faculty_name: String!
+  $start_date: date!
+  $end_date: date!
+  $start_time: time!
+  $end_time: time!
+  $visitor_id: String
+  $semester_code: String
+  $teaching_modes: [bpchar!]
+  $include_cc_lectures: String!
+) {
+  seminar(
+    where: {
+      _and: [
+        { course_group: { course: { title: { _ilike: $course_title } } } }
+        { course_group: { faculty: { name: { _similar: $faculty_name } } } }
+        { course_group: { teaching_mode: { _in: $teaching_modes } } }
+        { date: { _gte: $start_date } }
+        { date: { _lte: $end_date } }
+        { start: { _gte: $start_time } }
+        { end: { _lte: $end_time } }
+        { semester_code: { _eq: $semester_code } }
+        { group_code: { _similar: $include_cc_lectures } }
+      ]
+    }
+    order_by: { date: asc, start: asc }
+  ) {
     id
     date
     start
@@ -404,7 +452,7 @@ query searchSeminarsByFilters($course_title: String!, $faculty_name: String!, $s
         }
       }
     }
-    visits(where: {visitor_id: {_eq: $visitor_id}}) {
+    visits(where: { visitor_id: { _eq: $visitor_id } }) {
       id
       visit_status
       is_cancelled
@@ -413,7 +461,10 @@ query searchSeminarsByFilters($course_title: String!, $faculty_name: String!, $s
       time_requested
       time_responded
     }
-    visits_aggregate(distinct_on: id, where: {visit_status: {_eq: "ACCEPTED"}}) {
+    visits_aggregate(
+      distinct_on: id
+      where: { visit_status: { _eq: "ACCEPTED" } }
+    ) {
       aggregate {
         count
       }
@@ -421,8 +472,40 @@ query searchSeminarsByFilters($course_title: String!, $faculty_name: String!, $s
   }
 }
 
-query searchSeminarsByFiltersWithTags($course_title: String!, $faculty_name: String!, $start_date: date!, $end_date: date!, $start_time: time!, $end_time: time!, $selected_tags: [String!], $visitor_id: String, $semester_code: String, $teaching_modes: [bpchar!], $include_cc_lectures: String!) {
-  seminar(where: {_and: [{course_group: {course: {title: {_ilike: $course_title}}}}, {course_group: {faculty: {name: {_similar: $faculty_name}}}}, {course_group: {teaching_mode: {_in: $teaching_modes}}}, {date: {_gte: $start_date}}, {date: {_lte: $end_date}}, {start: {_gte: $start_time}}, {end: {_lte: $end_time}}, {course_group: {course: {tagged_as: {tag_label: {_in: $selected_tags}}}}}, {semester_code: {_eq: $semester_code}}, {group_code: {_similar: $include_cc_lectures}}]}, order_by: {date: asc, start: asc}) {
+query searchSeminarsByFiltersWithTags(
+  $course_title: String!
+  $faculty_name: String!
+  $start_date: date!
+  $end_date: date!
+  $start_time: time!
+  $end_time: time!
+  $selected_tags: [String!]
+  $visitor_id: String
+  $semester_code: String
+  $teaching_modes: [bpchar!]
+  $include_cc_lectures: String!
+) {
+  seminar(
+    where: {
+      _and: [
+        { course_group: { course: { title: { _ilike: $course_title } } } }
+        { course_group: { faculty: { name: { _similar: $faculty_name } } } }
+        { course_group: { teaching_mode: { _in: $teaching_modes } } }
+        { date: { _gte: $start_date } }
+        { date: { _lte: $end_date } }
+        { start: { _gte: $start_time } }
+        { end: { _lte: $end_time } }
+        {
+          course_group: {
+            course: { tagged_as: { tag_label: { _in: $selected_tags } } }
+          }
+        }
+        { semester_code: { _eq: $semester_code } }
+        { group_code: { _similar: $include_cc_lectures } }
+      ]
+    }
+    order_by: { date: asc, start: asc }
+  ) {
     id
     date
     start
@@ -458,7 +541,7 @@ query searchSeminarsByFiltersWithTags($course_title: String!, $faculty_name: Str
         }
       }
     }
-    visits(where: {visitor_id: {_eq: $visitor_id}}) {
+    visits(where: { visitor_id: { _eq: $visitor_id } }) {
       id
       visit_status
       is_cancelled
@@ -467,14 +550,16 @@ query searchSeminarsByFiltersWithTags($course_title: String!, $faculty_name: Str
       time_requested
       time_responded
     }
-    visits_aggregate(distinct_on: id, where: {visit_status: {_eq: "ACCEPTED"}}) {
+    visits_aggregate(
+      distinct_on: id
+      where: { visit_status: { _eq: "ACCEPTED" } }
+    ) {
       aggregate {
         count
       }
     }
   }
 }
-
 
 query searchOpenSeminarsByFilters(
   $course_title: String!
@@ -550,6 +635,14 @@ query searchOpenSeminarsByFilters(
       response_msg
       time_requested
       time_responded
+    }
+    visits_aggregate(
+      distinct_on: id
+      where: { visit_status: { _eq: "ACCEPTED" } }
+    ) {
+      aggregate {
+        count
+      }
     }
   }
 }
@@ -632,6 +725,14 @@ query searchOpenSeminarsByFiltersWithTags(
       response_msg
       time_requested
       time_responded
+    }
+    visits_aggregate(
+      distinct_on: id
+      where: { visit_status: { _eq: "ACCEPTED" } }
+    ) {
+      aggregate {
+        count
+      }
     }
   }
 }
@@ -767,13 +868,19 @@ query get_seminars_of_faculty_in_calendar(
         title
         module_code
         desc
-      }     
+      }
     }
   }
 }
 
-mutation update_visitor_capacity_for_all_seminars($course_group_id: Int!, $visitor_capacity: Int!) {
-  update_seminar(where: {course_group: {id: {_eq: $course_group_id}}}, _set: {visitor_capacity: $visitor_capacity}) {
+mutation update_visitor_capacity_for_all_seminars(
+  $course_group_id: Int!
+  $visitor_capacity: Int!
+) {
+  update_seminar(
+    where: { course_group: { id: { _eq: $course_group_id } } }
+    _set: { visitor_capacity: $visitor_capacity }
+  ) {
     affected_rows
   }
 }
@@ -785,37 +892,57 @@ query get_course_group_new_visitor_capacity($id: Int!) {
   }
 }
 
-
-
-query number_of_visit_requests_made_by_user($visitor_id: String!, $start_time: timestamptz!, $end_time: timestamptz!) {
-  visit_aggregate(where: {visitor_id: {_eq: $visitor_id}, time_requested: {_gt: $start_time, _lt: $end_time}}) {
+query number_of_visit_requests_made_by_user(
+  $visitor_id: String!
+  $start_time: timestamptz!
+  $end_time: timestamptz!
+) {
+  visit_aggregate(
+    where: {
+      visitor_id: { _eq: $visitor_id }
+      time_requested: { _gt: $start_time, _lt: $end_time }
+    }
+  ) {
     aggregate {
       count
     }
   }
 }
 
-
-
-query number_of_completed_visit_requests_made_by_user($visitor_id: String!, $start_time: timestamptz!, $end_time: timestamptz!) {
-  visit_aggregate(where: {visitor_id: {_eq: $visitor_id}, visit_status: {_eq: "ACCEPTED"}, time_requested: {_gt: $start_time, _lt: $end_time}}) {
+query number_of_completed_visit_requests_made_by_user(
+  $visitor_id: String!
+  $start_time: timestamptz!
+  $end_time: timestamptz!
+) {
+  visit_aggregate(
+    where: {
+      visitor_id: { _eq: $visitor_id }
+      visit_status: { _eq: "ACCEPTED" }
+      time_requested: { _gt: $start_time, _lt: $end_time }
+    }
+  ) {
     aggregate {
       count
     }
   }
 }
 
-
-query number_of_visit_requests_received_by_user($faculty_id: String!, $start_time:timestamptz!, $end_time:timestamptz! )  {
-  visit_aggregate(where: {seminar: {course_group: {faculty_id: {_eq: $faculty_id}}}, time_requested: {_gt: $start_time, _lt: $end_time}}) {
+query number_of_visit_requests_received_by_user(
+  $faculty_id: String!
+  $start_time: timestamptz!
+  $end_time: timestamptz!
+) {
+  visit_aggregate(
+    where: {
+      seminar: { course_group: { faculty_id: { _eq: $faculty_id } } }
+      time_requested: { _gt: $start_time, _lt: $end_time }
+    }
+  ) {
     aggregate {
       count
     }
   }
 }
-
-
-
 
 query get_my_visits_by_date($visitor_id: String!, $date: date!) {
   visit(
@@ -846,27 +973,51 @@ query get_my_visits_by_date($visitor_id: String!, $date: date!) {
   }
 }
 
-query number_of_hosted_visit_sessions_by_user($faculty_id: String!, $start_time:timestamptz!, $end_time:timestamptz! )  {
-  seminar_aggregate(where: {visits: {_and: [{time_requested: {_gte: $start_time}}, {time_requested: {_lte: $end_time}}, {visit_status:{_eq: "ACCEPTED"}}]}, course_group: {faculty_id: {_eq: $faculty_id}}}) {
+query number_of_hosted_visit_sessions_by_user(
+  $faculty_id: String!
+  $start_time: timestamptz!
+  $end_time: timestamptz!
+) {
+  seminar_aggregate(
+    where: {
+      visits: {
+        _and: [
+          { time_requested: { _gte: $start_time } }
+          { time_requested: { _lte: $end_time } }
+          { visit_status: { _eq: "ACCEPTED" } }
+        ]
+      }
+      course_group: { faculty_id: { _eq: $faculty_id } }
+    }
+  ) {
     aggregate {
       count
     }
   }
 }
 
-
-query number_of_hosted_visitors_by_user($faculty_id: String!, $start_time:timestamptz!, $end_time:timestamptz! ) {
-visit_aggregate(distinct_on: visitor_id, where: {visitor: {visits: {time_requested: {_gt: $start_time, _lt: $end_time}, visit_status: {_eq: "ACCEPTED"}}, course_groups: {faculty_id: {_eq: $faculty_id}}}}) {
-      aggregate {
-        count
+query number_of_hosted_visitors_by_user(
+  $faculty_id: String!
+  $start_time: timestamptz!
+  $end_time: timestamptz!
+) {
+  visit_aggregate(
+    distinct_on: visitor_id
+    where: {
+      visitor: {
+        visits: {
+          time_requested: { _gt: $start_time, _lt: $end_time }
+          visit_status: { _eq: "ACCEPTED" }
+        }
+        course_groups: { faculty_id: { _eq: $faculty_id } }
       }
     }
+  ) {
+    aggregate {
+      count
+    }
+  }
 }
-
-
-
-
-
 
 query get_my_seminars_by_date($faculty_id: String!, $date: date!) {
   seminar(
@@ -894,10 +1045,13 @@ query get_my_seminars_by_date($faculty_id: String!, $date: date!) {
   }
 }
 
-
-
-query total_number_of_visit_requests_across_all_users( $start_time:timestamptz!, $end_time:timestamptz! )   {
-  visit_aggregate(where: {time_requested: {_gt: $start_time, _lt: $end_time}}) {
+query total_number_of_visit_requests_across_all_users(
+  $start_time: timestamptz!
+  $end_time: timestamptz!
+) {
+  visit_aggregate(
+    where: { time_requested: { _gt: $start_time, _lt: $end_time } }
+  ) {
     aggregate {
       count
     }
@@ -909,10 +1063,16 @@ query total_number_of_visit_requests_across_all_users( $start_time:timestamptz!,
   }
 }
 
-
-
-query total_number_of_completed_visit_requests_across_all_users( $start_time:timestamptz!, $end_time:timestamptz! ) {
-  visit_aggregate(where: {time_requested: {_gt: $start_time, _lt: $end_time}, visit_status: {_eq: "ACCEPTED"}}) {
+query total_number_of_completed_visit_requests_across_all_users(
+  $start_time: timestamptz!
+  $end_time: timestamptz!
+) {
+  visit_aggregate(
+    where: {
+      time_requested: { _gt: $start_time, _lt: $end_time }
+      visit_status: { _eq: "ACCEPTED" }
+    }
+  ) {
     aggregate {
       count
     }
@@ -924,89 +1084,169 @@ query total_number_of_completed_visit_requests_across_all_users( $start_time:tim
   }
 }
 
-
-  query get_num_users{
+query get_num_users {
   course_group {
     faculty_id
   }
 }
 
-
-
-
-query average_visit_requests_made_across_division($division: String!,  $start_time:timestamptz!, $end_time:timestamptz! )  {
-  visit_aggregate(where: {visitor: {division: {_eq: $division}}, time_requested: {_gt:  $start_time, _lt: $end_time}}) {
+query average_visit_requests_made_across_division(
+  $division: String!
+  $start_time: timestamptz!
+  $end_time: timestamptz!
+) {
+  visit_aggregate(
+    where: {
+      visitor: { division: { _eq: $division } }
+      time_requested: { _gt: $start_time, _lt: $end_time }
+    }
+  ) {
     aggregate {
       count
     }
   }
-  faculty_aggregate(where: {has_consented: {_eq: true}, is_active: {_eq: true}, course_groups: {is_open: {_eq: true}, faculty: {division: {_eq: $division}}}}) {
-    aggregate {
-      count
+  faculty_aggregate(
+    where: {
+      has_consented: { _eq: true }
+      is_active: { _eq: true }
+      course_groups: {
+        is_open: { _eq: true }
+        faculty: { division: { _eq: $division } }
+      }
     }
-  }
-}
-query average_visit_requests_made_across_division_science($division: String!,  $start_time:timestamptz!, $end_time:timestamptz! )  {
-  visit_aggregate(where: {visitor: {division: {_eq: $division}}, time_requested: {_gt:  $start_time, _lt: $end_time}}) {
-    aggregate {
-      count
-    }
-  }
-  faculty_aggregate(where: {has_consented: {_eq: true}, is_active: {_eq: true}, course_groups: {is_open: {_eq: true}, faculty: {division: {_eq: $division}}}}) {
-    aggregate {
-      count
-    }
-  }
-}
-
-
-
-query average_completed_visit_requests_made_across_division($division: String!,  $start_time:timestamptz!, $end_time:timestamptz! )  {
-  visit_aggregate(where: {visitor: {division: {_eq: $division}}, time_requested: {_gt: $start_time, _lt: $end_time}, visit_status: {_eq: "ACCEPTED"}}) {
-    aggregate {
-      count
-    }
-  }
-  faculty_aggregate(where: {has_consented: {_eq: true}, is_active: {_eq: true}, course_groups: {is_open: {_eq: true}, faculty: {division: {_eq: $division}}}}) {
+  ) {
     aggregate {
       count
     }
   }
 }
-
-
-
-
-query average_visit_requests_received_across_division($division: String!,  $start_time:timestamptz!, $end_time:timestamptz! )  {
-  visit_aggregate(where: {visitor: {division: {_eq: $division}}, time_requested: {_gt:  $start_time, _lt: $end_time}}) {
+query average_visit_requests_made_across_division_science(
+  $division: String!
+  $start_time: timestamptz!
+  $end_time: timestamptz!
+) {
+  visit_aggregate(
+    where: {
+      visitor: { division: { _eq: $division } }
+      time_requested: { _gt: $start_time, _lt: $end_time }
+    }
+  ) {
     aggregate {
       count
     }
   }
-  faculty_aggregate(where: {has_consented: {_eq: true}, is_active: {_eq: true}, course_groups: {is_open: {_eq: true}, faculty: {division: {_eq: $division}}}}) {
-    aggregate {
-      count
+  faculty_aggregate(
+    where: {
+      has_consented: { _eq: true }
+      is_active: { _eq: true }
+      course_groups: {
+        is_open: { _eq: true }
+        faculty: { division: { _eq: $division } }
+      }
     }
-  }
-}
-
-
-
-
-
-
-query average_hosted_visits_across_division($division: String!,  $start_time:timestamptz!, $end_time:timestamptz! ) {
-  faculty_aggregate(where: {has_consented: {_eq: true}, is_active: {_eq: true}, course_groups: {is_open: {_eq: true}, faculty: {division: {_eq: $division}}}}) {
-    aggregate {
-      count
-    }
-  }
-  visit_aggregate(distinct_on: visitor_id, where: {visitor: {visits: {time_requested: {_gt: $start_time, _lt: $end_time}, visit_status: {_eq: "ACCEPTED"}}, course_groups: {faculty: {division: {_eq: $division}}}}}) {
+  ) {
     aggregate {
       count
     }
   }
 }
 
+query average_completed_visit_requests_made_across_division(
+  $division: String!
+  $start_time: timestamptz!
+  $end_time: timestamptz!
+) {
+  visit_aggregate(
+    where: {
+      visitor: { division: { _eq: $division } }
+      time_requested: { _gt: $start_time, _lt: $end_time }
+      visit_status: { _eq: "ACCEPTED" }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+  faculty_aggregate(
+    where: {
+      has_consented: { _eq: true }
+      is_active: { _eq: true }
+      course_groups: {
+        is_open: { _eq: true }
+        faculty: { division: { _eq: $division } }
+      }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
 
+query average_visit_requests_received_across_division(
+  $division: String!
+  $start_time: timestamptz!
+  $end_time: timestamptz!
+) {
+  visit_aggregate(
+    where: {
+      visitor: { division: { _eq: $division } }
+      time_requested: { _gt: $start_time, _lt: $end_time }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+  faculty_aggregate(
+    where: {
+      has_consented: { _eq: true }
+      is_active: { _eq: true }
+      course_groups: {
+        is_open: { _eq: true }
+        faculty: { division: { _eq: $division } }
+      }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
 
+query average_hosted_visits_across_division(
+  $division: String!
+  $start_time: timestamptz!
+  $end_time: timestamptz!
+) {
+  faculty_aggregate(
+    where: {
+      has_consented: { _eq: true }
+      is_active: { _eq: true }
+      course_groups: {
+        is_open: { _eq: true }
+        faculty: { division: { _eq: $division } }
+      }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+  visit_aggregate(
+    distinct_on: visitor_id
+    where: {
+      visitor: {
+        visits: {
+          time_requested: { _gt: $start_time, _lt: $end_time }
+          visit_status: { _eq: "ACCEPTED" }
+        }
+        course_groups: { faculty: { division: { _eq: $division } } }
+      }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
