@@ -22,6 +22,8 @@
       v-model="filters.course_title"
       placeholder="Search by course title"
       class="search-bar"
+      :defaultActiveFirstOption="false"
+      allowClear
     >
       <a-input>
         <a-icon slot="suffix" type="search" class="certain-category-icon" />
@@ -241,7 +243,7 @@ const DEFAULT_FILTERS = {
   openOnly: false
 };
 const SUGGESTED_SEARCH_FILTERS = {
-  [SUGGESTED_SEARCH_1]:  {
+  [SUGGESTED_SEARCH_1]: {
     selectedTags: ["Common Curriculum"]
   },
   [SUGGESTED_SEARCH_2]: {
@@ -369,13 +371,13 @@ export default {
             );
             return false;
           } else if (oldStates[key]) {
-            const temp = _.cloneDeep(SUGGESTED_SEARCH_FILTERS[key])
+            const temp = _.cloneDeep(SUGGESTED_SEARCH_FILTERS[key]);
             _.forOwn(temp, (val, key) => {
               temp[key] = !val;
-            })
+            });
             this.filters = _.assign(_.cloneDeep(this.filters), temp);
           }
-        })
+        });
       }
     },
     filters: {
@@ -457,7 +459,7 @@ export default {
         include_cc_lectures
       };
       if (utils.isNonEmptyArray(this.filters.selectedTags)) {
-        queryVars.selected_tags = this.filters.selected_tags;
+        queryVars.selected_tags = this.filters.selectedTags;
       }
       return queryVars;
     }
