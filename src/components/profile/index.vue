@@ -276,7 +276,7 @@ export default {
       query: queries.number_of_visit_requests_made_by_user,
       variables() {
         return {
-          visitor_id: "yncas",
+          visitor_id: store.state.loggedInUser,
           //    start_time: "2020-07-01T05:28:23.186523+00:00",
           //    end_time: "2020-07-23T05:28:23.186523+00:00"
           start_time: moment()
@@ -298,7 +298,7 @@ export default {
       query: queries.number_of_visit_requests_made_by_user,
       variables() {
         return {
-          visitor_id: "yncas",
+          visitor_id: store.state.loggedInUser,
           //    start_time: "2020-07-01T05:28:23.186523+00:00",
           //    end_time: "2020-07-23T05:28:23.186523+00:00"
           start_time: moment()
@@ -322,7 +322,7 @@ export default {
       query: queries.number_of_visit_requests_made_by_user,
       variables() {
         return {
-          visitor_id: "yncas",
+          visitor_id: store.state.loggedInUser,
           //    start_time: "2020-07-01T05:28:23.186523+00:00",
           //    end_time: "2020-07-23T05:28:23.186523+00:00"
           start_time: moment()
@@ -347,7 +347,7 @@ export default {
       query: queries.number_of_visit_requests_received_by_user,
       variables() {
         return {
-          faculty_id: "yncas",
+          faculty_id: store.state.loggedInUser,
           //  start_time: "2020-07-01T05:28:23.186523+00:00",
           //  end_time: "2020-07-23T05:28:23.186523+00:00"
           start_time: moment()
@@ -369,7 +369,7 @@ export default {
       query: queries.number_of_visit_requests_received_by_user,
       variables() {
         return {
-          faculty_id: "yncas",
+          faculty_id: store.state.loggedInUser,
           //  start_time: "2020-07-01T05:28:23.186523+00:00",
           //  end_time: "2020-07-23T05:28:23.186523+00:00"
           start_time: moment()
@@ -393,7 +393,7 @@ export default {
       query: queries.number_of_visit_requests_received_by_user,
       variables() {
         return {
-          faculty_id: "yncas",
+          faculty_id: store.state.loggedInUser,
           //  start_time: "2020-07-01T05:28:23.186523+00:00",
           //  end_time: "2020-07-23T05:28:23.186523+00:00"
           start_time: moment()
@@ -417,7 +417,7 @@ export default {
       query: queries.number_of_hosted_visitors_by_user,
       variables() {
         return {
-          faculty_id: "yncas",
+          faculty_id: store.state.loggedInUser,
           // start_time: "2020-07-01T05:28:23.186523+00:00",
           // end_time: "2020-07-23T05:28:23.186523+00:00"
           start_time: moment()
@@ -439,7 +439,7 @@ export default {
       query: queries.number_of_hosted_visitors_by_user,
       variables() {
         return {
-          faculty_id: "yncas",
+          faculty_id: store.state.loggedInUser,
           // start_time: "2020-07-01T05:28:23.186523+00:00",
           // end_time: "2020-07-23T05:28:23.186523+00:00"
           start_time: moment()
@@ -463,7 +463,7 @@ export default {
       query: queries.number_of_hosted_visitors_by_user,
       variables() {
         return {
-          faculty_id: "yncas",
+          faculty_id: store.state.loggedInUser,
           // start_time: "2020-07-01T05:28:23.186523+00:00",
           // end_time: "2020-07-23T05:28:23.186523+00:00"
           start_time: moment()
@@ -487,7 +487,7 @@ export default {
       query: queries.number_of_completed_visit_requests_made_by_user,
       variables() {
         return {
-          visitor_id: "yncas",
+          visitor_id: store.state.loggedInUser,
           // start_time: "2020-07-01T05:28:23.186523+00:00",
           // end_time: "2020-07-23T05:28:23.186523+00:00"
           start_time: moment()
@@ -509,7 +509,7 @@ export default {
       query: queries.number_of_completed_visit_requests_made_by_user,
       variables() {
         return {
-          visitor_id: "yncas",
+          visitor_id: store.state.loggedInUser,
           // start_time: "2020-07-01T05:28:23.186523+00:00",
           // end_time: "2020-07-23T05:28:23.186523+00:00"
           start_time: moment()
@@ -533,7 +533,7 @@ export default {
       query: queries.number_of_completed_visit_requests_made_by_user,
       variables() {
         return {
-          visitor_id: "yncas",
+          visitor_id: store.state.loggedInUser,
           // start_time: "2020-07-01T05:28:23.186523+00:00",
           // end_time: "2020-07-23T05:28:23.186523+00:00"
           start_time: moment()
