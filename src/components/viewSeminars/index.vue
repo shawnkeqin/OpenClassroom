@@ -13,21 +13,10 @@
     <a-input
       v-model="filters.search_keyword"
       placeholder="Search by course title"
-<<<<<<< HEAD
       style="width:100%; margin:10px 0px 20px 0px;"
     >
       <a-icon slot="suffix" type="search" class="certain-category-icon" />
     </a-input>
-=======
-      class="search-bar"
-      :defaultActiveFirstOption="false"
-      allowClear
-    >
-      <a-input>
-        <a-icon slot="suffix" type="search" class="certain-category-icon" />
-      </a-input>
-    </a-auto-complete>
->>>>>>> 2282713796f268f97d7e3b160484bc5d48ede73c
 
     <div style="display: flex;">
       <div style="width: 80%;">
@@ -231,13 +220,8 @@ const TEST_DATE = "2020-08-10";
 const SUGGESTED_SEARCH_1 = "SUGGESTED_SEARCH_1";
 const SUGGESTED_SEARCH_2 = "SUGGESTED_SEARCH_2";
 const DEFAULT_FILTERS = {
-<<<<<<< HEAD
   searchKeyword: undefined,
   selectedDateRange: [],
-=======
-  courseTitle: undefined,
-  selectedDateRange: [moment(TEST_DATE), moment(TEST_DATE).add(1, "week")],
->>>>>>> 2282713796f268f97d7e3b160484bc5d48ede73c
   startTime: null,
   endTime: null,
   facultyName: undefined,
