@@ -49,7 +49,7 @@
       </div>
       <AddToCalendar :seminar="seminar" />
     </template>
-    <template v-else-if="visit.visit_status !== 'CANCELLED'">
+    <template v-else-if="visit.visit_status === 'PENDING'">
       <a-button
         @click="deleteRequestModalVisible = true"
         type="primary"
@@ -76,19 +76,19 @@
         </template>
         <p>Your are about to delete your visit request</p>
       </a-modal>
-      <template v-if="visit.visit_status === 'PENDING'">
-        <div style="display: flex; justify-content: center">
-          <a-icon
-            type="clock-circle"
-            theme="filled"
-            class="status-icon pending"
-          />
-          <h4 class="pending" style="margin-bottom: 0">
-            Request pending
-          </h4>
-        </div>
-      </template>
-      <template v-else-if="visit.visit_status === 'DECLINED'">
+      <div style="display: flex; justify-content: center">
+        <a-icon
+          type="clock-circle"
+          theme="filled"
+          class="status-icon pending"
+        />
+        <h4 class="pending" style="margin-bottom: 0">
+          Request pending
+        </h4>
+      </div>
+    </template>
+    <template v-else-if="visit.visit_status === 'DECLINED'">
+      <div style="display: flex; justify-content: center; margin-bottom: 5px;">
         <div style="display: flex; align-items: center">
           <a-icon
             type="close-circle"
@@ -107,7 +107,7 @@
             }}
           </h5>
         </div>
-      </template>
+      </div>
     </template>
     <template v-else>
       <div style="display: flex; justify-content: center">

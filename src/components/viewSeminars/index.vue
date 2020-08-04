@@ -13,10 +13,21 @@
     <a-input
       v-model="filters.search_keyword"
       placeholder="Search by course title"
+<<<<<<< HEAD
       style="width:100%; margin:10px 0px 20px 0px;"
     >
       <a-icon slot="suffix" type="search" class="certain-category-icon" />
     </a-input>
+=======
+      class="search-bar"
+      :defaultActiveFirstOption="false"
+      allowClear
+    >
+      <a-input>
+        <a-icon slot="suffix" type="search" class="certain-category-icon" />
+      </a-input>
+    </a-auto-complete>
+>>>>>>> 2282713796f268f97d7e3b160484bc5d48ede73c
 
     <div style="display: flex;">
       <div style="width: 80%;">
@@ -50,13 +61,6 @@
             ><a-skeleton style="width: 35rem;" active
           /></template>
           <template v-else>
-            <!-- <SeminarRequestCard
-              v-for="seminar in seminarLimited"
-              :key="seminar.id"
-              :seminar="seminar"
-              :visit="seminar.visits[0]"
-              :has_consented="loggedInUser.has_consented"
-            /> -->
             <template v-if="seminarLimited.length">
               <SeminarVisitRequestCard
                 v-for="seminar in seminarLimited"
@@ -88,13 +92,11 @@
               show-time
               :ranges="{
                 Today: [moment(), moment()],
-                'This week': [moment().startOf('week'), moment().endOf('week')],
-                'This month': [
-                  moment().startOf('month'),
-                  moment().endOf('month')
-                ]
+                'This week': [moment(), moment().add(1, 'week')],
+                'This month': [moment(), moment().add(1, 'month')]
               }"
               :format="utils.dateFormatStr"
+              :disabled-date="disabledDate"
               v-model="filters.selectedDateRange"
               class="filter-field"
             />
@@ -124,7 +126,6 @@
               </a-time-picker>
             </div>
             <h5 align="left">Instructor</h5>
-            <!-- <a-form-item> -->
             <a-select
               v-model="filters.facultyName"
               show-search
@@ -140,7 +141,6 @@
                 {{ faculty.name.toString() }}
               </a-select-option>
             </a-select>
-            <!-- </a-form-item> -->
             <h5 align="left">Tags</h5>
             <div style="width:100%; display:flex">
               <a-select
@@ -184,14 +184,10 @@
               <div>
                 <a-checkbox
                   v-model="filters.lecturesOnly"
-                  @change="checkedLecturesOnly"
                   class="checkbox-filter"
                   >Show CC lectures only</a-checkbox
                 >
-                <a-checkbox
-                  v-model="filters.openOnly"
-                  @change="handleCheckOpenOnly"
-                  class="checkbox-filter"
+                <a-checkbox v-model="filters.openOnly" class="checkbox-filter"
                   >Show only open classes</a-checkbox
                 >
               </div>
@@ -231,12 +227,17 @@ import store from "@/store";
 import constants from "@/utils/constants";
 
 const DEFAULT_PAGE_SIZE = 10;
-const TEST_DATE = "2020-08-09";
+const TEST_DATE = "2020-08-10";
 const SUGGESTED_SEARCH_1 = "SUGGESTED_SEARCH_1";
 const SUGGESTED_SEARCH_2 = "SUGGESTED_SEARCH_2";
 const DEFAULT_FILTERS = {
+<<<<<<< HEAD
   searchKeyword: undefined,
   selectedDateRange: [],
+=======
+  courseTitle: undefined,
+  selectedDateRange: [moment(TEST_DATE), moment(TEST_DATE).add(1, "week")],
+>>>>>>> 2282713796f268f97d7e3b160484bc5d48ede73c
   startTime: null,
   endTime: null,
   facultyName: undefined,
@@ -247,25 +248,15 @@ const DEFAULT_FILTERS = {
 };
 const SUGGESTED_SEARCH_FILTERS = {
   [SUGGESTED_SEARCH_1]: {
-    selectedDateRange: [
-      moment(TEST_DATE).startOf("week"),
-      moment(TEST_DATE).endOf("week")
-    ],
     selectedTags: ["Common Curriculum"]
   },
   [SUGGESTED_SEARCH_2]: {
-    selectedDateRange: [
-      moment(TEST_DATE).startOf("week"),
-      moment(TEST_DATE).endOf("week")
-    ],
     lecturesOnly: true
   }
 };
-
 export default {
   name: "viewSeminars",
   components: {
-    // SeminarRequestCard,
     SeminarVisitRequestCard,
     suggestedSearchButton
   },
@@ -374,16 +365,39 @@ export default {
     searchQueryVariables() {
       this.page = 1;
     },
+    SUGGESTED_SEARCH_STATE: {
+      handler(newStates, oldStates) {
+        _.forOwn(newStates, (val, key) => {
+          if (val) {
+            this.filters = _.assign(
+              _.cloneDeep(DEFAULT_FILTERS),
+              SUGGESTED_SEARCH_FILTERS[key]
+            );
+            return false;
+          } else if (oldStates[key]) {
+            const temp = _.cloneDeep(SUGGESTED_SEARCH_FILTERS[key]);
+            _.forOwn(temp, (val, key) => {
+              temp[key] = !val;
+            });
+            this.filters = _.assign(_.cloneDeep(this.filters), temp);
+          }
+        });
+      }
+    },
     filters: {
       handler(newFilters) {
         // Check if new filter still matches current suggested search, if any.
-        _.entries(SUGGESTED_SEARCH_FILTERS).forEach(([key, suggested]) => {
-          suggested = _.assign(_.cloneDeep(DEFAULT_FILTERS), suggested);
+        _.forOwn(SUGGESTED_SEARCH_FILTERS, (val, key) => {
+          const suggested = _.assign(_.cloneDeep(DEFAULT_FILTERS), val);
           if (
             this.SUGGESTED_SEARCH_STATE[key] === true &&
             _.isEqual(newFilters, suggested) == false
           ) {
-            this.SUGGESTED_SEARCH_STATE[key] = false;
+            // must assign this.SUGGESTED_SEARCH_STATE to a new object to ensure reactivity
+            this.SUGGESTED_SEARCH_STATE = _.assign(
+              _.cloneDeep(this.SUGGESTED_SEARCH_STATE),
+              { [key]: false }
+            );
           }
         });
       },
@@ -408,7 +422,6 @@ export default {
         : [];
     },
     searchQuery() {
-      console.log(this.filters.openOnly);
       return utils.isNonEmptyArray(this.filters.selectedTags)
         ? this.filters.openOnly
           ? queries.searchOpenSeminarsByFiltersWithTags
@@ -450,40 +463,23 @@ export default {
         include_cc_lectures
       };
       if (utils.isNonEmptyArray(this.filters.selectedTags)) {
-        queryVars.selected_tags = this.filters.selected_tags;
+        queryVars.selected_tags = this.filters.selectedTags;
       }
       return queryVars;
     }
   },
   methods: {
-    // onManualFilterChange() {
-    //   Object.keys(this.SUGGESTED_SEARCH_STATE).forEach(
-    //     key => (this.SUGGESTED_SEARCH_STATE[key] = FALSE)
-    //   );
-    // },;
-    handleCheckOpenOnly(val) {
-      console.log(val);
-      console.log(this.filters.openOnly);
-    },
-    checkedLecturesOnly(data) {
-      console.log(data.target.checked);
-    },
     onSuggestedSearchSelectToggle(data) {
       // Update which button is selected.
       const new_button_state = {};
-      Object.keys(this.SUGGESTED_SEARCH_STATE).forEach(key => {
-        new_button_state[key] = false;
+      _.forOwn(this.SUGGESTED_SEARCH_STATE, (val, key) => {
+        if (key === data.id) {
+          new_button_state[key] = data.value;
+        } else {
+          new_button_state[key] = false;
+        }
       });
-      if (data.value === true) {
-        new_button_state[data.id] = true;
-      }
       this.SUGGESTED_SEARCH_STATE = new_button_state;
-      // Update filter values
-      const new_filters = { ...DEFAULT_FILTERS };
-      if (data.value) {
-        Object.assign(new_filters, SUGGESTED_SEARCH_FILTERS[data.id]);
-      }
-      this.filters = new_filters;
     },
     /*  autoCompleteCourseTitle(input, option) {
       return (
@@ -499,6 +495,9 @@ export default {
     handleClose() {
       this.open = false;
       this.open2 = false;
+    },
+    disabledDate(cur) {
+      return cur < moment().startOf("day");
     }
   }
 };

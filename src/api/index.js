@@ -77,7 +77,7 @@ api.post("/login", (req, res, next) => {
     }
     if (!user) {
       console.info("No user, returning login failed response.");
-      res.status(401).json({
+      res.json({
         success: false,
         message: info.message || ""
       });
