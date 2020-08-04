@@ -29,14 +29,15 @@
                   } to visit requests`
                 }}
               </p>
+
               <a-switch
-                v-for="course_group in course_groups"
-                :key="course_group.id"
                 :checked="course_group.is_open"
                 checked-children="open"
                 un-checked-children="closed"
                 :loading="isToggleCourseGroupLoading"
-                @click="toggleCourseGroupIsOpen(course_group.id)"
+                @click="
+                  toggleCourseGroupIsOpen(course_group.id, course_group.is_open)
+                "
                 style="margin-right: 5px;"
               />
               <a-tooltip
@@ -79,9 +80,7 @@ export default {
   name: "coursesList",
   data() {
     return {
-      id: this.$route.params.id,
       course_groups: [],
-      course_group: {},
       isToggleCourseGroupLoading: false
     };
   },
@@ -104,8 +103,8 @@ export default {
           });
         }
       };
-    },
-    course_group() {
+    }
+    /* course_group() {
       const course_group_id = this.id;
       return {
         query: queries.get_course_group_details,
@@ -121,7 +120,7 @@ export default {
           });
         }
       };
-    }
+    } */
   },
   computed: {
     course() {
@@ -129,14 +128,15 @@ export default {
     }
   },
   methods: {
-    async toggleCourseGroupIsOpen(id) {
+    async toggleCourseGroupIsOpen(id, status) {
       this.isToggleCourseGroupLoading = true;
-      const current_is_open = this.course_group.is_open;
+      const course_group_id = id;
+      const current_is_open = status;
       try {
         await this.$apollo.mutate({
           mutation: queries.update_course_group_and_seminars_is_open,
           variables: {
-            id,
+            course_group_id,
             is_open: !current_is_open
           },
           refetchQueries: [

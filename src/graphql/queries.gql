@@ -228,6 +228,7 @@ query get_course_groups_by_faculty(
     }
   ) {
     id
+    is_open
     group_code
     course {
       id
