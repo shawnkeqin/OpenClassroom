@@ -49,6 +49,12 @@
           <!-- <a class="login-form-forgot" href="">
           Forgot password
         </a> -->
+          <a-alert
+            v-if="showInvalidCredentials"
+            :message="invalidCredentialsMessage"
+            type="error"
+            show-icon
+          />
           <a-button
             type="primary"
             html-type="submit"
@@ -58,12 +64,6 @@
           >
             Next
           </a-button>
-          <a-alert
-            v-if="showInvalidCredentials"
-            :message="invalidCredentialsMessage"
-            type="error"
-            show-icon
-          />
         </a-form-item>
       </a-form>
     </div>
