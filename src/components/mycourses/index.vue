@@ -6,6 +6,7 @@
       <div class="div1" style="display: flex; align-content: flex-start">
         <template v-if="course_groups && course_groups.length">
           <a-card
+            class="div1"
             v-for="course_group in course_groups"
             :key="course_group.id"
             style="margin-right: 20px; width: 350px"
@@ -58,13 +59,13 @@
             </a-card>
           </div>
         </template>
-        <div class="div2">
-          <a-card>
-            You may change course group information, class-specific details
-            (location, timings, description, etc), and close individual classes
-            within each course group page.
-          </a-card>
-        </div>
+      </div>
+      <div class="div2">
+        <a-card>
+          You may change course group information, class-specific details
+          (location, timings, description, etc), and close individual classes
+          within each course group page.
+        </a-card>
       </div>
     </template>
   </div>
@@ -163,5 +164,7 @@ export default {
 }
 .div2 {
   display: inline;
+  position: relative;
+  top: 40px;
 }
 </style>
