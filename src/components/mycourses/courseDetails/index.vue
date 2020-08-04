@@ -81,6 +81,7 @@
               <h4 style="margin: 0;">Course Syllabus</h4>
             </template>
             <p>{{ course_group.syllabus || "None" }}</p>
+            <updateCourseGroupSyllabusModal :course_group="course_group" />
           </a-collapse-panel>
           <a-collapse-panel key="3">
             <template slot="header">
@@ -90,6 +91,15 @@
             </template>
             <p>{{ course && (course.notes || "None") }}</p>
             <updateCourseGroupNotesModal :course_group="course_group" />
+          </a-collapse-panel>
+          <a-collapse-panel key="4">
+            <template slot="header">
+              <h4 style="margin: 0;">
+                Schedule Description
+              </h4>
+            </template>
+            <p>{{ course_group.schedule_desc || "None" }}</p>
+            <updateCourseGroupScheduleDescModal :course_group="course_group" />
           </a-collapse-panel>
         </a-collapse>
       </a-card>
@@ -112,7 +122,9 @@ import constants from "@/utils/constants";
 import updateCourseGroupDescModal from "./updateCourseGroupDescModal";
 import updateCourseGroupNotesModal from "./updateCourseGroupNotesModal";
 import updateVisitorCapacityBulk from "./updateVisitorCapacityBulk";
+import updateCourseGroupSyllabusModal from "./updateCourseGroupSyllabusModal";
 import SeminarsTable from "./SeminarsTable";
+import updateCourseGroupScheduleDescModal from "./updateCourseGroupScheduleDescModal";
 
 export default {
   name: "courseDetails",
@@ -120,7 +132,9 @@ export default {
     SeminarsTable,
     updateCourseGroupDescModal,
     updateCourseGroupNotesModal,
-    updateVisitorCapacityBulk
+    updateVisitorCapacityBulk,
+    updateCourseGroupSyllabusModal,
+    updateCourseGroupScheduleDescModal
   },
   data() {
     return {

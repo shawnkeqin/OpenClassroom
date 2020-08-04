@@ -29,11 +29,13 @@
                 }}
               </p>
               <a-switch
+                v-for="course_group in course_groups"
+                :key="course_group.id"
                 :checked="course_group.is_open"
                 checked-children="open"
                 un-checked-children="closed"
                 :loading="isToggleCourseGroupLoading"
-                @click="toggleCourseGroupIsOpen"
+                @click="toggleCourseGroupIsOpen(course_group.id)"
                 style="margin-right: 5px;"
               />
               <a-tooltip
@@ -126,15 +128,14 @@ export default {
     }
   },
   methods: {
-    async toggleCourseGroupIsOpen() {
+    async toggleCourseGroupIsOpen(id) {
       this.isToggleCourseGroupLoading = true;
-      const course_group_id = this.id;
       const current_is_open = this.course_group.is_open;
       try {
         await this.$apollo.mutate({
           mutation: queries.update_course_group_and_seminars_is_open,
           variables: {
-            course_group_id,
+            id,
             is_open: !current_is_open
           },
           refetchQueries: [
