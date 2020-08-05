@@ -25,79 +25,6 @@
         </a-row>
       </a-card>
     </div>
-    <div>
-      <a-spin v-if="$apollo.loading">
-        <a-icon
-          slot="indicator"
-          type="loading"
-          style="font-size: 26px; padding-left: 10px"
-          spin
-        />
-      </a-spin>
-      <div v-else id="components-table-demo-size">
-        <h4>Average Statistics</h4>
-        <a-table bordered :columns="columns" :data-source="data"> </a-table>
-      </div>
-      <br />
-
-      <!-- <visitRequestChart
-        :number_of_visit_requests_made_by_user="
-          number_of_visit_requests_made_by_user
-        "
-        :number_of_completed_visit_requests_made_by_user="
-          number_of_completed_visit_requests_made_by_user
-        "
-        :number_of_hosted_visit_sessions_by_user="
-          number_of_hosted_visit_sessions_by_user
-        "
-        :number_of_hosted_visitors_by_user="number_of_hosted_visitors_by_user"
-      /> -->
-      <div>
-        <a-button v-on:click="isShowRequestsMade = !isShowRequestsMade">
-          Average Requests Made
-        </a-button>
-        &nbsp;
-        <a-button v-on:click="isShowRequestsReceived = !isShowRequestsReceived">
-          Average Requests Received
-        </a-button>
-        &nbsp;
-        <a-button v-on:click="isShowHostedVisits = !isShowHostedVisits">
-          Average Hosted Visits
-        </a-button>
-        &nbsp;
-        <a-button v-on:click="isShowCompletedVisits = !isShowCompletedVisits">
-          Average Completed Visits
-        </a-button>
-      </div>
-      <div v-show="isShowRequestsMade">
-        <LineExample
-          v-if="isShowRequestsMade"
-          :labels="labels"
-          :datasets="number_of_visit_requests.datasets"
-        />
-      </div>
-      <div v-show="isShowRequestsReceived">
-        <LineExample
-          v-if="isShowRequestsReceived"
-          :labels="labels2"
-          :datasets="number_of_visit_requests_received.datasets2"
-        />
-      </div>
-      <div v-show="isShowHostedVisits">
-        <LineExample
-          v-if="isShowHostedVisits"
-          :labels="labels3"
-          :datasets="number_of_hosted_visits.datasets3"
-        />
-      </div>
-      <div v-show="isShowCompletedVisits">
-        <LineExample
-          v-if="isShowCompletedVisits"
-          :labels="labels4"
-          :datasets="number_of_completed_visits.datasets4"
-        />
-      </div>
-    </div>
     <div class="content-block-wrapper">
       <h2>My Preferences</h2>
       <a-card style="width: 40rem" :bodyStyle="{ padding: '0px' }">
@@ -128,11 +55,85 @@
         </a-list>
       </a-card>
     </div>
+    <div>
+      <a-button v-on:click="isShowRequestsMade = !isShowRequestsMade">
+        Average Requests Made
+      </a-button>
+      &nbsp;
+      <a-button v-on:click="isShowRequestsReceived = !isShowRequestsReceived">
+        Average Requests Received
+      </a-button>
+      &nbsp;
+      <a-button v-on:click="isShowHostedVisits = !isShowHostedVisits">
+        Average Hosted Visits
+      </a-button>
+      &nbsp;
+      <a-button v-on:click="isShowCompletedVisits = !isShowCompletedVisits">
+        Average Completed Visits
+      </a-button>
+    </div>
+    <div v-show="isShowRequestsMade">
+      <LineExample
+        v-if="isShowRequestsMade"
+        :labels="labels"
+        :datasets="number_of_visit_requests.datasets"
+      />
+    </div>
+    <div v-show="isShowRequestsReceived">
+      <LineExample
+        v-if="isShowRequestsReceived"
+        :labels="labels2"
+        :datasets="number_of_visit_requests_received.datasets2"
+      />
+    </div>
+    <div v-show="isShowHostedVisits">
+      <LineExample
+        v-if="isShowHostedVisits"
+        :labels="labels3"
+        :datasets="number_of_hosted_visits.datasets3"
+      />
+    </div>
+    <div v-show="isShowCompletedVisits">
+      <LineExample
+        v-if="isShowCompletedVisits"
+        :labels="labels4"
+        :datasets="number_of_completed_visits.datasets4"
+      />
+    </div>
+    <div>
+      <a-spin v-if="$apollo.loading">
+        <a-icon
+          slot="indicator"
+          type="loading"
+          style="font-size: 26px; padding-left: 10px"
+          spin
+        />
+      </a-spin>
+      <div v-else id="components-table-demo-size">
+        <h4>Average Statistics</h4>
+        <a-table bordered :columns="columns" :data-source="data"> </a-table>
+      </div>
+      <br />
+
+      <!-- <visitRequestChart
+        :number_of_visit_requests_made_by_user="
+          number_of_visit_requests_made_by_user
+        "
+        :number_of_completed_visit_requests_made_by_user="
+          number_of_completed_visit_requests_made_by_user
+        "
+        :number_of_hosted_visit_sessions_by_user="
+          number_of_hosted_visit_sessions_by_user
+        "
+        :number_of_hosted_visitors_by_user="number_of_hosted_visitors_by_user"
+      /> -->
+    </div>
   </div>
 </template>
 
 <script>
 import queries from "@/graphql/queries.gql";
+import queriesViz from "@/graphql/queriesViz.gql";
 import store from "@/store";
 //import visitRequestChart from "./visitRequestChart";
 import moment from "moment";
@@ -273,7 +274,7 @@ export default {
       }
     },
     number_of_visit_requests_made_by_user: {
-      query: queries.number_of_visit_requests_made_by_user,
+      query: queriesViz.get_total_requests_by_user,
       variables() {
         return {
           visitor_id: store.state.loggedInUser,
@@ -344,7 +345,7 @@ export default {
     },
 
     number_of_visit_requests_received_by_user: {
-      query: queries.number_of_visit_requests_received_by_user,
+      query: queriesViz.get_total_requests_received_by_user,
       variables() {
         return {
           faculty_id: store.state.loggedInUser,
@@ -414,7 +415,7 @@ export default {
       }
     },
     number_of_hosted_visitors_by_user: {
-      query: queries.number_of_hosted_visitors_by_user,
+      query: queriesViz.get_total_hosted_visits_by_user,
       variables() {
         return {
           faculty_id: store.state.loggedInUser,
@@ -484,7 +485,7 @@ export default {
       }
     },
     number_of_completed_visit_requests_made_by_user: {
-      query: queries.number_of_completed_visit_requests_made_by_user,
+      query: queriesViz.get_total_completed_visits_by_user,
       variables() {
         return {
           visitor_id: store.state.loggedInUser,
@@ -554,9 +555,50 @@ export default {
       }
     },
     total_number_of_visit_requests_across_all_users: {
-      query: queries.total_number_of_visit_requests_across_all_users,
+      query: queriesViz.get_avg_requests_by_division,
       variables() {
         return {
+          division: "%",
+          start_time: moment()
+            .subtract(30, "days")
+            .format(),
+          end_time: moment().format()
+        };
+      },
+      update: data => data,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
+    },
+    total_number_of_visit_requests_received_across_all_users: {
+      query: queriesViz.get_avg_requests_received_by_division,
+      variables() {
+        return {
+          division: "%",
+          start_time: moment()
+            .subtract(30, "days")
+            .format(),
+          end_time: moment().format()
+        };
+      },
+      update: data => data,
+      error(error, vm, key) {
+        this.$notification.error({
+          key,
+          message: "Server error",
+          description: "Please try again."
+        });
+      }
+    },
+    total_number_of_hosted_visits_across_all_users: {
+      query: queriesViz.get_avg_hosted_visits_by_division,
+      variables() {
+        return {
+          division: "%",
           start_time: moment()
             .subtract(30, "days")
             .format(),
@@ -573,9 +615,10 @@ export default {
       }
     },
     total_number_of_completed_visit_requests_across_all_users: {
-      query: queries.total_number_of_completed_visit_requests_across_all_users,
+      query: queriesViz.get_avg_completed_visits_by_division,
       variables() {
         return {
+          division: "%",
           start_time: moment()
             .subtract(30, "days")
             .format(),
@@ -592,7 +635,7 @@ export default {
       }
     },
     visit_requests_made_across_division_science: {
-      query: queries.average_visit_requests_made_across_division,
+      query: queriesViz.get_avg_requests_by_division,
       variables() {
         return {
           division: "Science",
@@ -612,7 +655,7 @@ export default {
       }
     },
     visit_requests_made_across_division_social_sciences: {
-      query: queries.average_visit_requests_made_across_division,
+      query: queriesViz.get_avg_requests_by_division,
       variables() {
         return {
           division: "Social Sciences",
@@ -632,7 +675,7 @@ export default {
       }
     },
     visit_requests_made_across_division_humanities: {
-      query: queries.average_visit_requests_made_across_division,
+      query: queriesViz.get_avg_requests_by_division,
       variables() {
         return {
           division: "Humanities",
@@ -652,7 +695,7 @@ export default {
       }
     },
     completed_visit_requests_made_across_division_science: {
-      query: queries.average_completed_visit_requests_made_across_division,
+      query: queriesViz.get_avg_completed_visits_by_division,
       variables() {
         return {
           division: "Science",
@@ -672,7 +715,7 @@ export default {
       }
     },
     completed_visit_requests_made_across_division_social_sciences: {
-      query: queries.average_completed_visit_requests_made_across_division,
+      query: queriesViz.get_avg_completed_visits_by_division,
       variables() {
         return {
           division: "Social Sciences",
@@ -692,7 +735,7 @@ export default {
       }
     },
     completed_visit_requests_made_across_division_humanities: {
-      query: queries.average_completed_visit_requests_made_across_division,
+      query: queriesViz.get_avg_completed_visits_by_division,
       variables() {
         return {
           division: "Humanities",
@@ -712,7 +755,7 @@ export default {
       }
     },
     visit_requests_received_across_division_science: {
-      query: queries.average_visit_requests_received_across_division,
+      query: queriesViz.get_avg_requests_received_by_division,
       variables() {
         return {
           division: "Science",
@@ -732,7 +775,7 @@ export default {
       }
     },
     visit_requests_received_across_division_social_sciences: {
-      query: queries.average_visit_requests_received_across_division,
+      query: queriesViz.get_avg_requests_received_by_division,
       variables() {
         return {
           division: "Social Sciences",
@@ -752,7 +795,7 @@ export default {
       }
     },
     visit_requests_received_across_division_humanities: {
-      query: queries.average_visit_requests_received_across_division,
+      query: queriesViz.get_avg_requests_received_by_division,
       variables() {
         return {
           division: "Humanities",
@@ -772,7 +815,7 @@ export default {
       }
     },
     hosted_visits_across_division_science: {
-      query: queries.average_hosted_visits_across_division,
+      query: queriesViz.get_avg_hosted_visits_by_division,
       variables() {
         return {
           division: "Science",
@@ -792,7 +835,7 @@ export default {
       }
     },
     hosted_visits_across_division_social_sciences: {
-      query: queries.average_hosted_visits_across_division,
+      query: queriesViz.get_avg_hosted_visits_by_division,
       variables() {
         return {
           division: "Social Sciences",
@@ -812,7 +855,7 @@ export default {
       }
     },
     hosted_visits_across_division_humanities: {
-      query: queries.average_hosted_visits_across_division,
+      query: queriesViz.get_avg_hosted_visits_by_division,
       variables() {
         return {
           division: "Humanities",
@@ -951,14 +994,16 @@ export default {
     },
     average_visit_requests_received_across_all_users: function() {
       var count =
-        this.total_number_of_visit_requests_across_all_users != undefined
-          ? this.total_number_of_visit_requests_across_all_users
+        this.total_number_of_visit_requests_received_across_all_users !=
+        undefined
+          ? this.total_number_of_visit_requests_received_across_all_users
               .faculty_aggregate.aggregate.count
           : 0;
       var sum =
-        this.total_number_of_visit_requests_across_all_users != undefined
-          ? this.total_number_of_visit_requests_across_all_users.visit_aggregate
-              .aggregate.count
+        this.total_number_of_visit_requests_received_across_all_users !=
+        undefined
+          ? this.total_number_of_visit_requests_received_across_all_users
+              .visit_aggregate.aggregate.count
           : 0;
       var average = 0;
 
@@ -968,16 +1013,14 @@ export default {
     },
     average_hosted_visits_across_all_users: function() {
       var count =
-        this.total_number_of_completed_visit_requests_across_all_users !=
-        undefined
-          ? this.total_number_of_completed_visit_requests_across_all_users
+        this.total_number_of_hosted_visits_across_all_users != undefined
+          ? this.total_number_of_hosted_visits_across_all_users
               .faculty_aggregate.aggregate.count
           : 0;
       var sum =
-        this.total_number_of_completed_visit_requests_across_all_users !=
-        undefined
-          ? this.total_number_of_completed_visit_requests_across_all_users
-              .visit_aggregate.aggregate.count
+        this.total_number_of_hosted_visits_across_all_users != undefined
+          ? this.total_number_of_hosted_visits_across_all_users.visit_aggregate
+              .aggregate.count
           : 0;
       var average = 0;
 
@@ -993,7 +1036,7 @@ export default {
           : 0;
       var sum =
         this.visit_requests_made_across_division_science != undefined
-          ? this.visit_requests_made_across_division_science.faculty_aggregate
+          ? this.visit_requests_made_across_division_science.visit_aggregate
               .aggregate.count
           : 0;
 
@@ -1011,7 +1054,7 @@ export default {
       var sum =
         this.visit_requests_made_across_division_social_sciences != undefined
           ? this.visit_requests_made_across_division_social_sciences
-              .faculty_aggregate.aggregate.count
+              .visit_aggregate.aggregate.count
           : 0;
 
       var average = 0;
@@ -1027,8 +1070,8 @@ export default {
           : 0;
       var sum =
         this.visit_requests_made_across_division_humanities != undefined
-          ? this.visit_requests_made_across_division_humanities
-              .faculty_aggregate.aggregate.count
+          ? this.visit_requests_made_across_division_humanities.visit_aggregate
+              .aggregate.count
           : 0;
 
       var average = 0;
