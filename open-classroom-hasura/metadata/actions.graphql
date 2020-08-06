@@ -1,0 +1,24 @@
+type Query {
+  addNumbers (
+    numbers: [Int]
+  ): AddResult
+}
+
+
+
+
+type SampleOutput {
+  userId : Int
+  id : Int
+  title : String
+  completed : Boolean
+}
+
+type LoginResponse {
+  accessToken : String!
+}
+
+type AddResult {
+  sum : Int
+}
+

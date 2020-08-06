@@ -1,0 +1,7 @@
+version: 2
+endpoint: https://open-classroom-hasura-test.herokuapp.com
+metadata_directory: metadata
+actions:
+  kind: synchronous
+  handler_webhook_baseurl: http://localhost:3000
+admin_secret: <>
