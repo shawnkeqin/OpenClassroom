@@ -8,27 +8,15 @@
         :selected="SUGGESTED_SEARCH_STATE.SUGGESTED_SEARCH_2"
         @select-toggled="onSuggestedSearchSelectToggle"
       />
-      <!-- <suggestedSearchButton
-        :id="SUGGESTED_SEARCH_IDS.SUGGESTED_SEARCH_1"
-        label="This Week: CC Classes"
-        :selected="SUGGESTED_SEARCH_STATE.SUGGESTED_SEARCH_1"
-        @select-toggled="onSuggestedSearchSelectToggle"
-      /> -->
     </div>
-    <a-auto-complete
-      :data-source="courseList"
-      :filterOption="autoCompleteCourseTitle"
-      style="width:100%; margin:10px 0px 20px 0px;"
-      v-model="filters.course_title"
+
+    <a-input
+      v-model="filters.search_keyword"
       placeholder="Search by course title"
-      class="search-bar"
-      :defaultActiveFirstOption="false"
-      allowClear
+      style="width:100%; margin:10px 0px 20px 0px;"
     >
-      <a-input>
-        <a-icon slot="suffix" type="search" class="certain-category-icon" />
-      </a-input>
-    </a-auto-complete>
+      <a-icon slot="suffix" type="search" class="certain-category-icon" />
+    </a-input>
 
     <div style="display: flex;">
       <div style="width: 80%;">
@@ -232,8 +220,8 @@ const TEST_DATE = "2020-08-10";
 const SUGGESTED_SEARCH_1 = "SUGGESTED_SEARCH_1";
 const SUGGESTED_SEARCH_2 = "SUGGESTED_SEARCH_2";
 const DEFAULT_FILTERS = {
-  courseTitle: undefined,
-  selectedDateRange: [moment(TEST_DATE), moment(TEST_DATE).add(1, "week")],
+  searchKeyword: undefined,
+  selectedDateRange: [],
   startTime: null,
   endTime: null,
   facultyName: undefined,
@@ -427,8 +415,8 @@ export default {
         : queries.searchSeminarsByFilters;
     },
     searchQueryVariables() {
-      const course_title = this.filters.course_title
-        ? `%${this.filters.course_title}%`
+      const search_keyword = this.filters.search_keyword
+        ? `%${this.filters.search_keyword}%`
         : "%";
       const faculty_name = this.filters.facultyName || "%";
       const start_date = utils.isNonEmptyArray(this.filters.selectedDateRange)
@@ -447,7 +435,7 @@ export default {
           : this.filters.checkedTeachingModes;
       const include_cc_lectures = this.filters.lecturesOnly ? "CC" : "%";
       const queryVars = {
-        course_title,
+        search_keyword,
         faculty_name,
         start_date,
         end_date,
@@ -477,13 +465,13 @@ export default {
       });
       this.SUGGESTED_SEARCH_STATE = new_button_state;
     },
-    autoCompleteCourseTitle(input, option) {
+    /*  autoCompleteCourseTitle(input, option) {
       return (
         option.componentOptions.children[0].text
           .toUpperCase()
           .indexOf(input.toUpperCase()) >= 0
       );
-    },
+    }, */
     onPageChange(page, pageSize) {
       this.page = page;
       this.pageSize = pageSize;

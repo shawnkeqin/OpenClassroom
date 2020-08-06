@@ -6,6 +6,7 @@
       <div class="div1" style="display: flex; align-content: flex-start">
         <template v-if="course_groups && course_groups.length">
           <a-card
+            class="div1"
             v-for="course_group in course_groups"
             :key="course_group.id"
             style="margin-right: 20px; width: 350px"
@@ -28,12 +29,15 @@
                   } to visit requests`
                 }}
               </p>
+
               <a-switch
                 :checked="course_group.is_open"
                 checked-children="open"
                 un-checked-children="closed"
                 :loading="isToggleCourseGroupLoading"
-                @click="toggleCourseGroupIsOpen"
+                @click="
+                  toggleCourseGroupIsOpen(course_group.id, course_group.is_open)
+                "
                 style="margin-right: 5px;"
               />
               <a-tooltip
@@ -56,13 +60,13 @@
             </a-card>
           </div>
         </template>
-        <div class="div2">
-          <a-card>
-            You may change course group information, class-specific details
-            (location, timings, description, etc), and close individual classes
-            within each course group page.
-          </a-card>
-        </div>
+      </div>
+      <div class="div2">
+        <a-card>
+          You may change course group information, class-specific details
+          (location, timings, description, etc), and close individual classes
+          within each course group page.
+        </a-card>
       </div>
     </template>
   </div>
@@ -76,9 +80,7 @@ export default {
   name: "coursesList",
   data() {
     return {
-      id: this.$route.params.id,
       course_groups: [],
-      course_group: {},
       isToggleCourseGroupLoading: false
     };
   },
@@ -101,8 +103,8 @@ export default {
           });
         }
       };
-    },
-    course_group() {
+    }
+    /* course_group() {
       const course_group_id = this.id;
       return {
         query: queries.get_course_group_details,
@@ -118,7 +120,7 @@ export default {
           });
         }
       };
-    }
+    } */
   },
   computed: {
     course() {
@@ -126,10 +128,10 @@ export default {
     }
   },
   methods: {
-    async toggleCourseGroupIsOpen() {
+    async toggleCourseGroupIsOpen(id, status) {
       this.isToggleCourseGroupLoading = true;
-      const course_group_id = this.id;
-      const current_is_open = this.course_group.is_open;
+      const course_group_id = id;
+      const current_is_open = status;
       try {
         await this.$apollo.mutate({
           mutation: queries.update_course_group_and_seminars_is_open,
@@ -162,5 +164,7 @@ export default {
 }
 .div2 {
   display: inline;
+  position: relative;
+  top: 40px;
 }
 </style>
