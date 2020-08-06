@@ -261,7 +261,7 @@ $start_time3: timestamptz!
 }
 
 
-query get_total_requests_received_by_user(
+query get_total_requests_received_by_user_history(
   $faculty_id: String!
   $start_time2: timestamptz!
   $end_time2: timestamptz!
@@ -270,7 +270,7 @@ query get_total_requests_received_by_user(
 $start_time3: timestamptz!
   $end_time3: timestamptz!
 ) {
-  visit_aggregate(
+  visit1: visit_aggregate(
     where: {
       seminar: { course_group: { faculty_id: { _eq: $faculty_id } } }
       time_requested: { _gt: $start_time, _lt: $end_time }
@@ -304,7 +304,7 @@ $start_time3: timestamptz!
 
 
 
-query get_total_hosted_visits_by_user(
+query get_total_hosted_visits_by_user_history(
   $faculty_id: String!
   $start_time2: timestamptz!
   $end_time2: timestamptz!
@@ -365,7 +365,7 @@ $start_time3: timestamptz!
 
 
 
-query get_total_completed_visits_by_user(
+query get_total_completed_visits_by_user_history(
    $visitor_id: String!
 $start_time2: timestamptz!
   $end_time2: timestamptz!
