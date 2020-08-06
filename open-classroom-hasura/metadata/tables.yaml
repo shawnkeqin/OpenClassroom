@@ -1,0 +1,401 @@
+- table:
+    schema: public
+    name: course
+  object_relationships:
+  - name: semester
+    using:
+      foreign_key_constraint_on: semester_code
+  array_relationships:
+  - name: course_groups
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: course_group
+        column_mapping:
+          semester_code: semester_code
+          module_code: module_code
+  - name: tagged_as
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: tagged_as
+        column_mapping:
+          semester_code: semester_code
+          module_code: module_code
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - module_code
+      - semester_code
+      - title
+      - desc
+      - module_brief_link
+      - id
+      filter: {}
+- table:
+    schema: public
+    name: course_group
+  object_relationships:
+  - name: course
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: course
+        column_mapping:
+          semester_code: semester_code
+          module_code: module_code
+  - name: faculty
+    using:
+      foreign_key_constraint_on: faculty_id
+  array_relationships:
+  - name: seminars
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: seminar
+        column_mapping:
+          semester_code: semester_code
+          group_code: group_code
+          module_code: module_code
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - course_group_desc
+      - faculty_id
+      - group_code
+      - id
+      - is_open
+      - module_code
+      - notes
+      - schedule_desc
+      - semester_code
+      - syllabus
+      - teaching_mode
+      - visitor_capacity
+      filter: {}
+      allow_aggregations: true
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - course_group_desc
+      - is_open
+      - notes
+      - schedule_desc
+      - syllabus
+      - teaching_mode
+      - visitor_capacity
+      filter:
+        faculty_id:
+          _eq: X-Hasura-User-Id
+      check: {}
+- table:
+    schema: public
+    name: course_schedule
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - day
+      - id
+      - weeks
+      - end
+      - start
+      - area
+      - group_code
+      - location_code
+      - module_code
+      - semester_code
+      filter: {}
+- table:
+    schema: public
+    name: division
+- table:
+    schema: public
+    name: faculty
+  array_relationships:
+  - name: course_groups
+    using:
+      foreign_key_constraint_on:
+        column: faculty_id
+        table:
+          schema: public
+          name: course_group
+  - name: visits
+    using:
+      foreign_key_constraint_on:
+        column: visitor_id
+        table:
+          schema: public
+          name: visit
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - division
+      - email
+      - has_consented
+      - id
+      - is_active
+      - name
+      - notif_new_request
+      - notif_request_update
+      filter: {}
+      allow_aggregations: true
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - has_consented
+      - is_active
+      - notif_new_request
+      - notif_request_update
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+- table:
+    schema: public
+    name: location
+  array_relationships:
+  - name: seminars
+    using:
+      foreign_key_constraint_on:
+        column: location_code
+        table:
+          schema: public
+          name: seminar
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - code
+      - full_name
+      - capacity
+      - link_code
+      - building
+      filter: {}
+- table:
+    schema: public
+    name: semester
+  array_relationships:
+  - name: courses
+    using:
+      foreign_key_constraint_on:
+        column: semester_code
+        table:
+          schema: public
+          name: course
+- table:
+    schema: public
+    name: seminar
+  object_relationships:
+  - name: course_group
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: course_group
+        column_mapping:
+          semester_code: semester_code
+          group_code: group_code
+          module_code: module_code
+  - name: location
+    using:
+      foreign_key_constraint_on: location_code
+  array_relationships:
+  - name: visits
+    using:
+      foreign_key_constraint_on:
+        column: seminar_id
+        table:
+          schema: public
+          name: visit
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - is_archived
+      - is_open
+      - date
+      - id
+      - visitor_capacity
+      - week
+      - desc
+      - title
+      - end
+      - start
+      - area
+      - conference_link
+      - group_code
+      - location_code
+      - module_code
+      - semester_code
+      filter: {}
+      allow_aggregations: true
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - area
+      - conference_link
+      - date
+      - desc
+      - end
+      - is_open
+      - location_code
+      - start
+      - title
+      - visitor_capacity
+      filter:
+        course_group:
+          faculty_id:
+            _eq: X-Hasura-User-Id
+      check: null
+- table:
+    schema: public
+    name: tag
+  array_relationships:
+  - name: tagged_as
+    using:
+      foreign_key_constraint_on:
+        column: tag_label
+        table:
+          schema: public
+          name: tagged_as
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - label
+      filter: {}
+- table:
+    schema: public
+    name: tagged_as
+  insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - module_code
+      - semester_code
+      - tag_label
+      backend_only: false
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - tag_label
+      - module_code
+      - semester_code
+      filter: {}
+- table:
+    schema: public
+    name: teaching_mode
+- table:
+    schema: public
+    name: visit
+  object_relationships:
+  - name: seminar
+    using:
+      foreign_key_constraint_on: seminar_id
+  - name: visitor
+    using:
+      foreign_key_constraint_on: visitor_id
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        visitor_id:
+          _eq: X-Hasura-User-Id
+      columns:
+      - request_msg
+      - seminar_id
+      - visitor_id
+      backend_only: false
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - is_archived
+      - is_cancelled
+      - id
+      - seminar_id
+      - request_msg
+      - response_msg
+      - time_requested
+      - time_responded
+      - visitor_id
+      - visit_status
+      filter: {}
+      allow_aggregations: true
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - is_cancelled
+      - request_msg
+      - response_msg
+      - time_responded
+      - visit_status
+      filter:
+        _or:
+        - visitor_id:
+            _eq: X-Hasura-User-Id
+        - seminar:
+            course_group:
+              faculty_id:
+                _eq: X-Hasura-User-Id
+      check:
+        _or:
+        - visitor_id:
+            _eq: X-Hasura-User-Id
+        - seminar:
+            course_group:
+              faculty_id:
+                _eq: X-Hasura-User-Id
+  delete_permissions:
+  - role: user
+    permission:
+      filter:
+        visitor_id:
+          _eq: X-Hasura-User-Id
+  event_triggers:
+  - name: request_delete
+    definition:
+      enable_manual: true
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook: https://open-classroom-app-demo.herokuapp.com/api/notifs/request-delete
+  - name: request_insert
+    definition:
+      enable_manual: false
+      insert:
+        columns: '*'
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook: https://open-classroom-app-demo.herokuapp.com/api/notifs/request-insert
+  - name: request_status_update
+    definition:
+      enable_manual: false
+      update:
+        columns:
+        - visit_status
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook: https://open-classroom-app-demo.herokuapp.com/api/notifs/request-status-update
+- table:
+    schema: public
+    name: visit_status
