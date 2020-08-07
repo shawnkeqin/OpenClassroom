@@ -6,7 +6,7 @@ export default {
   mixins: [reactiveProp],
   props: {
     labels: Array,
-    datasets: Object
+    datasets: Array
   },
   mounted() {
     this.renderChart(

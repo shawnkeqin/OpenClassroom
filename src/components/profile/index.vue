@@ -52,47 +52,46 @@
         </a-list>
       </a-card>
     </div>
-    <div style="width:800px; margin:0 auto;">
+    <br />
+    <h3 style="text-align:center;">My Statistics</h3>
+    <div style="margin: auto;">
       <a-button v-on:click="isShowRequestsMade = !isShowRequestsMade">Requests Made</a-button>&nbsp; &nbsp;
       <a-button v-on:click="isShowCompletedVisits = !isShowCompletedVisits">Completed Visits</a-button>&nbsp; &nbsp;
       <a-button v-on:click="isShowRequestsReceived = !isShowRequestsReceived">Requests Received</a-button>&nbsp; &nbsp;
       <a-button v-on:click="isShowHostedVisits = !isShowHostedVisits">Hosted Visits</a-button>
     </div>
     <br />
-    <div v-show="isShowRequestsMade">
-      <h2 style="text-align:center;">My Requests Made</h2>
-    </div>
-    <div v-show="isShowRequestsMade">
+
+    <div
+      v-show="
+        isShowRequestsMade ||
+          isShowCompletedVisits ||
+          isShowRequestsReceived ||
+          isShowHostedVisits
+      "
+    >
+      <h2 v-if="isShowRequestsMade" style="text-align:center;">My Requests Made</h2>
       <LineExample
         v-if="isShowRequestsMade"
         :labels="labels"
         :datasets="number_of_visit_requests.datasets"
       />
-    </div>
-    <div v-show="isShowCompletedVisits">
-      <h2 style="text-align:center;">My Completed Visits</h2>
-    </div>
-    <div v-show="isShowCompletedVisits">
+
+      <h2 v-if="isShowCompletedVisits" style="text-align:center;">My Completed Visits</h2>
       <LineExample
         v-if="isShowCompletedVisits"
         :labels="labels4"
         :datasets="number_of_completed_visits.datasets4"
       />
-    </div>
-    <div v-show="isShowRequestsReceived">
-      <h2 style="text-align:center;">My Requests Received</h2>
-    </div>
-    <div v-show="isShowRequestsReceived">
+
+      <h2 v-if="isShowRequestsReceived" style="text-align:center;">My Requests Received</h2>
       <LineExample
         v-if="isShowRequestsReceived"
         :labels="labels2"
         :datasets="number_of_visit_requests_received.datasets2"
       />
-    </div>
-    <div v-show="isShowHostedVisits">
-      <h2 style="text-align:center;">My Hosted Visits</h2>
-    </div>
-    <div v-show="isShowHostedVisits">
+
+      <h2 v-if="isShowHostedVisits" style="text-align:center;">My Hosted Visits</h2>
       <LineExample
         v-if="isShowHostedVisits"
         :labels="labels3"
@@ -107,7 +106,7 @@
       <div v-else id="components-table-demo-size">
         <br />
         <br />
-        <h4>Average Statistics</h4>
+        <h4 style="text-align:center;">Average Statistics</h4>
         <a-table bordered :columns="columns" :data-source="data"></a-table>
       </div>
       <br />
@@ -1358,13 +1357,13 @@ export default {
             backgroundColor: "#f87979",
             data: [
               this.number_of_completed_visit_requests_made_by_user.visit3.aggregate.count.toFixed(
-                2
+                1
               ),
               this.number_of_completed_visit_requests_made_by_user.visit2.aggregate.count.toFixed(
-                2
+                1
               ),
               this.number_of_completed_visit_requests_made_by_user.visit1.aggregate.count.toFixed(
-                2
+                1
               )
             ],
             lineTension: 0,
@@ -1452,7 +1451,7 @@ export default {
 
       average = sum / count;
 
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
 
     average_visit_requests_made_across_all_users_2: function() {
@@ -1471,7 +1470,7 @@ export default {
 
       average = sum / count;
 
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
 
     average_visit_requests_made_across_all_users_3: function() {
@@ -1490,7 +1489,7 @@ export default {
 
       average = sum / count;
 
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
 
     average_completed_visit_requests_made_across_all_users: function() {
@@ -1510,7 +1509,7 @@ export default {
 
       average = sum / count;
 
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_completed_visit_requests_made_across_all_users_2: function() {
       var count =
@@ -1529,7 +1528,7 @@ export default {
 
       average = sum / count;
 
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_completed_visit_requests_made_across_all_users_3: function() {
       var count =
@@ -1548,7 +1547,7 @@ export default {
 
       average = sum / count;
 
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_received_across_all_users: function() {
       var count =
@@ -1567,7 +1566,7 @@ export default {
 
       average = sum / count;
 
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_received_across_all_users_2: function() {
       var count =
@@ -1586,7 +1585,7 @@ export default {
 
       average = sum / count;
 
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_received_across_all_users_3: function() {
       var count =
@@ -1605,7 +1604,7 @@ export default {
 
       average = sum / count;
 
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_hosted_visits_across_all_users: function() {
       var count =
@@ -1621,7 +1620,7 @@ export default {
       var average = 0;
 
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_hosted_visits_across_all_users_2: function() {
       var count =
@@ -1637,7 +1636,7 @@ export default {
       var average = 0;
 
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_hosted_visits_across_all_users_3: function() {
       var count =
@@ -1653,7 +1652,7 @@ export default {
       var average = 0;
 
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
 
     average_visit_requests_made_across_division_science: function() {
@@ -1671,7 +1670,7 @@ export default {
       var average = 0;
 
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_made_across_division_science_2: function() {
       var count =
@@ -1688,7 +1687,7 @@ export default {
       var average = 0;
 
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_made_across_division_science_3: function() {
       var count =
@@ -1705,7 +1704,7 @@ export default {
       var average = 0;
 
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_made_across_division_social_sciences: function() {
       var count =
@@ -1722,7 +1721,7 @@ export default {
       var average = 0;
 
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_made_across_division_social_sciences_2: function() {
       var count =
@@ -1739,7 +1738,7 @@ export default {
       var average = 0;
 
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_made_across_division_social_sciences_3: function() {
       var count =
@@ -1756,7 +1755,7 @@ export default {
       var average = 0;
 
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_made_across_division_humanities: function() {
       var count =
@@ -1773,7 +1772,7 @@ export default {
       var average = 0;
 
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_made_across_division_humanities_2: function() {
       var count =
@@ -1790,7 +1789,7 @@ export default {
       var average = 0;
 
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_made_across_division_humanities_3: function() {
       var count =
@@ -1807,7 +1806,7 @@ export default {
       var average = 0;
 
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_completed_visit_requests_made_across_division_science: function() {
       var count =
@@ -1822,7 +1821,7 @@ export default {
           : 0;
       var average = 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_completed_visit_requests_made_across_division_science_2: function() {
       var count =
@@ -1837,7 +1836,7 @@ export default {
           : 0;
       var average = 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_completed_visit_requests_made_across_division_science_3: function() {
       var count =
@@ -1852,7 +1851,7 @@ export default {
           : 0;
       var average = 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_completed_visit_requests_made_across_division_social_sciences: function() {
       var count =
@@ -1869,7 +1868,7 @@ export default {
           : 0;
       var average = 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_completed_visit_requests_made_across_division_social_sciences_2: function() {
       var count =
@@ -1886,7 +1885,7 @@ export default {
           : 0;
       var average = 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_completed_visit_requests_made_across_division_social_sciences_3: function() {
       var count =
@@ -1903,7 +1902,7 @@ export default {
           : 0;
       var average = 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_completed_visit_requests_made_across_division_humanities: function() {
       var count =
@@ -1920,7 +1919,7 @@ export default {
           : 0;
       var average = 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_completed_visit_requests_made_across_division_humanities_2: function() {
       var count =
@@ -1937,7 +1936,7 @@ export default {
           : 0;
       var average = 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_completed_visit_requests_made_across_division_humanities_3: function() {
       var count =
@@ -1954,7 +1953,7 @@ export default {
           : 0;
       var average = 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_received_across_division_science: function() {
       var count =
@@ -1969,7 +1968,7 @@ export default {
               .aggregate.count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_received_across_division_science_2: function() {
       var count =
@@ -1984,7 +1983,7 @@ export default {
               .aggregate.count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_received_across_division_science_3: function() {
       var count =
@@ -1999,7 +1998,7 @@ export default {
               .aggregate.count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_received_across_division_social_sciences: function() {
       var count =
@@ -2016,7 +2015,7 @@ export default {
               .aggregate.count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_received_across_division_social_sciences_2: function() {
       var count =
@@ -2033,7 +2032,7 @@ export default {
               .aggregate.count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_received_across_division_social_sciences_3: function() {
       var count =
@@ -2050,7 +2049,7 @@ export default {
               .aggregate.count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_received_across_division_humanities: function() {
       var count =
@@ -2065,7 +2064,7 @@ export default {
               .aggregate.count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_received_across_division_humanities_2: function() {
       var count =
@@ -2080,7 +2079,7 @@ export default {
               .aggregate.count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_visit_requests_received_across_division_humanities_3: function() {
       var count =
@@ -2095,7 +2094,7 @@ export default {
               .aggregate.count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_hosted_visits_across_divison_science: function() {
       var count =
@@ -2109,7 +2108,7 @@ export default {
           ? this.hosted_visits_across_division_science.visit1.aggregate.count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_hosted_visits_across_divison_science_2: function() {
       var count =
@@ -2123,7 +2122,7 @@ export default {
           ? this.hosted_visits_across_division_science.visit2.aggregate.count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_hosted_visits_across_divison_science_3: function() {
       var count =
@@ -2137,7 +2136,7 @@ export default {
           ? this.hosted_visits_across_division_science.visit3.aggregate.count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_hosted_visits_across_divison_social_sciences: function() {
       var count =
@@ -2152,7 +2151,7 @@ export default {
               .count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_hosted_visits_across_divison_social_sciences_2: function() {
       var count =
@@ -2167,7 +2166,7 @@ export default {
               .count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_hosted_visits_across_divison_social_sciences_3: function() {
       var count =
@@ -2182,7 +2181,7 @@ export default {
               .count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_hosted_visits_across_divison_humanities: function() {
       var count =
@@ -2196,7 +2195,7 @@ export default {
           ? this.hosted_visits_across_division_humanities.visit1.aggregate.count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_hosted_visits_across_divison_humanities_2: function() {
       var count =
@@ -2210,7 +2209,7 @@ export default {
           ? this.hosted_visits_across_division_humanities.visit2.aggregate.count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     average_hosted_visits_across_divison_humanities_3: function() {
       var count =
@@ -2224,7 +2223,7 @@ export default {
           ? this.hosted_visits_across_division_humanities.visit3.aggregate.count
           : 0;
       average = sum / count;
-      return average.toFixed(2);
+      return average.toFixed(1);
     },
     data() {
       return [
