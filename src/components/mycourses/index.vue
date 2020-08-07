@@ -1,7 +1,9 @@
 <template>
   <div style="width: 100%; padding: 0 20px;">
     <h1>My courses</h1>
-    <template v-if="$apollo.loading"><a-skeleton active/></template>
+    <template v-if="$apollo.loading">
+      <a-skeleton active />
+    </template>
     <template v-else>
       <div class="div1" style="display: flex; align-content: flex-start">
         <template v-if="course_groups && course_groups.length">
@@ -15,18 +17,18 @@
             <p>{{ course_group.course.module_code }}</p>
             <p>{{ "Group " + course_group.group_code }}</p>
             <router-link
-              style="font-size:25px; "
+              style="font-size:25px;position: relative;
+top: 6px;"
               :to="'/coursedetails/' + course_group.id"
-              >Course details
-              <a-icon style="margin-bottom: 20px;" type="right-circle"
-            /></router-link>
-
+            >➤ Course details</router-link>
+            <br />
+            <br />
             <a-card style="width: 250px; margin-right: 10px;">
               <p style="margin: 0 10px 0 0">
                 {{
-                  `This course is ${
-                    course_group.is_open ? `open` : `closed`
-                  } to visit requests`
+                `This course is ${
+                course_group.is_open ? `open` : `closed`
+                } to visit requests`
                 }}
               </p>
 
@@ -43,11 +45,7 @@
               <a-tooltip
                 title="Closing/opening this course will automatically close/open all of its classes."
               >
-                <a-icon
-                  type="exclamation-circle"
-                  theme="filled"
-                  class="pending"
-                />
+                <a-icon type="exclamation-circle" theme="filled" class="pending" />
               </a-tooltip>
             </a-card>
           </a-card>

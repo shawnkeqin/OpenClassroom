@@ -52,13 +52,15 @@
         </a-list>
       </a-card>
     </div>
-    <div>
-      <a-button v-on:click="isShowRequestsMade = !isShowRequestsMade">Average Requests Made</a-button>&nbsp;
-      <a-button
-        v-on:click="isShowRequestsReceived = !isShowRequestsReceived"
-      >Average Requests Received</a-button>&nbsp;
-      <a-button v-on:click="isShowHostedVisits = !isShowHostedVisits">Average Hosted Visits</a-button>&nbsp;
-      <a-button v-on:click="isShowCompletedVisits = !isShowCompletedVisits">Average Completed Visits</a-button>
+    <div style="width:800px; margin:0 auto;">
+      <a-button v-on:click="isShowRequestsMade = !isShowRequestsMade">Requests Made</a-button>&nbsp; &nbsp;
+      <a-button v-on:click="isShowCompletedVisits = !isShowCompletedVisits">Completed Visits</a-button>&nbsp; &nbsp;
+      <a-button v-on:click="isShowRequestsReceived = !isShowRequestsReceived">Requests Received</a-button>&nbsp; &nbsp;
+      <a-button v-on:click="isShowHostedVisits = !isShowHostedVisits">Hosted Visits</a-button>
+    </div>
+    <br />
+    <div v-show="isShowRequestsMade">
+      <h2 style="text-align:center;">My Requests Made</h2>
     </div>
     <div v-show="isShowRequestsMade">
       <LineExample
@@ -66,6 +68,19 @@
         :labels="labels"
         :datasets="number_of_visit_requests.datasets"
       />
+    </div>
+    <div v-show="isShowCompletedVisits">
+      <h2 style="text-align:center;">My Completed Visits</h2>
+    </div>
+    <div v-show="isShowCompletedVisits">
+      <LineExample
+        v-if="isShowCompletedVisits"
+        :labels="labels4"
+        :datasets="number_of_completed_visits.datasets4"
+      />
+    </div>
+    <div v-show="isShowRequestsReceived">
+      <h2 style="text-align:center;">My Requests Received</h2>
     </div>
     <div v-show="isShowRequestsReceived">
       <LineExample
@@ -75,24 +90,23 @@
       />
     </div>
     <div v-show="isShowHostedVisits">
+      <h2 style="text-align:center;">My Hosted Visits</h2>
+    </div>
+    <div v-show="isShowHostedVisits">
       <LineExample
         v-if="isShowHostedVisits"
         :labels="labels3"
         :datasets="number_of_hosted_visits.datasets3"
       />
     </div>
-    <div v-show="isShowCompletedVisits">
-      <LineExample
-        v-if="isShowCompletedVisits"
-        :labels="labels4"
-        :datasets="number_of_completed_visits.datasets4"
-      />
-    </div>
+
     <div>
       <a-spin v-if="$apollo.loading">
         <a-icon slot="indicator" type="loading" style="font-size: 26px; padding-left: 10px" spin />
       </a-spin>
       <div v-else id="components-table-demo-size">
+        <br />
+        <br />
         <h4>Average Statistics</h4>
         <a-table bordered :columns="columns" :data-source="data"></a-table>
       </div>
