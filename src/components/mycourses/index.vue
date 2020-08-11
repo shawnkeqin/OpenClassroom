@@ -128,6 +128,7 @@ export default {
   methods: {
     async toggleCourseGroupIsOpen(id, status) {
       this.isToggleCourseGroupLoading = true;
+      console.log(id);
       const course_group_id = id;
       const current_is_open = status;
       try {

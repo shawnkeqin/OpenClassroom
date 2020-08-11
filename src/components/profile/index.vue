@@ -70,6 +70,9 @@
           isShowHostedVisits
       "
     >
+      <a-spin v-if="$apollo.loading">
+        <a-icon slot="indicator" type="loading" style="font-size: 26px; padding-left: 10px" spin />
+      </a-spin>
       <h2 v-if="isShowRequestsMade" style="text-align:center;">My Requests Made</h2>
       <LineExample
         v-if="isShowRequestsMade"
@@ -211,7 +214,7 @@ export default {
   data() {
     console.log(moment().format());
     return {
-      isShowRequestsMade: false,
+      isShowRequestsMade: true,
       isShowRequestsReceived: false,
       isShowHostedVisits: false,
       isShowCompletedVisits: false,
