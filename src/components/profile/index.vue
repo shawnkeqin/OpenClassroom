@@ -1439,41 +1439,21 @@ export default {
     },
 
     average_visit_requests_made_across_all_users: function() {
-      var count =
-        this.total_number_of_visit_requests_across_all_users != undefined
-          ? this.total_number_of_visit_requests_across_all_users
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.total_number_of_visit_requests_across_all_users != undefined
-          ? this.total_number_of_visit_requests_across_all_users.visit1
-              .aggregate.count
-          : 0;
-
-      var average = 0;
-
-      average = sum / count;
-
-      return average.toFixed(1);
+      return this.getAverage(
+        this.total_number_of_visit_requests_across_all_users.faculty_aggregate
+          .aggregate.count,
+        this.total_number_of_visit_requests_across_all_users.visit1.aggregate
+          .count
+      );
     },
 
     average_visit_requests_made_across_all_users_2: function() {
-      var count =
-        this.total_number_of_visit_requests_across_all_users != undefined
-          ? this.total_number_of_visit_requests_across_all_users
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.total_number_of_visit_requests_across_all_users != undefined
-          ? this.total_number_of_visit_requests_across_all_users.visit2
-              .aggregate.count
-          : 0;
-
-      var average = 0;
-
-      average = sum / count;
-
-      return average.toFixed(1);
+      return this.getAverage(
+        this.total_number_of_visit_requests_across_all_users.faculty_aggregate
+          .aggregate.count,
+        this.total_number_of_visit_requests_across_all_users.visit2.aggregate
+          .count
+      );
     },
 
     average_visit_requests_made_across_all_users_3: function() {
@@ -1496,23 +1476,12 @@ export default {
     },
 
     average_completed_visit_requests_made_across_all_users: function() {
-      var count =
-        this.total_number_of_completed_visit_requests_across_all_users !=
-        undefined
-          ? this.total_number_of_completed_visit_requests_across_all_users
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.total_number_of_completed_visit_requests_across_all_users !=
-        undefined
-          ? this.total_number_of_completed_visit_requests_across_all_users
-              .visit1.aggregate.count
-          : 0;
-      var average = 0;
-
-      average = sum / count;
-
-      return average.toFixed(1);
+      return this.getAverage(
+        this.total_number_of_completed_visit_requests_across_all_users
+          .faculty_aggregate.aggregate.count,
+        this.total_number_of_completed_visit_requests_across_all_users.visit1
+          .aggregate.count
+      );
     },
     average_completed_visit_requests_made_across_all_users_2: function() {
       var count =
@@ -2215,18 +2184,11 @@ export default {
       return average.toFixed(1);
     },
     average_hosted_visits_across_divison_humanities_3: function() {
-      var count =
-        this.hosted_visits_across_division_humanities != undefined
-          ? this.hosted_visits_across_division_humanities.faculty_aggregate
-              .aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.hosted_visits_across_division_humanities != undefined
-          ? this.hosted_visits_across_division_humanities.visit3.aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.hosted_visits_across_division_humanities.faculty_aggregate
+          .aggregate.count,
+        this.hosted_visits_across_division_humanities.visit3.aggregate.count
+      );
     },
     data() {
       return [
@@ -2290,6 +2252,12 @@ export default {
     }
   },
   methods: {
+    getAverage(count, sum) {
+      count != undefined ? count : 0;
+      sum != undefined ? sum : 0;
+      const average = sum / count;
+      return average.toFixed(1);
+    },
     async toggleNotifNewRequest() {
       this.isToggleNotifNewRequestLoading = true;
       const faculty_id = this.faculty.id;
