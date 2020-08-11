@@ -102,23 +102,6 @@ export default {
         }
       };
     }
-    /* course_group() {
-      const course_group_id = this.id;
-      return {
-        query: queries.get_course_group_details,
-        variables: {
-          course_group_id
-        },
-        update: data => data.course_group[0],
-        error(error, vm, key) {
-          this.$notification.error({
-            key,
-            message: "Failed to obtain data on your course",
-            description: "Please try again."
-          });
-        }
-      };
-    } */
   },
   computed: {
     course() {
@@ -128,9 +111,11 @@ export default {
   methods: {
     async toggleCourseGroupIsOpen(id, status) {
       this.isToggleCourseGroupLoading = true;
-      console.log(id);
+
       const course_group_id = id;
       const current_is_open = status;
+      console.log(id);
+      console.log(current_is_open);
       try {
         await this.$apollo.mutate({
           mutation: queries.update_course_group_and_seminars_is_open,
@@ -139,8 +124,9 @@ export default {
             is_open: !current_is_open
           },
           refetchQueries: [
-            "get_course_group_details",
-            "get_seminars_by_course_group"
+            "get_course_groups_by_faculty",
+            "get_seminars_by_course_group",
+            "get_course_group_details"
           ]
         });
         this.isToggleCourseGroupLoading = false;
@@ -149,7 +135,7 @@ export default {
         this.$notification.error({
           key: "toggle_course_group_is_open_error",
           message: "Failed to update the open status of your course",
-          description: "Please try again."
+          description: "Please try again." + err
         });
       }
     }

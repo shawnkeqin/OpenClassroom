@@ -1,17 +1,17 @@
 <template>
   <div style="width: 80%;">
-    <template v-if="$apollo.loading"><a-skeleton active/></template>
+    <template v-if="$apollo.loading">
+      <a-skeleton active />
+    </template>
     <template v-else>
       <div style="display: flex; align-items: center; padding-bottom: 5px;">
-        <h1 style="margin: 0 10px 0 0">
-          {{ course ? course.title : "" }}
-        </h1>
+        <h1 style="margin: 0 10px 0 0">{{ course ? course.title : "" }}</h1>
         <a-card style="width: 250px; margin-right: 10px;">
           <p style="margin: 0 10px 0 0">
             {{
-              `This course is ${
-                course_group.is_open ? `open` : `closed`
-              } to visit requests`
+            `This course is ${
+            course_group.is_open ? `open` : `closed`
+            } to visit requests`
             }}
           </p>
           <a-switch
@@ -30,14 +30,12 @@
         </a-card>
       </div>
       <div>
-        <h3 style="margin: 0 10px 0 0">
-          {{ course ? course.module_code : "" }}
-        </h3>
+        <h3 style="margin: 0 10px 0 0">{{ course ? course.module_code : "" }}</h3>
         <p>
           {{
-            `Teaching mode: ${constants.TEACHING_MODES[
-              course_group.teaching_mode
-            ] || "NA"}`
+          `Teaching mode: ${constants.TEACHING_MODES[
+          course_group.teaching_mode
+          ] || "NA"}`
           }}
         </p>
       </div>
@@ -62,7 +60,7 @@
         >
           <a-icon type="exclamation-circle" theme="filled" class="pending" />
         </a-tooltip>
-      </div> -->
+      </div>-->
       <a-card style="width:100%" :bodyStyle="{ padding: 0 }">
         <a-collapse v-model="activeKey" :bordered="false">
           <a-collapse-panel key="1">
@@ -70,9 +68,7 @@
               <h4 style="margin: 0;">Course Description</h4>
             </template>
             <p>{{ course && (course.desc || "None") }}</p>
-            <h5 style="margin: 0; margin-right: 10px;">
-              Additional Description
-            </h5>
+            <h5 style="margin: 0; margin-right: 10px;">Additional Description</h5>
             <p>{{ course_group.course_group_desc || "" }}</p>
             <updateCourseGroupDescModal :course_group="course_group" />
           </a-collapse-panel>
@@ -85,18 +81,14 @@
           </a-collapse-panel>
           <a-collapse-panel key="3">
             <template slot="header">
-              <h4 style="margin: 0;">
-                Notes for Observers
-              </h4>
+              <h4 style="margin: 0;">Notes for Observers</h4>
             </template>
             <p>{{ course && (course.notes || "None") }}</p>
             <updateCourseGroupNotesModal :course_group="course_group" />
           </a-collapse-panel>
           <a-collapse-panel key="4">
             <template slot="header">
-              <h4 style="margin: 0;">
-                Schedule Description
-              </h4>
+              <h4 style="margin: 0;">Schedule Description</h4>
             </template>
             <p>{{ course_group.schedule_desc || "None" }}</p>
             <updateCourseGroupScheduleDescModal :course_group="course_group" />
@@ -160,6 +152,7 @@ export default {
           course_group_id,
           date_lower_bound
         },
+        fetchPolicy: "cache-and-network",
         update: data => data.seminar,
         error(error, vm, key) {
           this.$notification.error({
