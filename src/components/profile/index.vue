@@ -1457,22 +1457,12 @@ export default {
     },
 
     average_visit_requests_made_across_all_users_3: function() {
-      var count =
-        this.total_number_of_visit_requests_across_all_users != undefined
-          ? this.total_number_of_visit_requests_across_all_users
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.total_number_of_visit_requests_across_all_users != undefined
-          ? this.total_number_of_visit_requests_across_all_users.visit3
-              .aggregate.count
-          : 0;
-
-      var average = 0;
-
-      average = sum / count;
-
-      return average.toFixed(1);
+      return this.getAverage(
+        this.total_number_of_visit_requests_across_all_users.faculty_aggregate
+          .aggregate.count,
+        this.total_number_of_visit_requests_across_all_users.visit3.aggregate
+          .count
+      );
     },
 
     average_completed_visit_requests_made_across_all_users: function() {
@@ -1484,704 +1474,341 @@ export default {
       );
     },
     average_completed_visit_requests_made_across_all_users_2: function() {
-      var count =
-        this.total_number_of_completed_visit_requests_across_all_users !=
-        undefined
-          ? this.total_number_of_completed_visit_requests_across_all_users
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.total_number_of_completed_visit_requests_across_all_users !=
-        undefined
-          ? this.total_number_of_completed_visit_requests_across_all_users
-              .visit2.aggregate.count
-          : 0;
-      var average = 0;
-
-      average = sum / count;
-
-      return average.toFixed(1);
+      return this.getAverage(
+        this.total_number_of_completed_visit_requests_across_all_users
+          .faculty_aggregate.aggregate.count,
+        this.total_number_of_completed_visit_requests_across_all_users.visit2
+          .aggregate.count
+      );
     },
     average_completed_visit_requests_made_across_all_users_3: function() {
-      var count =
-        this.total_number_of_completed_visit_requests_across_all_users !=
-        undefined
-          ? this.total_number_of_completed_visit_requests_across_all_users
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.total_number_of_completed_visit_requests_across_all_users !=
-        undefined
-          ? this.total_number_of_completed_visit_requests_across_all_users
-              .visit3.aggregate.count
-          : 0;
-      var average = 0;
-
-      average = sum / count;
-
-      return average.toFixed(1);
+      return this.getAverage(
+        this.total_number_of_completed_visit_requests_across_all_users
+          .faculty_aggregate.aggregate.count,
+        this.total_number_of_completed_visit_requests_across_all_users.visit3
+          .aggregate.count
+      );
     },
     average_visit_requests_received_across_all_users: function() {
-      var count =
-        this.total_number_of_visit_requests_received_across_all_users !=
-        undefined
-          ? this.total_number_of_visit_requests_received_across_all_users
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.total_number_of_visit_requests_received_across_all_users !=
-        undefined
-          ? this.total_number_of_visit_requests_received_across_all_users.visit1
-              .aggregate.count
-          : 0;
-      var average = 0;
-
-      average = sum / count;
-
-      return average.toFixed(1);
+      return this.getAverage(
+        this.total_number_of_visit_requests_received_across_all_users
+          .faculty_aggregate.aggregate.count,
+        this.total_number_of_visit_requests_received_across_all_users.visit1
+          .aggregate.count
+      );
     },
     average_visit_requests_received_across_all_users_2: function() {
-      var count =
-        this.total_number_of_visit_requests_received_across_all_users !=
-        undefined
-          ? this.total_number_of_visit_requests_received_across_all_users
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.total_number_of_visit_requests_received_across_all_users !=
-        undefined
-          ? this.total_number_of_visit_requests_received_across_all_users.visit2
-              .aggregate.count
-          : 0;
-      var average = 0;
-
-      average = sum / count;
-
-      return average.toFixed(1);
+      return this.getAverage(
+        this.total_number_of_visit_requests_received_across_all_users
+          .faculty_aggregate.aggregate.count,
+        this.total_number_of_visit_requests_received_across_all_users.visit2
+          .aggregate.count
+      );
     },
     average_visit_requests_received_across_all_users_3: function() {
-      var count =
-        this.total_number_of_visit_requests_received_across_all_users !=
-        undefined
-          ? this.total_number_of_visit_requests_received_across_all_users
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.total_number_of_visit_requests_received_across_all_users !=
-        undefined
-          ? this.total_number_of_visit_requests_received_across_all_users.visit3
-              .aggregate.count
-          : 0;
-      var average = 0;
-
-      average = sum / count;
-
-      return average.toFixed(1);
+      return this.getAverage(
+        this.total_number_of_visit_requests_received_across_all_users
+          .faculty_aggregate.aggregate.count,
+        this.total_number_of_visit_requests_received_across_all_users.visit3
+          .aggregate.count
+      );
     },
     average_hosted_visits_across_all_users: function() {
-      var count =
-        this.total_number_of_hosted_visits_across_all_users != undefined
-          ? this.total_number_of_hosted_visits_across_all_users
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.total_number_of_hosted_visits_across_all_users != undefined
-          ? this.total_number_of_hosted_visits_across_all_users.visit1.aggregate
-              .count
-          : 0;
-      var average = 0;
-
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.total_number_of_hosted_visits_across_all_users.faculty_aggregate
+          .aggregate.count,
+        this.total_number_of_hosted_visits_across_all_users.visit1.aggregate
+          .count
+      );
     },
     average_hosted_visits_across_all_users_2: function() {
-      var count =
-        this.total_number_of_hosted_visits_across_all_users != undefined
-          ? this.total_number_of_hosted_visits_across_all_users
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.total_number_of_hosted_visits_across_all_users != undefined
-          ? this.total_number_of_hosted_visits_across_all_users.visit2.aggregate
-              .count
-          : 0;
-      var average = 0;
-
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.total_number_of_hosted_visits_across_all_users.faculty_aggregate
+          .aggregate.count,
+        this.total_number_of_hosted_visits_across_all_users.visit2.aggregate
+          .count
+      );
     },
     average_hosted_visits_across_all_users_3: function() {
-      var count =
-        this.total_number_of_hosted_visits_across_all_users != undefined
-          ? this.total_number_of_hosted_visits_across_all_users
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.total_number_of_hosted_visits_across_all_users != undefined
-          ? this.total_number_of_hosted_visits_across_all_users.visit3.aggregate
-              .count
-          : 0;
-      var average = 0;
-
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.total_number_of_hosted_visits_across_all_users.faculty_aggregate
+          .aggregate.count,
+        this.total_number_of_hosted_visits_across_all_users.visit3.aggregate
+          .count
+      );
     },
 
     average_visit_requests_made_across_division_science: function() {
-      var count =
-        this.visit_requests_made_across_division_science != undefined
-          ? this.visit_requests_made_across_division_science.faculty_aggregate
-              .aggregate.count
-          : 0;
-      var sum =
-        this.visit_requests_made_across_division_science != undefined
-          ? this.visit_requests_made_across_division_science.visit1.aggregate
-              .count
-          : 0;
-
-      var average = 0;
-
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_made_across_division_science.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_made_across_division_science.visit1.aggregate.count
+      );
     },
     average_visit_requests_made_across_division_science_2: function() {
-      var count =
-        this.visit_requests_made_across_division_science != undefined
-          ? this.visit_requests_made_across_division_science.faculty_aggregate
-              .aggregate.count
-          : 0;
-      var sum =
-        this.visit_requests_made_across_division_science != undefined
-          ? this.visit_requests_made_across_division_science.visit2.aggregate
-              .count
-          : 0;
-
-      var average = 0;
-
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_made_across_division_science.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_made_across_division_science.visit2.aggregate.count
+      );
     },
     average_visit_requests_made_across_division_science_3: function() {
-      var count =
-        this.visit_requests_made_across_division_science != undefined
-          ? this.visit_requests_made_across_division_science.faculty_aggregate
-              .aggregate.count
-          : 0;
-      var sum =
-        this.visit_requests_made_across_division_science != undefined
-          ? this.visit_requests_made_across_division_science.visit3.aggregate
-              .count
-          : 0;
-
-      var average = 0;
-
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_made_across_division_science.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_made_across_division_science.visit3.aggregate.count
+      );
     },
     average_visit_requests_made_across_division_social_sciences: function() {
-      var count =
-        this.visit_requests_made_across_division_social_sciences != undefined
-          ? this.visit_requests_made_across_division_social_sciences
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.visit_requests_made_across_division_social_sciences != undefined
-          ? this.visit_requests_made_across_division_social_sciences.visit1
-              .aggregate.count
-          : 0;
-
-      var average = 0;
-
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_made_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_made_across_division_social_sciences.visit1
+          .aggregate.count
+      );
     },
     average_visit_requests_made_across_division_social_sciences_2: function() {
-      var count =
-        this.visit_requests_made_across_division_social_sciences != undefined
-          ? this.visit_requests_made_across_division_social_sciences
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.visit_requests_made_across_division_social_sciences != undefined
-          ? this.visit_requests_made_across_division_social_sciences.visit2
-              .aggregate.count
-          : 0;
-
-      var average = 0;
-
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_made_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_made_across_division_social_sciences.visit2
+          .aggregate.count
+      );
     },
     average_visit_requests_made_across_division_social_sciences_3: function() {
-      var count =
-        this.visit_requests_made_across_division_social_sciences != undefined
-          ? this.visit_requests_made_across_division_social_sciences
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.visit_requests_made_across_division_social_sciences != undefined
-          ? this.visit_requests_made_across_division_social_sciences.visit3
-              .aggregate.count
-          : 0;
-
-      var average = 0;
-
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_made_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_made_across_division_social_sciences.visit3
+          .aggregate.count
+      );
     },
     average_visit_requests_made_across_division_humanities: function() {
-      var count =
-        this.visit_requests_made_across_division_humanities != undefined
-          ? this.visit_requests_made_across_division_humanities
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.visit_requests_made_across_division_humanities != undefined
-          ? this.visit_requests_made_across_division_humanities.visit1.aggregate
-              .count
-          : 0;
-
-      var average = 0;
-
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_made_across_division_humanities.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_made_across_division_humanities.visit1.aggregate
+          .count
+      );
     },
     average_visit_requests_made_across_division_humanities_2: function() {
-      var count =
-        this.visit_requests_made_across_division_humanities != undefined
-          ? this.visit_requests_made_across_division_humanities
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.visit_requests_made_across_division_humanities != undefined
-          ? this.visit_requests_made_across_division_humanities.visit2.aggregate
-              .count
-          : 0;
-
-      var average = 0;
-
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_made_across_division_humanities.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_made_across_division_humanities.visit2.aggregate
+          .count
+      );
     },
     average_visit_requests_made_across_division_humanities_3: function() {
-      var count =
-        this.visit_requests_made_across_division_humanities != undefined
-          ? this.visit_requests_made_across_division_humanities
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.visit_requests_made_across_division_humanities != undefined
-          ? this.visit_requests_made_across_division_humanities.visit3.aggregate
-              .count
-          : 0;
-
-      var average = 0;
-
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_made_across_division_humanities.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_made_across_division_humanities.visit3.aggregate
+          .count
+      );
     },
     average_completed_visit_requests_made_across_division_science: function() {
-      var count =
-        this.completed_visit_requests_made_across_division_science != undefined
-          ? this.completed_visit_requests_made_across_division_science
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.completed_visit_requests_made_across_division_science != undefined
-          ? this.completed_visit_requests_made_across_division_science.visit1
-              .aggregate.count
-          : 0;
-      var average = 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_science
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_science.visit1
+          .aggregate.count
+      );
     },
     average_completed_visit_requests_made_across_division_science_2: function() {
-      var count =
-        this.completed_visit_requests_made_across_division_science != undefined
-          ? this.completed_visit_requests_made_across_division_science
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.completed_visit_requests_made_across_division_science != undefined
-          ? this.completed_visit_requests_made_across_division_science.visit2
-              .aggregate.count
-          : 0;
-      var average = 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_science
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_science.visit2
+          .aggregate.count
+      );
     },
     average_completed_visit_requests_made_across_division_science_3: function() {
-      var count =
-        this.completed_visit_requests_made_across_division_science != undefined
-          ? this.completed_visit_requests_made_across_division_science
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.completed_visit_requests_made_across_division_science != undefined
-          ? this.completed_visit_requests_made_across_division_science.visit3
-              .aggregate.count
-          : 0;
-      var average = 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_science
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_science.visit3
+          .aggregate.count
+      );
     },
     average_completed_visit_requests_made_across_division_social_sciences: function() {
-      var count =
-        this.completed_visit_requests_made_across_division_social_sciences !=
-        undefined
-          ? this.completed_visit_requests_made_across_division_social_sciences
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.completed_visit_requests_made_across_division_social_sciences !=
-        undefined
-          ? this.completed_visit_requests_made_across_division_social_sciences
-              .visit1.aggregate.count
-          : 0;
-      var average = 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_social_sciences
+          .visit1.aggregate.count
+      );
     },
     average_completed_visit_requests_made_across_division_social_sciences_2: function() {
-      var count =
-        this.completed_visit_requests_made_across_division_social_sciences !=
-        undefined
-          ? this.completed_visit_requests_made_across_division_social_sciences
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.completed_visit_requests_made_across_division_social_sciences !=
-        undefined
-          ? this.completed_visit_requests_made_across_division_social_sciences
-              .visit2.aggregate.count
-          : 0;
-      var average = 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_social_sciences
+          .visit2.aggregate.count
+      );
     },
     average_completed_visit_requests_made_across_division_social_sciences_3: function() {
-      var count =
-        this.completed_visit_requests_made_across_division_social_sciences !=
-        undefined
-          ? this.completed_visit_requests_made_across_division_social_sciences
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.completed_visit_requests_made_across_division_social_sciences !=
-        undefined
-          ? this.completed_visit_requests_made_across_division_social_sciences
-              .visit3.aggregate.count
-          : 0;
-      var average = 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_social_sciences
+          .visit3.aggregate.count
+      );
     },
     average_completed_visit_requests_made_across_division_humanities: function() {
-      var count =
-        this.completed_visit_requests_made_across_division_humanities !=
-        undefined
-          ? this.completed_visit_requests_made_across_division_humanities
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.completed_visit_requests_made_across_division_humanities !=
-        undefined
-          ? this.completed_visit_requests_made_across_division_humanities.visit1
-              .aggregate.count
-          : 0;
-      var average = 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_humanities
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_humanities.visit1
+          .aggregate.count
+      );
     },
     average_completed_visit_requests_made_across_division_humanities_2: function() {
-      var count =
-        this.completed_visit_requests_made_across_division_humanities !=
-        undefined
-          ? this.completed_visit_requests_made_across_division_humanities
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.completed_visit_requests_made_across_division_humanities !=
-        undefined
-          ? this.completed_visit_requests_made_across_division_humanities.visit2
-              .aggregate.count
-          : 0;
-      var average = 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_humanities
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_humanities.visit2
+          .aggregate.count
+      );
     },
     average_completed_visit_requests_made_across_division_humanities_3: function() {
-      var count =
-        this.completed_visit_requests_made_across_division_humanities !=
-        undefined
-          ? this.completed_visit_requests_made_across_division_humanities
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.completed_visit_requests_made_across_division_humanities !=
-        undefined
-          ? this.completed_visit_requests_made_across_division_humanities.visit3
-              .aggregate.count
-          : 0;
-      var average = 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_humanities
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_humanities.visit3
+          .aggregate.count
+      );
     },
     average_visit_requests_received_across_division_science: function() {
-      var count =
-        this.visit_requests_received_across_division_science != undefined
-          ? this.visit_requests_received_across_division_science
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.visit_requests_received_across_division_science != undefined
-          ? this.visit_requests_received_across_division_science.visit1
-              .aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_received_across_division_science.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_received_across_division_science.visit1.aggregate
+          .count
+      );
     },
     average_visit_requests_received_across_division_science_2: function() {
-      var count =
-        this.visit_requests_received_across_division_science != undefined
-          ? this.visit_requests_received_across_division_science
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.visit_requests_received_across_division_science != undefined
-          ? this.visit_requests_received_across_division_science.visit2
-              .aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_received_across_division_science.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_received_across_division_science.visit2.aggregate
+          .count
+      );
     },
     average_visit_requests_received_across_division_science_3: function() {
-      var count =
-        this.visit_requests_received_across_division_science != undefined
-          ? this.visit_requests_received_across_division_science
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.visit_requests_received_across_division_science != undefined
-          ? this.visit_requests_received_across_division_science.visit3
-              .aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_received_across_division_science.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_received_across_division_science.visit3.aggregate
+          .count
+      );
     },
     average_visit_requests_received_across_division_social_sciences: function() {
-      var count =
-        this.visit_requests_received_across_division_social_sciences !=
-        undefined
-          ? this.visit_requests_received_across_division_social_sciences
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.visit_requests_received_across_division_social_sciences !=
-        undefined
-          ? this.visit_requests_received_across_division_social_sciences.visit1
-              .aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_received_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_received_across_division_social_sciences.visit1
+          .aggregate.count
+      );
     },
     average_visit_requests_received_across_division_social_sciences_2: function() {
-      var count =
-        this.visit_requests_received_across_division_social_sciences !=
-        undefined
-          ? this.visit_requests_received_across_division_social_sciences
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.visit_requests_received_across_division_social_sciences !=
-        undefined
-          ? this.visit_requests_received_across_division_social_sciences.visit2
-              .aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_received_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_received_across_division_social_sciences.visit2
+          .aggregate.count
+      );
     },
     average_visit_requests_received_across_division_social_sciences_3: function() {
-      var count =
-        this.visit_requests_received_across_division_social_sciences !=
-        undefined
-          ? this.visit_requests_received_across_division_social_sciences
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.visit_requests_received_across_division_social_sciences !=
-        undefined
-          ? this.visit_requests_received_across_division_social_sciences.visit3
-              .aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_received_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_received_across_division_social_sciences.visit3
+          .aggregate.count
+      );
     },
     average_visit_requests_received_across_division_humanities: function() {
-      var count =
-        this.visit_requests_received_across_division_humanities != undefined
-          ? this.visit_requests_received_across_division_humanities
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.visit_requests_received_across_division_humanities != undefined
-          ? this.visit_requests_received_across_division_humanities.visit1
-              .aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_received_across_division_humanities
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_received_across_division_humanities.visit1.aggregate
+          .count
+      );
     },
     average_visit_requests_received_across_division_humanities_2: function() {
-      var count =
-        this.visit_requests_received_across_division_humanities != undefined
-          ? this.visit_requests_received_across_division_humanities
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.visit_requests_received_across_division_humanities != undefined
-          ? this.visit_requests_received_across_division_humanities.visit2
-              .aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_received_across_division_humanities
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_received_across_division_humanities.visit2.aggregate
+          .count
+      );
     },
     average_visit_requests_received_across_division_humanities_3: function() {
-      var count =
-        this.visit_requests_received_across_division_humanities != undefined
-          ? this.visit_requests_received_across_division_humanities
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.visit_requests_received_across_division_humanities != undefined
-          ? this.visit_requests_received_across_division_humanities.visit3
-              .aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.visit_requests_received_across_division_humanities
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_received_across_division_humanities.visit3.aggregate
+          .count
+      );
     },
     average_hosted_visits_across_divison_science: function() {
-      var count =
-        this.hosted_visits_across_division_science != undefined
-          ? this.hosted_visits_across_division_science.faculty_aggregate
-              .aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.hosted_visits_across_division_science != undefined
-          ? this.hosted_visits_across_division_science.visit1.aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.hosted_visits_across_division_science.faculty_aggregate.aggregate
+          .count,
+        this.hosted_visits_across_division_science.visit1.aggregate.count
+      );
     },
     average_hosted_visits_across_divison_science_2: function() {
-      var count =
-        this.hosted_visits_across_division_science != undefined
-          ? this.hosted_visits_across_division_science.faculty_aggregate
-              .aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.hosted_visits_across_division_science != undefined
-          ? this.hosted_visits_across_division_science.visit2.aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.hosted_visits_across_division_science.faculty_aggregate.aggregate
+          .count,
+        this.hosted_visits_across_division_science.visit2.aggregate.count
+      );
     },
     average_hosted_visits_across_divison_science_3: function() {
-      var count =
-        this.hosted_visits_across_division_science != undefined
-          ? this.hosted_visits_across_division_science.faculty_aggregate
-              .aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.hosted_visits_across_division_science != undefined
-          ? this.hosted_visits_across_division_science.visit3.aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.hosted_visits_across_division_science.faculty_aggregate.aggregate
+          .count,
+        this.hosted_visits_across_division_science.visit3.aggregate.count
+      );
     },
     average_hosted_visits_across_divison_social_sciences: function() {
-      var count =
-        this.hosted_visits_across_division_social_sciences != undefined
-          ? this.hosted_visits_across_division_social_sciences.faculty_aggregate
-              .aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.hosted_visits_across_division_social_sciences != undefined
-          ? this.hosted_visits_across_division_social_sciences.visit1.aggregate
-              .count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.hosted_visits_across_division_social_sciences.faculty_aggregate
+          .aggregate.count,
+        this.hosted_visits_across_division_social_sciences.visit1.aggregate
+          .count
+      );
     },
     average_hosted_visits_across_divison_social_sciences_2: function() {
-      var count =
-        this.hosted_visits_across_division_social_sciences != undefined
-          ? this.hosted_visits_across_division_social_sciences.faculty_aggregate
-              .aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.hosted_visits_across_division_social_sciences != undefined
-          ? this.hosted_visits_across_division_social_sciences.visit2.aggregate
-              .count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.hosted_visits_across_division_social_sciences.faculty_aggregate
+          .aggregate.count,
+        this.hosted_visits_across_division_social_sciences.visit2.aggregate
+          .count
+      );
     },
     average_hosted_visits_across_divison_social_sciences_3: function() {
-      var count =
-        this.hosted_visits_across_division_social_sciences != undefined
-          ? this.hosted_visits_across_division_social_sciences.faculty_aggregate
-              .aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.hosted_visits_across_division_social_sciences != undefined
-          ? this.hosted_visits_across_division_social_sciences.visit3.aggregate
-              .count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.hosted_visits_across_division_social_sciences.faculty_aggregate
+          .aggregate.count,
+        this.hosted_visits_across_division_social_sciences.visit3.aggregate
+          .count
+      );
     },
     average_hosted_visits_across_divison_humanities: function() {
-      var count =
-        this.hosted_visits_across_division_humanities != undefined
-          ? this.hosted_visits_across_division_humanities.faculty_aggregate
-              .aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.hosted_visits_across_division_humanities != undefined
-          ? this.hosted_visits_across_division_humanities.visit1.aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.hosted_visits_across_division_humanities.faculty_aggregate
+          .aggregate.count,
+        this.hosted_visits_across_division_humanities.visit1.aggregate.count
+      );
     },
     average_hosted_visits_across_divison_humanities_2: function() {
-      var count =
-        this.hosted_visits_across_division_humanities != undefined
-          ? this.hosted_visits_across_division_humanities.faculty_aggregate
-              .aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.hosted_visits_across_division_humanities != undefined
-          ? this.hosted_visits_across_division_humanities.visit2.aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(1);
+      return this.getAverage(
+        this.hosted_visits_across_division_humanities.faculty_aggregate
+          .aggregate.count,
+        this.hosted_visits_across_division_humanities.visit2.aggregate.count
+      );
     },
     average_hosted_visits_across_divison_humanities_3: function() {
       return this.getAverage(
