@@ -113,19 +113,6 @@
         <a-table bordered :columns="columns" :data-source="data"></a-table>
       </div>
       <br />
-
-      <!-- <visitRequestChart
-        :number_of_visit_requests_made_by_user="
-          number_of_visit_requests_made_by_user
-        "
-        :number_of_completed_visit_requests_made_by_user="
-          number_of_completed_visit_requests_made_by_user
-        "
-        :number_of_hosted_visit_sessions_by_user="
-          number_of_hosted_visit_sessions_by_user
-        "
-        :number_of_hosted_visitors_by_user="number_of_hosted_visitors_by_user"
-      />-->
     </div>
   </div>
 </template>
@@ -179,32 +166,7 @@ const columns = [
     width: 100
   }
 ];
-/*const data = [
-  {
-    key: 0,
-    date: "My Statistics",
-    requestsMade: 120,
-    requestsReceived: 31,
-    hostedVisits: 12,
-    completedVisits: 15
-  },
-  {
-    key: 1,
-    date: "Average Stats Across Division",
-    requestsMade: 123,
-    requestsReceived: 35,
-    hostedVisits: 11,
-    completedVisits: 13
-  },
-  {
-    key: 2,
-    date: "Average Stats Across All Users",
-    requestsMade: 11,
-    requestsReceived: 312,
-    hostedVisits: 4,
-    completedVisits: 12
-  }
-]; */
+
 export default {
   name: "Profile",
   components: {
@@ -306,55 +268,6 @@ export default {
         });
       }
     },
-    /*   number_of_visit_requests_made_by_user_1_month_before: {
-      query: queries.number_of_visit_requests_made_by_user,
-      variables() {
-        return {
-          visitor_id: store.state.loggedInUser,
-          //    start_time: "2020-07-01T05:28:23.186523+00:00",
-          //    end_time: "2020-07-23T05:28:23.186523+00:00"
-          start_time: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time: moment()
-            .subtract(30, "days")
-            .format()
-        };
-      },
-      update: data => data.visit_aggregate.aggregate.count,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
-      }
-    },
-    number_of_visit_requests_made_by_user_2_month_before: {
-      query: queries.number_of_visit_requests_made_by_user,
-      variables() {
-        return {
-          visitor_id: store.state.loggedInUser,
-          //    start_time: "2020-07-01T05:28:23.186523+00:00",
-          //    end_time: "2020-07-23T05:28:23.186523+00:00"
-          start_time: moment()
-            .subtract(90, "days")
-            .format(),
-          end_time: moment()
-            .subtract(60, "days")
-            .format()
-        };
-      },
-      update: data => data.visit_aggregate.aggregate.count,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
-      }
-    },
-*/
 
     number_of_visit_requests_received_by_user: {
       query: queriesViz.get_total_requests_received_by_user_history,
@@ -390,54 +303,7 @@ export default {
         });
       }
     },
-    /*   number_of_visit_requests_received_by_user_1_month_before: {
-      query: queries.number_of_visit_requests_received_by_user,
-      variables() {
-        return {
-          faculty_id: store.state.loggedInUser,
-          //  start_time: "2020-07-01T05:28:23.186523+00:00",
-          //  end_time: "2020-07-23T05:28:23.186523+00:00"
-          start_time: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time: moment()
-            .subtract(30, "days")
-            .format()
-        };
-      },
-      update: data => data.visit_aggregate.aggregate.count,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
-      }
-    },
-    number_of_visit_requests_received_by_user_2_month_before: {
-      query: queries.number_of_visit_requests_received_by_user,
-      variables() {
-        return {
-          faculty_id: store.state.loggedInUser,
-          //  start_time: "2020-07-01T05:28:23.186523+00:00",
-          //  end_time: "2020-07-23T05:28:23.186523+00:00"
-          start_time: moment()
-            .subtract(90, "days")
-            .format(),
-          end_time: moment()
-            .subtract(60, "days")
-            .format()
-        };
-      }, 
-      update: data => data.visit_aggregate.aggregate.count,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
-      }
-    }, */
+
     number_of_hosted_visitors_by_user: {
       query: queriesViz.get_total_hosted_visits_by_user_history,
       variables() {
