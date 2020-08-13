@@ -67,7 +67,7 @@ npm install
 npm run build-staging-test
 sudo lsof -iTCP -sTCP:LISTEN -P
 sudo kill -9 1505
-sudo DEBUG=express:* VUE_APP_MODE=staging-test node index.js 2>&1 | tee "./logs/deployment_$(date +'%d_%m__%H_%M').log" 
+npm run serve-staging-test
 ```
 
 ### Backend Deployment (Docker)
@@ -76,7 +76,7 @@ sudo DEBUG=express:* VUE_APP_MODE=staging-test node index.js 2>&1 | tee "./logs/
 - https://docs.docker.com/compose/install/
 - https://github.com/docker/for-linux/issues/281
 
-Remember to set admin secret and DB password in docker-compose file manually! And also hasura project files if you're using. 
+Remember to set admin secret and DB password in docker-compose file manually! And also hasura project files if you're using. ;
 ```
 sudo apt-get update
 sudo apt-get install \
