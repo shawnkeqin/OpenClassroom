@@ -69,10 +69,66 @@ sudo lsof -iTCP -sTCP:LISTEN -P
 sudo kill -9 1505
 sudo DEBUG=express:* VUE_APP_MODE=staging-test node index.js 2>&1 | tee "./logs/deployment_$(date +'%d_%m__%H_%M').log" 
 ```
-### Backend Deployment
+
+### Backend Deployment (Docker)
+- https://hasura.io/docs/1.0/graphql/manual/getting-started/docker-simple.html#docker-simple
+- https://docs.docker.com/engine/install/ubuntu/
+- https://docs.docker.com/compose/install/
+- https://github.com/docker/for-linux/issues/281
+```
+sudo apt-get update
+sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo apt-key fingerprint 0EBFCD88
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker 
+sudo docker run hello-world
+sudo curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose up -d
 ```
 
 
+
+### Backend Deployment
+See 
+- https://github.com/hasura/graphql-engine/blob/master/server/CONTRIBUTING.md.
+- https://tableplus.com/blog/2018/10/how-to-start-stop-restart-postgresql-server.html
+- - https://github.com/haskell/cabal/issues/4898
+```
+sudo apt-get install postgresql
+sudo apt install cabal-install
+sudo apt install zlib1g-dev
+curl https://sdk.cloud.google.com | bash
+cabal install Cabal cabal-install
+alias cabal="~/.cabal/bin/cabal"
+cabal user-config update
+cabal install
+sudo service postgresql start
+sudo -u postgres psql -c "CREATE DATABASE public;"
+sudo -u postgres psql -c "CREATE USER admin;"
+sudo -u postgres psql -c "ALTER USER admin PASSWORD '<>';"
+cd ~
+git clone https://github.com/hasura/graphql-engine.git
+cd graphql-engine
+cd console
+sudo chown -R jeremy .
+sudo npm install
+sudo npm run server-build
+cd ../server
+DATABASE_URL=postgresql://admin:<>@localhost
+cabal new-run -- exe:graphql-engine --database-url=$DATABASE_URL serve --enable-console --console-assets-dir=../console/static/dist
 ```
 
 ### Hasura DB Migration
