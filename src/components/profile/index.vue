@@ -37,10 +37,7 @@
               @click="toggleNotifNewRequest"
             />
           </a-list-item>
-          <a-list-item
-            class="preference-item"
-            style="background-color: #F6F6F6"
-          >
+          <a-list-item class="preference-item" style="background-color: #F6F6F6">
             <p>Email me when my pending requests are accepted/declined</p>
             <a-switch
               :checked="faculty.notif_request_update"
@@ -55,78 +52,67 @@
         </a-list>
       </a-card>
     </div>
-    <div>
-      <a-button v-on:click="isShowRequestsMade = !isShowRequestsMade">
-        Average Requests Made
-      </a-button>
-      &nbsp;
-      <a-button v-on:click="isShowRequestsReceived = !isShowRequestsReceived">
-        Average Requests Received
-      </a-button>
-      &nbsp;
-      <a-button v-on:click="isShowHostedVisits = !isShowHostedVisits">
-        Average Hosted Visits
-      </a-button>
-      &nbsp;
-      <a-button v-on:click="isShowCompletedVisits = !isShowCompletedVisits">
-        Average Completed Visits
-      </a-button>
+    <br />
+    <h3 style="text-align:center;">My Statistics</h3>
+    <div style="margin: auto;">
+      <a-button v-on:click="isShowRequestsMade = !isShowRequestsMade">Requests Made</a-button>&nbsp; &nbsp;
+      <a-button v-on:click="isShowCompletedVisits = !isShowCompletedVisits">Completed Visits</a-button>&nbsp; &nbsp;
+      <a-button v-on:click="isShowRequestsReceived = !isShowRequestsReceived">Requests Received</a-button>&nbsp; &nbsp;
+      <a-button v-on:click="isShowHostedVisits = !isShowHostedVisits">Hosted Visits</a-button>
     </div>
-    <div v-show="isShowRequestsMade">
+    <br />
+
+    <div
+      v-show="
+        isShowRequestsMade ||
+          isShowCompletedVisits ||
+          isShowRequestsReceived ||
+          isShowHostedVisits
+      "
+    >
+      <a-spin v-if="$apollo.loading">
+        <a-icon slot="indicator" type="loading" style="font-size: 26px; padding-left: 10px" spin />
+      </a-spin>
+      <h2 v-if="isShowRequestsMade" style="text-align:center;">My Requests Made</h2>
       <LineExample
         v-if="isShowRequestsMade"
         :labels="labels"
         :datasets="number_of_visit_requests.datasets"
       />
-    </div>
-    <div v-show="isShowRequestsReceived">
+
+      <h2 v-if="isShowCompletedVisits" style="text-align:center;">My Completed Visits</h2>
+      <LineExample
+        v-if="isShowCompletedVisits"
+        :labels="labels4"
+        :datasets="number_of_completed_visits.datasets4"
+      />
+
+      <h2 v-if="isShowRequestsReceived" style="text-align:center;">My Requests Received</h2>
       <LineExample
         v-if="isShowRequestsReceived"
         :labels="labels2"
         :datasets="number_of_visit_requests_received.datasets2"
       />
-    </div>
-    <div v-show="isShowHostedVisits">
+
+      <h2 v-if="isShowHostedVisits" style="text-align:center;">My Hosted Visits</h2>
       <LineExample
         v-if="isShowHostedVisits"
         :labels="labels3"
         :datasets="number_of_hosted_visits.datasets3"
       />
     </div>
-    <div v-show="isShowCompletedVisits">
-      <LineExample
-        v-if="isShowCompletedVisits"
-        :labels="labels4"
-        :datasets="number_of_completed_visits.datasets4"
-      />
-    </div>
+
     <div>
       <a-spin v-if="$apollo.loading">
-        <a-icon
-          slot="indicator"
-          type="loading"
-          style="font-size: 26px; padding-left: 10px"
-          spin
-        />
+        <a-icon slot="indicator" type="loading" style="font-size: 26px; padding-left: 10px" spin />
       </a-spin>
       <div v-else id="components-table-demo-size">
-        <h4>Average Statistics</h4>
-        <a-table bordered :columns="columns" :data-source="data"> </a-table>
+        <br />
+        <br />
+        <h4 style="text-align:center;">Average Statistics</h4>
+        <a-table bordered :columns="columns" :data-source="data"></a-table>
       </div>
       <br />
-
-      <!-- <visitRequestChart
-        :number_of_visit_requests_made_by_user="
-          number_of_visit_requests_made_by_user
-        "
-        :number_of_completed_visit_requests_made_by_user="
-          number_of_completed_visit_requests_made_by_user
-        "
-        :number_of_hosted_visit_sessions_by_user="
-          number_of_hosted_visit_sessions_by_user
-        "
-        :number_of_hosted_visitors_by_user="number_of_hosted_visitors_by_user"
-      /> -->
     </div>
   </div>
 </template>
@@ -180,32 +166,7 @@ const columns = [
     width: 100
   }
 ];
-/*const data = [
-  {
-    key: 0,
-    date: "My Statistics",
-    requestsMade: 120,
-    requestsReceived: 31,
-    hostedVisits: 12,
-    completedVisits: 15
-  },
-  {
-    key: 1,
-    date: "Average Stats Across Division",
-    requestsMade: 123,
-    requestsReceived: 35,
-    hostedVisits: 11,
-    completedVisits: 13
-  },
-  {
-    key: 2,
-    date: "Average Stats Across All Users",
-    requestsMade: 11,
-    requestsReceived: 312,
-    hostedVisits: 4,
-    completedVisits: 12
-  }
-]; */
+
 export default {
   name: "Profile",
   components: {
@@ -215,7 +176,7 @@ export default {
   data() {
     console.log(moment().format());
     return {
-      isShowRequestsMade: false,
+      isShowRequestsMade: true,
       isShowRequestsReceived: false,
       isShowHostedVisits: false,
       isShowCompletedVisits: false,
@@ -274,7 +235,7 @@ export default {
       }
     },
     number_of_visit_requests_made_by_user: {
-      query: queriesViz.get_total_requests_by_user,
+      query: queriesViz.get_total_requests_by_user_history,
       variables() {
         return {
           visitor_id: store.state.loggedInUser,
@@ -283,58 +244,22 @@ export default {
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
-        };
-      },
-      update: data => data.visit_aggregate.aggregate.count,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
-      }
-    },
-    number_of_visit_requests_made_by_user_1_month_before: {
-      query: queries.number_of_visit_requests_made_by_user,
-      variables() {
-        return {
-          visitor_id: store.state.loggedInUser,
-          //    start_time: "2020-07-01T05:28:23.186523+00:00",
-          //    end_time: "2020-07-23T05:28:23.186523+00:00"
-          start_time: moment()
+          end_time: moment().format(),
+          start_time2: moment()
             .subtract(60, "days")
             .format(),
-          end_time: moment()
-            .subtract(30, "days")
-            .format()
-        };
-      },
-      update: data => data.visit_aggregate.aggregate.count,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
-      }
-    },
-    number_of_visit_requests_made_by_user_2_month_before: {
-      query: queries.number_of_visit_requests_made_by_user,
-      variables() {
-        return {
-          visitor_id: store.state.loggedInUser,
-          //    start_time: "2020-07-01T05:28:23.186523+00:00",
-          //    end_time: "2020-07-23T05:28:23.186523+00:00"
-          start_time: moment()
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
             .subtract(90, "days")
-            .format(),
-          end_time: moment()
-            .subtract(60, "days")
             .format()
         };
       },
-      update: data => data.visit_aggregate.aggregate.count,
+      update: data => data,
       error(error, vm, key) {
         this.$notification.error({
           key,
@@ -345,7 +270,7 @@ export default {
     },
 
     number_of_visit_requests_received_by_user: {
-      query: queriesViz.get_total_requests_received_by_user,
+      query: queriesViz.get_total_requests_received_by_user_history,
       variables() {
         return {
           faculty_id: store.state.loggedInUser,
@@ -354,58 +279,22 @@ export default {
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
-        };
-      },
-      update: data => data.visit_aggregate.aggregate.count,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
-      }
-    },
-    number_of_visit_requests_received_by_user_1_month_before: {
-      query: queries.number_of_visit_requests_received_by_user,
-      variables() {
-        return {
-          faculty_id: store.state.loggedInUser,
-          //  start_time: "2020-07-01T05:28:23.186523+00:00",
-          //  end_time: "2020-07-23T05:28:23.186523+00:00"
-          start_time: moment()
+          end_time: moment().format(),
+          start_time2: moment()
             .subtract(60, "days")
             .format(),
-          end_time: moment()
-            .subtract(30, "days")
-            .format()
-        };
-      },
-      update: data => data.visit_aggregate.aggregate.count,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
-      }
-    },
-    number_of_visit_requests_received_by_user_2_month_before: {
-      query: queries.number_of_visit_requests_received_by_user,
-      variables() {
-        return {
-          faculty_id: store.state.loggedInUser,
-          //  start_time: "2020-07-01T05:28:23.186523+00:00",
-          //  end_time: "2020-07-23T05:28:23.186523+00:00"
-          start_time: moment()
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
             .subtract(90, "days")
-            .format(),
-          end_time: moment()
-            .subtract(60, "days")
             .format()
         };
       },
-      update: data => data.visit_aggregate.aggregate.count,
+      update: data => data,
       error(error, vm, key) {
         this.$notification.error({
           key,
@@ -414,8 +303,9 @@ export default {
         });
       }
     },
+
     number_of_hosted_visitors_by_user: {
-      query: queriesViz.get_total_hosted_visits_by_user,
+      query: queriesViz.get_total_hosted_visits_by_user_history,
       variables() {
         return {
           faculty_id: store.state.loggedInUser,
@@ -424,10 +314,22 @@ export default {
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
-      update: data => data.visit_aggregate.aggregate.count,
+      update: data => data,
       error(error, vm, key) {
         this.$notification.error({
           key,
@@ -436,7 +338,7 @@ export default {
         });
       }
     },
-    number_of_hosted_visitors_by_user_1_month_before: {
+    /*  number_of_hosted_visitors_by_user_1_month_before: {
       query: queries.number_of_hosted_visitors_by_user,
       variables() {
         return {
@@ -474,7 +376,7 @@ export default {
             .subtract(60, "days")
             .format()
         };
-      },
+      }, 
       update: data => data.visit_aggregate.aggregate.count,
       error(error, vm, key) {
         this.$notification.error({
@@ -483,9 +385,9 @@ export default {
           description: "Please try again."
         });
       }
-    },
+    }, */
     number_of_completed_visit_requests_made_by_user: {
-      query: queriesViz.get_total_completed_visits_by_user,
+      query: queriesViz.get_total_completed_visits_by_user_history,
       variables() {
         return {
           visitor_id: store.state.loggedInUser,
@@ -494,10 +396,22 @@ export default {
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
-      update: data => data.visit_aggregate.aggregate.count,
+      update: data => data,
       error(error, vm, key) {
         this.$notification.error({
           key,
@@ -506,7 +420,7 @@ export default {
         });
       }
     },
-    number_of_completed_visit_requests_made_by_user_1_month_before: {
+    /* number_of_completed_visit_requests_made_by_user_1_month_before: {
       query: queries.number_of_completed_visit_requests_made_by_user,
       variables() {
         return {
@@ -553,16 +467,28 @@ export default {
           description: "Please try again."
         });
       }
-    },
+    }, */
     total_number_of_visit_requests_across_all_users: {
-      query: queriesViz.get_avg_requests_by_division,
+      query: queriesViz.get_avg_requests_by_division_history,
       variables() {
         return {
           division: "%",
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
       update: data => data,
@@ -575,14 +501,26 @@ export default {
       }
     },
     total_number_of_visit_requests_received_across_all_users: {
-      query: queriesViz.get_avg_requests_received_by_division,
+      query: queriesViz.get_avg_requests_received_by_division_history,
       variables() {
         return {
           division: "%",
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
       update: data => data,
@@ -595,14 +533,26 @@ export default {
       }
     },
     total_number_of_hosted_visits_across_all_users: {
-      query: queriesViz.get_avg_hosted_visits_by_division,
+      query: queriesViz.get_avg_hosted_visits_by_division_history,
       variables() {
         return {
           division: "%",
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
       update: data => data,
@@ -615,14 +565,26 @@ export default {
       }
     },
     total_number_of_completed_visit_requests_across_all_users: {
-      query: queriesViz.get_avg_completed_visits_by_division,
+      query: queriesViz.get_avg_completed_visits_by_division_history,
       variables() {
         return {
           division: "%",
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
       update: data => data,
@@ -635,14 +597,26 @@ export default {
       }
     },
     visit_requests_made_across_division_science: {
-      query: queriesViz.get_avg_requests_by_division,
+      query: queriesViz.get_avg_requests_by_division_history,
       variables() {
         return {
           division: "Science",
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
       update: data => data,
@@ -655,14 +629,26 @@ export default {
       }
     },
     visit_requests_made_across_division_social_sciences: {
-      query: queriesViz.get_avg_requests_by_division,
+      query: queriesViz.get_avg_requests_by_division_history,
       variables() {
         return {
           division: "Social Sciences",
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
       update: data => data,
@@ -675,14 +661,26 @@ export default {
       }
     },
     visit_requests_made_across_division_humanities: {
-      query: queriesViz.get_avg_requests_by_division,
+      query: queriesViz.get_avg_requests_by_division_history,
       variables() {
         return {
           division: "Humanities",
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
       update: data => data,
@@ -695,14 +693,26 @@ export default {
       }
     },
     completed_visit_requests_made_across_division_science: {
-      query: queriesViz.get_avg_completed_visits_by_division,
+      query: queriesViz.get_avg_completed_visits_by_division_history,
       variables() {
         return {
           division: "Science",
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
       update: data => data,
@@ -715,14 +725,26 @@ export default {
       }
     },
     completed_visit_requests_made_across_division_social_sciences: {
-      query: queriesViz.get_avg_completed_visits_by_division,
+      query: queriesViz.get_avg_completed_visits_by_division_history,
       variables() {
         return {
           division: "Social Sciences",
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
       update: data => data,
@@ -735,14 +757,26 @@ export default {
       }
     },
     completed_visit_requests_made_across_division_humanities: {
-      query: queriesViz.get_avg_completed_visits_by_division,
+      query: queriesViz.get_avg_completed_visits_by_division_history,
       variables() {
         return {
           division: "Humanities",
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
       update: data => data,
@@ -755,14 +789,26 @@ export default {
       }
     },
     visit_requests_received_across_division_science: {
-      query: queriesViz.get_avg_requests_received_by_division,
+      query: queriesViz.get_avg_requests_received_by_division_history,
       variables() {
         return {
           division: "Science",
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
       update: data => data,
@@ -775,14 +821,26 @@ export default {
       }
     },
     visit_requests_received_across_division_social_sciences: {
-      query: queriesViz.get_avg_requests_received_by_division,
+      query: queriesViz.get_avg_requests_received_by_division_history,
       variables() {
         return {
           division: "Social Sciences",
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
       update: data => data,
@@ -795,14 +853,26 @@ export default {
       }
     },
     visit_requests_received_across_division_humanities: {
-      query: queriesViz.get_avg_requests_received_by_division,
+      query: queriesViz.get_avg_requests_received_by_division_history,
       variables() {
         return {
           division: "Humanities",
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
       update: data => data,
@@ -815,14 +885,26 @@ export default {
       }
     },
     hosted_visits_across_division_science: {
-      query: queriesViz.get_avg_hosted_visits_by_division,
+      query: queriesViz.get_avg_hosted_visits_by_division_history,
       variables() {
         return {
           division: "Science",
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
       update: data => data,
@@ -835,14 +917,26 @@ export default {
       }
     },
     hosted_visits_across_division_social_sciences: {
-      query: queriesViz.get_avg_hosted_visits_by_division,
+      query: queriesViz.get_avg_hosted_visits_by_division_history,
       variables() {
         return {
           division: "Social Sciences",
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
       update: data => data,
@@ -855,14 +949,26 @@ export default {
       }
     },
     hosted_visits_across_division_humanities: {
-      query: queriesViz.get_avg_hosted_visits_by_division,
+      query: queriesViz.get_avg_hosted_visits_by_division_history,
       variables() {
         return {
           division: "Humanities",
           start_time: moment()
             .subtract(30, "days")
             .format(),
-          end_time: moment().format()
+          end_time: moment().format(),
+          start_time2: moment()
+            .subtract(60, "days")
+            .format(),
+          end_time2: moment()
+            .subtract(31, "days")
+            .format(),
+          start_time3: moment()
+            .subtract(61, "days")
+            .format(),
+          end_time3: moment()
+            .subtract(90, "days")
+            .format()
         };
       },
       update: data => data,
@@ -880,17 +986,77 @@ export default {
       return {
         datasets: [
           {
-            label: "Average Requests Made",
+            label: "My Requests Made",
             backgroundColor: "#1E90FF",
             data: [
-              this.number_of_visit_requests_made_by_user_2_month_before,
-              this.number_of_visit_requests_made_by_user_1_month_before,
-              this.number_of_visit_requests_made_by_user
+              this.number_of_visit_requests_made_by_user.visit3.aggregate.count.toFixed(
+                2
+              ),
+              this.number_of_visit_requests_made_by_user.visit2.aggregate.count.toFixed(
+                2
+              ),
+              this.number_of_visit_requests_made_by_user.visit1.aggregate.count.toFixed(
+                2
+              )
             ],
             lineTension: 0,
             fill: false,
             showLine: true,
             borderColor: "rgb(0, 255, 0)"
+          },
+          {
+            label: "Requests Made Across All Users",
+            backgroundColor: "#f87979",
+            data: [
+              this.average_visit_requests_made_across_all_users_3,
+              this.average_visit_requests_made_across_all_users_2,
+              this.average_visit_requests_made_across_all_users
+            ],
+            lineTension: 0,
+            fill: false,
+            showLine: true,
+            borderColor: "rgb(255, 0, 0)"
+          },
+          {
+            label: "Requests Made Across Science Division",
+            backgroundColor: "#05ffb0",
+            data: [
+              this.average_visit_requests_made_across_division_science_3,
+              this.average_visit_requests_made_across_division_science_2,
+              this.average_visit_requests_made_across_division_science
+            ],
+            lineTension: 0,
+            fill: false,
+            showLine: true,
+            borderColor: "rgb(50, 115, 220)"
+          },
+          {
+            label: "Requests Made Across Social Sciences Division",
+            backgroundColor: "#05ffb0",
+            data: [
+              this
+                .average_visit_requests_made_across_division_social_sciences_3,
+              this
+                .average_visit_requests_made_across_division_social_sciences_2,
+              this.average_visit_requests_made_across_division_social_sciences
+            ],
+            lineTension: 0,
+            fill: false,
+            showLine: true,
+            borderColor: "rgb(50, 115, 220, 0.3)"
+          },
+          {
+            label: "Requests Made Across Humanities Division",
+            backgroundColor: "#05ffb0",
+            data: [
+              this.average_visit_requests_made_across_division_humanities_3,
+              this.average_visit_requests_made_across_division_humanities_2,
+              this.average_visit_requests_made_across_division_humanities
+            ],
+            lineTension: 0,
+            fill: false,
+            showLine: true,
+            borderColor: "rgb(255,99,71)"
           }
         ]
       };
@@ -899,17 +1065,78 @@ export default {
       return {
         datasets2: [
           {
-            label: "Average Requests Received",
+            label: "My Requests Received",
             backgroundColor: "#f87979",
             data: [
-              this.number_of_visit_requests_received_by_user_2_month_before,
-              this.number_of_visit_requests_received_by_user_1_month_before,
-              this.number_of_visit_requests_received_by_user
+              this.number_of_visit_requests_received_by_user.visit3.aggregate.count.toFixed(
+                2
+              ),
+              this.number_of_visit_requests_received_by_user.visit2.aggregate.count.toFixed(
+                2
+              ),
+              this.number_of_visit_requests_received_by_user.visit1.aggregate.count.toFixed(
+                2
+              )
             ],
             lineTension: 0,
             fill: false,
             showLine: true,
             borderColor: "rgb(255, 0, 0)"
+          },
+          {
+            label: "Requests Received Across All Users",
+            backgroundColor: "#1E90FF",
+            data: [
+              this.average_visit_requests_received_across_all_users_3,
+              this.average_visit_requests_received_across_all_users_2,
+              this.average_visit_requests_received_across_all_users
+            ],
+            lineTension: 0,
+            fill: false,
+            showLine: true,
+            borderColor: "rgb(0, 255, 0)"
+          },
+          {
+            label: "Requests Received Across Science Divison",
+            backgroundColor: "#1E90FF",
+            data: [
+              this.average_visit_requests_received_across_division_science_3,
+              this.average_visit_requests_received_across_division_science_2,
+              this.average_visit_requests_received_across_division_science
+            ],
+            lineTension: 0,
+            fill: false,
+            showLine: true,
+            borderColor: "rgb(255,99,71)"
+          },
+          {
+            label: "Requests Received Across Social Sciences Divison",
+            backgroundColor: "#1E90FF",
+            data: [
+              this
+                .average_visit_requests_received_across_division_social_sciences_3,
+              this
+                .average_visit_requests_received_across_division_social_sciences_2,
+              this
+                .average_visit_requests_received_across_division_social_sciences
+            ],
+            lineTension: 0,
+            fill: false,
+            showLine: true,
+            borderColor: "rgb(238, 130, 238)"
+          },
+          {
+            label: "Requests Received Across Humanities Divison",
+            backgroundColor: "#1E90FF",
+            data: [
+              this.average_visit_requests_received_across_division_humanities_3,
+              this.average_visit_requests_received_across_division_humanities_2,
+              this.average_visit_requests_received_across_division_humanities
+            ],
+            lineTension: 0,
+            fill: false,
+            showLine: true,
+            borderColor: "rgb(106, 90, 205)"
           }
         ]
       };
@@ -918,17 +1145,75 @@ export default {
       return {
         datasets3: [
           {
-            label: "Average Hosted Visits",
+            label: "My Hosted Visits",
             backgroundColor: "#f87979",
             data: [
-              this.number_of_hosted_visitors_by_user_2_month_before,
-              this.number_of_hosted_visitors_by_user_1_month_before,
-              this.number_of_hosted_visitors_by_user
+              this.number_of_hosted_visitors_by_user.visit3.aggregate.count.toFixed(
+                2
+              ),
+              this.number_of_hosted_visitors_by_user.visit2.aggregate.count.toFixed(
+                2
+              ),
+              this.number_of_hosted_visitors_by_user.visit1.aggregate.count.toFixed(
+                2
+              )
             ],
             lineTension: 0,
             fill: false,
             showLine: true,
             borderColor: "rgb(0, 0, 255)"
+          },
+          {
+            label: "Hosted Visits Across All Users",
+            backgroundColor: "#1E90FF",
+            data: [
+              this.average_hosted_visits_across_all_users_3,
+              this.average_hosted_visits_across_all_users_2,
+              this.average_hosted_visits_across_all_users
+            ],
+            lineTension: 0,
+            fill: false,
+            showLine: true,
+            borderColor: "rgb(0, 255, 0)"
+          },
+          {
+            label: "Hosted Visits Across Science Divison",
+            backgroundColor: "#1E90FF",
+            data: [
+              this.average_hosted_visits_across_divison_science_3,
+              this.average_hosted_visits_across_divison_science_2,
+              this.average_hosted_visits_across_divison_science
+            ],
+            lineTension: 0,
+            fill: false,
+            showLine: true,
+            borderColor: "rgb(106, 90, 205)"
+          },
+          {
+            label: "Hosted Visits Across Social Sciences Divison",
+            backgroundColor: "#1E90FF",
+            data: [
+              this.average_hosted_visits_across_divison_social_sciences_3,
+              this.average_hosted_visits_across_divison_social_sciences_2,
+              this.average_hosted_visits_across_divison_social_sciences
+            ],
+            lineTension: 0,
+            fill: false,
+            showLine: true,
+            borderColor: "rgb(238, 130, 238)"
+          },
+          {
+            label: "Hosted Visits Across Humanities Division",
+            backgroundColor: "#1E90FF",
+            data: [
+              this.average_hosted_visits_across_divison_humanities_3,
+              this.average_hosted_visits_across_divison_humanities_2,
+              this.average_hosted_visits_across_divison_humanities
+            ],
+            lineTension: 0,
+            fill: false,
+            showLine: true,
+            borderColor: "rgb(255,99,71)"
           }
         ]
       };
@@ -937,298 +1222,480 @@ export default {
       return {
         datasets4: [
           {
-            label: "Average Completed Visits",
+            label: "My Completed Visits",
             backgroundColor: "#f87979",
             data: [
-              this
-                .number_of_completed_visit_requests_made_by_user_2_month_before,
-              this
-                .number_of_completed_visit_requests_made_by_user_1_month_before,
-              this.number_of_completed_visit_requests_made_by_user
+              this.number_of_completed_visit_requests_made_by_user.visit3.aggregate.count.toFixed(
+                1
+              ),
+              this.number_of_completed_visit_requests_made_by_user.visit2.aggregate.count.toFixed(
+                1
+              ),
+              this.number_of_completed_visit_requests_made_by_user.visit1.aggregate.count.toFixed(
+                1
+              )
             ],
             lineTension: 0,
             fill: false,
             showLine: true,
             borderColor: "rgba(255, 0, 0, 0.2)"
+          },
+          {
+            label: "Completed Visits Across All Users",
+            backgroundColor: "#1E90FF",
+            data: [
+              this.average_completed_visit_requests_made_across_all_users_3,
+              this.average_completed_visit_requests_made_across_all_users_2,
+              this.average_completed_visit_requests_made_across_all_users
+            ],
+            lineTension: 0,
+            fill: false,
+            showLine: true,
+            borderColor: "rgb(0, 255, 0)"
+          },
+          {
+            label: "Completed Visits Across Science Division",
+            backgroundColor: "#1E90FF",
+            data: [
+              this
+                .average_completed_visit_requests_made_across_division_science_3,
+              this
+                .average_completed_visit_requests_made_across_division_science_2,
+              this.average_completed_visit_requests_made_across_division_science
+            ],
+            lineTension: 0,
+            fill: false,
+            showLine: true,
+            borderColor: "rgb(255,99,71)"
+          },
+          {
+            label: "Completed Visits Across Social Sciences Division",
+            backgroundColor: "#1E90FF",
+            data: [
+              this
+                .average_completed_visit_requests_made_across_division_social_sciences_3,
+              this
+                .average_completed_visit_requests_made_across_division_social_sciences_2,
+              this
+                .average_completed_visit_requests_made_across_division_social_sciences
+            ],
+            lineTension: 0,
+            fill: false,
+            showLine: true,
+            borderColor: "rgb(238, 130, 238)"
+          },
+          {
+            label: "Completed Visits Across Humanities Division",
+            backgroundColor: "#1E90FF",
+            data: [
+              this
+                .average_completed_visit_requests_made_across_division_humanities_3,
+              this
+                .average_completed_visit_requests_made_across_division_humanities_2,
+              this
+                .average_completed_visit_requests_made_across_division_humanities
+            ],
+            lineTension: 0,
+            fill: false,
+            showLine: true,
+            borderColor: "rgb(106, 90, 205)"
           }
         ]
       };
     },
 
     average_visit_requests_made_across_all_users: function() {
-      var count =
-        this.total_number_of_visit_requests_across_all_users != undefined
-          ? this.total_number_of_visit_requests_across_all_users
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.total_number_of_visit_requests_across_all_users != undefined
-          ? this.total_number_of_visit_requests_across_all_users.visit_aggregate
-              .aggregate.count
-          : 0;
-
-      var average = 0;
-
-      average = sum / count;
-
-      return average.toFixed(2);
+      return this.getAverage(
+        this.total_number_of_visit_requests_across_all_users.faculty_aggregate
+          .aggregate.count,
+        this.total_number_of_visit_requests_across_all_users.visit1.aggregate
+          .count
+      );
     },
+
+    average_visit_requests_made_across_all_users_2: function() {
+      return this.getAverage(
+        this.total_number_of_visit_requests_across_all_users.faculty_aggregate
+          .aggregate.count,
+        this.total_number_of_visit_requests_across_all_users.visit2.aggregate
+          .count
+      );
+    },
+
+    average_visit_requests_made_across_all_users_3: function() {
+      return this.getAverage(
+        this.total_number_of_visit_requests_across_all_users.faculty_aggregate
+          .aggregate.count,
+        this.total_number_of_visit_requests_across_all_users.visit3.aggregate
+          .count
+      );
+    },
+
     average_completed_visit_requests_made_across_all_users: function() {
-      var count =
-        this.total_number_of_completed_visit_requests_across_all_users !=
-        undefined
-          ? this.total_number_of_completed_visit_requests_across_all_users
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.total_number_of_completed_visit_requests_across_all_users !=
-        undefined
-          ? this.total_number_of_completed_visit_requests_across_all_users
-              .visit_aggregate.aggregate.count
-          : 0;
-      var average = 0;
-
-      average = sum / count;
-
-      return average.toFixed(2);
+      return this.getAverage(
+        this.total_number_of_completed_visit_requests_across_all_users
+          .faculty_aggregate.aggregate.count,
+        this.total_number_of_completed_visit_requests_across_all_users.visit1
+          .aggregate.count
+      );
+    },
+    average_completed_visit_requests_made_across_all_users_2: function() {
+      return this.getAverage(
+        this.total_number_of_completed_visit_requests_across_all_users
+          .faculty_aggregate.aggregate.count,
+        this.total_number_of_completed_visit_requests_across_all_users.visit2
+          .aggregate.count
+      );
+    },
+    average_completed_visit_requests_made_across_all_users_3: function() {
+      return this.getAverage(
+        this.total_number_of_completed_visit_requests_across_all_users
+          .faculty_aggregate.aggregate.count,
+        this.total_number_of_completed_visit_requests_across_all_users.visit3
+          .aggregate.count
+      );
     },
     average_visit_requests_received_across_all_users: function() {
-      var count =
-        this.total_number_of_visit_requests_received_across_all_users !=
-        undefined
-          ? this.total_number_of_visit_requests_received_across_all_users
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.total_number_of_visit_requests_received_across_all_users !=
-        undefined
-          ? this.total_number_of_visit_requests_received_across_all_users
-              .visit_aggregate.aggregate.count
-          : 0;
-      var average = 0;
-
-      average = sum / count;
-
-      return average.toFixed(2);
+      return this.getAverage(
+        this.total_number_of_visit_requests_received_across_all_users
+          .faculty_aggregate.aggregate.count,
+        this.total_number_of_visit_requests_received_across_all_users.visit1
+          .aggregate.count
+      );
+    },
+    average_visit_requests_received_across_all_users_2: function() {
+      return this.getAverage(
+        this.total_number_of_visit_requests_received_across_all_users
+          .faculty_aggregate.aggregate.count,
+        this.total_number_of_visit_requests_received_across_all_users.visit2
+          .aggregate.count
+      );
+    },
+    average_visit_requests_received_across_all_users_3: function() {
+      return this.getAverage(
+        this.total_number_of_visit_requests_received_across_all_users
+          .faculty_aggregate.aggregate.count,
+        this.total_number_of_visit_requests_received_across_all_users.visit3
+          .aggregate.count
+      );
     },
     average_hosted_visits_across_all_users: function() {
-      var count =
-        this.total_number_of_hosted_visits_across_all_users != undefined
-          ? this.total_number_of_hosted_visits_across_all_users
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.total_number_of_hosted_visits_across_all_users != undefined
-          ? this.total_number_of_hosted_visits_across_all_users.visit_aggregate
-              .aggregate.count
-          : 0;
-      var average = 0;
-
-      average = sum / count;
-      return average.toFixed(2);
+      return this.getAverage(
+        this.total_number_of_hosted_visits_across_all_users.faculty_aggregate
+          .aggregate.count,
+        this.total_number_of_hosted_visits_across_all_users.visit1.aggregate
+          .count
+      );
+    },
+    average_hosted_visits_across_all_users_2: function() {
+      return this.getAverage(
+        this.total_number_of_hosted_visits_across_all_users.faculty_aggregate
+          .aggregate.count,
+        this.total_number_of_hosted_visits_across_all_users.visit2.aggregate
+          .count
+      );
+    },
+    average_hosted_visits_across_all_users_3: function() {
+      return this.getAverage(
+        this.total_number_of_hosted_visits_across_all_users.faculty_aggregate
+          .aggregate.count,
+        this.total_number_of_hosted_visits_across_all_users.visit3.aggregate
+          .count
+      );
     },
 
     average_visit_requests_made_across_division_science: function() {
-      var count =
-        this.visit_requests_made_across_division_science != undefined
-          ? this.visit_requests_made_across_division_science.faculty_aggregate
-              .aggregate.count
-          : 0;
-      var sum =
-        this.visit_requests_made_across_division_science != undefined
-          ? this.visit_requests_made_across_division_science.visit_aggregate
-              .aggregate.count
-          : 0;
-
-      var average = 0;
-
-      average = sum / count;
-      return average.toFixed(2);
+      return this.getAverage(
+        this.visit_requests_made_across_division_science.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_made_across_division_science.visit1.aggregate.count
+      );
+    },
+    average_visit_requests_made_across_division_science_2: function() {
+      return this.getAverage(
+        this.visit_requests_made_across_division_science.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_made_across_division_science.visit2.aggregate.count
+      );
+    },
+    average_visit_requests_made_across_division_science_3: function() {
+      return this.getAverage(
+        this.visit_requests_made_across_division_science.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_made_across_division_science.visit3.aggregate.count
+      );
     },
     average_visit_requests_made_across_division_social_sciences: function() {
-      var count =
-        this.visit_requests_made_across_division_social_sciences != undefined
-          ? this.visit_requests_made_across_division_social_sciences
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.visit_requests_made_across_division_social_sciences != undefined
-          ? this.visit_requests_made_across_division_social_sciences
-              .visit_aggregate.aggregate.count
-          : 0;
-
-      var average = 0;
-
-      average = sum / count;
-      return average.toFixed(2);
+      return this.getAverage(
+        this.visit_requests_made_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_made_across_division_social_sciences.visit1
+          .aggregate.count
+      );
+    },
+    average_visit_requests_made_across_division_social_sciences_2: function() {
+      return this.getAverage(
+        this.visit_requests_made_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_made_across_division_social_sciences.visit2
+          .aggregate.count
+      );
+    },
+    average_visit_requests_made_across_division_social_sciences_3: function() {
+      return this.getAverage(
+        this.visit_requests_made_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_made_across_division_social_sciences.visit3
+          .aggregate.count
+      );
     },
     average_visit_requests_made_across_division_humanities: function() {
-      var count =
-        this.visit_requests_made_across_division_humanities != undefined
-          ? this.visit_requests_made_across_division_humanities
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.visit_requests_made_across_division_humanities != undefined
-          ? this.visit_requests_made_across_division_humanities.visit_aggregate
-              .aggregate.count
-          : 0;
-
-      var average = 0;
-
-      average = sum / count;
-      return average.toFixed(2);
+      return this.getAverage(
+        this.visit_requests_made_across_division_humanities.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_made_across_division_humanities.visit1.aggregate
+          .count
+      );
+    },
+    average_visit_requests_made_across_division_humanities_2: function() {
+      return this.getAverage(
+        this.visit_requests_made_across_division_humanities.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_made_across_division_humanities.visit2.aggregate
+          .count
+      );
+    },
+    average_visit_requests_made_across_division_humanities_3: function() {
+      return this.getAverage(
+        this.visit_requests_made_across_division_humanities.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_made_across_division_humanities.visit3.aggregate
+          .count
+      );
     },
     average_completed_visit_requests_made_across_division_science: function() {
-      var count =
-        this.completed_visit_requests_made_across_division_science != undefined
-          ? this.completed_visit_requests_made_across_division_science
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.completed_visit_requests_made_across_division_science != undefined
-          ? this.completed_visit_requests_made_across_division_science
-              .visit_aggregate.aggregate.count
-          : 0;
-      var average = 0;
-      average = sum / count;
-      return average.toFixed(2);
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_science
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_science.visit1
+          .aggregate.count
+      );
+    },
+    average_completed_visit_requests_made_across_division_science_2: function() {
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_science
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_science.visit2
+          .aggregate.count
+      );
+    },
+    average_completed_visit_requests_made_across_division_science_3: function() {
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_science
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_science.visit3
+          .aggregate.count
+      );
     },
     average_completed_visit_requests_made_across_division_social_sciences: function() {
-      var count =
-        this.completed_visit_requests_made_across_division_social_sciences !=
-        undefined
-          ? this.completed_visit_requests_made_across_division_social_sciences
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.completed_visit_requests_made_across_division_social_sciences !=
-        undefined
-          ? this.completed_visit_requests_made_across_division_social_sciences
-              .visit_aggregate.aggregate.count
-          : 0;
-      var average = 0;
-      average = sum / count;
-      return average.toFixed(2);
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_social_sciences
+          .visit1.aggregate.count
+      );
+    },
+    average_completed_visit_requests_made_across_division_social_sciences_2: function() {
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_social_sciences
+          .visit2.aggregate.count
+      );
+    },
+    average_completed_visit_requests_made_across_division_social_sciences_3: function() {
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_social_sciences
+          .visit3.aggregate.count
+      );
     },
     average_completed_visit_requests_made_across_division_humanities: function() {
-      var count =
-        this.completed_visit_requests_made_across_division_humanities !=
-        undefined
-          ? this.completed_visit_requests_made_across_division_humanities
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var sum =
-        this.completed_visit_requests_made_across_division_humanities !=
-        undefined
-          ? this.completed_visit_requests_made_across_division_humanities
-              .visit_aggregate.aggregate.count
-          : 0;
-      var average = 0;
-      average = sum / count;
-      return average.toFixed(2);
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_humanities
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_humanities.visit1
+          .aggregate.count
+      );
+    },
+    average_completed_visit_requests_made_across_division_humanities_2: function() {
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_humanities
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_humanities.visit2
+          .aggregate.count
+      );
+    },
+    average_completed_visit_requests_made_across_division_humanities_3: function() {
+      return this.getAverage(
+        this.completed_visit_requests_made_across_division_humanities
+          .faculty_aggregate.aggregate.count,
+        this.completed_visit_requests_made_across_division_humanities.visit3
+          .aggregate.count
+      );
     },
     average_visit_requests_received_across_division_science: function() {
-      var count =
-        this.visit_requests_received_across_division_science != undefined
-          ? this.visit_requests_received_across_division_science
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.visit_requests_received_across_division_science != undefined
-          ? this.visit_requests_received_across_division_science.visit_aggregate
-              .aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(2);
+      return this.getAverage(
+        this.visit_requests_received_across_division_science.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_received_across_division_science.visit1.aggregate
+          .count
+      );
+    },
+    average_visit_requests_received_across_division_science_2: function() {
+      return this.getAverage(
+        this.visit_requests_received_across_division_science.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_received_across_division_science.visit2.aggregate
+          .count
+      );
+    },
+    average_visit_requests_received_across_division_science_3: function() {
+      return this.getAverage(
+        this.visit_requests_received_across_division_science.faculty_aggregate
+          .aggregate.count,
+        this.visit_requests_received_across_division_science.visit3.aggregate
+          .count
+      );
     },
     average_visit_requests_received_across_division_social_sciences: function() {
-      var count =
-        this.visit_requests_received_across_division_social_sciences !=
-        undefined
-          ? this.visit_requests_received_across_division_social_sciences
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.visit_requests_received_across_division_social_sciences !=
-        undefined
-          ? this.visit_requests_received_across_division_social_sciences
-              .visit_aggregate.aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(2);
+      return this.getAverage(
+        this.visit_requests_received_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_received_across_division_social_sciences.visit1
+          .aggregate.count
+      );
+    },
+    average_visit_requests_received_across_division_social_sciences_2: function() {
+      return this.getAverage(
+        this.visit_requests_received_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_received_across_division_social_sciences.visit2
+          .aggregate.count
+      );
+    },
+    average_visit_requests_received_across_division_social_sciences_3: function() {
+      return this.getAverage(
+        this.visit_requests_received_across_division_social_sciences
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_received_across_division_social_sciences.visit3
+          .aggregate.count
+      );
     },
     average_visit_requests_received_across_division_humanities: function() {
-      var count =
-        this.visit_requests_received_across_division_humanities != undefined
-          ? this.visit_requests_received_across_division_humanities
-              .faculty_aggregate.aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.visit_requests_received_across_division_humanities != undefined
-          ? this.visit_requests_received_across_division_humanities
-              .visit_aggregate.aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(2);
+      return this.getAverage(
+        this.visit_requests_received_across_division_humanities
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_received_across_division_humanities.visit1.aggregate
+          .count
+      );
+    },
+    average_visit_requests_received_across_division_humanities_2: function() {
+      return this.getAverage(
+        this.visit_requests_received_across_division_humanities
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_received_across_division_humanities.visit2.aggregate
+          .count
+      );
+    },
+    average_visit_requests_received_across_division_humanities_3: function() {
+      return this.getAverage(
+        this.visit_requests_received_across_division_humanities
+          .faculty_aggregate.aggregate.count,
+        this.visit_requests_received_across_division_humanities.visit3.aggregate
+          .count
+      );
     },
     average_hosted_visits_across_divison_science: function() {
-      var count =
-        this.hosted_visits_across_division_science != undefined
-          ? this.hosted_visits_across_division_science.faculty_aggregate
-              .aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.hosted_visits_across_division_science != undefined
-          ? this.hosted_visits_across_division_science.visit_aggregate.aggregate
-              .count
-          : 0;
-      average = sum / count;
-      return average.toFixed(2);
+      return this.getAverage(
+        this.hosted_visits_across_division_science.faculty_aggregate.aggregate
+          .count,
+        this.hosted_visits_across_division_science.visit1.aggregate.count
+      );
+    },
+    average_hosted_visits_across_divison_science_2: function() {
+      return this.getAverage(
+        this.hosted_visits_across_division_science.faculty_aggregate.aggregate
+          .count,
+        this.hosted_visits_across_division_science.visit2.aggregate.count
+      );
+    },
+    average_hosted_visits_across_divison_science_3: function() {
+      return this.getAverage(
+        this.hosted_visits_across_division_science.faculty_aggregate.aggregate
+          .count,
+        this.hosted_visits_across_division_science.visit3.aggregate.count
+      );
     },
     average_hosted_visits_across_divison_social_sciences: function() {
-      var count =
-        this.hosted_visits_across_division_social_sciences != undefined
-          ? this.hosted_visits_across_division_social_sciences.faculty_aggregate
-              .aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.hosted_visits_across_division_social_sciences != undefined
-          ? this.hosted_visits_across_division_social_sciences.visit_aggregate
-              .aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(2);
+      return this.getAverage(
+        this.hosted_visits_across_division_social_sciences.faculty_aggregate
+          .aggregate.count,
+        this.hosted_visits_across_division_social_sciences.visit1.aggregate
+          .count
+      );
+    },
+    average_hosted_visits_across_divison_social_sciences_2: function() {
+      return this.getAverage(
+        this.hosted_visits_across_division_social_sciences.faculty_aggregate
+          .aggregate.count,
+        this.hosted_visits_across_division_social_sciences.visit2.aggregate
+          .count
+      );
+    },
+    average_hosted_visits_across_divison_social_sciences_3: function() {
+      return this.getAverage(
+        this.hosted_visits_across_division_social_sciences.faculty_aggregate
+          .aggregate.count,
+        this.hosted_visits_across_division_social_sciences.visit3.aggregate
+          .count
+      );
     },
     average_hosted_visits_across_divison_humanities: function() {
-      var count =
-        this.hosted_visits_across_division_humanities != undefined
-          ? this.hosted_visits_across_division_humanities.faculty_aggregate
-              .aggregate.count
-          : 0;
-      var average = 0;
-      var sum =
-        this.hosted_visits_across_division_humanities != undefined
-          ? this.hosted_visits_across_division_humanities.visit_aggregate
-              .aggregate.count
-          : 0;
-      average = sum / count;
-      return average.toFixed(2);
+      return this.getAverage(
+        this.hosted_visits_across_division_humanities.faculty_aggregate
+          .aggregate.count,
+        this.hosted_visits_across_division_humanities.visit1.aggregate.count
+      );
+    },
+    average_hosted_visits_across_divison_humanities_2: function() {
+      return this.getAverage(
+        this.hosted_visits_across_division_humanities.faculty_aggregate
+          .aggregate.count,
+        this.hosted_visits_across_division_humanities.visit2.aggregate.count
+      );
+    },
+    average_hosted_visits_across_divison_humanities_3: function() {
+      return this.getAverage(
+        this.hosted_visits_across_division_humanities.faculty_aggregate
+          .aggregate.count,
+        this.hosted_visits_across_division_humanities.visit3.aggregate.count
+      );
     },
     data() {
       return [
         {
           key: 0,
           date: "My Statistics",
-          requestsMade: this.number_of_visit_requests_made_by_user,
-          requestsReceived: this.number_of_visit_requests_received_by_user,
-          hostedVisits: this.number_of_hosted_visitors_by_user,
+          requestsMade: this.number_of_visit_requests_made_by_user.visit1
+            .aggregate.count,
+          requestsReceived: this.number_of_visit_requests_received_by_user
+            .visit1.aggregate.count,
+          hostedVisits: this.number_of_hosted_visitors_by_user.visit1.aggregate
+            .count,
           completedVisits: this.number_of_completed_visit_requests_made_by_user
+            .visit1.aggregate.count
         },
         {
           key: 1,
@@ -1278,6 +1745,12 @@ export default {
     }
   },
   methods: {
+    getAverage(count, sum) {
+      count != undefined ? count : 0;
+      sum != undefined ? sum : 0;
+      const average = sum / count;
+      return average.toFixed(1);
+    },
     async toggleNotifNewRequest() {
       this.isToggleNotifNewRequestLoading = true;
       const faculty_id = this.faculty.id;

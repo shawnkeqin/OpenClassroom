@@ -1,7 +1,9 @@
 <template>
   <div style="width: 100%; padding: 0 20px;">
     <h1>My courses</h1>
-    <template v-if="$apollo.loading"><a-skeleton active/></template>
+    <template v-if="$apollo.loading">
+      <a-skeleton active />
+    </template>
     <template v-else>
       <div class="div1" style="display: flex; align-content: flex-start">
         <template v-if="course_groups && course_groups.length">
@@ -15,18 +17,18 @@
             <p>{{ course_group.course.module_code }}</p>
             <p>{{ "Group " + course_group.group_code }}</p>
             <router-link
-              style="font-size:25px; "
+              style="font-size:25px;position: relative;
+top: 6px;"
               :to="'/coursedetails/' + course_group.id"
-              >Course details
-              <a-icon style="margin-bottom: 20px;" type="right-circle"
-            /></router-link>
-
+            >➤ Course details</router-link>
+            <br />
+            <br />
             <a-card style="width: 250px; margin-right: 10px;">
               <p style="margin: 0 10px 0 0">
                 {{
-                  `This course is ${
-                    course_group.is_open ? `open` : `closed`
-                  } to visit requests`
+                `This course is ${
+                course_group.is_open ? `open` : `closed`
+                } to visit requests`
                 }}
               </p>
 
@@ -43,11 +45,7 @@
               <a-tooltip
                 title="Closing/opening this course will automatically close/open all of its classes."
               >
-                <a-icon
-                  type="exclamation-circle"
-                  theme="filled"
-                  class="pending"
-                />
+                <a-icon type="exclamation-circle" theme="filled" class="pending" />
               </a-tooltip>
             </a-card>
           </a-card>
@@ -104,23 +102,6 @@ export default {
         }
       };
     }
-    /* course_group() {
-      const course_group_id = this.id;
-      return {
-        query: queries.get_course_group_details,
-        variables: {
-          course_group_id
-        },
-        update: data => data.course_group[0],
-        error(error, vm, key) {
-          this.$notification.error({
-            key,
-            message: "Failed to obtain data on your course",
-            description: "Please try again."
-          });
-        }
-      };
-    } */
   },
   computed: {
     course() {
@@ -130,8 +111,11 @@ export default {
   methods: {
     async toggleCourseGroupIsOpen(id, status) {
       this.isToggleCourseGroupLoading = true;
+
       const course_group_id = id;
       const current_is_open = status;
+      console.log(id);
+      console.log(current_is_open);
       try {
         await this.$apollo.mutate({
           mutation: queries.update_course_group_and_seminars_is_open,
@@ -140,8 +124,9 @@ export default {
             is_open: !current_is_open
           },
           refetchQueries: [
-            "get_course_group_details",
-            "get_seminars_by_course_group"
+            "get_course_groups_by_faculty",
+            "get_seminars_by_course_group",
+            "get_course_group_details"
           ]
         });
         this.isToggleCourseGroupLoading = false;
@@ -150,7 +135,7 @@ export default {
         this.$notification.error({
           key: "toggle_course_group_is_open_error",
           message: "Failed to update the open status of your course",
-          description: "Please try again."
+          description: "Please try again." + err
         });
       }
     }
