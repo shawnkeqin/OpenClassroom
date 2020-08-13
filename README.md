@@ -75,6 +75,8 @@ sudo DEBUG=express:* VUE_APP_MODE=staging-test node index.js 2>&1 | tee "./logs/
 - https://docs.docker.com/engine/install/ubuntu/
 - https://docs.docker.com/compose/install/
 - https://github.com/docker/for-linux/issues/281
+
+Remember to set admin secret and DB password in docker-compose file manually! And also hasura project files if you're using. 
 ```
 sudo apt-get update
 sudo apt-get install \
@@ -98,8 +100,6 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 docker-compose up -d
 ```
-
-
 
 ### Backend Deployment
 See 
