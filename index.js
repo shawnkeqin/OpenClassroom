@@ -18,7 +18,7 @@ const staticConf = { maxAge: "1d", etag: false };
 
 app.use(history());
 app.use(express.static(publicPath, staticConf));
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 443;
 app.listen(PORT, () =>
   console.log(
     `App running on port ${PORT}
