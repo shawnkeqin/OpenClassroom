@@ -5,6 +5,7 @@
   "scripts": {
     "stage": "env vue-cli-service serve --mode staging",
     "serve": "vue-cli-service serve --mode development",
+    "serve-staging": "vue-cli-service serve --mode development",
     "build": "vue-cli-service build --mode staging",
     "build-staging": "vue-cli-service build --mode staging",
     "build-staging-test": "vue-cli-service build --mode staging-test",

@@ -209,6 +209,7 @@
 import moment from "moment";
 import utils from "@/utils";
 import queries from "@/graphql/queries.gql";
+import searchQueries from "@/graphql/searchQueries.gql";
 import SeminarVisitRequestCard from "@/components/SeminarVisitRequestCard";
 import suggestedSearchButton from "./suggestedSearchButton";
 import _ from "lodash";
@@ -221,7 +222,7 @@ const SUGGESTED_SEARCH_1 = "SUGGESTED_SEARCH_1";
 const SUGGESTED_SEARCH_2 = "SUGGESTED_SEARCH_2";
 const DEFAULT_FILTERS = {
   searchKeyword: undefined,
-  selectedDateRange: [],
+  selectedDateRange: [moment(), moment().add(1, "week")],
   startTime: null,
   endTime: null,
   facultyName: undefined,
@@ -408,11 +409,11 @@ export default {
     searchQuery() {
       return utils.isNonEmptyArray(this.filters.selectedTags)
         ? this.filters.openOnly
-          ? queries.searchOpenSeminarsByFiltersWithTags
-          : queries.searchSeminarsByFiltersWithTags
+          ? searchQueries.searchOpenSeminarsByFiltersWithTags
+          : searchQueries.searchSeminarsByFiltersWithTags
         : this.filters.openOnly
-        ? queries.searchOpenSeminarsByFilters
-        : queries.searchSeminarsByFilters;
+        ? searchQueries.searchOpenSeminarsByFilters
+        : searchQueries.searchSeminarsByFilters;
     },
     searchQueryVariables() {
       const search_keyword = this.filters.search_keyword
