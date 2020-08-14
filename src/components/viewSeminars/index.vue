@@ -221,7 +221,7 @@ const SUGGESTED_SEARCH_1 = "SUGGESTED_SEARCH_1";
 const SUGGESTED_SEARCH_2 = "SUGGESTED_SEARCH_2";
 const DEFAULT_FILTERS = {
   searchKeyword: undefined,
-  selectedDateRange: [],
+  selectedDateRange: [moment(TEST_DATE), moment(TEST_DATE).add(1, "week")],
   startTime: null,
   endTime: null,
   facultyName: undefined,
