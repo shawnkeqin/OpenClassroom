@@ -1646,7 +1646,7 @@ export default {
           this.hosted_visits_across_division_humanities.visit3.aggregate.count
         )
       );
-      git;
+
       data.push(
         this.getAverage(
           this.hosted_visits_across_division_humanities.faculty_aggregate
