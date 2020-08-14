@@ -75,6 +75,7 @@ npm run serve-staging-test
 - https://docs.docker.com/engine/install/ubuntu/
 - https://docs.docker.com/compose/install/
 - https://github.com/docker/for-linux/issues/281
+- https://www.cyberciti.biz/faq/postgresql-remote-access-or-connection/#:~:text=First%20make%20sure%20PostgreSQL%20server%20has%20been%20started%20to%20remote%20server.&text=If%20it%20is%20running%20and,the%20local%20machine%20or%20localhost.
 
 Remember to set admin secret and DB password in docker-compose file manually! And also hasura project files if you're using. ;
 ```
@@ -100,6 +101,15 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 docker-compose up -d
 ```
+Allow remote access to postgres DB container:
+```
+docker exec -it openclassroom_postgres_1 bash
+apt-get update
+apt-get install nano
+nano /var/lib/postgresql/data/pg_hba.conf
+nano /var/lib//data/postgresql.conf
+```
+
 
 ### Backend Deployment
 See 
