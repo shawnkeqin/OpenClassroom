@@ -27,17 +27,17 @@
         <h5>Time</h5>
         <div style="display: flex; align-items: center;">
           <a-time-picker
-            :value="moment(edit_seminar.start, 'HH:mm:ss')"
+            v-model="edit_seminar.start"
             format="HH:mm"
-            placeholder="Start"
             class="input-field"
+            :minute-step="30"
           />
           <h5 style="display: inline; margin: 5px;">to</h5>
           <a-time-picker
-            :value="moment(edit_seminar.end, 'HH:mm:ss')"
+            v-model="edit_seminar.end"
             format="HH:mm"
-            placeholder="End"
             class="input-field"
+            :minute-step="30"
           />
         </div>
       </div>
@@ -87,7 +87,7 @@
 <script>
 import moment from "moment";
 import queries from "@/graphql/queries.gql";
-const visitor_capacity_options = [1, 2, 3, 4, 5, 6, -1]
+const visitor_capacity_options = [1, 2, 3, 4, 5, 6, -1];
 export default {
   name: "updateSeminarModal",
   props: ["seminar"],
@@ -96,7 +96,10 @@ export default {
       moment,
       visitor_capacity_options,
       locations: [],
-      edit_seminar: this.seminar,
+      edit_seminar: Object.assign(this.seminar, {
+        start: moment(this.seminar.start, "HH:mm:ss"),
+        end: moment(this.seminar.end, "HH:mm:ss")
+      }),
       modal2Visible: false
     };
   },
@@ -126,8 +129,8 @@ export default {
           variables: {
             seminar_id: id,
             date,
-            start,
-            end,
+            start: start.format("HH:mm:ss"),
+            end: end.format("HH:mm:ss"),
             visitor_capacity,
             location_code,
             title,
