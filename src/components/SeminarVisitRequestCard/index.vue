@@ -21,20 +21,33 @@
     >
       <div style="display: flex; flex-direction: column;">
         <div style="margin-bottom: 5px">
-          <h5 class="date-heading" :class="is_past ? 'past' : 'red'" style="display: inline;">
+          <h4
+            class="date-heading"
+            :class="is_past ? 'past' : 'red'"
+            style="display: inline;"
+          >
             {{
-            `${utils.date_format(seminar.date)} from ${utils.time_format(
-            seminar.start
-            )}-${utils.time_format(seminar.end)} | `
+              `${utils.date_format(seminar.date)} from ${utils.time_format(
+                seminar.start
+              )}-${utils.time_format(seminar.end)} | `
             }}
-          </h5>
-          <h6 :class="{ past: is_past }" style="display: inline;">{{ seminar.location.full_name }}</h6>
-          <h6 :class="{ past: is_past }" class="teaching-mode" style="display: inline;">
+          </h4>
+          <h4
+            :class="{ past: is_past }"
+            style="display: inline; font-weight: normal; color: rgba(0, 0, 0, 0.54);"
+          >
+            {{ seminar.location.full_name }}
+          </h4>
+          <h4
+            :class="{ past: is_past }"
+            class="teaching-mode"
+            style="display: inline; font-weight: normal; color: rgba(0, 0, 0, 0.54);"
+          >
             {{
-            constants.TEACHING_MODES[seminar.course_group.teaching_mode] ||
-            "NA"
+              constants.TEACHING_MODES[seminar.course_group.teaching_mode] ||
+                "NA"
             }}
-          </h6>
+          </h4>
         </div>
         <div>
           <a-col :span="17" style="padding-right: 20px">
@@ -45,27 +58,27 @@
                 @click="descModalVisible = true"
               >
                 {{
-                seminar.group_code == "CC"
-                ? course.title + " (Lecture)"
-                : course.title
+                  seminar.group_code == "CC"
+                    ? course.title + " (Lecture)"
+                    : course.title
                 }}
               </h3>
-              <p :class="{ past: is_past }" style="display: inline">{{ seminar.module_code }}</p>
-              <h6>
-                <a
-                  @click="descModalVisible = true"
-                  href="#"
-                >View full course description and class details</a>
-              </h6>
-              <h4
-                :class="{ past: is_past, placeholder: !seminar.title }"
-              >{{ seminar.title || "No class title" }}</h4>
+              <h4 :class="{ past: is_past }" style="font-weight: normal;">
+                {{ seminar.module_code }}&nbsp;({{ seminar.group_code }})
+              </h4>
+              <h4 style="font-weight: normal; text-decoration: underline;">
+                <a @click="descModalVisible = true" href="#"
+                  >View full course description and class details</a
+                >
+              </h4>
+              <h4 :class="{ past: is_past, placeholder: !seminar.title }">
+                {{ seminar.title || "No class title" }}
+              </h4>
             </div>
             <div style="margin-bottom: 10px">
-              <h5
-                class="truncate"
-                :class="{ placeholder: !seminar.desc }"
-              >{{ seminar.desc || "No class description" }}</h5>
+              <h4 class="truncate" :class="{ placeholder: !seminar.desc }">
+                {{ seminar.desc || "No class description" }}
+              </h4>
             </div>
             <a-modal v-model="descModalVisible" @ok="descModalVisible = false">
               <template slot="footer">
@@ -78,10 +91,14 @@
               <h4>Schedule description:</h4>
               <p>{{ course_group.schedule_desc || "None" }}</p>
             </a-modal>
-            <h5>{{ "Notes for visitors: " + (course_group.notes || "None") }}</h5>
+            <h4 class="placeholder">
+              {{ "Notes for visitors: " + (course_group.notes || "None") }}
+            </h4>
           </a-col>
           <a-col v-if="!is_past" :span="7">
-            <div style="display: flex; flex-direction: column; align-items: center;">
+            <div
+              style="display: flex; flex-direction: column; align-items: center;"
+            >
               <template v-if="seminar.group_code == 'CC'">
                 <a-button
                   @click="requestModalVisible = true"
@@ -89,7 +106,8 @@
                   block
                   style="margin-bottom: 15px; "
                   disabled
-                >No request required</a-button>
+                  >No request required</a-button
+                >
               </template>
               <template
                 v-else-if="
@@ -101,7 +119,13 @@
                   )
                 "
               >
-                <a-button type="primary" block style="margin-bottom: 15px" disabled>Closed to visits</a-button>
+                <a-button
+                  type="primary"
+                  block
+                  style="margin-bottom: 15px"
+                  disabled
+                  >Closed to visits</a-button
+                >
               </template>
               <template v-else-if="!visit">
                 <template
@@ -110,7 +134,10 @@
                       acceptedVisitsCountForSeminar < seminar.visitor_capacity
                   "
                 >
-                  <RequestVisitButton :seminar="seminar" :has_consented="has_consented" />
+                  <RequestVisitButton
+                    :seminar="seminar"
+                    :has_consented="has_consented"
+                  />
                 </template>
                 <template v-else>
                   <a-button type="primary" block disabled>Class full</a-button>
@@ -137,6 +164,7 @@
 
 <script>
 import utils from "@/utils";
+import moment from "moment";
 // import queries from "@/graphql/queries.gql";
 import ColoredTag from "./ColoredTag";
 import CancelVisitAndStatusWrapper from "./CancelVisitAndStatusWrapper";
@@ -185,7 +213,9 @@ export default {
       return this.seminar.course_group.faculty;
     },
     is_past() {
-      return new Date(this.seminar.date) < Date.now();
+      return (
+        moment(this.seminar.date + "T" + this.seminar.start) < moment.now()
+      );
     },
     acceptedVisitsCountForSeminar() {
       return (
