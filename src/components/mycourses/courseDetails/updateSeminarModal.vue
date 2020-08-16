@@ -78,7 +78,10 @@ export default {
       moment,
       visitor_capacity_options,
       locations: [],
-      edit_seminar: this.seminar,
+      edit_seminar: Object.assign(this.seminar, {
+        start: moment(this.seminar.start, "HH:mm:ss"),
+        end: moment(this.seminar.end, "HH:mm:ss")
+      }),
       modal2Visible: false
     };
   },
@@ -108,8 +111,8 @@ export default {
           variables: {
             seminar_id: id,
             date,
-            start,
-            end,
+            start: start.format("HH:mm:ss"),
+            end: end.format("HH:mm:ss"),
             visitor_capacity,
             location_code,
             title,

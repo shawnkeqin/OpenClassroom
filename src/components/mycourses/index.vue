@@ -17,18 +17,19 @@
             <p>{{ course_group.course.module_code }}</p>
             <p>{{ "Group " + course_group.group_code }}</p>
             <router-link
-              style="font-size:25px;position: relative;
+              style="font-size:1rem;position: relative;
 top: 6px;"
               :to="'/coursedetails/' + course_group.id"
-            >➤ Course details</router-link>
+              >➤ Course details</router-link
+            >
             <br />
             <br />
             <a-card style="width: 250px; margin-right: 10px;">
               <p style="margin: 0 10px 0 0">
                 {{
-                `This course is ${
-                course_group.is_open ? `open` : `closed`
-                } to visit requests`
+                  `This course is ${
+                    course_group.is_open ? `open` : `closed`
+                  } to visit requests`
                 }}
               </p>
 
@@ -45,7 +46,11 @@ top: 6px;"
               <a-tooltip
                 title="Closing/opening this course will automatically close/open all of its classes."
               >
-                <a-icon type="exclamation-circle" theme="filled" class="pending" />
+                <a-icon
+                  type="exclamation-circle"
+                  theme="filled"
+                  class="pending"
+                />
               </a-tooltip>
             </a-card>
           </a-card>
