@@ -4,20 +4,18 @@
       v-if="this.visit.visit_status === constants.VISIT_STATUS_PENDING"
       type="primary"
       @click="onClickRespond"
-    >
-      Respond
-    </a-button>
+    >Respond</a-button>
     <a-button v-else @click="onClickRespond">Edit response</a-button>
     <a-modal v-model="visible" :title="`${this.visit.visitor.name}'s request`">
       <p>{{ visit.request_msg }}</p>
       <a-form :form="form">
-        <a-form-item label="Your response message (optional)">
+        <a-form-model-item label="Your response message (optional)">
           <a-input
-            v-decorator="['response_msg', {}]"
+            v-model="response_msg"
             type="textarea"
             placeholder="You have not submitted a message."
           />
-        </a-form-item>
+        </a-form-model-item>
       </a-form>
       <p>
         Send them an email:
@@ -34,9 +32,7 @@
             class="respond-button accept-button"
             :loading="loading"
             @click="submitVisitResponse(constants.VISIT_STATUS_ACCEPTED)"
-          >
-            Accept
-          </a-button>
+          >Accept</a-button>
           <a-button
             v-else-if="visit.visit_status === constants.VISIT_STATUS_ACCEPTED"
             class="respond-button accepted-button"
@@ -52,9 +48,7 @@
             class="respond-button decline-button"
             :loading="loading"
             @click="submitVisitResponse(constants.VISIT_STATUS_DECLINED)"
-          >
-            Decline
-          </a-button>
+          >Decline</a-button>
           <a-button
             v-else-if="visit.visit_status === constants.VISIT_STATUS_DECLINED"
             class="respond-button declined-button"
@@ -77,18 +71,19 @@ export default {
     seminar: Object,
     visit: Object
   },
-  mounted() {
-    this.form.setFieldsValue({
-      response_msg: this.visit.response_msg || null
-    });
-  },
+  //  mounted() {
+  //    this.form.setFieldsValue({
+  //      response_msg: this.visit.response_msg || null
+  //    });
+  //  },
   data() {
     return {
       utils: utils,
       constants: constants,
       visible: false,
       loading: false,
-      form: this.$form.createForm(this, { name: "form" })
+      //    form: this.$form.createForm(this, { name: "form" }),
+      response_msg: ""
     };
   },
   computed: {
@@ -109,6 +104,7 @@ export default {
     },
     async submitVisitResponse(new_status) {
       const visit_id = this.visit.id;
+      const response_msg = this.response_msg;
       this.loading = true;
       try {
         await this.$apollo.mutate({
@@ -117,7 +113,7 @@ export default {
             visit_id,
             visit_status: new_status,
             time_responded: moment().format(),
-            response_msg: this.form.response_msg
+            response_msg
           },
           update: (store, { data: { update_visit_by_pk } }) => {
             if (update_visit_by_pk) {
