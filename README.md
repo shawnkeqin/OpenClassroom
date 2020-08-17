@@ -83,7 +83,9 @@ npm run serve-staging-test
 Remember to set admin secret and DB password in docker-compose file manually! And also hasura project files if you're using.
 ```bash
 # Install and setup postgres DB.
-sudo apt-get install postgresql
+wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O- | sudo apt-key add -
+sudo apt-get install postgresql-12
+echo "deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main" | sudo tee /etc/apt/sources.list.d/postgresql.list
 sudo service postgresql start
 sudo -u postgres psql
 #  Configure DB. 
@@ -148,7 +150,7 @@ DATABASE_URL=postgresql://admin:<>@localhost
 cabal new-run -- exe:graphql-engine --database-url=$DATABASE_URL serve --enable-console --console-assets-dir=../console/static/dist
 ```
 
-### Hasura DB Migration
+### DB Migration
 See https://hasura.io/docs/1.0/graphql/manual/migrations/basics.html#migrations-basics. 
 1. `hasura init`
 2. `cd` into project directory. 
@@ -156,14 +158,19 @@ See https://hasura.io/docs/1.0/graphql/manual/migrations/basics.html#migrations-
 4. `hasura console`
 5. Create SQL migration files and heroku metadata.
 
-```hasura migrate create <init-migration-name> --from-server --endpoint <endpoint>
-hasura metadata export --endpoint <endpoint>
+```
+# Install Hasura CLI for migrating metadata + schema. 
+curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
+hasura migrate apply
+hasura metadata apply
+# Dump from pg_dump archive from demo app.
+pg_restore --verbose --clean --no-acl --no-owner -h localhost -U hasurauser -d open_classroom data/1fb44c77-68e8-4f07-b987-f368025bc02b
 ```
 
 
 ### DB config
 ```sql
-CREATE USER hasurauser WITH PASSWORD '';
+CREATE USER hasurauser WITH PASSWORD 'OCsecret2020!';
 CREATE DATABASE open_classroom;
 ALTER USER hasurauser WITH SUPERUSER;
 -- SWITCH TO open_classroom
@@ -212,7 +219,7 @@ GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO hasurauser;
 #### DB Remote access 
 Allow remote access to postgres DB container temporarily (connecting with GUI for importing data):
 - https://www.cyberciti.biz/faq/postgresql-remote-access-or-connection/#:~:text=First%20make%20sure%20PostgreSQL%20server%20has%20been%20started%20to%20remote%20server.&text=If%20it%20is%20running%20and,the%20local%20machine%20or%20localhost.
-```
+```bash
 sudo chmod 777 /etc/postgresql/10/main
 sudo chmod 777 /etc/postgresql/10/main/postgresql.conf
 sudo chmod 777 /etc/postgresql/10/main/pg_hba.conf
@@ -221,6 +228,8 @@ nano /etc/postgresql/10/main/postgresql.conf
 sudo service postgresql restart
 ```
 
-
-# iptables -A INPUT -p tcp -s 0/0 --sport 1024:65535 -d 172.21.201.150  --dport 5432 -m state --state NEW,ESTABLISHED -j ACCEPT
-# iptables -A OUTPUT -p tcp -s 172.21.201.150 --sport 5432 -d 0/0 --dport 1024:65535 -m state --state ESTABLISHED -j ACCEPT
+### Vulscan scanning 
+- https://github.com/scipag/vulscan
+```bash
+nmap -sV --script=vulscan/vulscan.nse 172.25.20.25 > logs/vulscan_output.txt --script-args vulscanoutput=details
+```
