@@ -88,7 +88,7 @@ sudo service postgresql start
 sudo -u postgres psql
 #  Configure DB. 
 # Try logging in.
-psql "postgres://admin:<>@localhost/open_classroom"
+psql "postgres://hasurauser:<>@localhost/open_classroom"
 # Install Docker.
 sudo apt-get update
 sudo apt-get install \
@@ -161,13 +161,19 @@ See https://hasura.io/docs/1.0/graphql/manual/migrations/basics.html#migrations-
 3. Add admin secret and endpoint to `config.yaml`.
 4. `hasura console`
 5. Create SQL migration files and heroku metadata.
+
 ```hasura migrate create <init-migration-name> --from-server --endpoint <endpoint>
-hasura metadata export --endpoint <endpoint>```
+hasura metadata export --endpoint <endpoint>
+```
+
 
 ### DB config
-```
+```sql
 CREATE USER hasurauser WITH PASSWORD 'hasurauser';
-CREATE DATABASE open_classroom
+CREATE DATABASE open_classroom;
+-- SWITCH TO open_classroom!
+-- /connect open_classroom;
+ALTER DATABASE oepn_classroom OWNER TO hasurauser;
 -- create pgcrypto extension, required for UUID
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
@@ -190,8 +196,7 @@ GRANT SELECT ON ALL TABLES IN SCHEMA pg_catalog TO hasurauser;
 
 -- The below permissions are optional. This is dependent on what access to your
 -- tables/schemas you want give to hasura. If you want expose the public
--- schema for GraphQL query then give permissions on public schema to the
--- hasura user.
+-- schema for GraphQL query then give permissions on public schema to the hasura user.
 -- Be careful to use these in your production db. Consult the postgres manual or
 -- your DBA and give appropriate permissions.
 
