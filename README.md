@@ -58,7 +58,7 @@ The custom environment file (as well as the automatically set `NODE_ENV`) was on
 3. Add all env variables, including JWT secret.
 4. Run these commands. 
 ```bash
-# Install exact versino of NPM. 
+# Install exact version of NPM. 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 nvm install 12.18.2
 npm install -g npm@latest
@@ -116,12 +116,6 @@ chmod +x ./docker-run.sh
 docker ps
 ```
 
-Allow remote access to postgres DB container temporarily (connecting with GUI for importing data):
-- https://www.cyberciti.biz/faq/postgresql-remote-access-or-connection/#:~:text=First%20make%20sure%20PostgreSQL%20server%20has%20been%20started%20to%20remote%20server.&text=If%20it%20is%20running%20and,the%20local%20machine%20or%20localhost.
-```
-nano /var/lib/postgresql/data/pg_hba.conf
-nano /var/lib//data/postgresql.conf
-```
 
 
 ### Backend Deployment
@@ -169,11 +163,12 @@ hasura metadata export --endpoint <endpoint>
 
 ### DB config
 ```sql
-CREATE USER hasurauser WITH PASSWORD 'hasurauser';
+CREATE USER hasurauser WITH PASSWORD '';
 CREATE DATABASE open_classroom;
--- SWITCH TO open_classroom!
--- /connect open_classroom;
-ALTER DATABASE oepn_classroom OWNER TO hasurauser;
+ALTER USER hasurauser WITH SUPERUSER;
+-- SWITCH TO open_classroom
+\connect open_classroom;
+ALTER DATABASE open_classroom OWNER TO hasurauser;
 -- create pgcrypto extension, required for UUID
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
@@ -214,3 +209,18 @@ GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO hasurauser;
 -- GRANT ALL ON ALL SEQUENCES IN SCHEMA <schema-name> TO hasurauser;
 -- GRANT ALL ON ALL FUNCTIONS IN SCHEMA <schema-name> TO hasurauser;
 ```
+#### DB Remote access 
+Allow remote access to postgres DB container temporarily (connecting with GUI for importing data):
+- https://www.cyberciti.biz/faq/postgresql-remote-access-or-connection/#:~:text=First%20make%20sure%20PostgreSQL%20server%20has%20been%20started%20to%20remote%20server.&text=If%20it%20is%20running%20and,the%20local%20machine%20or%20localhost.
+```
+sudo chmod 777 /etc/postgresql/10/main
+sudo chmod 777 /etc/postgresql/10/main/postgresql.conf
+sudo chmod 777 /etc/postgresql/10/main/pg_hba.conf
+nano /etc/postgresql/10/main/pg_hba.conf
+nano /etc/postgresql/10/main/postgresql.conf
+sudo service postgresql restart
+```
+
+
+# iptables -A INPUT -p tcp -s 0/0 --sport 1024:65535 -d 172.21.201.150  --dport 5432 -m state --state NEW,ESTABLISHED -j ACCEPT
+# iptables -A OUTPUT -p tcp -s 172.21.201.150 --sport 5432 -d 0/0 --dport 1024:65535 -m state --state ESTABLISHED -j ACCEPT
