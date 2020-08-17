@@ -61,7 +61,7 @@ mutation update_visit_response(
   $visit_id: Int!
   $visit_status: String!
   $time_responded: timestamptz!
-  $response_msg: String
+  $response_msg: String!
 ) {
   update_visit_by_pk(
     pk_columns: { id: $visit_id }
@@ -331,8 +331,6 @@ mutation update_course_group_schedule_desc($id: Int!, $schedule_desc: String!) {
   }
 }
 
-
-
 mutation update_course_group_notes($id: Int!, $notes: String!) {
   update_course_group(where: { id: { _eq: $id } }, _set: { notes: $notes }) {
     affected_rows
@@ -421,7 +419,6 @@ mutation unarchive_seminar($seminar_id: Int!) {
     affected_rows
   }
 }
-
 
 mutation create_visit_request(
   $seminar_id: Int!

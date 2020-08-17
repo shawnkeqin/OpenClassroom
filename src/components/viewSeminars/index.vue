@@ -43,12 +43,10 @@
           :current="page"
           :pageSizeOptions="['10', '25', '50', '100']"
         />
-        <div
-          style="display: flex; flex-direction: column; align-items: center;"
-        >
-          <template v-if="$apollo.loading"
-            ><a-skeleton style="width: 35rem;" active
-          /></template>
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <template v-if="$apollo.loading">
+            <a-skeleton style="width: 35rem;" active />
+          </template>
           <template v-else>
             <template v-if="seminarLimited.length">
               <SeminarVisitRequestCard
@@ -62,9 +60,7 @@
             <template v-else>
               <div style="width: 35rem;">
                 <a-card hoverable>
-                  <p>
-                    {{ `No results.` }}
-                  </p>
+                  <p>{{ `No results.` }}</p>
                 </a-card>
               </div>
             </template>
@@ -90,9 +86,7 @@
               class="filter-field"
             />
             <h5 align="left">Time range</h5>
-            <div
-              style="display: flex; flex-direction: row; justify-content: space-between;"
-            >
+            <div style="display: flex; flex-direction: row; justify-content: space-between;">
               <a-time-picker
                 :minute-step="30"
                 use12-hours
@@ -101,8 +95,7 @@
                 placeholder="Start"
                 valueFormat="HH:mm"
                 class="filter-field"
-              >
-              </a-time-picker>
+              ></a-time-picker>
               <a-time-picker
                 :minute-step="30"
                 use12-hours
@@ -111,8 +104,7 @@
                 placeholder="End"
                 valueFormat="HH:mm"
                 class="filter-field"
-              >
-              </a-time-picker>
+              ></a-time-picker>
             </div>
             <h5 align="left">Instructor</h5>
             <a-select
@@ -126,9 +118,7 @@
                 v-for="faculty in faculty_list"
                 :value="faculty.name.toString()"
                 :key="faculty.name.toString()"
-              >
-                {{ faculty.name.toString() }}
-              </a-select-option>
+              >{{ faculty.name.toString() }}</a-select-option>
             </a-select>
             <h5 align="left">Tags</h5>
             <div style="width:100%; display:flex">
@@ -141,9 +131,7 @@
                 <a-select-option
                   v-for="tag in tags_list"
                   :key="tag.label.toString()"
-                >
-                  {{ tag.label.toString() }}
-                </a-select-option>
+                >{{ tag.label.toString() }}</a-select-option>
               </a-select>
               <a-icon
                 type="down"
@@ -152,10 +140,7 @@
             </div>
             <div style="margin-bottom: 20px;">
               <h5 align="left">Teaching mode</h5>
-              <a-checkbox-group
-                class="teaching-mode-filter"
-                v-model="filters.checkedTeachingModes"
-              >
+              <a-checkbox-group class="teaching-mode-filter" v-model="filters.checkedTeachingModes">
                 <a-checkbox
                   class="checkbox-filter"
                   :value="value"
@@ -164,8 +149,7 @@
                     label
                   } in constants.TEACHING_MODE_CHECKBOX_OPTIONS"
                   v-bind:key="value"
-                  >{{ label }}</a-checkbox
-                >
+                >{{ label }}</a-checkbox>
               </a-checkbox-group>
             </div>
             <div>
@@ -174,17 +158,15 @@
                 <a-checkbox
                   v-model="filters.lecturesOnly"
                   class="checkbox-filter"
-                  >Show CC lectures only</a-checkbox
-                >
-                <a-checkbox v-model="filters.openOnly" class="checkbox-filter"
-                  >Show only open classes</a-checkbox
-                >
+                >Show CC lectures only</a-checkbox>
+                <a-checkbox
+                  v-model="filters.openOnly"
+                  class="checkbox-filter"
+                >Show only open classes</a-checkbox>
               </div>
             </div>
             <div style="padding-top: 30px;">
-              <a @click="mapVisible = true" href="#">
-                View campus map
-              </a>
+              <a @click="mapVisible = true" href="#">View campus map</a>
             </div>
             <a-modal
               title="Campus map"
@@ -509,5 +491,6 @@ export default {
   display: block;
   color: rgba(0, 0, 0, 0.54);
   margin-left: 0px;
-}</style
+}
+</style
 >;
