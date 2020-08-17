@@ -58,11 +58,14 @@ The custom environment file (as well as the automatically set `NODE_ENV`) was on
 3. Add all env variables, including JWT secret.
 4. Run these commands. 
 ```bash
+# Install exact versino of NPM. 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 nvm install 12.18.2
 npm install -g npm@latest
+# Pull project repo. 
 git clone https://github.com/devtoohard/OpenClassroom.git
 cd OpenClassroom
+# Install dependencies, build and serve frontend distribution. 
 npm install
 npm run build-staging-test
 sudo lsof -iTCP -sTCP:LISTEN -P
@@ -77,8 +80,15 @@ npm run serve-staging-test
 - https://github.com/docker/for-linux/issues/281
 - https://www.cyberciti.biz/faq/postgresql-remote-access-or-connection/#:~:text=First%20make%20sure%20PostgreSQL%20server%20has%20been%20started%20to%20remote%20server.&text=If%20it%20is%20running%20and,the%20local%20machine%20or%20localhost.
 
-Remember to set admin secret and DB password in docker-compose file manually! And also hasura project files if you're using. ;
-```
+Remember to set admin secret and DB password in docker-compose file manually! And also hasura project files if you're using.
+```bash
+# Install and setup postgres DB.
+sudo apt-get install postgresql
+sudo service postgresql start
+sudo -u postgres psql -c "CREATE DATABASE public;"
+sudo -u postgres psql -c "CREATE USER admin;"
+sudo -u postgres psql -c "ALTER USER admin PASSWORD '<>';"
+# Install Docker.
 sudo apt-get update
 sudo apt-get install \
     apt-transport-https \
@@ -97,9 +107,11 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker 
 sudo docker run hello-world
-sudo curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-docker-compose up -d
+# Load hasura docker image from tar file in repo. 
+docker load < hasura-graphql-engine.tar.gz
+# Run docker image using script from repo and check that it's running. 
+./docker-run.sh
+docker ps
 ```
 Allow remote access to postgres DB container:
 ```
