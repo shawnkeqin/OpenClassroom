@@ -78,7 +78,7 @@ npm run serve-staging-test
 - https://docs.docker.com/engine/install/ubuntu/
 - https://docs.docker.com/compose/install/
 - https://github.com/docker/for-linux/issues/281
-- https://www.cyberciti.biz/faq/postgresql-remote-access-or-connection/#:~:text=First%20make%20sure%20PostgreSQL%20server%20has%20been%20started%20to%20remote%20server.&text=If%20it%20is%20running%20and,the%20local%20machine%20or%20localhost.
+
 
 Remember to set admin secret and DB password in docker-compose file manually! And also hasura project files if you're using.
 ```bash
@@ -88,6 +88,8 @@ sudo service postgresql start
 sudo -u postgres psql -c "CREATE DATABASE public;"
 sudo -u postgres psql -c "CREATE USER admin;"
 sudo -u postgres psql -c "ALTER USER admin PASSWORD '<>';"
+# Try logging in.
+psql "postgres://admin:<>@localhost/public"
 # Install Docker.
 sudo apt-get update
 sudo apt-get install \
@@ -110,14 +112,14 @@ sudo docker run hello-world
 # Load hasura docker image from tar file in repo. 
 docker load < hasura-graphql-engine.tar.gz
 # Run docker image using script from repo and check that it's running. 
+chmod +x ./docker-run.sh
 ./docker-run.sh
 docker ps
 ```
-Allow remote access to postgres DB container:
+
+Allow remote access to postgres DB container temporarily (connecting with GUI for importing data):
+- https://www.cyberciti.biz/faq/postgresql-remote-access-or-connection/#:~:text=First%20make%20sure%20PostgreSQL%20server%20has%20been%20started%20to%20remote%20server.&text=If%20it%20is%20running%20and,the%20local%20machine%20or%20localhost.
 ```
-docker exec -it openclassroom_postgres_1 bash
-apt-get update
-apt-get install nano
 nano /var/lib/postgresql/data/pg_hba.conf
 nano /var/lib//data/postgresql.conf
 ```
