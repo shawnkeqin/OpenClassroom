@@ -26,7 +26,7 @@
                 v-for="semester in seminarsGroupBySemester"
                 :key="semester.semester_code"
               >
-                {{ semester.semester_code }}
+                {{ semester.full_name }}
               </a-menu-item>
             </a-menu>
           </a-card>
@@ -50,15 +50,19 @@ export default {
   data() {
     return {
       seminarsWithVisits: [],
-      selectedSemester: [process.env.VUE_APP_SEMESTER_CODE],
+      selectedSemester: [process.env.VUE_APP_SEMESTER_CODE]
     };
   },
   apollo: {
+    semesterNames: {
+      query: queries.get_semester_names,
+      update: data => data.semester
+    },
     seminarsWithVisits: {
       query: queries.get_seminars_with_visits_by_time_requested,
       variables() {
         return {
-          faculty_id: store.state.loggedInUser,
+          faculty_id: store.state.loggedInUser
           // semester_code: process.env.VUE_APP_SEMESTER_CODE
         };
       },
@@ -74,6 +78,14 @@ export default {
     }
   },
   computed: {
+    semesterNamesMap() {
+      const m = {};
+      if (!this.semesterNames) return {};
+      this.semesterNames.forEach(
+        semester => (m[semester.code] = semester.full_name)
+      );
+      return m;
+    },
     seminarsWithSomeVisits() {
       return this.seminarsWithVisits.filter(
         seminar => Array.isArray(seminar.visits) && seminar.visits.length
@@ -81,7 +93,11 @@ export default {
     },
     seminarsGroupBySemester() {
       const defaultVal = [
-        { semester_code: process.env.VUE_APP_SEMESTER_CODE, seminars: [] }
+        {
+          semester_code: process.env.VUE_APP_SEMESTER_CODE,
+          seminars: [],
+          full_name: this.semesterNamesMap[process.env.VUE_APP_SEMESTER_CODE]
+        }
       ];
       if (!this.seminarsWithSomeVisits.length) return defaultVal;
       return this.seminarsWithSomeVisits.reduce((acc, cur) => {
@@ -94,11 +110,14 @@ export default {
                   semesterWithSeminars.semester_code === cur_semester_code
               );
         if (idx === -1) {
-          acc.push({ semester_code: cur_semester_code, seminars: [cur] });
+          acc.push({
+            semester_code: cur_semester_code,
+            seminars: [cur],
+            full_name: cur.semester.full_name
+          });
         } else {
           acc[idx].seminars.push(cur);
         }
-        console.log(acc)
         return acc;
       }, defaultVal);
     },
@@ -107,7 +126,7 @@ export default {
         semester => semester.semester_code === this.selectedSemester[0]
       ).seminars;
     }
-  },
+  }
 };
 </script>
 

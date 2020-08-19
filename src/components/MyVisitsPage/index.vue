@@ -33,7 +33,7 @@
                   v-for="semester in visitsGroupBySemester"
                   :key="semester.semester_code"
                 >
-                  {{ semester.semester_code }}
+                  {{ semester.full_name }}
                 </a-menu-item>
               </a-menu>
             </a-card>
@@ -86,6 +86,10 @@ export default {
     };
   },
   apollo: {
+    semesterNames: {
+      query: queries.get_semester_names,
+      update: data => data.semester
+    },
     myVisits: {
       query: queries.get_my_visits,
       variables() {
@@ -104,13 +108,25 @@ export default {
     }
   },
   computed: {
+    semesterNamesMap() {
+      const m = {};
+      if (!this.semesterNames) return {};
+      this.semesterNames.forEach(
+        semester => (m[semester.code] = semester.full_name)
+      );
+      return m;
+    },
     visitsGroupBySemester() {
       const defaultVal = [
-        { semester_code: process.env.VUE_APP_SEMESTER_CODE, visits: [] }
+        {
+          semester_code: process.env.VUE_APP_SEMESTER_CODE,
+          visits: [],
+          full_name: this.semesterNamesMap[process.env.VUE_APP_SEMESTER_CODE]
+        }
       ];
-      if (!this.myVisits.length) return defaultVal;
+      if (!this.myVisits && !this.myVisits.length) return defaultVal;
       return this.myVisits.reduce((acc, cur) => {
-        const cur_semester_code = cur.seminar.course_group.course.semester_code;
+        const cur_semester_code = cur.seminar.semester_code;
         const idx =
           acc.length === 0
             ? -1
@@ -119,7 +135,11 @@ export default {
                   semesterWithVisits.semester_code === cur_semester_code
               );
         if (idx === -1) {
-          acc.push({ semester_code: cur_semester_code, visits: [cur] });
+          acc.push({
+            semester_code: cur_semester_code,
+            visits: [cur],
+            full_name: cur.seminar.semester.full_name
+          });
         } else {
           acc[idx].visits.push(cur);
         }

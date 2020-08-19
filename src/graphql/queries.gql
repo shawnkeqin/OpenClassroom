@@ -108,6 +108,9 @@ query get_seminars_with_visits_by_time_requested($faculty_id: String) {
     id
     is_open
     semester_code
+    semester {
+      full_name
+    }
     group_code
     visitor_capacity
     week
@@ -145,7 +148,12 @@ query get_seminars_with_visits_by_time_requested($faculty_id: String) {
     }
   }
 }
-
+query get_semester_names {
+  semester {
+    code
+    full_name
+  }
+}
 query get_my_visits($visitor_id: String!) {
   visit(
     where: { visitor_id: { _eq: $visitor_id } }
@@ -169,6 +177,11 @@ query get_my_visits($visitor_id: String!) {
       title
       desc
       visitor_capacity
+      semester_code
+      group_code
+      semester {
+        full_name
+      }
       location {
         code
         full_name
@@ -188,7 +201,6 @@ query get_my_visits($visitor_id: String!) {
         course {
           id
           module_code
-          semester_code
           title
           desc
           module_brief_link
