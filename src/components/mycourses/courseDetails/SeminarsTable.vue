@@ -6,6 +6,17 @@
     :pagination="false"
     style="background: white;"
   >
+    <template slot="visitor_capacity_header"
+      ><div
+        style="display: flex;
+  align-items: center; height: 70px"
+      >
+        <span style="vertical-align:middle">
+          Visitor Capacity<br /><updateVisitorCapacityBulk
+            :id="id"
+            style="position:absolute"
+        /></span></div
+    ></template>
     <template slot="date" slot-scope="text">
       <div>{{ utils.date_format(text) }}</div>
     </template>
@@ -38,9 +49,9 @@
       <updateSeminarModal :seminar="record" />
     </template>
     <div slot="expandedRowRender" slot-scope="record">
-      <h5>Seminar title</h5>
+      <h5>Class title</h5>
       <p>{{ record.title || "None" }}</p>
-      <h5>Seminar description</h5>
+      <h5>Class description</h5>
       <p>{{ record.desc || "None" }}</p>
     </div>
   </a-table>
@@ -50,6 +61,7 @@
 import utils from "@/utils";
 import queries from "@/graphql/queries.gql";
 import updateSeminarModal from "./updateSeminarModal";
+import updateVisitorCapacityBulk from "./updateVisitorCapacityBulk";
 
 const columns = [
   {
@@ -77,9 +89,10 @@ const columns = [
     scopedSlots: { customRender: "venue" }
   },
   {
-    title: "Visitor capactiy",
+    // title: "Visitor Capacity",
     dataIndex: "visitor_capacity",
     key: "visitor_capacity",
+    slots: { title: "visitor_capacity_header" },
     scopedSlots: { customRender: "visitor_capacity" }
   },
   {
@@ -99,7 +112,8 @@ const columns = [
 export default {
   name: "SeminarsTable",
   components: {
-    updateSeminarModal
+    updateSeminarModal,
+    updateVisitorCapacityBulk
   },
   props: {
     seminars: {
@@ -113,6 +127,7 @@ export default {
   },
   data() {
     return {
+      id: this.$route.params.id,
       columns,
       utils,
       isLoading: { seminar_id: null, isLoading: false }
@@ -126,7 +141,6 @@ export default {
   methods: {
     async toggleSeminarIsOpen(seminar) {
       this.isLoading = { seminar_id: seminar.id, isLoading: true };
-      // const current_is_open = this.seminar.is_open;
       try {
         await this.$apollo.mutate({
           mutation: queries.updateSeminarIsOpen,

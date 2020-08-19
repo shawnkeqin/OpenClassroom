@@ -9,9 +9,9 @@
         <a-card style="width: 250px; margin-right: 10px;">
           <p style="margin: 0 10px 0 0">
             {{
-            `This course is ${
-            course_group.is_open ? `open` : `closed`
-            } to visit requests`
+              `This course is ${
+                course_group.is_open ? `open` : `closed`
+              } to visit requests`
             }}
           </p>
           <a-switch
@@ -30,37 +30,17 @@
         </a-card>
       </div>
       <div>
-        <h3 style="margin: 0 10px 0 0">{{ course ? course.module_code : "" }}</h3>
+        <h3 style="margin: 0 10px 0 0">
+          {{ course ? course.module_code : "" }}
+        </h3>
         <p>
           {{
-          `Teaching mode: ${constants.TEACHING_MODES[
-          course_group.teaching_mode
-          ] || "NA"}`
+            `Teaching mode: ${constants.TEACHING_MODES[
+              course_group.teaching_mode
+            ] || "NA"}`
           }}
         </p>
       </div>
-      <!--    <div style="display: flex; align-items: center; padding-bottom: 5px;">
-        <p style="margin: 0 10px 0 0">
-          {{
-            `This course is ${
-              course_group.is_open ? `open` : `closed`
-            } to visit requests`
-          }}
-        </p>
-        <a-switch
-          :checked="course_group.is_open"
-          checked-children="open"
-          un-checked-children="closed"
-          :loading="isToggleCourseGroupLoading"
-          @click="toggleCourseGroupIsOpen"
-          style="margin-right: 5px;"
-        />
-        <a-tooltip
-          title="Closing/opening this course will automatically close/open all of its classes."
-        >
-          <a-icon type="exclamation-circle" theme="filled" class="pending" />
-        </a-tooltip>
-      </div>-->
       <a-card style="width:100%" :bodyStyle="{ padding: 0 }">
         <a-collapse v-model="activeKey" :bordered="false">
           <a-collapse-panel key="1">
@@ -68,7 +48,9 @@
               <h4 style="margin: 0;">Course Description</h4>
             </template>
             <p>{{ course && (course.desc || "None") }}</p>
-            <h5 style="margin: 0; margin-right: 10px;">Additional Description</h5>
+            <h5 style="margin: 0; margin-right: 10px;">
+              Additional Description (Only visible to your course group)
+            </h5>
             <p>{{ course_group.course_group_desc || "" }}</p>
             <updateCourseGroupDescModal :course_group="course_group" />
           </a-collapse-panel>
@@ -97,9 +79,6 @@
       </a-card>
       <div style="padding-top: 40px">
         <h2>Upcoming classes</h2>
-        <div style="margin-left:700px;">
-          <updateVisitorCapacityBulk :id="id" />
-        </div>
         <div class="list-of-seminars">
           <SeminarsTable :seminars="seminars" :course_group="course_group" />
         </div>
@@ -113,7 +92,6 @@ import queries from "@/graphql/queries.gql";
 import constants from "@/utils/constants";
 import updateCourseGroupDescModal from "./updateCourseGroupDescModal";
 import updateCourseGroupNotesModal from "./updateCourseGroupNotesModal";
-import updateVisitorCapacityBulk from "./updateVisitorCapacityBulk";
 import updateCourseGroupSyllabusModal from "./updateCourseGroupSyllabusModal";
 import SeminarsTable from "./SeminarsTable";
 import updateCourseGroupScheduleDescModal from "./updateCourseGroupScheduleDescModal";
@@ -124,7 +102,6 @@ export default {
     SeminarsTable,
     updateCourseGroupDescModal,
     updateCourseGroupNotesModal,
-    updateVisitorCapacityBulk,
     updateCourseGroupSyllabusModal,
     updateCourseGroupScheduleDescModal
   },
