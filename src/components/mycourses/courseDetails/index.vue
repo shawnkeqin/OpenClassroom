@@ -6,7 +6,7 @@
     <template v-else>
       <div style="display: flex; align-items: center; padding-bottom: 5px;">
         <h1 style="margin: 0 10px 0 0">{{ course ? course.title : "" }}</h1>
-        <a-card style="width: 250px; margin-right: 10px;">
+        <a-card style="width: 250px; margin-right: 10px; border-radius: 20px">
           <p style="margin: 0 10px 0 0">
             {{
               `This course is ${
@@ -20,7 +20,7 @@
             un-checked-children="closed"
             :loading="isToggleCourseGroupLoading"
             @click="toggleCourseGroupIsOpen"
-            style="margin-right: 5px;"
+            style="margin-right: 5px"
           />
           <a-tooltip
             title="Closing/opening this course will automatically close/open all of its classes."
@@ -31,49 +31,44 @@
       </div>
       <div>
         <h3 style="margin: 0 10px 0 0">
-          {{ course ? course.module_code : "" }}
+          {{ course_group.course.module_code }}&nbsp;({{
+            course_group.group_code
+          }})
         </h3>
-        <p>
+        <h3>
           {{
             `Teaching mode: ${constants.TEACHING_MODES[
               course_group.teaching_mode
             ] || "NA"}`
           }}
-        </p>
+        </h3>
       </div>
       <a-card style="width:100%" :bodyStyle="{ padding: 0 }">
         <a-collapse v-model="activeKey" :bordered="false">
           <a-collapse-panel key="1">
             <template slot="header">
-              <h4 style="margin: 0;">Course Description</h4>
+              <h4 style="margin: 0;">Course description</h4>
             </template>
-            <p>{{ course && (course.desc || "None") }}</p>
+            <p>{{ course && (course.desc || "Nil") }}</p>
             <h5 style="margin: 0; margin-right: 10px;">
-              Additional Description (Only visible to your course group)
+              Additional Description (only visible to your course group)
             </h5>
-            <p>{{ course_group.course_group_desc || "" }}</p>
+            <p>{{ course_group.course_group_desc || "-" }}</p>
             <updateCourseGroupDescModal :course_group="course_group" />
           </a-collapse-panel>
           <a-collapse-panel key="2">
             <template slot="header">
-              <h4 style="margin: 0;">Course Syllabus</h4>
+              <h4 style="margin: 0;">Course syllabus</h4>
             </template>
-            <p>{{ course_group.syllabus || "None" }}</p>
+            <p>{{ course_group.syllabus || "-" }}</p>
             <updateCourseGroupSyllabusModal :course_group="course_group" />
           </a-collapse-panel>
           <a-collapse-panel key="3">
             <template slot="header">
-              <h4 style="margin: 0;">Notes for Observers</h4>
+              <h4 style="margin: 0;">Notes for visitors</h4>
             </template>
-            <p>{{ course && (course.notes || "None") }}</p>
+            <p>{{ course && (course.notes || "-") }}</p>
             <updateCourseGroupNotesModal :course_group="course_group" />
-          </a-collapse-panel>
-          <a-collapse-panel key="4">
-            <template slot="header">
-              <h4 style="margin: 0;">Schedule Description</h4>
-            </template>
-            <p>{{ course_group.schedule_desc || "None" }}</p>
-            <updateCourseGroupScheduleDescModal :course_group="course_group" />
           </a-collapse-panel>
         </a-collapse>
       </a-card>
@@ -94,7 +89,7 @@ import updateCourseGroupDescModal from "./updateCourseGroupDescModal";
 import updateCourseGroupNotesModal from "./updateCourseGroupNotesModal";
 import updateCourseGroupSyllabusModal from "./updateCourseGroupSyllabusModal";
 import SeminarsTable from "./SeminarsTable";
-import updateCourseGroupScheduleDescModal from "./updateCourseGroupScheduleDescModal";
+// import updateCourseGroupScheduleDescModal from "./updateCourseGroupScheduleDescModal";
 
 export default {
   name: "courseDetails",
@@ -102,8 +97,8 @@ export default {
     SeminarsTable,
     updateCourseGroupDescModal,
     updateCourseGroupNotesModal,
-    updateCourseGroupSyllabusModal,
-    updateCourseGroupScheduleDescModal
+    updateCourseGroupSyllabusModal
+    // updateCourseGroupScheduleDescModal
   },
   data() {
     return {

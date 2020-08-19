@@ -273,7 +273,6 @@ query get_course_group_details($course_group_id: Int!) {
     group_code
     syllabus
     course_group_desc
-    schedule_desc
     teaching_mode
     is_open
     notes
@@ -322,39 +321,10 @@ mutation update_course_group_syllabus($id: Int!, $syllabus: String!) {
     affected_rows
   }
 }
-mutation update_course_group_schedule_desc($id: Int!, $schedule_desc: String!) {
-  update_course_group(
-    where: { id: { _eq: $id } }
-    _set: { schedule_desc: $schedule_desc }
-  ) {
-    affected_rows
-  }
-}
 
 mutation update_course_group_notes($id: Int!, $notes: String!) {
   update_course_group(where: { id: { _eq: $id } }, _set: { notes: $notes }) {
     affected_rows
-  }
-}
-
-query get_course_group_new_desc($course_group_id: Int!) {
-  course_group(where: { id: { _eq: $course_group_id } }) {
-    id
-    course_group_desc
-  }
-}
-
-query get_course_group_new_syllabus($course_group_id: Int!) {
-  course_group(where: { id: { _eq: $course_group_id } }) {
-    id
-    syllabus
-  }
-}
-
-query get_course_group_new_schedule_desc($course_group_id: Int!) {
-  course_group(where: { id: { _eq: $course_group_id } }) {
-    id
-    syllabus
   }
 }
 

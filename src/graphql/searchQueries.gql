@@ -57,7 +57,6 @@ query searchSeminarsByFilters(
       course_group_desc
       is_open
       teaching_mode
-      schedule_desc
       syllabus
       faculty {
         id
@@ -160,7 +159,6 @@ query searchSeminarsByFiltersWithTags(
       course_group_desc
       is_open
       teaching_mode
-      schedule_desc
       syllabus
       faculty {
         id
