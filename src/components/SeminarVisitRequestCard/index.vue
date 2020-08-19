@@ -68,7 +68,7 @@
               </h4>
               <h4 style="font-weight: normal; text-decoration: underline;">
                 <a @click="descModalVisible = true" href="#"
-                  >View full course description and class details</a
+                  >View course description and class details</a
                 >
               </h4>
               <h4 :class="{ past: is_past, placeholder: !seminar.title }">
@@ -84,10 +84,12 @@
               <template slot="footer">
                 <a-button @click="descModalVisible = false">Close</a-button>
               </template>
-              <h4>Class description:</h4>
-              <p>{{ seminar.desc || "None" }}</p>
               <h4>Course description:</h4>
               <p>{{ fullCourseDesc }}</p>
+              <h4>Class title:</h4>
+              <p>{{ seminar.title || "-" }}</p>
+              <h4>Class description:</h4>
+              <p>{{ seminar.desc || "-" }}</p>
             </a-modal>
             <h4 class="placeholder">
               {{ "Notes for visitors: " + (course_group.notes || "None") }}
