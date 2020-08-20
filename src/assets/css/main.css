@@ -72,9 +72,15 @@ p {
   font-family: "Lato", sans-serif;
   color: rgba(0, 0, 0, 0.87);
 }
-div, span, button, input, input::placeholder {
+div, span, button, li, input, input::placeholder {
   font-size: 0.8rem;
   font-family: "Lato", sans-serif;
+}
+input[id^="search-bar"]::placeholder {
+  font-size: 1rem;
+}
+#search-bar.ant-input-lg {
+  height: 2.4rem;
 }
 button span {
   font-weight: bold;

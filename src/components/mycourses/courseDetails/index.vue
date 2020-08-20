@@ -9,9 +9,9 @@
         <a-card style="width: 250px; margin-right: 10px;">
           <p style="margin: 0 10px 0 0">
             {{
-            `This course is ${
-            course_group.is_open ? `open` : `closed`
-            } to visit requests`
+              `This course is ${
+                course_group.is_open ? `open` : `closed`
+              } to visit requests`
             }}
           </p>
           <a-switch
@@ -30,12 +30,14 @@
         </a-card>
       </div>
       <div>
-        <h3 style="margin: 0 10px 0 0">{{ course ? course.module_code : "" }}</h3>
+        <h3 style="margin: 0 10px 0 0">
+          {{ course ? course.module_code : "" }}
+        </h3>
         <p>
           {{
-          `Teaching mode: ${constants.TEACHING_MODES[
-          course_group.teaching_mode
-          ] || "NA"}`
+            `Teaching mode: ${constants.TEACHING_MODES[
+              course_group.teaching_mode
+            ] || "NA"}`
           }}
         </p>
       </div>
@@ -68,7 +70,9 @@
               <h4 style="margin: 0;">Course Description</h4>
             </template>
             <p>{{ course && (course.desc || "None") }}</p>
-            <h5 style="margin: 0; margin-right: 10px;">Additional Description</h5>
+            <h5 style="margin: 0; margin-right: 10px;">
+              Additional Description
+            </h5>
             <p>{{ course_group.course_group_desc || "" }}</p>
             <updateCourseGroupDescModal :course_group="course_group" />
           </a-collapse-panel>
@@ -81,7 +85,7 @@
           </a-collapse-panel>
           <a-collapse-panel key="3">
             <template slot="header">
-              <h4 style="margin: 0;">Notes for Observers</h4>
+              <h4 style="margin: 0;">Notes for Visitors</h4>
             </template>
             <p>{{ course && (course.notes || "None") }}</p>
             <updateCourseGroupNotesModal :course_group="course_group" />

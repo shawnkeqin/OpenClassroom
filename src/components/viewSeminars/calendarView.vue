@@ -72,6 +72,11 @@ import queries from "@/graphql/queries.gql";
 // import constants from "@/utils/constants";
 import store from "@/store";
 
+const PENDING_VISIT_COLOR = "#ffb74d";
+const ACCEPTED_VISIT_COLOR = "#81c784";
+const NO_VISITORS_COLOR = "#40a9ff";
+const WITH_VISITORS_COLOR = "#f759ab";
+
 const legendData = [
   {
     value: "visit",
@@ -79,20 +84,20 @@ const legendData = [
     options: [
       {
         label: "pending",
-        color: "#ffb74d"
+        color: PENDING_VISIT_COLOR
       },
       {
         label: "accepted",
-        color: "#81c784"
+        color: ACCEPTED_VISIT_COLOR
       },
-      {
-        label: "declined",
-        color: "#e57373"
-      },
-      {
-        label: "cancelled",
-        color: "rgba(0, 0, 0, 0.37)"
-      }
+      // {
+      //   label: "declined",
+      //   color: "#e57373"
+      // },
+      // {
+      //   label: "cancelled",
+      //   color: "rgba(0, 0, 0, 0.37)"
+      // }
     ]
   },
   {
@@ -101,12 +106,11 @@ const legendData = [
     options: [
       {
         label: "no visitors",
-        color: "#69c0ff"
+        color: NO_VISITORS_COLOR
       },
       {
-        id: 6,
         label: "with visitors",
-        color: "#1890ff"
+        color: WITH_VISITORS_COLOR
       }
     ]
   }
@@ -130,6 +134,7 @@ export default {
   },
   components: { Fullcalendar, calendarSeminarModal },
   apollo: {
+    // Only query for PENDING and ACCEPTED visits
     my_visits: {
       query: queries.get_my_visits,
       variables() {
@@ -138,7 +143,12 @@ export default {
           // Technically we should have a separate query that checks semester to be efficent as users will not view previous semesters (this query is used by other components such as my visit page that needs all semesters).
         };
       },
-      update: data => data.visit,
+      update: data =>
+        data.visit.filter(
+          visit =>
+            visit.visit_status === "PENDING" ||
+            visit.visit_status === "ACCEPTED"
+        ),
       error(error, vm, key) {
         this.$notification.error({
           key,
@@ -197,7 +207,7 @@ export default {
           end: a.date.toString() + "T" + a.end.toString(),
           title: a.course_group.course.title,
           // className: "my_seminars",
-          color: a.visits.length > 0 ? "#1890ff" : "#69c0ff",
+          color: a.visits.length > 0 ? WITH_VISITORS_COLOR : NO_VISITORS_COLOR,
           id: a.id,
           extendedProps: {
             faculty: a.course_group.faculty,
@@ -227,11 +237,9 @@ export default {
     getVisitColor(visit_status) {
       switch (visit_status) {
         case "PENDING":
-          return "#ffb74d";
+          return PENDING_VISIT_COLOR;
         case "ACCEPTED":
-          return "#81c784";
-        case "DECLINED":
-          return "#e57373";
+          return ACCEPTED_VISIT_COLOR;
         default:
           return "rgba(0, 0, 0, 0.37)";
       }

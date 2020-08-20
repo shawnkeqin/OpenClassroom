@@ -169,6 +169,7 @@ query get_my_visits($visitor_id: String!) {
       title
       desc
       visitor_capacity
+      group_code
       location {
         code
         full_name

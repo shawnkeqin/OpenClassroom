@@ -5,72 +5,73 @@
       <a-skeleton active />
     </template>
     <template v-else>
-      <div class="div1" style="display: flex; align-content: flex-start">
-        <template v-if="course_groups && course_groups.length">
-          <a-card
-            class="div1"
-            v-for="course_group in course_groups"
-            :key="course_group.id"
-            style="margin-right: 20px; width: 350px"
-          >
-            <h3>{{ course_group.course.title }}</h3>
-            <p>{{ course_group.course.module_code }}</p>
-            <p>{{ "Group " + course_group.group_code }}</p>
-            <router-link
-              style="font-size:1rem;position: relative;
-top: 6px;"
-              :to="'/coursedetails/' + course_group.id"
-              >➤ Course details</router-link
+      <template v-if="course_groups && course_groups.length">
+        <div style="display: flex; justify-content: space-between">
+          <div style="display: flex; flex-wrap: wrap;">
+            <a-card
+              v-for="course_group in course_groups"
+              :key="course_group.id"
+              style="margin: 0 20px 20px 0; width: 16rem;"
             >
-            <br />
-            <br />
-            <a-card style="width: 250px; margin-right: 10px;">
-              <p style="margin: 0 10px 0 0">
-                {{
-                  `This course is ${
-                    course_group.is_open ? `open` : `closed`
-                  } to visit requests`
-                }}
+              <h3>{{ course_group.course.title }}</h3>
+              <p>{{ course_group.course.module_code }}</p>
+              <p>{{ "Group " + course_group.group_code }}</p>
+              <p>
+                <router-link :to="'/coursedetails/' + course_group.id"
+                  >Edit course details</router-link
+                >
               </p>
-
-              <a-switch
-                :checked="course_group.is_open"
-                checked-children="open"
-                un-checked-children="closed"
-                :loading="isToggleCourseGroupLoading"
-                @click="
-                  toggleCourseGroupIsOpen(course_group.id, course_group.is_open)
-                "
-                style="margin-right: 5px;"
-              />
-              <a-tooltip
-                title="Closing/opening this course will automatically close/open all of its classes."
-              >
-                <a-icon
-                  type="exclamation-circle"
-                  theme="filled"
-                  class="pending"
-                />
-              </a-tooltip>
-            </a-card>
-          </a-card>
-        </template>
-
-        <template v-else>
-          <div class="div1">
-            <a-card>
-              <p>You don't teach any course this semester</p>
+              <div style="display: flex;">
+                <p style="margin-right: 5px;">
+                  {{
+                    `This course is ${
+                      course_group.is_open ? `open` : `closed`
+                    } to visit requests`
+                  }}
+                </p>
+                <div style="display: flex; align-items: center;">
+                  <a-switch
+                    :checked="course_group.is_open"
+                    checked-children="open"
+                    un-checked-children="closed"
+                    :loading="isToggleCourseGroupLoading"
+                    @click="
+                      toggleCourseGroupIsOpen(course_group.id, course_group.is_open)
+                    "
+                    style="margin-right: 5px;"
+                  />
+                  <a-tooltip
+                    title="Closing/opening this course will automatically close/open all of its classes."
+                  >
+                    <a-icon
+                      type="exclamation-circle"
+                      theme="filled"
+                      class="pending"
+                    />
+                  </a-tooltip>
+                </div>
+              </div>
             </a-card>
           </div>
-        </template>
-      </div>
-      <div class="div2">
-        <a-card>
-          You may change course group information, class-specific details
-          (location, timings, description, etc), and close individual classes
-          within each course group page.
-        </a-card>
-      </div>
+          <div style="position: sticky; top: 20px; margin: 0 20px;">
+            <a-card style="width: 15rem;">
+              Click "Edit course details" to:
+              <ul>
+                <li>open/close individual classes</li>
+                <li>change individual class location/timing/description</li>
+                <li>add/modify course information</li>
+              </ul>
+            </a-card>
+          </div>
+        </div>
+      </template>
+      <template v-else>
+        <div>
+          <a-card>
+            <p>You don't teach any course this semester</p>
+          </a-card>
+        </div>
+      </template>
     </template>
   </div>
 </template>
@@ -148,13 +149,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.div1 {
-  display: inline;
-}
-.div2 {
-  display: inline;
-  position: relative;
-  top: 40px;
-}
-</style>
+<style scoped></style>

@@ -59,6 +59,7 @@ query searchSeminarsByFilters(
       teaching_mode
       schedule_desc
       syllabus
+      notes
       faculty {
         id
         name
@@ -162,6 +163,7 @@ query searchSeminarsByFiltersWithTags(
       teaching_mode
       schedule_desc
       syllabus
+      notes
       faculty {
         id
         name
