@@ -35,7 +35,7 @@ const createTransporter = () =>
     port: process.env.SMTP_PORT,
     auth: {
       user: process.env.EMAIL,
-      pass: process.env.PASS
+      pass: process.env.EMAIL_PWD
     }
   });
 
