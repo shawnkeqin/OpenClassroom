@@ -7,7 +7,7 @@ INPUT_FILEPATH <-
   "~/github/OpenClassroom/data/semester-1-fall-2020-formatted-20200708.csv"
 CC_LECTURES_FILEPATH <-
   "~/github/OpenClassroom/data/cc-lectures-sem-1-fall-2020.csv"
-# Declare some value constants.
+# Declare some value constants.;
 SEMESTER_CODE <- "AY2021-1"
 TIMEZONE <- "+08:00"
 DATE_FORMAT <- "%d-%m-%Y"
@@ -80,7 +80,8 @@ COURSE_SCHEDULE_SCHEMA <-
     "start",
     "end",
     "location_code",
-    "area"
+    "area",
+    "teaching_mode"
   )
 
 course_schedule <- validated %>%
@@ -93,7 +94,8 @@ course_schedule <- validated %>%
     start = Start,
     end = End,
     location_code = Room,
-    area = Location
+    area = Location,
+    teaching_mode = Mode.of.Teaching
   ) %>%
   mutate(day = recode(
     day,
@@ -130,7 +132,8 @@ SEMINAR_SCHEMA <-
     "start",
     "end",
     "location_code",
-    "area"
+    "area",
+   "teaching_mode"
   )
 seminar_generator <- function(schedule) {
   seminar <-
@@ -224,7 +227,8 @@ lecture_schedule <- lectures_raw %>%
     start = Start,
     end = End,
     location_code = Room,
-    area = Location
+    area = Location,
+    teaching_mode = Mode.of.Teaching;
   ) %>%
   mutate(day = recode(
     day,
