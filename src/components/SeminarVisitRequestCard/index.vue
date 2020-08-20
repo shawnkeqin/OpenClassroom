@@ -43,10 +43,7 @@
             class="teaching-mode"
             style="display: inline; font-weight: normal; color: rgba(0, 0, 0, 0.54);"
           >
-            {{
-              constants.TEACHING_MODES[seminar.course_group.teaching_mode] ||
-                "NA"
-            }}
+            {{ constants.TEACHING_MODES[seminar.teaching_mode] || "NA" }}
           </h4>
         </div>
         <div>

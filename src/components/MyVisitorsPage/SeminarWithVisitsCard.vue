@@ -21,7 +21,7 @@
           class="teaching-mode"
           style="display: inline;"
         >
-          {{ constants.TEACHING_MODES[course_group.teaching_mode] || "NA" }}
+          {{ constants.TEACHING_MODES[seminar.teaching_mode] || "NA" }}
         </h6>
         <a-col :span="17" style="padding-right: 20px">
           <div style="margin-bottom: 5px">
@@ -194,10 +194,10 @@ import constants from "@/utils/constants";
 export default {
   components: {
     VisitResponseModal,
-    AddToCalendar,
+    AddToCalendar
   },
   props: {
-    seminar: Object,
+    seminar: Object
   },
   data: function() {
     return {
@@ -210,7 +210,7 @@ export default {
       replyMessage: "",
       seminarTitle: this.seminar.title || "-",
       seminarDesc: this.seminar.desc || "-",
-      courseGroupNotes: this.seminar.course_group.notes || "-",
+      courseGroupNotes: this.seminar.course_group.notes || "-"
     };
   },
   computed: {
@@ -225,17 +225,17 @@ export default {
     },
     pendingCount() {
       return this.requests.filter(
-        (request) => request.visit_status === constants.VISIT_STATUS_PENDING
+        request => request.visit_status === constants.VISIT_STATUS_PENDING
       ).length;
     },
     acceptedCount() {
       return this.requests.filter(
-        (request) => request.visit_status === constants.VISIT_STATUS_ACCEPTED
+        request => request.visit_status === constants.VISIT_STATUS_ACCEPTED
       ).length;
     },
     is_past() {
       return new Date(this.seminar.date) < Date.now();
-    },
+    }
   },
   methods: {
     responseTime(request) {
@@ -263,8 +263,8 @@ export default {
       this.replyMessage = "";
       this.requestInMessageModal = null;
       this.isMessageModalOn = false;
-    },
-  },
+    }
+  }
 };
 </script>
 

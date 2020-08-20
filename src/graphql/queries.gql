@@ -114,6 +114,7 @@ query get_seminars_with_visits_by_time_requested($faculty_id: String) {
     group_code
     visitor_capacity
     week
+    teaching_mode
     visits(order_by: { time_requested: desc }) {
       id
       is_archived
@@ -134,7 +135,6 @@ query get_seminars_with_visits_by_time_requested($faculty_id: String) {
     course_group {
       id
       notes
-      teaching_mode
       course {
         id
         title
@@ -186,11 +186,11 @@ query get_my_visits($visitor_id: String!) {
         code
         full_name
       }
+      teaching_mode
       course_group {
         id
         is_open
         notes
-        teaching_mode
         faculty {
           id
           name
@@ -267,6 +267,10 @@ query get_seminars_by_course_group(
     end
     is_archived
     location_code
+    title
+    desc
+    teaching_mode
+    week
     location {
       code
       full_name
@@ -285,7 +289,6 @@ query get_course_group_details($course_group_id: Int!) {
     group_code
     syllabus
     course_group_desc
-    teaching_mode
     is_open
     notes
     course {
@@ -367,6 +370,7 @@ mutation updateSeminar(
   $location_code: String!
   $title: String
   $desc: String
+  $teaching_mode: String!
 ) {
   update_seminar(
     where: { id: { _eq: $seminar_id } }
@@ -378,6 +382,7 @@ mutation updateSeminar(
       location_code: $location_code
       title: $title
       desc: $desc
+      teaching_mode: $teaching_mode
     }
   ) {
     affected_rows

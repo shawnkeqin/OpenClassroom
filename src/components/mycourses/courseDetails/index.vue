@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 80%;">
+  <div style="width: 100%;">
     <template v-if="$apollo.loading">
       <a-skeleton active />
     </template>
@@ -30,17 +30,10 @@
         </a-card>
       </div>
       <div>
-        <h3 style="margin: 0 10px 0 0">
+        <h3 style="margin-bottom: 20px">
           {{ course_group.course.module_code }}&nbsp;({{
             course_group.group_code
           }})
-        </h3>
-        <h3>
-          {{
-            `Teaching mode: ${constants.TEACHING_MODES[
-              course_group.teaching_mode
-            ] || "NA"}`
-          }}
         </h3>
       </div>
       <a-card style="width:100%" :bodyStyle="{ padding: 0 }">

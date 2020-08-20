@@ -75,7 +75,7 @@
         </h4>
       </div>
       <h5>{{ seminar.location.full_name }}</h5>
-      <h5>{{ constants.TEACHING_MODES[course_group.teaching_mode] }}</h5>
+      <h5>{{ constants.TEACHING_MODES[seminar.teaching_mode] }}</h5>
     </div>
     <div style="margin-bottom: 20px;">
       <h5>Class title</h5>

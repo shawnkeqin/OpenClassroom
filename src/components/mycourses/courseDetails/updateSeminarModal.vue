@@ -50,6 +50,21 @@
         </div>
       </div>
       <div>
+        <h5>Location</h5>
+        <a-select
+          v-model="edit_seminar.location_code"
+          class="input-field"
+          style="width: 100%;"
+        >
+          <a-select-option
+            v-for="location in locations"
+            :key="location.code"
+            :value="location.code"
+            >{{ location.full_name }}</a-select-option
+          >
+        </a-select>
+      </div>
+      <div>
         <a-tooltip
           title="Please be aware of social distancing and classroom limitations for F2F courses"
           placement="right"
@@ -69,17 +84,17 @@
         </a-tooltip>
       </div>
       <div>
-        <h5>Venue</h5>
+        <h5>Teaching mode</h5>
         <a-select
-          v-model="edit_seminar.location_code"
+          v-model="edit_seminar.teaching_mode"
           class="input-field"
           style="width: 100%;"
         >
           <a-select-option
-            v-for="location in locations"
-            :key="location.code"
-            :value="location.code"
-            >{{ location.full_name }}</a-select-option
+            v-for="option in constants.TEACHING_MODE_CHECKBOX_OPTIONS"
+            :key="option.value"
+            :value="option.value"
+            >{{ option.label }}</a-select-option
           >
         </a-select>
       </div>
@@ -89,12 +104,14 @@
 <script>
 import moment from "moment";
 import queries from "@/graphql/queries.gql";
+import constants from "@/utils/constants";
 const visitor_capacity_options = [1, 2, 3, 4, 5, 6, -1];
 export default {
   name: "updateSeminarModal",
   props: ["seminar"],
   data() {
     return {
+      constants,
       moment,
       visitor_capacity_options,
       locations: [],
@@ -123,7 +140,8 @@ export default {
         visitor_capacity,
         location_code,
         title,
-        desc
+        desc,
+        teaching_mode
       } = this.edit_seminar;
       try {
         await this.$apollo.mutate({
@@ -136,7 +154,8 @@ export default {
             visitor_capacity,
             location_code,
             title,
-            desc
+            desc,
+            teaching_mode
           },
           refetchQueries: ["get_seminars_by_course_group"]
         });
