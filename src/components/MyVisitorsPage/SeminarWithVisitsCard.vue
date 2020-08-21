@@ -21,7 +21,7 @@
           class="teaching-mode"
           style="display: inline;"
         >
-          {{ constants.TEACHING_MODES[course_group.teaching_mode] || "NA" }}
+          {{ constants.TEACHING_MODES[seminar.teaching_mode] || "NA" }}
         </h6>
         <a-col :span="16" style="padding-right: 20px">
           <div style="margin-bottom: 5px">

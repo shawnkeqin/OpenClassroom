@@ -54,21 +54,6 @@ export default {
             id,
             syllabus: new_syllabus
           },
-          update: (store, { data: { update_course_group } }) => {
-            if (update_course_group.affected_rows) {
-              if (this.type === "private") {
-                const data = store.readQuery({
-                  query: queries.get_course_group_new_syllabus
-                });
-                const updateCourse = data.id.find(t => t.id === id);
-                updateCourse.syllabus = data.syllabus;
-                store.writeQuery({
-                  query: queries.get_course_group_new_syllabus,
-                  data
-                });
-              }
-            }
-          },
           refetchQueries: [
             // "get_course_group_new_desc",
             "get_course_group_details"

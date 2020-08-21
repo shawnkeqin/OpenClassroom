@@ -6,6 +6,23 @@
     :pagination="false"
     style="background: white;"
   >
+    <template slot="visitor_capacity_header"
+      ><div
+        style="display: flex;
+  align-items: center; height: 70px"
+      >
+        <span style="vertical-align:middle">
+          Visitor Capacity<br /><updateVisitorCapacityBulk
+            :id="id"
+            style="position:absolute"
+        /></span></div
+    ></template>
+    <template slot="week" slot-scope="text">
+      <div>{{ text }}</div>
+    </template>
+    <template slot="class_title" slot-scope="text">
+      <div>{{ text || "Nil" }}</div>
+    </template>
     <template slot="date" slot-scope="text">
       <div>{{ utils.date_format(text) }}</div>
     </template>
@@ -15,8 +32,8 @@
     <template slot="end" slot-scope="text">
       <div>{{ utils.time_format(text) }}</div>
     </template>
-    <template slot="venue" slot-scope="text, record">
-      <div style="width: 5rem;">{{ record.location.full_name }}</div>
+    <template slot="location" slot-scope="text, record">
+      <div style="width: 10rem;">{{ record.location.full_name }}</div>
     </template>
     <template slot="visitor_capacity" slot-scope="text, record">
       <div>
@@ -24,6 +41,9 @@
           record.visitor_capacity === -1 ? "Unlimited" : record.visitor_capacity
         }}
       </div>
+    </template>
+    <template slot="teaching_mode" slot-scope="text, record">
+      <div>{{ record.teaching_mode || "NA" }}</div>
     </template>
     <template slot="set_open" slot-scope="text, record">
       <a-switch
@@ -38,9 +58,9 @@
       <updateSeminarModal :seminar="record" />
     </template>
     <div slot="expandedRowRender" slot-scope="record">
-      <h5>Seminar title</h5>
+      <h5>Class title</h5>
       <p>{{ record.title || "None" }}</p>
-      <h5>Seminar description</h5>
+      <h5>Class description</h5>
       <p>{{ record.desc || "None" }}</p>
     </div>
   </a-table>
@@ -50,8 +70,21 @@
 import utils from "@/utils";
 import queries from "@/graphql/queries.gql";
 import updateSeminarModal from "./updateSeminarModal";
+import updateVisitorCapacityBulk from "./updateVisitorCapacityBulk";
 
 const columns = [
+  {
+    title: "Week",
+    dataIndex: "week",
+    key: "week",
+    scopedSlots: { customRender: "week" }
+  },
+  {
+    title: "Class title",
+    dataIndex: "title",
+    key: "title",
+    scopedSlots: { customRender: "class_title" }
+  },
   {
     title: "Date",
     dataIndex: "date",
@@ -71,16 +104,23 @@ const columns = [
     scopedSlots: { customRender: "end" }
   },
   {
-    title: "Venue",
-    dataIndex: "venue",
-    key: "venue",
-    scopedSlots: { customRender: "venue" }
+    title: "Location",
+    dataIndex: "location",
+    key: "location",
+    scopedSlots: { customRender: "location" }
   },
   {
-    title: "Visitor capactiy",
+    // title: "Visitor Capacity",
     dataIndex: "visitor_capacity",
     key: "visitor_capacity",
+    slots: { title: "visitor_capacity_header" },
     scopedSlots: { customRender: "visitor_capacity" }
+  },
+  {
+    title: "Teaching mode",
+    dataIndex: "teaching_mode",
+    key: "teaching_mode",
+    scopedSlots: { customRender: "teaching_mode" }
   },
   {
     title: "Status",
@@ -88,6 +128,7 @@ const columns = [
     key: "status",
     scopedSlots: { customRender: "set_open" }
   },
+
   {
     title: "Edit",
     dataIndex: "edit",
@@ -99,7 +140,8 @@ const columns = [
 export default {
   name: "SeminarsTable",
   components: {
-    updateSeminarModal
+    updateSeminarModal,
+    updateVisitorCapacityBulk
   },
   props: {
     seminars: {
@@ -113,6 +155,7 @@ export default {
   },
   data() {
     return {
+      id: this.$route.params.id,
       columns,
       utils,
       isLoading: { seminar_id: null, isLoading: false }
@@ -126,7 +169,6 @@ export default {
   methods: {
     async toggleSeminarIsOpen(seminar) {
       this.isLoading = { seminar_id: seminar.id, isLoading: true };
-      // const current_is_open = this.seminar.is_open;
       try {
         await this.$apollo.mutate({
           mutation: queries.updateSeminarIsOpen,

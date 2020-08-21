@@ -7,7 +7,7 @@ query searchSeminarsByFilters(
   $end_time: time!
   $visitor_id: String
   $semester_code: String
-  $teaching_modes: [bpchar!]
+  $teaching_modes: [String!]
   $include_cc_lectures: String!
 ) {
   seminar(
@@ -27,7 +27,7 @@ query searchSeminarsByFilters(
           ]
         }
         { course_group: { faculty: { name: { _similar: $faculty_name } } } }
-        { course_group: { teaching_mode: { _in: $teaching_modes } } }
+        { teaching_mode: { _in: $teaching_modes } }
         { date: { _gte: $start_date } }
         { date: { _lte: $end_date } }
         { start: { _gte: $start_time } }
@@ -47,6 +47,7 @@ query searchSeminarsByFilters(
     module_code
     group_code
     semester_code
+    teaching_mode
     desc
     location {
       code
@@ -56,8 +57,6 @@ query searchSeminarsByFilters(
       id
       course_group_desc
       is_open
-      teaching_mode
-      schedule_desc
       syllabus
       notes
       faculty {
@@ -107,7 +106,7 @@ query searchSeminarsByFiltersWithTags(
   $selected_tags: [String!]
   $visitor_id: String
   $semester_code: String
-  $teaching_modes: [bpchar!]
+  $teaching_modes: [String!]
   $include_cc_lectures: String!
 ) {
   seminar(
@@ -127,7 +126,7 @@ query searchSeminarsByFiltersWithTags(
           ]
         }
         { course_group: { faculty: { name: { _similar: $faculty_name } } } }
-        { course_group: { teaching_mode: { _in: $teaching_modes } } }
+        { teaching_mode: { _in: $teaching_modes } }
         { date: { _gte: $start_date } }
         { date: { _lte: $end_date } }
         { start: { _gte: $start_time } }
@@ -152,6 +151,7 @@ query searchSeminarsByFiltersWithTags(
     module_code
     group_code
     semester_code
+    teaching_mode
     location {
       code
       full_name
@@ -160,8 +160,6 @@ query searchSeminarsByFiltersWithTags(
       id
       course_group_desc
       is_open
-      teaching_mode
-      schedule_desc
       syllabus
       notes
       faculty {
@@ -209,7 +207,7 @@ query searchOpenSeminarsByFilters(
   $end_time: time!
   $visitor_id: String
   $semester_code: String
-  $teaching_modes: [bpchar!]
+  $teaching_modes: [String!]
   $include_cc_lectures: String!
 ) {
   seminar(
@@ -229,7 +227,7 @@ query searchOpenSeminarsByFilters(
           ]
         }
         { course_group: { faculty: { name: { _similar: $faculty_name } } } }
-        { course_group: { teaching_mode: { _in: $teaching_modes } } }
+        { teaching_mode: { _in: $teaching_modes } }
         { date: { _gte: $start_date } }
         { date: { _lte: $end_date } }
         { start: { _gte: $start_time } }
@@ -252,6 +250,7 @@ query searchOpenSeminarsByFilters(
     module_code
     group_code
     semester_code
+    teaching_mode
     desc
     location {
       code
@@ -261,7 +260,6 @@ query searchOpenSeminarsByFilters(
       id
       course_group_desc
       is_open
-      teaching_mode
       faculty {
         id
         name
@@ -309,7 +307,7 @@ query searchOpenSeminarsByFiltersWithTags(
   $selected_tags: [String!]
   $visitor_id: String
   $semester_code: String
-  $teaching_modes: [bpchar!]
+  $teaching_modes: [String!]
   $include_cc_lectures: String!
 ) {
   seminar(
@@ -329,7 +327,7 @@ query searchOpenSeminarsByFiltersWithTags(
           ]
         }
         { course_group: { faculty: { name: { _similar: $faculty_name } } } }
-        { course_group: { teaching_mode: { _in: $teaching_modes } } }
+        { teaching_mode: { _in: $teaching_modes } }
         { date: { _gte: $start_date } }
         { date: { _lte: $end_date } }
         { start: { _gte: $start_time } }
@@ -357,6 +355,7 @@ query searchOpenSeminarsByFiltersWithTags(
     module_code
     group_code
     semester_code
+    teaching_mode
     location {
       code
       full_name
@@ -365,7 +364,6 @@ query searchOpenSeminarsByFiltersWithTags(
       id
       course_group_desc
       is_open
-      teaching_mode
       faculty {
         id
         name

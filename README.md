@@ -58,11 +58,14 @@ The custom environment file (as well as the automatically set `NODE_ENV`) was on
 3. Add all env variables, including JWT secret.
 4. Run these commands. 
 ```bash
+# Install exact version of NPM. 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 nvm install 12.18.2
 npm install -g npm@latest
+# Pull project repo. 
 git clone https://github.com/devtoohard/OpenClassroom.git
 cd OpenClassroom
+# Install dependencies, build and serve frontend distribution. 
 npm install
 npm run build-staging-test
 sudo lsof -iTCP -sTCP:LISTEN -P
@@ -75,10 +78,20 @@ npm run serve-staging-test
 - https://docs.docker.com/engine/install/ubuntu/
 - https://docs.docker.com/compose/install/
 - https://github.com/docker/for-linux/issues/281
-- https://www.cyberciti.biz/faq/postgresql-remote-access-or-connection/#:~:text=First%20make%20sure%20PostgreSQL%20server%20has%20been%20started%20to%20remote%20server.&text=If%20it%20is%20running%20and,the%20local%20machine%20or%20localhost.
 
-Remember to set admin secret and DB password in docker-compose file manually! And also hasura project files if you're using. ;
-```
+
+Remember to set admin secret and DB password in docker-compose file manually! And also hasura project files if you're using.
+```bash
+# Install and setup postgres DB.
+wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O- | sudo apt-key add -
+sudo apt-get install postgresql-12
+echo "deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main" | sudo tee /etc/apt/sources.list.d/postgresql.list
+sudo service postgresql start
+sudo -u postgres psql
+#  Configure DB. 
+# Try logging in.
+psql "postgres://hasurauser:<>@localhost/open_classroom"
+# Install Docker.
 sudo apt-get update
 sudo apt-get install \
     apt-transport-https \
@@ -97,18 +110,14 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker 
 sudo docker run hello-world
-sudo curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-docker-compose up -d
+# Load hasura docker image from tar file in repo. 
+docker load < hasura-graphql-engine.tar.gz
+# Run docker image using script from repo and check that it's running. 
+chmod +x ./docker-run.sh
+./docker-run.sh
+docker ps
 ```
-Allow remote access to postgres DB container:
-```
-docker exec -it openclassroom_postgres_1 bash
-apt-get update
-apt-get install nano
-nano /var/lib/postgresql/data/pg_hba.conf
-nano /var/lib//data/postgresql.conf
-```
+
 
 
 ### Backend Deployment
@@ -141,12 +150,86 @@ DATABASE_URL=postgresql://admin:<>@localhost
 cabal new-run -- exe:graphql-engine --database-url=$DATABASE_URL serve --enable-console --console-assets-dir=../console/static/dist
 ```
 
-### Hasura DB Migration
+### DB Migration
 See https://hasura.io/docs/1.0/graphql/manual/migrations/basics.html#migrations-basics. 
 1. `hasura init`
 2. `cd` into project directory. 
 3. Add admin secret and endpoint to `config.yaml`.
 4. `hasura console`
 5. Create SQL migration files and heroku metadata.
-```hasura migrate create <init-migration-name> --from-server --endpoint <endpoint>
-hasura metadata export --endpoint <endpoint>```
+
+```
+# Install Hasura CLI for migrating metadata + schema. 
+curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
+hasura migrate apply
+hasura metadata apply
+# Dump from pg_dump archive from demo app.
+pg_restore --verbose --clean --no-acl --no-owner -h localhost -U hasurauser -d open_classroom data/1fb44c77-68e8-4f07-b987-f368025bc02b
+```
+
+
+### DB config
+```sql
+CREATE USER hasurauser WITH PASSWORD 'OCsecret2020!';
+CREATE DATABASE open_classroom;
+ALTER USER hasurauser WITH SUPERUSER;
+-- SWITCH TO open_classroom
+\connect open_classroom;
+ALTER DATABASE open_classroom OWNER TO hasurauser;
+-- create pgcrypto extension, required for UUID
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+-- create the schemas required by the hasura system
+-- NOTE: If you are starting from scratch: drop the below schemas first, if they exist.
+CREATE SCHEMA IF NOT EXISTS public;
+CREATE SCHEMA IF NOT EXISTS hdb_catalog;
+CREATE SCHEMA IF NOT EXISTS hdb_views;
+
+-- make the user an owner of system schemas
+ALTER SCHEMA hdb_catalog OWNER TO hasurauser;
+ALTER SCHEMA hdb_views OWNER TO hasurauser;
+ALTER SCHEMA public OWNER TO hasurauser;
+
+-- grant select permissions on information_schema and pg_catalog. This is
+-- required for hasura to query the list of available tables.
+-- NOTE: these permissions are usually available by default to all users via PUBLIC grant
+GRANT SELECT ON ALL TABLES IN SCHEMA information_schema TO hasurauser;
+GRANT SELECT ON ALL TABLES IN SCHEMA pg_catalog TO hasurauser;
+
+-- The below permissions are optional. This is dependent on what access to your
+-- tables/schemas you want give to hasura. If you want expose the public
+-- schema for GraphQL query then give permissions on public schema to the hasura user.
+-- Be careful to use these in your production db. Consult the postgres manual or
+-- your DBA and give appropriate permissions.
+
+-- grant all privileges on all tables in the public schema. This can be customised:
+-- For example, if you only want to use GraphQL regular queries and not mutations,
+-- then you can set: GRANT SELECT ON ALL TABLES...
+GRANT USAGE ON SCHEMA public TO hasurauser;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO hasurauser;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO hasurauser;
+GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO hasurauser;
+
+-- Similarly add these for other schemas as well, if you have any.
+-- GRANT USAGE ON SCHEMA <schema-name> TO hasurauser;
+-- GRANT ALL ON ALL TABLES IN SCHEMA <schema-name> TO hasurauser;
+-- GRANT ALL ON ALL SEQUENCES IN SCHEMA <schema-name> TO hasurauser;
+-- GRANT ALL ON ALL FUNCTIONS IN SCHEMA <schema-name> TO hasurauser;
+```
+#### DB Remote access 
+Allow remote access to postgres DB container temporarily (connecting with GUI for importing data):
+- https://www.cyberciti.biz/faq/postgresql-remote-access-or-connection/#:~:text=First%20make%20sure%20PostgreSQL%20server%20has%20been%20started%20to%20remote%20server.&text=If%20it%20is%20running%20and,the%20local%20machine%20or%20localhost.
+```bash
+sudo chmod 777 /etc/postgresql/10/main
+sudo chmod 777 /etc/postgresql/10/main/postgresql.conf
+sudo chmod 777 /etc/postgresql/10/main/pg_hba.conf
+nano /etc/postgresql/10/main/pg_hba.conf
+nano /etc/postgresql/10/main/postgresql.conf
+sudo service postgresql restart
+```
+
+### Vulscan scanning 
+- https://github.com/scipag/vulscan
+```bash
+nmap -sV --script=vulscan/vulscan.nse 172.25.20.25 > logs/vulscan_output.txt --script-args vulscanoutput=details
+```

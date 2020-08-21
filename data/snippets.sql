@@ -28,3 +28,10 @@ FROM visit v
 WHERE v.seminar_id = s.id AND
       s.semester_code = 'AY1819-1' AND                 
       s.date > '2018-09-01';
+
+UPDATE seminar s
+SET teaching_mode = (
+    SELECT teaching_mode
+    FROM course_group c
+    WHERE c.module_code = s.module_code and c.group_code = s.group_code and c.semester_code=s.semester_code
+    );

@@ -54,21 +54,6 @@ export default {
             id,
             course_group_desc: new_course_group_desc
           },
-          update: (store, { data: { update_course_group } }) => {
-            if (update_course_group.affected_rows) {
-              if (this.type === "private") {
-                const data = store.readQuery({
-                  query: queries.get_course_group_new_desc
-                });
-                const updateCourse = data.id.find(t => t.id === id);
-                updateCourse.course_group_desc = data.course_group_desc;
-                store.writeQuery({
-                  query: queries.get_course_group_new_desc,
-                  data
-                });
-              }
-            }
-          },
           refetchQueries: [
             // "get_course_group_new_desc",
             "get_course_group_details"

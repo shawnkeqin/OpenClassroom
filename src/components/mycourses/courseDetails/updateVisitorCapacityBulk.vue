@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <span>
     <a @click="() => (modal2Visible = true)" href="#">
-      Set visitor capacity for all classses <a-icon type="edit" />
+      Set all <a-icon type="edit" />
     </a>
     <a-modal
       v-model="modal2Visible"
-      title="Set visitor capacity"
+      title="Set visitor capacity for all classes"
       centered
       @ok="() => (modal2Visible = false)"
     >
@@ -17,10 +17,6 @@
           Confirm
         </a-button>
       </template>
-      <h5>
-        This will set the visitor capacity for all classes to the value aas
-        indicated in the box below
-      </h5>
       <a-select v-model="visitor_capacity" style="width: 120px;">
         <a-select-option
           v-for="option in visitor_capacity_options"
@@ -31,7 +27,7 @@
         </a-select-option>
       </a-select>
     </a-modal>
-  </div>
+  </span>
 </template>
 <script>
 import queries from "@/graphql/queries.gql";

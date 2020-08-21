@@ -1,12 +1,12 @@
 <template>
-  <div style="width: 80%;">
+  <div style="width: 100%;">
     <template v-if="$apollo.loading">
       <a-skeleton active />
     </template>
     <template v-else>
       <div style="display: flex; align-items: center; padding-bottom: 5px;">
         <h1 style="margin: 0 10px 0 0">{{ course ? course.title : "" }}</h1>
-        <a-card style="width: 250px; margin-right: 10px;">
+        <a-card style="width: 250px; margin-right: 10px; border-radius: 20px">
           <p style="margin: 0 10px 0 0">
             {{
               `This course is ${
@@ -20,7 +20,7 @@
             un-checked-children="closed"
             :loading="isToggleCourseGroupLoading"
             @click="toggleCourseGroupIsOpen"
-            style="margin-right: 5px;"
+            style="margin-right: 5px"
           />
           <a-tooltip
             title="Closing/opening this course will automatically close/open all of its classes."
@@ -30,80 +30,43 @@
         </a-card>
       </div>
       <div>
-        <h3 style="margin: 0 10px 0 0">
-          {{ course ? course.module_code : "" }}
+        <h3 style="margin-bottom: 20px">
+          {{ course_group.course.module_code }}&nbsp;({{
+            course_group.group_code
+          }})
         </h3>
-        <p>
-          {{
-            `Teaching mode: ${constants.TEACHING_MODES[
-              course_group.teaching_mode
-            ] || "NA"}`
-          }}
-        </p>
       </div>
-      <!--    <div style="display: flex; align-items: center; padding-bottom: 5px;">
-        <p style="margin: 0 10px 0 0">
-          {{
-            `This course is ${
-              course_group.is_open ? `open` : `closed`
-            } to visit requests`
-          }}
-        </p>
-        <a-switch
-          :checked="course_group.is_open"
-          checked-children="open"
-          un-checked-children="closed"
-          :loading="isToggleCourseGroupLoading"
-          @click="toggleCourseGroupIsOpen"
-          style="margin-right: 5px;"
-        />
-        <a-tooltip
-          title="Closing/opening this course will automatically close/open all of its classes."
-        >
-          <a-icon type="exclamation-circle" theme="filled" class="pending" />
-        </a-tooltip>
-      </div>-->
       <a-card style="width:100%" :bodyStyle="{ padding: 0 }">
         <a-collapse v-model="activeKey" :bordered="false">
           <a-collapse-panel key="1">
             <template slot="header">
-              <h4 style="margin: 0;">Course Description</h4>
+              <h4 style="margin: 0;">Course description</h4>
             </template>
-            <p>{{ course && (course.desc || "None") }}</p>
+            <p>{{ course && (course.desc || "Nil") }}</p>
             <h5 style="margin: 0; margin-right: 10px;">
-              Additional Description
+              Additional Description (only visible to your course group)
             </h5>
-            <p>{{ course_group.course_group_desc || "" }}</p>
+            <p>{{ course_group.course_group_desc || "-" }}</p>
             <updateCourseGroupDescModal :course_group="course_group" />
           </a-collapse-panel>
           <a-collapse-panel key="2">
             <template slot="header">
-              <h4 style="margin: 0;">Course Syllabus</h4>
+              <h4 style="margin: 0;">Course syllabus</h4>
             </template>
-            <p>{{ course_group.syllabus || "None" }}</p>
+            <p>{{ course_group.syllabus || "-" }}</p>
             <updateCourseGroupSyllabusModal :course_group="course_group" />
           </a-collapse-panel>
           <a-collapse-panel key="3">
             <template slot="header">
-              <h4 style="margin: 0;">Notes for Visitors</h4>
+              <h4 style="margin: 0;">Notes for visitors</h4>
             </template>
-            <p>{{ course && (course.notes || "None") }}</p>
+            <p>{{ course && (course.notes || "-") }}</p>
             <updateCourseGroupNotesModal :course_group="course_group" />
-          </a-collapse-panel>
-          <a-collapse-panel key="4">
-            <template slot="header">
-              <h4 style="margin: 0;">Schedule Description</h4>
-            </template>
-            <p>{{ course_group.schedule_desc || "None" }}</p>
-            <updateCourseGroupScheduleDescModal :course_group="course_group" />
           </a-collapse-panel>
         </a-collapse>
       </a-card>
       <div style="padding-top: 40px">
         <h2>Upcoming classes</h2>
-        <div style="margin-left:700px;">
-          <updateVisitorCapacityBulk :id="id" />
-        </div>
         <div class="list-of-seminars">
           <SeminarsTable :seminars="seminars" :course_group="course_group" />
         </div>
@@ -117,10 +80,9 @@ import queries from "@/graphql/queries.gql";
 import constants from "@/utils/constants";
 import updateCourseGroupDescModal from "./updateCourseGroupDescModal";
 import updateCourseGroupNotesModal from "./updateCourseGroupNotesModal";
-import updateVisitorCapacityBulk from "./updateVisitorCapacityBulk";
 import updateCourseGroupSyllabusModal from "./updateCourseGroupSyllabusModal";
 import SeminarsTable from "./SeminarsTable";
-import updateCourseGroupScheduleDescModal from "./updateCourseGroupScheduleDescModal";
+// import updateCourseGroupScheduleDescModal from "./updateCourseGroupScheduleDescModal";
 
 export default {
   name: "courseDetails",
@@ -128,9 +90,8 @@ export default {
     SeminarsTable,
     updateCourseGroupDescModal,
     updateCourseGroupNotesModal,
-    updateVisitorCapacityBulk,
-    updateCourseGroupSyllabusModal,
-    updateCourseGroupScheduleDescModal
+    updateCourseGroupSyllabusModal
+    // updateCourseGroupScheduleDescModal
   },
   data() {
     return {

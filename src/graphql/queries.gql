@@ -108,9 +108,13 @@ query get_seminars_with_visits_by_time_requested($faculty_id: String) {
     id
     is_open
     semester_code
+    semester {
+      full_name
+    }
     group_code
     visitor_capacity
     week
+    teaching_mode
     visits(order_by: { time_requested: desc }) {
       id
       is_archived
@@ -131,7 +135,6 @@ query get_seminars_with_visits_by_time_requested($faculty_id: String) {
     course_group {
       id
       notes
-      teaching_mode
       course {
         id
         title
@@ -145,7 +148,12 @@ query get_seminars_with_visits_by_time_requested($faculty_id: String) {
     }
   }
 }
-
+query get_semester_names {
+  semester {
+    code
+    full_name
+  }
+}
 query get_my_visits($visitor_id: String!) {
   visit(
     where: { visitor_id: { _eq: $visitor_id } }
@@ -169,16 +177,24 @@ query get_my_visits($visitor_id: String!) {
       title
       desc
       visitor_capacity
+<<<<<<< HEAD
       group_code
+=======
+      semester_code
+      group_code
+      semester {
+        full_name
+      }
+>>>>>>> origin/main
       location {
         code
         full_name
       }
+      teaching_mode
       course_group {
         id
         is_open
         notes
-        teaching_mode
         faculty {
           id
           name
@@ -189,7 +205,6 @@ query get_my_visits($visitor_id: String!) {
         course {
           id
           module_code
-          semester_code
           title
           desc
           module_brief_link
@@ -256,6 +271,10 @@ query get_seminars_by_course_group(
     end
     is_archived
     location_code
+    title
+    desc
+    teaching_mode
+    week
     location {
       code
       full_name
@@ -274,8 +293,6 @@ query get_course_group_details($course_group_id: Int!) {
     group_code
     syllabus
     course_group_desc
-    schedule_desc
-    teaching_mode
     is_open
     notes
     course {
@@ -323,39 +340,10 @@ mutation update_course_group_syllabus($id: Int!, $syllabus: String!) {
     affected_rows
   }
 }
-mutation update_course_group_schedule_desc($id: Int!, $schedule_desc: String!) {
-  update_course_group(
-    where: { id: { _eq: $id } }
-    _set: { schedule_desc: $schedule_desc }
-  ) {
-    affected_rows
-  }
-}
 
 mutation update_course_group_notes($id: Int!, $notes: String!) {
   update_course_group(where: { id: { _eq: $id } }, _set: { notes: $notes }) {
     affected_rows
-  }
-}
-
-query get_course_group_new_desc($course_group_id: Int!) {
-  course_group(where: { id: { _eq: $course_group_id } }) {
-    id
-    course_group_desc
-  }
-}
-
-query get_course_group_new_syllabus($course_group_id: Int!) {
-  course_group(where: { id: { _eq: $course_group_id } }) {
-    id
-    syllabus
-  }
-}
-
-query get_course_group_new_schedule_desc($course_group_id: Int!) {
-  course_group(where: { id: { _eq: $course_group_id } }) {
-    id
-    syllabus
   }
 }
 
@@ -386,6 +374,7 @@ mutation updateSeminar(
   $location_code: String!
   $title: String
   $desc: String
+  $teaching_mode: String!
 ) {
   update_seminar(
     where: { id: { _eq: $seminar_id } }
@@ -397,6 +386,7 @@ mutation updateSeminar(
       location_code: $location_code
       title: $title
       desc: $desc
+      teaching_mode: $teaching_mode
     }
   ) {
     affected_rows
