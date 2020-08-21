@@ -111,7 +111,6 @@ export default {
       },
       checkAll: false,
       my_visits: [],
-      my_requests: [],
       my_seminars: [],
       legendData,
       isModalVisible: false,
@@ -209,10 +208,9 @@ export default {
       };
     },
     eventSources() {
-      const requests = this.showMyRequests ? this.Requests : null;
       const seminars = this.show.seminars ? this.Seminars : null;
       const visits = this.show.visits ? this.Visits : null;
-      return [requests, seminars, visits].filter(x => x);
+      return [seminars, visits].filter(x => x);
     }
   },
   methods: {
