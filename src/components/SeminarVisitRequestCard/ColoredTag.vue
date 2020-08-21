@@ -76,8 +76,6 @@ export default {
 .ant-tag {
   font-weight: bold;
   text-transform: uppercase;
-  /* font-size: 10px; */
-  margin: 0 5px;
   padding: 5px 10px;
 }
 </style>

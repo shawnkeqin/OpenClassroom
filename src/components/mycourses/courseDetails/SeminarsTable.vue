@@ -6,17 +6,12 @@
     :pagination="false"
     style="background: white;"
   >
-    <template slot="visitor_capacity_header"
-      ><div
-        style="display: flex;
-  align-items: center; height: 70px"
-      >
-        <span style="vertical-align:middle">
-          Visitor Capacity<br /><updateVisitorCapacityBulk
-            :id="id"
-            style="position:absolute"
-        /></span></div
-    ></template>
+    <template slot="visitor_capacity_header">
+      <div style="display: flex; flex-direction: column;">
+        Visitor Capacity
+        <updateVisitorCapacityBulk :id="id" />
+      </div>
+    </template>
     <template slot="week" slot-scope="text">
       <div>{{ text }}</div>
     </template>
@@ -33,7 +28,7 @@
       <div>{{ utils.time_format(text) }}</div>
     </template>
     <template slot="location" slot-scope="text, record">
-      <div style="width: 10rem;">{{ record.location.full_name }}</div>
+      <div>{{ record.location.full_name }}</div>
     </template>
     <template slot="visitor_capacity" slot-scope="text, record">
       <div>

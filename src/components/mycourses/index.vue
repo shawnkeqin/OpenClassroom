@@ -6,12 +6,12 @@
     </template>
     <template v-else>
       <template v-if="course_groups && course_groups.length">
-        <div style="display: flex; justify-content: space-between">
+        <div style="display: flex;">
           <div style="display: flex; flex-wrap: wrap;">
             <a-card
               v-for="course_group in course_groups"
               :key="course_group.id"
-              style="margin: 0 20px 20px 0; width: 16rem;"
+              style="margin: 0 15px 15px 0; width: 16rem;"
             >
               <h3>{{ course_group.course.title }}</h3>
               <p>{{ course_group.course.module_code }}</p>
@@ -23,11 +23,7 @@
               </p>
               <div style="display: flex;">
                 <p style="margin-right: 5px;">
-                  {{
-                    `This course is ${
-                      course_group.is_open ? `open` : `closed`
-                    } to visit requests`
-                  }}
+                {{ `Toggle here to open/close this course to all visitors` }}
                 </p>
                 <div style="display: flex; align-items: center;">
                   <a-switch
@@ -53,13 +49,16 @@
               </div>
             </a-card>
           </div>
-          <div style="position: sticky; top: 20px; margin: 0 20px;">
-            <a-card style="width: 15rem;">
+          <div>
+            <a-card
+              style="width: 13rem;"
+              :bodyStyle="{ background: '#e6f7ff', color: 'black' }"
+            >
               Click "Edit course details" to:
-              <ul>
-                <li>open/close individual classes</li>
-                <li>change individual class location/timing/description</li>
-                <li>add/modify course information</li>
+              <ul style="margin-bottom: 0">
+                <li>open or close individual classes</li>
+                <li>change individual class location, timing, description</li>
+                <li>add or modify course information</li>
               </ul>
             </a-card>
           </div>

@@ -177,15 +177,11 @@ query get_my_visits($visitor_id: String!) {
       title
       desc
       visitor_capacity
-<<<<<<< HEAD
-      group_code
-=======
       semester_code
       group_code
       semester {
         full_name
       }
->>>>>>> origin/main
       location {
         code
         full_name
@@ -301,6 +297,9 @@ query get_course_group_details($course_group_id: Int!) {
       module_code
       module_brief_link
       desc
+      tagged_as {
+        tag_label
+      }
     }
   }
 }

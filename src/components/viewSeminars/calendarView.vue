@@ -25,32 +25,24 @@
       <calendarSeminarModal :event="modalData" />
     </a-modal>
     <div style="margin-left: 2rem;">
-      <a-card style="width: 10rem; margin-bottom: 20px;">
-        <div>
-          <a-checkbox v-model="showMySeminars" class="checkbox-filter">
-            My Classes
-          </a-checkbox>
-          <a-checkbox v-model="showMyVisits" class="checkbox-filter">
-            My Visits
-          </a-checkbox>
-        </div>
-      </a-card>
       <a-card style="width: 10rem;">
-        <div>
-          <h4>Legend</h4>
-          <div v-for="item in legendData" :key="item.value">
-            <h5>{{ item.label }}</h5>
+        <div v-for="item in legendData" :key="item.value">
+          <a-checkbox v-model="show[item.value]" class="checkbox-filter">
+            {{ item.label }}
+          </a-checkbox>
+          <div
+            v-for="option in item.options"
+            :key="option.label"
+            style="display: flex; margin: 0 0 5px 20px;"
+          >
             <div
-              v-for="option in item.options"
-              :key="option.label"
-              style="display: flex; margin: 0 0 5px 10px;"
+              :style="
+                `background-color: ${option.color}; padding: 2px 5px; color: ${
+                  item.value === 'seminars' ? 'white' : 'black'
+                }`
+              "
             >
-              <div
-                :style="
-                  `background-color: ${option.color}; width: 1rem; height: 1rem; margin-right: 5px;`
-                "
-              />
-              <div>{{ option.label }}</div>
+              {{ option.label }}
             </div>
           </div>
         </div>
@@ -79,7 +71,7 @@ const WITH_VISITORS_COLOR = "#f759ab";
 
 const legendData = [
   {
-    value: "visit",
+    value: "visits",
     label: "My visits",
     options: [
       {
@@ -89,19 +81,11 @@ const legendData = [
       {
         label: "accepted",
         color: ACCEPTED_VISIT_COLOR
-      },
-      // {
-      //   label: "declined",
-      //   color: "#e57373"
-      // },
-      // {
-      //   label: "cancelled",
-      //   color: "rgba(0, 0, 0, 0.37)"
-      // }
+      }
     ]
   },
   {
-    value: "class",
+    value: "seminars",
     label: "My classes",
     options: [
       {
@@ -121,8 +105,10 @@ export default {
   data() {
     return {
       calendarPlugins: [DayGridPlugin, TimeGridPlugin, InteractionPlugin],
-      showMySeminars: true,
-      showMyVisits: true,
+      show: {
+        visits: true,
+        seminars: true
+      },
       checkAll: false,
       my_visits: [],
       my_requests: [],
@@ -224,8 +210,8 @@ export default {
     },
     eventSources() {
       const requests = this.showMyRequests ? this.Requests : null;
-      const seminars = this.showMySeminars ? this.Seminars : null;
-      const visits = this.showMyVisits ? this.Visits : null;
+      const seminars = this.show.seminars ? this.Seminars : null;
+      const visits = this.show.visits ? this.Visits : null;
       return [requests, seminars, visits].filter(x => x);
     }
   },
@@ -253,6 +239,6 @@ export default {
 .checkbox-filter {
   display: block;
   color: rgba(0, 0, 0, 0.54);
-  margin-left: 0px;
+  margin: 0 0 5px 0;
 }
 </style>
