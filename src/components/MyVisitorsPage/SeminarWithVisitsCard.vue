@@ -23,7 +23,7 @@
         >
           {{ constants.TEACHING_MODES[seminar.teaching_mode] || "NA" }}
         </h6>
-        <a-col :span="17" style="padding-right: 20px">
+        <a-col :span="16" style="padding-right: 20px">
           <div style="margin-bottom: 5px">
             <h3 style="display: inline">
               {{ course.title }}
@@ -44,7 +44,7 @@
             </h5>
           </div>
         </a-col>
-        <a-col :span="7">
+        <a-col>
           <div
             style="display: flex; flex-direction: column; align-items: center;"
           >
@@ -61,13 +61,10 @@
               </h4>
             </div>
             <AddToCalendar :seminar="seminar" :isMyVisit="false" />
-            <a
-              v-if="isRequestRowsOn"
-              @click="handleHideRequests"
-              style="font-size: 12px"
-              >{{ `Hide ${requests.length} incoming request(s)` }}</a
-            >
-            <a v-else @click="handleShowRequests" style="font-size: 12px">{{
+            <a v-if="isRequestRowsOn" @click="handleHideRequests">{{
+              `Hide ${requests.length} incoming request(s)`
+            }}</a>
+            <a v-else @click="handleShowRequests">{{
               `Show ${requests.length} incoming request(s)`
             }}</a>
           </div>
@@ -203,7 +200,7 @@ export default {
     return {
       utils: utils,
       constants: constants,
-      isRequestRowsOn: false,
+      isRequestRowsOn: true,
       isMessageModalOn: false,
       requestInMessageModal: null,
       sender: "",

@@ -10,13 +10,13 @@
       />
     </div>
 
-    <a-input
+    <a-input-search
       v-model="filters.search_keyword"
-      placeholder="Search by course title"
+      placeholder="Search by keyword in course title/instructor/tag/major"
+      id="search-bar"
+      size="large"
       style="width:100%; margin:10px 0px 20px 0px;"
-    >
-      <a-icon slot="suffix" type="search" class="certain-category-icon" />
-    </a-input>
+    />
 
     <div style="display: flex;">
       <div style="width: 80%;">
@@ -43,7 +43,9 @@
           :current="page"
           :pageSizeOptions="['10', '25', '50', '100']"
         />
-        <div style="display: flex; flex-direction: column; align-items: center;">
+        <div
+          style="display: flex; flex-direction: column; align-items: center;"
+        >
           <template v-if="$apollo.loading">
             <a-skeleton style="width: 35rem;" active />
           </template>
@@ -86,7 +88,9 @@
               class="filter-field"
             />
             <h5 align="left">Time range</h5>
-            <div style="display: flex; flex-direction: row; justify-content: space-between;">
+            <div
+              style="display: flex; flex-direction: row; justify-content: space-between;"
+            >
               <a-time-picker
                 :minute-step="30"
                 use12-hours
@@ -118,7 +122,8 @@
                 v-for="faculty in faculty_list"
                 :value="faculty.name.toString()"
                 :key="faculty.name.toString()"
-              >{{ faculty.name.toString() }}</a-select-option>
+                >{{ faculty.name.toString() }}</a-select-option
+              >
             </a-select>
             <h5 align="left">Tags</h5>
             <div style="width:100%; display:flex">
@@ -131,7 +136,8 @@
                 <a-select-option
                   v-for="tag in tags_list"
                   :key="tag.label.toString()"
-                >{{ tag.label.toString() }}</a-select-option>
+                  >{{ tag.label.toString() }}</a-select-option
+                >
               </a-select>
               <a-icon
                 type="down"
@@ -140,7 +146,10 @@
             </div>
             <div style="margin-bottom: 20px;">
               <h5 align="left">Teaching mode</h5>
-              <a-checkbox-group class="teaching-mode-filter" v-model="filters.checkedTeachingModes">
+              <a-checkbox-group
+                class="teaching-mode-filter"
+                v-model="filters.checkedTeachingModes"
+              >
                 <a-checkbox
                   class="checkbox-filter"
                   :value="value"
@@ -149,7 +158,8 @@
                     label
                   } in constants.TEACHING_MODE_CHECKBOX_OPTIONS"
                   v-bind:key="value"
-                >{{ label }}</a-checkbox>
+                  >{{ label }}</a-checkbox
+                >
               </a-checkbox-group>
             </div>
             <div>
@@ -158,11 +168,11 @@
                 <a-checkbox
                   v-model="filters.lecturesOnly"
                   class="checkbox-filter"
-                >Show CC lectures only</a-checkbox>
-                <a-checkbox
-                  v-model="filters.openOnly"
-                  class="checkbox-filter"
-                >Show only open classes</a-checkbox>
+                  >Show CC lectures only</a-checkbox
+                >
+                <a-checkbox v-model="filters.openOnly" class="checkbox-filter"
+                  >Show only open classes</a-checkbox
+                >
               </div>
             </div>
             <div style="padding-top: 30px;">
@@ -471,13 +481,6 @@ export default {
 </script>
 
 <style scoped>
-.search-bar >>> .ant-input {
-  font-size: 1rem;
-  padding: 1.2rem;
-}
-.search-bar >>> .ant-select-selection__rendered {
-  height: 2.4rem;
-}
 .filter {
   position: fixed;
 }
@@ -491,6 +494,5 @@ export default {
   display: block;
   color: rgba(0, 0, 0, 0.54);
   margin-left: 0px;
-}
-</style
+}</style
 >;

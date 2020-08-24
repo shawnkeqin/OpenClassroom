@@ -58,6 +58,7 @@ query searchSeminarsByFilters(
       course_group_desc
       is_open
       syllabus
+      notes
       faculty {
         id
         name
@@ -160,6 +161,7 @@ query searchSeminarsByFiltersWithTags(
       course_group_desc
       is_open
       syllabus
+      notes
       faculty {
         id
         name
