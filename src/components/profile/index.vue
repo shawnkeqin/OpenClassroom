@@ -1,33 +1,30 @@
 <template>
   <div class="page-wrapper">
     <div class="content-block-wrapper">
-      <h1>My profile</h1>
-      <a-card style="width: 40rem">
-        <a-row type="flex" align="middle" :gutter="20">
-          <a-col :xs="24" :sm="8" align="middle" justify="center">
+      <h2>My Profile</h2>
+      <a-card>
+        <div style="display: flex;">
+          <div style="margin-right: 20px;">
             <a-avatar
-              :size="160"
+              :size="120"
               :src="
                 faculty.profilePic ||
                   'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
               "
               style="color: #004b8d;"
             />
-          </a-col>
-          <a-col>
-            <h5>Name</h5>
-            <p>{{ faculty.name }}</p>
-            <h5>Staff ID</h5>
-            <p>{{ faculty.id }}</p>
-            <h5>Email</h5>
+          </div>
+          <div>
+            <h3>{{ faculty.name }}</h3>
+            <p>{{ `Staff ID: ${faculty.id}` }}</p>
             <p style="margin: 0">{{ faculty.email }}</p>
-          </a-col>
-        </a-row>
+          </div>
+        </div>
       </a-card>
     </div>
     <div class="content-block-wrapper">
       <h2>My Preferences</h2>
-      <a-card style="width: 40rem" :bodyStyle="{ padding: '0px' }">
+      <a-card :bodyStyle="{ padding: '0px' }">
         <a-list item-layout="horizontal" size="small">
           <a-list-item class="preference-item">
             <p>Email me when new requests for my seminars are created</p>
@@ -35,84 +32,111 @@
               :checked="faculty.notif_new_request"
               :loading="isToggleNotifNewRequestLoading"
               @click="toggleNotifNewRequest"
+              class="pref-toggle"
             />
           </a-list-item>
-          <a-list-item class="preference-item" style="background-color: #F6F6F6">
+          <a-list-item
+            class="preference-item"
+            style="background-color: #F6F6F6"
+          >
             <p>Email me when my pending requests are accepted/declined</p>
             <a-switch
               :checked="faculty.notif_request_update"
               :loading="isToggleNotifRequestUpdatetLoading"
               @click="toggleNotifRequestUpdate"
+              class="pref-toggle"
             />
           </a-list-item>
-          <a-list-item class="preference-item">
+          <!-- <a-list-item class="preference-item">
             <p>Email me 1 hour before the next visit</p>
             <a-switch default-checked />
-          </a-list-item>
+          </a-list-item> -->
         </a-list>
       </a-card>
     </div>
-    <br />
-    <h3 style="text-align:center;">My Statistics</h3>
-    <div style="margin: auto;">
-      <a-button v-on:click="isShowRequestsMade = !isShowRequestsMade">Requests Made</a-button>&nbsp; &nbsp;
-      <a-button v-on:click="isShowCompletedVisits = !isShowCompletedVisits">Completed Visits</a-button>&nbsp; &nbsp;
-      <a-button v-on:click="isShowRequestsReceived = !isShowRequestsReceived">Requests Received</a-button>&nbsp; &nbsp;
-      <a-button v-on:click="isShowHostedVisits = !isShowHostedVisits">Hosted Visits</a-button>
+    <div class="content-block-wrapper">
+      <h2>My Statistics</h2>
+      <div style="display: flex;">
+        <a-checkbox v-model="isShowRequestsMade" class="graph-checkbox">
+          Requests Made</a-checkbox
+        >
+        <a-checkbox v-model="isShowCompletedVisits" class="graph-checkbox"
+          >Completed Visits</a-checkbox
+        >
+        <a-checkbox v-model="isShowRequestsReceived" class="graph-checkbox"
+          >Requests Received</a-checkbox
+        >
+        <a-checkbox v-model="isShowHostedVisits" class="graph-checkbox"
+          >Hosted Visits</a-checkbox
+        >
+      </div>
+      <div
+        v-show="
+          isShowRequestsMade ||
+            isShowCompletedVisits ||
+            isShowRequestsReceived ||
+            isShowHostedVisits
+        "
+        style="width: 100%;"
+      >
+        <a-spin v-if="$apollo.loading">
+          <a-icon
+            slot="indicator"
+            type="loading"
+            style="font-size: 26px; padding-left: 10px"
+            spin
+          />
+        </a-spin>
+        <h3 v-if="isShowRequestsMade">
+          My Requests Made
+        </h3>
+        <LineExample
+          v-if="isShowRequestsMade"
+          :labels="labels"
+          :datasets="number_of_visit_requests.datasets"
+        />
+
+        <h3 v-if="isShowCompletedVisits">
+          My Completed Visits
+        </h3>
+        <LineExample
+          v-if="isShowCompletedVisits"
+          :labels="labels4"
+          :datasets="number_of_completed_visits.datasets4"
+        />
+
+        <h3 v-if="isShowRequestsReceived">
+          My Requests Received
+        </h3>
+        <LineExample
+          v-if="isShowRequestsReceived"
+          :labels="labels2"
+          :datasets="number_of_visit_requests_received.datasets2"
+        />
+
+        <h3 v-if="isShowHostedVisits">
+          My Hosted Visits
+        </h3>
+        <LineExample
+          v-if="isShowHostedVisits"
+          :labels="labels3"
+          :datasets="number_of_hosted_visits.datasets3"
+        />
+      </div>
     </div>
-    <br />
-
-    <div
-      v-show="
-        isShowRequestsMade ||
-          isShowCompletedVisits ||
-          isShowRequestsReceived ||
-          isShowHostedVisits
-      "
-    >
+    <div class="content-class-wrapper">
       <a-spin v-if="$apollo.loading">
-        <a-icon slot="indicator" type="loading" style="font-size: 26px; padding-left: 10px" spin />
-      </a-spin>
-      <h2 v-if="isShowRequestsMade" style="text-align:center;">My Requests Made</h2>
-      <LineExample
-        v-if="isShowRequestsMade"
-        :labels="labels"
-        :datasets="number_of_visit_requests.datasets"
-      />
-
-      <h2 v-if="isShowCompletedVisits" style="text-align:center;">My Completed Visits</h2>
-      <LineExample
-        v-if="isShowCompletedVisits"
-        :labels="labels4"
-        :datasets="number_of_completed_visits.datasets4"
-      />
-
-      <h2 v-if="isShowRequestsReceived" style="text-align:center;">My Requests Received</h2>
-      <LineExample
-        v-if="isShowRequestsReceived"
-        :labels="labels2"
-        :datasets="number_of_visit_requests_received.datasets2"
-      />
-
-      <h2 v-if="isShowHostedVisits" style="text-align:center;">My Hosted Visits</h2>
-      <LineExample
-        v-if="isShowHostedVisits"
-        :labels="labels3"
-        :datasets="number_of_hosted_visits.datasets3"
-      />
-    </div>
-
-    <div>
-      <a-spin v-if="$apollo.loading">
-        <a-icon slot="indicator" type="loading" style="font-size: 26px; padding-left: 10px" spin />
+        <a-icon
+          slot="indicator"
+          type="loading"
+          style="font-size: 26px; padding-left: 10px"
+          spin
+        />
       </a-spin>
       <div v-else id="components-table-demo-size">
-        <br />
-        <br />
         <h4 style="text-align:center;">Average Statistics</h4>
         <a-table bordered :columns="columns" :data-source="data"></a-table>
       </div>
-      <br />
     </div>
   </div>
 </template>
@@ -166,6 +190,27 @@ const columns = [
     width: 100
   }
 ];
+
+const START_END_TIME_QUERY_VAR = {
+  start_time: moment()
+    .subtract(30, "days")
+    .format(),
+  end_time: moment().format(),
+  start_time2: moment()
+    .subtract(60, "days")
+    .format(),
+  end_time2: moment()
+    .subtract(31, "days")
+    .format(),
+  start_time3: moment()
+    .subtract(61, "days")
+    .format(),
+  end_time3: moment()
+    .subtract(90, "days")
+    .format()
+};
+
+// const VISIT_TYPES = ["visit3", "visit2", "visit1"];
 
 export default {
   name: "Profile",
@@ -239,25 +284,8 @@ export default {
       query: queriesViz.get_total_requests_by_user_history,
       variables() {
         return {
-          visitor_id: store.state.loggedInUser,
-          //    start_time: "2020-07-01T05:28:23.186523+00:00",
-          //    end_time: "2020-07-23T05:28:23.186523+00:00"
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          visitor_id: store.state.loggedInUser
         };
       },
       update: data => data,
@@ -274,25 +302,8 @@ export default {
       query: queriesViz.get_total_requests_received_by_user_history,
       variables() {
         return {
-          faculty_id: store.state.loggedInUser,
-          //  start_time: "2020-07-01T05:28:23.186523+00:00",
-          //  end_time: "2020-07-23T05:28:23.186523+00:00"
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          faculty_id: store.state.loggedInUser
         };
       },
       update: data => data,
@@ -309,25 +320,8 @@ export default {
       query: queriesViz.get_total_hosted_visits_by_user_history,
       variables() {
         return {
-          faculty_id: store.state.loggedInUser,
-          // start_time: "2020-07-01T05:28:23.186523+00:00",
-          // end_time: "2020-07-23T05:28:23.186523+00:00"
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          faculty_id: store.state.loggedInUser
         };
       },
       update: data => data,
@@ -344,25 +338,8 @@ export default {
       query: queriesViz.get_total_completed_visits_by_user_history,
       variables() {
         return {
-          visitor_id: store.state.loggedInUser,
-          // start_time: "2020-07-01T05:28:23.186523+00:00",
-          // end_time: "2020-07-23T05:28:23.186523+00:00"
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          visitor_id: store.state.loggedInUser
         };
       },
       update: data => data,
@@ -379,23 +356,8 @@ export default {
       query: queriesViz.get_avg_requests_by_division_history,
       variables() {
         return {
-          division: "%",
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          division: "%"
         };
       },
       update: data => data,
@@ -411,23 +373,8 @@ export default {
       query: queriesViz.get_avg_requests_received_by_division_history,
       variables() {
         return {
-          division: "%",
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          division: "%"
         };
       },
       update: data => data,
@@ -443,23 +390,8 @@ export default {
       query: queriesViz.get_avg_hosted_visits_by_division_history,
       variables() {
         return {
-          division: "%",
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          division: "%"
         };
       },
       update: data => data,
@@ -475,23 +407,8 @@ export default {
       query: queriesViz.get_avg_completed_visits_by_division_history,
       variables() {
         return {
-          division: "%",
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          division: "%"
         };
       },
       update: data => data,
@@ -507,23 +424,8 @@ export default {
       query: queriesViz.get_avg_requests_by_division_history,
       variables() {
         return {
-          division: "Science",
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          division: "Science"
         };
       },
       update: data => data,
@@ -539,23 +441,8 @@ export default {
       query: queriesViz.get_avg_requests_by_division_history,
       variables() {
         return {
-          division: "Social Sciences",
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          division: "Social Sciences"
         };
       },
       update: data => data,
@@ -571,23 +458,8 @@ export default {
       query: queriesViz.get_avg_requests_by_division_history,
       variables() {
         return {
-          division: "Humanities",
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          division: "Humanities"
         };
       },
       update: data => data,
@@ -603,23 +475,8 @@ export default {
       query: queriesViz.get_avg_completed_visits_by_division_history,
       variables() {
         return {
-          division: "Science",
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          division: "Science"
         };
       },
       update: data => data,
@@ -635,23 +492,8 @@ export default {
       query: queriesViz.get_avg_completed_visits_by_division_history,
       variables() {
         return {
-          division: "Social Sciences",
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          division: "Social Sciences"
         };
       },
       update: data => data,
@@ -667,23 +509,8 @@ export default {
       query: queriesViz.get_avg_completed_visits_by_division_history,
       variables() {
         return {
-          division: "Humanities",
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          division: "Humanities"
         };
       },
       update: data => data,
@@ -699,23 +526,8 @@ export default {
       query: queriesViz.get_avg_requests_received_by_division_history,
       variables() {
         return {
-          division: "Science",
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          division: "Science"
         };
       },
       update: data => data,
@@ -731,23 +543,8 @@ export default {
       query: queriesViz.get_avg_requests_received_by_division_history,
       variables() {
         return {
-          division: "Social Sciences",
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          division: "Social Sciences"
         };
       },
       update: data => data,
@@ -763,23 +560,8 @@ export default {
       query: queriesViz.get_avg_requests_received_by_division_history,
       variables() {
         return {
-          division: "Humanities",
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          division: "Humanities"
         };
       },
       update: data => data,
@@ -795,23 +577,8 @@ export default {
       query: queriesViz.get_avg_hosted_visits_by_division_history,
       variables() {
         return {
-          division: "Science",
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          division: "Science"
         };
       },
       update: data => data,
@@ -827,23 +594,8 @@ export default {
       query: queriesViz.get_avg_hosted_visits_by_division_history,
       variables() {
         return {
-          division: "Social Sciences",
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          division: "Social Sciences"
         };
       },
       update: data => data,
@@ -859,23 +611,8 @@ export default {
       query: queriesViz.get_avg_hosted_visits_by_division_history,
       variables() {
         return {
-          division: "Humanities",
-          start_time: moment()
-            .subtract(30, "days")
-            .format(),
-          end_time: moment().format(),
-          start_time2: moment()
-            .subtract(60, "days")
-            .format(),
-          end_time2: moment()
-            .subtract(31, "days")
-            .format(),
-          start_time3: moment()
-            .subtract(61, "days")
-            .format(),
-          end_time3: moment()
-            .subtract(90, "days")
-            .format()
+          ...START_END_TIME_QUERY_VAR,
+          division: "Humanities"
         };
       },
       update: data => data,
@@ -1767,7 +1504,6 @@ export default {
 .preference-item p {
   margin: 0;
 }
-
 #components-table-demo-size h4 {
   margin-bottom: 16px;
 }
