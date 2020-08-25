@@ -297,6 +297,9 @@ query get_course_group_details($course_group_id: Int!) {
       module_code
       module_brief_link
       desc
+      tagged_as {
+        tag_label
+      }
     }
   }
 }

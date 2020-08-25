@@ -13,7 +13,7 @@
         <p>We could not process your opt-out request. Please try again.</p>
       </template>
       <img
-        src="../../public/logo_text.png"
+        src="../assets/logo_text.png"
         style="width: 10rem; margin-top: 1.5rem;"
       />
     </div>

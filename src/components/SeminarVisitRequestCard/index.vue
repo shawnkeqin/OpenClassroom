@@ -82,7 +82,13 @@
                 <a-button @click="descModalVisible = false">Close</a-button>
               </template>
               <h4>Course description:</h4>
-              <p>{{ fullCourseDesc }}</p>
+              <template v-if="course.desc || course_group.desc">
+                <p>{{ course.desc }}</p>
+                <p>{{ course_group.desc }}</p>
+              </template>
+              <template v-else>
+                <p>-</p>
+              </template>
               <h4>Class title:</h4>
               <p>{{ seminar.title || "-" }}</p>
               <h4>Class description:</h4>
@@ -219,19 +225,12 @@ export default {
         this.seminar.visits_aggregate &&
         this.seminar.visits_aggregate.aggregate.count
       );
-    },
-    fullCourseDesc() {
-      return !(this.course.desc || this.course_group.desc)
-        ? "None"
-        : `${this.course.desc}\r\n${this.course_group.desc}`;
     }
   }
 };
 </script>
 
 <style scoped>
-/* .cc-card {
-} */
 .ant-card-hoverable {
   cursor: default;
 }

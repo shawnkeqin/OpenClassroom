@@ -25,32 +25,24 @@
       <calendarSeminarModal :event="modalData" />
     </a-modal>
     <div style="margin-left: 2rem;">
-      <a-card style="width: 10rem; margin-bottom: 20px;">
-        <div>
-          <a-checkbox v-model="showMySeminars" class="checkbox-filter">
-            My Classes
-          </a-checkbox>
-          <a-checkbox v-model="showMyVisits" class="checkbox-filter">
-            My Visits
-          </a-checkbox>
-        </div>
-      </a-card>
       <a-card style="width: 10rem;">
-        <div>
-          <h4>Legend</h4>
-          <div v-for="item in legendData" :key="item.value">
-            <h5>{{ item.label }}</h5>
+        <div v-for="item in legendData" :key="item.value">
+          <a-checkbox v-model="show[item.value]" class="checkbox-filter">
+            {{ item.label }}
+          </a-checkbox>
+          <div
+            v-for="option in item.options"
+            :key="option.label"
+            style="display: flex; margin: 0 0 5px 20px;"
+          >
             <div
-              v-for="option in item.options"
-              :key="option.label"
-              style="display: flex; margin: 0 0 5px 10px;"
+              :style="
+                `background-color: ${option.color}; padding: 2px 5px; color: ${
+                  item.value === 'seminars' ? 'white' : 'black'
+                }`
+              "
             >
-              <div
-                :style="
-                  `background-color: ${option.color}; width: 1rem; height: 1rem; margin-right: 5px;`
-                "
-              />
-              <div>{{ option.label }}</div>
+              {{ option.label }}
             </div>
           </div>
         </div>
@@ -72,41 +64,37 @@ import queries from "@/graphql/queries.gql";
 // import constants from "@/utils/constants";
 import store from "@/store";
 
+const PENDING_VISIT_COLOR = "#ffb74d";
+const ACCEPTED_VISIT_COLOR = "#81c784";
+const NO_VISITORS_COLOR = "#40a9ff";
+const WITH_VISITORS_COLOR = "#f759ab";
+
 const legendData = [
   {
-    value: "visit",
+    value: "visits",
     label: "My visits",
     options: [
       {
         label: "pending",
-        color: "#ffb74d"
+        color: PENDING_VISIT_COLOR
       },
       {
         label: "accepted",
-        color: "#81c784"
-      },
-      {
-        label: "declined",
-        color: "#e57373"
-      },
-      {
-        label: "cancelled",
-        color: "rgba(0, 0, 0, 0.37)"
+        color: ACCEPTED_VISIT_COLOR
       }
     ]
   },
   {
-    value: "class",
+    value: "seminars",
     label: "My classes",
     options: [
       {
         label: "no visitors",
-        color: "#69c0ff"
+        color: NO_VISITORS_COLOR
       },
       {
-        id: 6,
         label: "with visitors",
-        color: "#1890ff"
+        color: WITH_VISITORS_COLOR
       }
     ]
   }
@@ -117,11 +105,12 @@ export default {
   data() {
     return {
       calendarPlugins: [DayGridPlugin, TimeGridPlugin, InteractionPlugin],
-      showMySeminars: true,
-      showMyVisits: true,
+      show: {
+        visits: true,
+        seminars: true
+      },
       checkAll: false,
       my_visits: [],
-      my_requests: [],
       my_seminars: [],
       legendData,
       isModalVisible: false,
@@ -130,6 +119,7 @@ export default {
   },
   components: { Fullcalendar, calendarSeminarModal },
   apollo: {
+    // Only query for PENDING and ACCEPTED visits
     my_visits: {
       query: queries.get_my_visits,
       variables() {
@@ -138,7 +128,12 @@ export default {
           // Technically we should have a separate query that checks semester to be efficent as users will not view previous semesters (this query is used by other components such as my visit page that needs all semesters).
         };
       },
-      update: data => data.visit,
+      update: data =>
+        data.visit.filter(
+          visit =>
+            visit.visit_status === "PENDING" ||
+            visit.visit_status === "ACCEPTED"
+        ),
       error(error, vm, key) {
         this.$notification.error({
           key,
@@ -197,7 +192,7 @@ export default {
           end: a.date.toString() + "T" + a.end.toString(),
           title: a.course_group.course.title,
           // className: "my_seminars",
-          color: a.visits.length > 0 ? "#1890ff" : "#69c0ff",
+          color: a.visits.length > 0 ? WITH_VISITORS_COLOR : NO_VISITORS_COLOR,
           id: a.id,
           extendedProps: {
             faculty: a.course_group.faculty,
@@ -213,10 +208,9 @@ export default {
       };
     },
     eventSources() {
-      const requests = this.showMyRequests ? this.Requests : null;
-      const seminars = this.showMySeminars ? this.Seminars : null;
-      const visits = this.showMyVisits ? this.Visits : null;
-      return [requests, seminars, visits].filter(x => x);
+      const seminars = this.show.seminars ? this.Seminars : null;
+      const visits = this.show.visits ? this.Visits : null;
+      return [seminars, visits].filter(x => x);
     }
   },
   methods: {
@@ -227,11 +221,9 @@ export default {
     getVisitColor(visit_status) {
       switch (visit_status) {
         case "PENDING":
-          return "#ffb74d";
+          return PENDING_VISIT_COLOR;
         case "ACCEPTED":
-          return "#81c784";
-        case "DECLINED":
-          return "#e57373";
+          return ACCEPTED_VISIT_COLOR;
         default:
           return "rgba(0, 0, 0, 0.37)";
       }
@@ -245,6 +237,6 @@ export default {
 .checkbox-filter {
   display: block;
   color: rgba(0, 0, 0, 0.54);
-  margin-left: 0px;
+  margin: 0 0 5px 0;
 }
 </style>
