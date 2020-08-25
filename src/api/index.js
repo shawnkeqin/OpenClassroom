@@ -133,7 +133,7 @@ module.exports = app => {
         res.header("Access-Control-Allow-Origin", process.env.VUE_APP_BASE_URL);
         res.header(
           "Content-Security-Policy",
-          `default-src 'self'; font-src https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com; img-src https://toppng.com`
+          `default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https://toppng.com; frame-ancestors 'none';`
         );
     }
     next();
