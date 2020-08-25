@@ -1,1 +1,1 @@
-web: DEBUG=express:* VUE_APP_MODE=staging node index.js 2>&1 | tee './logs/deployment_$(date +'%d_%m__%H_%M').log'
+web: DEBUG=express:* VUE_APP_MODE=staging VUE_APP_BASE_URL=https://open-classroom-app-demo.herokuapp.com/my-courses node index.js 2>&1 | tee './logs/deployment_$(date +'%d_%m__%H_%M').log'

@@ -105,7 +105,7 @@ async function requestInsertHandler(req, res) {
           : process.env.EMAIL_TO,
       subject: `New visit request to your class`,
       html: `<p>${visitor.name} made a visit request to your class ${course.module_code} ${course.title}, ${seminar.date}.</p>
-        <p>Click <a href="https://open-classroom-app-demo.herokuapp.com/my-visitors">here</a> to view it on the Open Classroom app.</p>`
+        <p>Click <a href="${process.env.VUE_APP_BASE_URL}">here</a> to view it on the Open Classroom app.</p>`
     });
 
     console.log("Email sent: %s", info.messageId);
@@ -156,7 +156,7 @@ async function requestStatusUpdateHandler(req, res) {
             : process.env.EMAIL_TO,
         subject: `A visit request to your class ${course.module_code} is cancelled`,
         html: `<p>${visitor.name} has cancelled the request to visit your class ${course.module_code} ${course.title}, ${seminar.date}.</p>
-        <p>Click <a href="https://open-classroom-app-demo.herokuapp.com/my-visitors">here</a> to view it on the OpenClassroom portal.</p>`
+        <p>Click <a href="${process.env.VUE_APP_BASE_URL}">here</a> to view it on the OpenClassroom portal.</p>`
       });
 
       console.log("Email sent: %s", info.messageId);
@@ -166,7 +166,7 @@ async function requestStatusUpdateHandler(req, res) {
         visit_status_new === "PENDING"
           ? `<p>your visit request to class ${course.module_code} ${course.title}, ${seminar.date}, is pending.`
           : `<p>${instructor.name} has ${visit_status_new} your visit request to class ${course.module_code} ${course.title}, ${seminar.date}.</p>`;
-      const linkToPortal = `<p>Click <a href="https://open-classroom-app-demo.herokuapp.com/my-visits">here</a> to view your visit on the Open Classroom app.</p>`;
+      const linkToPortal = `<p>Click <a href="${process.env.VUE_APP_BASE_URL}">here</a> to view your visit on the Open Classroom app.</p>`;
 
       const transporter = createTransporter();
       const info = await transporter.sendMail({
@@ -208,7 +208,7 @@ async function requestDeleteHandler(req, res) {
           : process.env.EMAIL_TO,
       subject: `A visit request to your class ${course.module_code} is cancelled`,
       html: `<p>${visitor.name} has cancelled the request to visit your class ${course.module_code} ${course.title}, ${seminar.date}.</p>
-        <p>Click <a href="https://open-classroom-app-demo.herokuapp.com/my-visitors">here</a> to view it on the Open Classroom app.</p>`
+        <p>Click <a href="${process.env.VUE_APP_BASE_URL}">here</a> to view it on the Open Classroom app.</p>`
     });
 
     console.log("Email sent: %s", info.messageId);

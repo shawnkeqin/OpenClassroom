@@ -118,23 +118,16 @@ api.use("/faculty-status", facultyStatusRouter);
 
 api.use(bodyParser.urlencoded({ extended: false }));
 api.use(passport.initialize());
-api.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
 module.exports = app => {
   app.use(cors());
   app.use(bodyParser.json());
   app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", process.env.VUE_APP_BASE_URL);
     res.header(
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept"
     );
+    res.header("X-Frame-Options", "DENY");
     next();
   });
   app.use("/api", api);
