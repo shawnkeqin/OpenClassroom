@@ -1,5 +1,5 @@
 version: 2
-endpoint: https://open-classroom-hasura-test.herokuapp.com
+endpoint: ""
 metadata_directory: metadata
 actions:
   kind: synchronous
