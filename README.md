@@ -55,7 +55,7 @@ The custom environment file (as well as the automatically set `NODE_ENV`) was on
 ### Frontend Deployment
 1. Connect to NUS VPN.
 2. `ssh -i ~/.ssh/open-classroom/id_rsa -xvv jeremy@172.25.20.25`, enter passcode. 
-3. Add all env variables, including JWT secret.
+3. Add/update `.env.local` file with latest vars.
 4. Run these commands. 
 ```bash
 # Install exact version of NPM. 
@@ -117,23 +117,33 @@ docker load < hasura-graphql-engine.tar.gz
 chmod +x ./docker-run.sh
 ./docker-run.sh
 docker ps
+# To check why the instance failed to initialize, run docker command without the detached -d command.
 docker stop <>
 ```
 
 ### DB Migration
 See https://hasura.io/docs/1.0/graphql/manual/migrations/basics.html#migrations-basics. 
-1. `hasura init`
-2. `cd` into project directory. 
-3. Add admin secret and endpoint to `config.yaml`.
-4. `hasura console`
-5. Create SQL migration files and heroku metadata.
 
-```
+Note this is done remotely (not inside deployment server).
+
+Note also the docs are misleading, the `config.yaml` defines where migrations and metadata are applied, and the files to apply are from the current directory. Whereas the --endpoint flag defines where migations are created from. Better off not using --endpoint, its confusing.
+
+```bash
 # Install Hasura CLI for migrating metadata + schema. 
 curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
-hasura migrate apply
-hasura metadata apply
-# Dump from pg_dump archive from demo app.
+cd open-classroom-hasura
+hasura init
+# Update admin secret and endpoint in config.yaml to point to where you are applying migrations/pulling migrations from.
+# Create new. 
+hasura migrate create
+hasura migrate status
+# Apply migrations first (create table) then apply metadata. You need to specify the exact version if there are multiple migrations, otherwise all will be applied in order.
+hasura migrate apply --version 1597913678545 --envfile ../.env.local --log-level debug
+hasura metadata apply --envfile ../.env.local --log-level debug
+```
+Next we have to do pg_dump, from inside deployment server. 
+```bash
+# Dump from pg_dump archive from demo app (need to update this to the test2 pg_dump). You will be prompted for password.
 pg_restore --verbose --clean --no-acl --no-owner -h localhost -U hasurauser -d open_classroom data/1fb44c77-68e8-4f07-b987-f368025bc02b
 ```
 
@@ -218,6 +228,11 @@ nmap -sV --script=vulscan/vulscan.nse 172.25.20.25 > logs/vulscan_output.txt --s
 ```
 
 ### Docker management
+Note: You can probably stop and start a Hasura docker instance with no issues. But if you want to rebuild (e.g. with diff env variables) you need to wipe the DB (backup first)...otherwise it won't be able to initialize the DB with internal schemas properly. Then you have to migrate hasura metadata and data and pg_dump.
+
+We need to find another way to change env vars within a running Docker instance, and if that actually will apply to the running Hasura instance. 
+
+If you want to check why 
 ```bash
 ### Stop 
 docker stop <id>
