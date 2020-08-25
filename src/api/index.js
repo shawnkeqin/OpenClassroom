@@ -139,10 +139,4 @@ module.exports = app => {
     next();
   });
   app.use("/api", api);
-  // app.use("/notifs", notifsRouter);
 };
-// middleware that is specific to this router
-// api.use(function timeLog(req, res, next) {
-//   console.log("Time: ", Date.now());
-//   next();
-// });
