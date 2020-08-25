@@ -1,13 +1,13 @@
+// The server isn't run by vue-cli-service so we need to tell it what mode we want explicitly.
+require("custom-env").env();
+require("custom-env").env("local");
+require("custom-env").env(process.env.VUE_APP_MODE);
+
 const { resolve } = require("path");
 const history = require("connect-history-api-fallback");
 const configureAPI = require("./src/api");
 const express = require("express");
 const app = express();
-
-// The server isn't run by vue-cli-service so we need to tell it what mode we want explicitly.
-require("custom-env").env();
-require("custom-env").env("local");
-require("custom-env").env(process.env.VUE_APP_MODE);
 
 // // API
 configureAPI(app);
