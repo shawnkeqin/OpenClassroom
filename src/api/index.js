@@ -122,12 +122,20 @@ module.exports = app => {
   app.use(cors());
   app.use(bodyParser.json());
   app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", process.env.VUE_APP_BASE_URL);
     res.header(
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept"
     );
     res.header("X-Frame-Options", "DENY");
+    switch (process.env.VUE_APP_MODE) {
+      case "staging-test":
+      case "production":
+        res.header("Access-Control-Allow-Origin", process.env.VUE_APP_BASE_URL);
+        res.header(
+          "Content-Security-Policy",
+          `default-src 'self'; font-src https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com; img-src https://toppng.com`
+        );
+    }
     next();
   });
   app.use("/api", api);
