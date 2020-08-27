@@ -33,10 +33,6 @@ if (LDAP_CONNECTED) {
   passport.use(new LdapStrategy(getLDAPConfiguration));
 }
 
-api.get("/", function(req, res) {
-  res.send("API home");
-});
-
 api.post("/login", (req, res, next) => {
   if (!LDAP_CONNECTED) {
     // Send authorization for requested user regardless of password, without doing LDAP request.
@@ -121,7 +117,7 @@ api.use(passport.initialize());
 module.exports = app => {
   app.use(cors());
   app.use(bodyParser.json());
-  app.use(function(req, res, next) {
+  app.use(function customAPIHeaders(req, res, next) {
     res.header(
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept"

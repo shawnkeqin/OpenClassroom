@@ -14,10 +14,33 @@ configureAPI(app);
 
 // // UI
 const publicPath = resolve(__dirname, "./dist");
-const staticConf = { maxAge: "1d", etag: false };
+const staticConf = {
+  maxAge: "1d",
+  etag: false,
+  setHeaders: res => {
+    res.set(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    res.set("X-Frame-Options", "DENY");
+    switch (process.env.VUE_APP_MODE) {
+      case "staging-test":
+      case "production":
+        res.set("Access-Control-Allow-Origin", process.env.VUE_APP_BASE_URL);
+        res.set(
+          "Content-Security-Policy",
+          `default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https://toppng.com; frame-ancestors 'none'; connect-src ${process.env.VUE_APP_AUTH_ENDPOINT} ${process.env.VUE_APP_GRAPHQL_HTTP} `
+        );
+    }
+  }
+};
 
 app.use(history());
 app.use(express.static(publicPath, staticConf));
+// Insert this so that 404 also have headers.
+// app.use(function(req, res) {
+//   res.send(404, "hihi");
+// });
 const PORT = process.env.PORT || 443;
 app.listen(PORT, () =>
   console.log(
