@@ -7,9 +7,7 @@ const { resolve } = require("path"),
   history = require("connect-history-api-fallback"),
   configureAPI = require("./src/api"),
   express = require("express"),
-  app = express(),
-  cors = require("cors"),
-  bodyParser = require("body-parser");
+  app = express();
 
 // // API
 configureAPI(app);
@@ -39,8 +37,6 @@ const staticConf = {
 
 app.use(history());
 app.use(express.static(publicPath, staticConf));
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
 // Insert this so that 404 also have headers.
 app.use(function(req, res) {
   res.send(404, "Resource Not Found");
