@@ -1,10 +1,8 @@
 var passport = require("passport"),
-  bodyParser = require("body-parser"),
   express = require("express"),
   LdapStrategy = require("passport-ldapauth"),
   jwt = require("jsonwebtoken"),
-  moment = require("moment"),
-  cors = require("cors");
+  moment = require("moment");
 
 const LDAP_CONNECTED =
   process.env.VUE_APP_MODE == "production" ||
@@ -112,27 +110,26 @@ api.post("/login", (req, res, next) => {
 api.use("/notifs", notifsRouter);
 api.use("/faculty-status", facultyStatusRouter);
 
-api.use(bodyParser.urlencoded({ extended: false }));
 api.use(passport.initialize());
 module.exports = app => {
-  app.use(cors());
-  app.use(bodyParser.json());
-  app.use(function customAPIHeaders(req, res, next) {
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    res.header("X-Frame-Options", "DENY");
-    switch (process.env.VUE_APP_MODE) {
-      case "staging-test":
-      case "production":
-        res.header("Access-Control-Allow-Origin", process.env.VUE_APP_BASE_URL);
-        res.header(
-          "Content-Security-Policy",
-          `default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https://toppng.com; frame-ancestors 'none'; connect-src ${process.env.VUE_APP_AUTH_ENDPOINT} ${process.env.VUE_APP_GRAPHQL_HTTP} `
-        );
-    }
-    next();
-  });
+  // app.use(cors());
+  // app.use(bodyParser.json());
+  // app.use(function customAPIHeaders(req, res, next) {
+  //   res.header(
+  //     "Access-Control-Allow-Headers",
+  //     "Origin, X-Requested-With, Content-Type, Accept"
+  //   );
+  //   res.header("X-Frame-Options", "DENY");
+  //   switch (process.env.VUE_APP_MODE) {
+  //     case "staging-test":
+  //     case "production":
+  //       res.header("Access-Control-Allow-Origin", process.env.VUE_APP_BASE_URL);
+  //       res.header(
+  //         "Content-Security-Policy",
+  //         `default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https://toppng.com; frame-ancestors 'none'; connect-src ${process.env.VUE_APP_AUTH_ENDPOINT} ${process.env.VUE_APP_GRAPHQL_HTTP} `
+  //       );
+  //   }
+  //   next();
+  // });
   app.use("/api", api);
 };

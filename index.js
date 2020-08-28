@@ -3,11 +3,13 @@
 require("custom-env").env("local");
 require("custom-env").env(process.env.VUE_APP_MODE);
 
-const { resolve } = require("path");
-const history = require("connect-history-api-fallback");
-const configureAPI = require("./src/api");
-const express = require("express");
-const app = express();
+const { resolve } = require("path"),
+  history = require("connect-history-api-fallback"),
+  configureAPI = require("./src/api"),
+  express = require("express"),
+  app = express(),
+  cors = require("cors"),
+  bodyParser = require("body-parser");
 
 // // API
 configureAPI(app);
@@ -37,10 +39,12 @@ const staticConf = {
 
 app.use(history());
 app.use(express.static(publicPath, staticConf));
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
 // Insert this so that 404 also have headers.
-// app.use(function(req, res) {
-//   res.send(404, "hihi");
-// });
+app.use(function(req, res) {
+  res.send(404, "Resource Not Found");
+});
 const PORT = process.env.PORT || 443;
 app.listen(PORT, () =>
   console.log(
