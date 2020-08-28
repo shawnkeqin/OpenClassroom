@@ -10,6 +10,7 @@ const { resolve } = require("path"),
   app = express();
 
 // // API
+app.disable("x-powered-by");
 configureAPI(app);
 
 // // UI
@@ -26,11 +27,16 @@ const staticConf = {
     switch (process.env.VUE_APP_MODE) {
       case "staging-test":
       case "production":
-        res.set("Access-Control-Allow-Origin", process.env.VUE_APP_BASE_URL);
+        res.set(
+          "Access-Control-Allow-Origin",
+          process.env.VUE_APP_BASE_URL_LOCALHOST
+        );
         res.set(
           "Content-Security-Policy",
-          `default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com; img-src 'self' https://toppng.com; frame-ancestors 'none'; connect-src ${process.env.VUE_APP_AUTH_ENDPOINT} ${process.env.VUE_APP_GRAPHQL_HTTP} `
+          `default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com; img-src 'self' https://toppng.com; frame-ancestors 'none'; connect-src 'self'`
         );
+        res.set("X-XSS-Protection", "1");
+        res.set("X-Content-Type-Options", "nosniff");
     }
   }
 };
@@ -39,7 +45,17 @@ app.use(history());
 app.use(express.static(publicPath, staticConf));
 // Insert this so that 404 also have headers.
 app.use(function(req, res) {
-  res.send(404, "Resource Not Found");
+  switch (process.env.VUE_APP_MODE) {
+    case "staging-test":
+    case "production":
+      res.header(
+        "Access-Control-Allow-Origin",
+        process.env.VUE_APP_BASE_URL_LOCALHOST
+      );
+      res.header("X-XSS-Protection", "1");
+      res.header("X-Content-Type-Options", "nosniff");
+      res.send(404, "Resource Not Found");
+  }
 });
 const PORT = process.env.PORT || 443;
 app.listen(PORT, () =>
