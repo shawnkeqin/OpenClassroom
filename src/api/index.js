@@ -2,7 +2,9 @@ var passport = require("passport"),
   express = require("express"),
   LdapStrategy = require("passport-ldapauth"),
   jwt = require("jsonwebtoken"),
-  moment = require("moment");
+  moment = require("moment"),
+  cors = require("cors"),
+  bodyParser = require("body-parser");
 
 const LDAP_CONNECTED =
   process.env.VUE_APP_MODE == "production" ||
@@ -112,8 +114,8 @@ api.use("/faculty-status", facultyStatusRouter);
 
 api.use(passport.initialize());
 module.exports = app => {
-  // app.use(cors());
-  // app.use(bodyParser.json());
+  app.use(cors());
+  app.use(bodyParser.json());
   // app.use(function customAPIHeaders(req, res, next) {
   //   res.header(
   //     "Access-Control-Allow-Headers",
