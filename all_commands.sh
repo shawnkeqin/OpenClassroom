@@ -12,14 +12,14 @@ npm run build-staging-test
 sudo lsof -iTCP -sTCP:LISTEN -P
 sudo kill -9 1505
 npm run serve-staging-test
-#-------------------------------------------------------------
 
 # BACKEND HASURA DOCKER IMAGE + POSTGRES SETUP
 # Install and setup postgres DB.
 wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O- | sudo apt-key add -
 sudo apt-get install postgresql-12
 echo "deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main" | sudo tee /etc/apt/sources.list.d/postgresql.list
-sudo service postgresql start
+sudo pg_createcluster 12 main --start
+pg_ctlcluster 12 main start
 sudo -u postgres psql
 #  Configure DB - add users and permissions.
 # Try logging in.
@@ -51,11 +51,30 @@ chmod +x ./docker-run.sh
 ./docker-run.sh
 docker ps
 
+
 # Install Hasura CLI for migrating metadata + schema. 
 curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
-hasura migrate apply
-hasura metadata apply
+cd open-classroom-hasura
+hasura init
+# Update admin secret and endpoint in config.yaml to point to where you are applying migrations/pulling migrations from.
+# Create new. 
+hasura migrate create
+hasura migrate status
+hasura migrate apply --version 1597913678545 --envfile ../.env.local --log-level debug
+hasura metadata apply --envfile ../.env.local --log-level debug
+
 # Dump from pg_dump archive from demo app.
 pg_restore --verbose --clean --no-acl --no-owner -h localhost -U hasurauser -d open_classroom data/1fb44c77-68e8-4f07-b987-f368025bc02b
 
+### DB cluster management 
+pg_lsclusters
+sudo systemctl stop postgresql@12-main
+pg_dropcluster 12 main 
+## type "y"
+sudo pg_createcluster 12 main --start
+pg_lsclusters
+sudo -u postgres psql
 
+# Docker management 
+docker stop <>
+docker container rm $(docker container ps –aq)
