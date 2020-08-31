@@ -3,10 +3,13 @@
     <a-alert v-if="showConsent" type="info" show-icon>
       <template slot="message">
         <div>
-          View and agree to the terms of the app to start making visits requests.
+          View and agree to the terms of the app to start making visits
+          requests.
         </div>
         <div style="margin-bottom: 5px;">
-          Once you agree, visitors will be able to submit visit requests for your classes: please CLOSE your classroom to visits under My Courses if you do not wish to receive these requests.
+          Once you agree, visitors will be able to submit visit requests for
+          your classes: please CLOSE your classroom to visits under My Courses
+          if you do not wish to receive these requests.
         </div>
         <ConsentForm />
       </template>
@@ -16,12 +19,9 @@
         <a-layout-sider width="12rem" style="background: #fff;">
           <div id="mini-user-info">
             <template v-if="loggedInUserObj">
-              <img
-                class="avatar-medium"
-                :src="
-                  loggedInUserObj.profilePic ||
-                    'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
-                "
+              <a-avatar
+                :src="loggedInUserObj.profilePic || '/avatar_default.png'"
+                size="large"
                 style="margin-right: 15px;"
               />
               <div style="font-weight: bold; color: #004b8d;">

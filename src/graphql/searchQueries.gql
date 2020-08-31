@@ -65,6 +65,7 @@ query searchSeminarsByFilters(
         email
         is_active
         has_consented
+        profilePic
       }
       course {
         desc
@@ -168,6 +169,7 @@ query searchSeminarsByFiltersWithTags(
         email
         is_active
         has_consented
+        profilePic
       }
       course {
         id

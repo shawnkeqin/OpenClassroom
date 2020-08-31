@@ -131,6 +131,7 @@ query get_seminars_with_visits_by_time_requested($faculty_id: String) {
         id
         name
         is_active
+        profilePic
       }
     }
     course_group {
@@ -198,6 +199,7 @@ query get_my_visits($visitor_id: String!) {
           email
           is_active
           has_consented
+          profilePic
         }
         course {
           id
@@ -457,30 +459,6 @@ query get_my_visited_request_seminars($visitor_id: String!) {
       }
     }
     id
-  }
-}
-
-query getSeminarById($seminar_id: Int!) {
-  seminar_by_pk(id: $seminar_id) {
-    id
-    date
-    start
-    end
-    title
-    desc
-    course_group {
-      id
-      course {
-        id
-        module_code
-        title
-      }
-      faculty {
-        id
-        email
-        name
-      }
-    }
   }
 }
 

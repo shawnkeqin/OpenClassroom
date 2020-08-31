@@ -81,12 +81,8 @@
           <div>
             <a-col :span="16">
               <div style="display: flex;">
-                <img
-                  class="avatar-medium"
-                  :src="
-                    request.visitor.profilePic ||
-                      'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
-                  "
+                <a-avatar
+                  :src="request.visitor.profilePic || '/avatar_default.png'"
                 />
                 <div style="display: flex; flex-direction: column;">
                   <div>
