@@ -1,3 +1,18 @@
+query getTags {
+  tag(order_by: { label: asc }) {
+    label
+  }
+}
+
+mutation insertTags($tags: [tag_insert_input!]!) {
+  insert_tag(
+    objects: $tags
+    on_conflict: { constraint: tag_pkey, update_columns: label }
+  ) {
+    affected_rows
+  }
+}
+
 query getCourseList($semester_code: String!) {
   course(
     order_by: { title: asc }
@@ -296,6 +311,7 @@ query get_course_group_details($course_group_id: Int!) {
       id
       title
       module_code
+      semester_code
       module_brief_link
       desc
       tagged_as {
@@ -926,7 +942,10 @@ query average_hosted_visits_across_division(
 }
 
 mutation update_profile_pic($faculty_id: String!, $profilePic: String!) {
-  update_faculty_by_pk(pk_columns: {id: $faculty_id}, _set: {profilePic: $profilePic}) {
+  update_faculty_by_pk(
+    pk_columns: { id: $faculty_id }
+    _set: { profilePic: $profilePic }
+  ) {
     id
   }
 }

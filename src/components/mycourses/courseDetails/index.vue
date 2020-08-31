@@ -5,7 +5,7 @@
     </template>
     <template v-else>
       <div style="display: flex; justify-content: space-between;">
-        <div style="width: 15rem; margin-right: 20px;">
+        <div style="width: 100%; min-width: 25rem; margin-right: 20px;">
           <a-card>
             <div style="margin-bottom: 20px;">
               <h2>{{ course ? course.title : "" }}</h2>
@@ -42,17 +42,49 @@
               </div>
             </div>
             <template v-for="tag in course.tagged_as">
-              <ColoredTag :key="tag.tag_label" :tag_label="tag.tag_label" />
+              <ColoredTag
+                style="margin-bottom:5px"
+                :key="tag.tag_label"
+                :tag_label="tag.tag_label"
+              />
             </template>
+            <template>
+              <a-select
+                mode="tags"
+                style="width: 100%; margin-top: 20px"
+                showArrow
+                size="large"
+                placeholder="Add existing tags or create your own"
+                @change="updateSelectedTags"
+              >
+                <a-select-option v-for="tag in tags" :key="tag.label">
+                  {{ tag.label }}
+                </a-select-option>
+              </a-select>
+            </template>
+            <h5 style="margin-top: 10px">
+              Please use existing tags if applicable.
+            </h5>
+            <a-button
+              :loading="isAddTagsLoading"
+              type="primary"
+              style="width: 8rem; margin-top: 10px;"
+              @click="addTags"
+              icon="tags"
+              >Add tags</a-button
+            >
           </a-card>
         </div>
         <div>
           <a-card
-            style="width:35rem; margin-right: 20px;"
+            style="width:100%; min-width: 35rem; margin-right: 20px"
             :bodyStyle="{ padding: 0 }"
           >
             <a-collapse v-model="activeKey" :bordered="false">
-              <a-collapse-panel key="1">
+              <a-collapse-panel
+                key="1"
+                style="background-color: rgb(256, 256, 256)"
+              >
                 <template slot="header">
                   <h4 style="margin: 0;">Course description</h4>
                 </template>
@@ -63,14 +95,20 @@
                 <p>{{ course_group.course_group_desc || "-" }}</p>
                 <updateCourseGroupDescModal :course_group="course_group" />
               </a-collapse-panel>
-              <a-collapse-panel key="2">
+              <a-collapse-panel
+                key="2"
+                style="background-color: rgb(256, 256, 256)"
+              >
                 <template slot="header">
                   <h4 style="margin: 0;">Course syllabus</h4>
                 </template>
                 <p>{{ course_group.syllabus || "-" }}</p>
                 <updateCourseGroupSyllabusModal :course_group="course_group" />
               </a-collapse-panel>
-              <a-collapse-panel key="3">
+              <a-collapse-panel
+                key="3"
+                style="background-color: rgb(256, 256, 256)"
+              >
                 <template slot="header">
                   <h4 style="margin: 0;">Notes for visitors</h4>
                 </template>
@@ -99,6 +137,7 @@ import updateCourseGroupNotesModal from "./updateCourseGroupNotesModal";
 import updateCourseGroupSyllabusModal from "./updateCourseGroupSyllabusModal";
 import SeminarsTable from "./SeminarsTable";
 import ColoredTag from "../../SeminarVisitRequestCard/ColoredTag";
+import utils from "@/utils";
 // import updateCourseGroupScheduleDescModal from "./updateCourseGroupScheduleDescModal";
 
 export default {
@@ -118,10 +157,25 @@ export default {
       activeKey: ["1", "2", "3"],
       seminars: [],
       course_group: {},
-      isToggleCourseGroupLoading: false
+      isToggleCourseGroupLoading: false,
+      isAddTagsLoading: false,
+      selectedTags: []
     };
   },
   apollo: {
+    tags() {
+      return {
+        query: queries.getTags,
+        update: data => data.tag,
+        error(error, vm, key) {
+          this.$notification.error({
+            key,
+            message: "Failed to obtain data on your course",
+            description: "Please try again."
+          });
+        }
+      };
+    },
     seminars() {
       const course_group_id = this.id;
       const date_lower_bound = new Date(Date.now())
@@ -170,6 +224,58 @@ export default {
     }
   },
   methods: {
+    updateSelectedTags(tags) {
+      this.selectedTags = tags;
+    },
+    async addTags() {
+      if (!this.selectedTags || !utils.isNonEmptyArray(this.selectedTags)) {
+        return;
+      }
+      const tag_insert_input = this.selectedTags.map(label => {
+        return {
+          label,
+          tagged_as: {
+            data: [
+              {
+                module_code: this.course_group
+                  ? this.course_group.course.module_code
+                  : "",
+                semester_code: this.course_group
+                  ? this.course_group.course.semester_code
+                  : ""
+              }
+            ],
+            on_conflict: {
+              constraint: "tagged_as_pkey",
+              update_columns: ["module_code", "semester_code"]
+            }
+          }
+        };
+      });
+      console.log(tag_insert_input);
+      this.isAddTagsLoading = true;
+      try {
+        await this.$apollo.mutate({
+          mutation: queries.insertTags,
+          variables: {
+            tags: tag_insert_input
+          },
+          refetchQueries: ["get_course_group_details", "getTags"]
+        });
+        this.isAddTagsLoading = false;
+        this.$notification.success({
+          key: "addTags success",
+          message: "Added tags."
+        });
+      } catch (err) {
+        this.isAddTagsLoading = false;
+        this.$notification.error({
+          key: "addTags error",
+          message: `Failed to add tags to your course: ${err}`,
+          description: "Please try again."
+        });
+      }
+    },
     async toggleCourseGroupIsOpen() {
       this.isToggleCourseGroupLoading = true;
       const course_group_id = this.id;
