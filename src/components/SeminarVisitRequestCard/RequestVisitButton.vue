@@ -6,23 +6,32 @@
       block
       style="margin-bottom: 15px"
       :disabled="!has_consented"
-    >Request visit</a-button>
-    <a-modal v-model="requestModalVisible" title="Making a vist request" @ok="handleSubmitRequest">
+      >Request visit</a-button
+    >
+    <a-modal
+      v-model="requestModalVisible"
+      title="Making a vist request"
+      @ok="handleSubmitRequest"
+    >
       <template slot="footer">
-        <a-button key="cancel" @click="requestModalVisible = false">Cancel</a-button>
+        <a-button key="cancel" @click="requestModalVisible = false"
+          >Cancel</a-button
+        >
         <a-button key="submit" @click="handleSubmitRequest">Submit</a-button>
       </template>
       <div v-if="myVisitsOnTheSameDay.length || mySeminarsOnTheSameDay.length">
         <div v-if="myVisitsOnTheSameDay.length" style="margin-bottom: 1rem;">
-          <h4>{{ `You have upcoming visits on the same day ${seminar.date}` }}</h4>
+          <h4>
+            {{ `You have upcoming visits on the same day ${seminar.date}` }}
+          </h4>
           <div v-for="visit in myVisitsOnTheSameDay" :key="visit.id">
             <h5>
               {{
-              `${visit.seminar.course_group.course.module_code} ${
-              visit.seminar.course_group.course.title
-              } | ${utils.time_format(
-              visit.seminar.start
-              )}-${utils.time_format(visit.seminar.end)}`
+                `${visit.seminar.course_group.course.module_code} ${
+                  visit.seminar.course_group.course.title
+                } | ${utils.time_format(
+                  visit.seminar.start
+                )}-${utils.time_format(visit.seminar.end)}`
               }}
             </h5>
           </div>
@@ -32,20 +41,20 @@
           <div v-for="seminar in mySeminarsOnTheSameDay" :key="seminar.id">
             <h5>
               {{
-              `${seminar.course_group.course.module_code} ${
-              seminar.course_group.course.title
-              } | ${utils.time_format(seminar.start)}-${utils.time_format(
-              seminar.end
-              )}`
+                `${seminar.course_group.course.module_code} ${
+                  seminar.course_group.course.title
+                } | ${utils.time_format(seminar.start)}-${utils.time_format(
+                  seminar.end
+                )}`
               }}
             </h5>
           </div>
         </div>
         <p>
           {{
-          `The class that you intend to request a visit to takes place from ${utils.time_format(
-          seminar.start
-          )}-${utils.time_format(seminar.end)}`
+            `The class that you intend to request a visit to takes place from ${utils.time_format(
+              seminar.start
+            )}-${utils.time_format(seminar.end)}`
           }}
         </p>
       </div>

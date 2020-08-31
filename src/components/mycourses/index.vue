@@ -23,7 +23,7 @@
               </p>
               <div style="display: flex;">
                 <p style="margin-right: 5px;">
-                {{ `Toggle here to open/close this course to all visitors` }}
+                  {{ `Toggle here to open/close this course to all visitors` }}
                 </p>
                 <div style="display: flex; align-items: center;">
                   <a-switch
@@ -32,7 +32,10 @@
                     un-checked-children="closed"
                     :loading="isToggleCourseGroupLoading"
                     @click="
-                      toggleCourseGroupIsOpen(course_group.id, course_group.is_open)
+                      toggleCourseGroupIsOpen(
+                        course_group.id,
+                        course_group.is_open
+                      )
                     "
                     style="margin-right: 5px;"
                   />

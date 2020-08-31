@@ -1,12 +1,8 @@
 <template>
   <div style="width: 35rem; margin-bottom: 30px">
     <div style="display: flex; align-items: center; margin: 0 0 10px 20px">
-      <img
-        class="avatar-medium"
-        :src="
-          course_group.faculty.profilePic ||
-            'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
-        "
+      <a-avatar
+        :src="course_group.faculty.profilePic || '/avatar_default.png'"
       />
       <p style="margin: 0 5px;">{{ `${faculty.name}'s class` }}</p>
       <template v-for="tag in course.tagged_as">

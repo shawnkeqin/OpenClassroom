@@ -14,7 +14,6 @@
               :checked="faculty.notif_new_request"
               :loading="isToggleNotifNewRequestLoading"
               @click="toggleNotifNewRequest"
-              class="pref-toggle"
             />
           </a-list-item>
           <a-list-item
