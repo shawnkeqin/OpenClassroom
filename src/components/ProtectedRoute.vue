@@ -2,9 +2,12 @@
   <a-layout>
     <a-alert v-if="showConsent" type="info" show-icon>
       <template slot="message">
-        <p style="margin-bottom: 5px;">
-          View and agree to the terms of the app to start making vists requests.
-        </p>
+        <div>
+          View and agree to the terms of the app to start making visits requests.
+        </div>
+        <div style="margin-bottom: 5px;">
+          Once you agree, visitors will be able to submit visit requests for your classes: please CLOSE your classroom to visits under My Courses if you do not wish to receive these requests.
+        </div>
         <ConsentForm />
       </template>
     </a-alert>

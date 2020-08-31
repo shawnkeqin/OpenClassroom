@@ -34,7 +34,7 @@
           style="height: 20vh; width: 100%; bottom: 0; background: white; padding: 1.5rem 1.5rem 0 1.5rem; display: flex; justify-content: space-between; align-items: flex-end;"
         >
           <div style="width: 100%;">
-            <h3 class="desc">What's your interest?</h3>
+            <h3>What's your interest?</h3>
             <p>
               Heard something great about a colleague’s course?<br />
               Curious about how others are teaching on Zoom?<br />
@@ -50,38 +50,56 @@
         </div>
       </div>
     </div>
-    <div id="container-two" class="screen-wrapper">
+    <div class="screen-wrapper" style="padding-top: 20vh;">
       <div class="big-text" style="text-align: center;">
         Make a request in <br />an instant
       </div>
-      <p class="desc" style="text-align: center;">
+    </div>
+    <div class="screen-wrapper" style="background: #f5f5f5; padding: 2rem;">
+      <div style="text-align: center; margin: 0;">
         Automatic messaging requests a specific date and time to visit.
         <br />Easy to request, easy to reply. No pressure.
-      </p>
-    </div>
-    <div id="container-three">
-      <div
-        class="big-text"
-        style="color: white; padding: 2rem; left: 50%; position: absolute;"
-      >
-        Manage your <br />visits and <br />visitors. <br />Hassle-free.
       </div>
     </div>
-    <div id="container-four" class="screen-wrapper">
-      <p class="desc" style="width: 20rem; text-align: center;">
-        You control who can visit. Remove courses or individual meetings, set
-        the number of visitors, or just leave the door open to colleagues and
-        see who shows up!
-      </p>
+    <div id="mira-banner">
+      <div
+        style="padding: 1rem 2rem; float: left; margin-left: 55%; background: white;"
+      >
+        <div class="big-text" style="margin-bottom: 1rem;">
+          Manage your <br />visits and <br />visitors. <br />Hassle-free.
+        </div>
+        <div style="width: 20rem;">
+          <p>
+            You control who can visit.
+          </p>
+          <p>
+            Remove courses or individual meetings, set the number of visitors,
+            or just leave the door open to colleagues and see who shows up!
+          </p>
+        </div>
+      </div>
     </div>
     <div id="footer" class="screen-wrapper">
-      <div>Contact us</div>
+      <div style="margin-bottom: 10px;">Contact us</div>
+      <div>
+        Photos used with permission from
+        <a href="https://teaching.yale-nus.edu.sg/" target="_blank"
+          >Yale-NUS Center for Teaching and Learning</a
+        >
+      </div>
+      <div>
+        Funded by a grant from
+        <a href="http://nus.edu.sg/cdtl" target="_blank"
+          >NUS Center for Development of Teaching and Learning</a
+        >
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import LoginCard from "./LoginCard";
+
 export default {
   name: "Login",
   components: { LoginCard },
@@ -97,6 +115,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 #container-one {
   height: 100vh;
@@ -111,14 +130,18 @@ export default {
 .one-subcontainer {
   width: 60rem;
 }
-#container-two {
+#two-subcontainer-1 {
   height: 80vh;
 }
-#container-three {
-  height: 70vh;
+#mira-banner {
+  height: 100vh;
+  padding-top: 4rem;
+  padding-bottom: 1rem;
   background-image: url("../../assets/images/mira_banner.png");
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: top left;
+  background-size: 60rem;
+  background-color: #f89829;
 }
 #container-four {
   padding: 6rem;

@@ -24,6 +24,7 @@ query getFacultyById($faculty_id: String!) {
     has_consented
     notif_new_request
     notif_request_update
+    profilePic
   }
 }
 
@@ -921,5 +922,11 @@ query average_hosted_visits_across_division(
     aggregate {
       count
     }
+  }
+}
+
+mutation update_profile_pic($faculty_id: String!, $profilePic: String!) {
+  update_faculty_by_pk(pk_columns: {id: $faculty_id}, _set: {profilePic: $profilePic}) {
+    id
   }
 }
