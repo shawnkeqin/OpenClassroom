@@ -33,7 +33,7 @@ const staticConf = {
         );
         res.set(
           "Content-Security-Policy",
-          `default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com; img-src 'self' https://toppng.com; frame-ancestors 'none'; connect-src 'self' ${process.env.VUE_APP_AUTH_ENDPOINT};`
+          `default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com; img-src 'self' https://toppng.com; frame-ancestors 'none'; connect-src 'self' ${process.env.VUE_APP_AUTH_ENDPOINT} ${process.env.VUE_APP_GRAPHQL_HTTP};`
         );
         res.set("X-XSS-Protection", "1");
         res.set("X-Content-Type-Options", "nosniff");
