@@ -32,6 +32,9 @@
         <clipper-upload v-model="uploadPic" style="margin-right: 10px;">
           <a-button type="primary">Upload from computer</a-button>
         </clipper-upload>
+        <a-button @click="handleDeleteProfilePic"
+          >Remove profile picture</a-button
+        >
       </div>
       <clipper-fixed
         :src="uploadPic"
@@ -110,7 +113,27 @@ export default {
       this.isUpdatePicLoading = false;
       this.isUploadPicModalVisible = false;
     },
-    resizeImage() {}
+    async handleDeleteProfilePic() {
+      this.isUpdatePicLoading = true;
+      try {
+        await this.$apollo.mutate({
+          mutation: queries.update_profile_pic,
+          variables: {
+            faculty_id: store.state.loggedInUser,
+            profilePic: ''
+          },
+          refetchQueries: ["getFacultyById"]
+        });
+      } catch (err) {
+        this.$notification.error({
+          key: `toggle_notif_new_request_error`,
+          message: "The server could not update your user profile picture",
+          description: "Please try again."
+        });
+      }
+      this.isUpdatePicLoading = false;
+      this.isUploadPicModalVisible = false;
+    }
   }
 };
 </script>

@@ -160,7 +160,9 @@ const START_END_TIME_QUERY_VAR = {
     .format()
 };
 
-// const VISIT_TYPES = ["visit3", "visit2", "visit1"];
+const VISIT_TYPES = ["visit3", "visit2", "visit1"];
+
+const getRatio = (count, sum) => count && sum && (sum / count).toFixed(1);
 
 export default {
   name: "userStats",
@@ -807,106 +809,52 @@ export default {
     },
 
     average_visit_requests_made_across_all_users() {
-      var data = [];
+      const visits_counts = this
+        .total_number_of_visit_requests_across_all_users;
+      const faculty_requests_count =
+        visits_counts && visits_counts.faculty_aggregate.aggregate.count;
 
-      data.push(
-        this.getAverage(
-          this.total_number_of_visit_requests_across_all_users.faculty_aggregate
-            .aggregate.count,
-          this.total_number_of_visit_requests_across_all_users.visit3.aggregate
-            .count
-        )
-      );
-
-      data.push(
-        this.getAverage(
-          this.total_number_of_visit_requests_across_all_users.faculty_aggregate
-            .aggregate.count,
-          this.total_number_of_visit_requests_across_all_users.visit2.aggregate
-            .count
-        )
-      );
-
-      data.push(
-        this.getAverage(
-          this.total_number_of_visit_requests_across_all_users.faculty_aggregate
-            .aggregate.count,
-          this.total_number_of_visit_requests_across_all_users.visit1.aggregate
-            .count
-        )
-      );
-
-      return data.length == 3 ? data : null;
+      if (visits_counts) {
+        return VISIT_TYPES.map(x =>
+          getRatio(faculty_requests_count, visits_counts[x].aggregate.count)
+        );
+      } else {
+        return VISIT_TYPES.map(() => 0);
+      }
     },
-
     average_completed_visit_requests_made_across_all_users() {
-      var data = [];
+      const visits_counts = this
+        .total_number_of_completed_visit_requests_across_all_users;
+      const faculty_requests_count =
+        visits_counts && visits_counts.faculty_aggregate.aggregate.count;
 
-      data.push(
-        this.getAverage(
-          this.total_number_of_completed_visit_requests_across_all_users
-            .faculty_aggregate.aggregate.count,
-          this.total_number_of_completed_visit_requests_across_all_users.visit3
-            .aggregate.count
-        )
-      );
-
-      data.push(
-        this.getAverage(
-          this.total_number_of_completed_visit_requests_across_all_users
-            .faculty_aggregate.aggregate.count,
-          this.total_number_of_completed_visit_requests_across_all_users.visit2
-            .aggregate.count
-        )
-      );
-
-      data.push(
-        this.getAverage(
-          this.total_number_of_completed_visit_requests_across_all_users
-            .faculty_aggregate.aggregate.count,
-          this.total_number_of_completed_visit_requests_across_all_users.visit1
-            .aggregate.count
-        )
-      );
-
-      return data.length == 3 ? data : null;
+      if (visits_counts) {
+        return VISIT_TYPES.map(x =>
+          getRatio(faculty_requests_count, visits_counts[x].aggregate.count)
+        );
+      } else {
+        return VISIT_TYPES.map(() => 0);
+      }
     },
     average_visit_requests_received_across_all_users() {
-      var data = [];
+      const visits_counts = this
+        .total_number_of_visit_requests_received_across_all_users;
+      const faculty_requests_count =
+        visits_counts && visits_counts.faculty_aggregate.aggregate.count;
 
-      data.push(
-        this.getAverage(
-          this.total_number_of_visit_requests_received_across_all_users
-            .faculty_aggregate.aggregate.count,
-          this.total_number_of_visit_requests_received_across_all_users.visit3
-            .aggregate.count
-        )
-      );
-
-      data.push(
-        this.getAverage(
-          this.total_number_of_visit_requests_received_across_all_users
-            .faculty_aggregate.aggregate.count,
-          this.total_number_of_visit_requests_received_across_all_users.visit2
-            .aggregate.count
-        )
-      );
-      data.push(
-        this.getAverage(
-          this.total_number_of_visit_requests_received_across_all_users
-            .faculty_aggregate.aggregate.count,
-          this.total_number_of_visit_requests_received_across_all_users.visit1
-            .aggregate.count
-        )
-      );
-
-      return data.length == 3 ? data : null;
+      if (visits_counts) {
+        return VISIT_TYPES.map(x =>
+          getRatio(faculty_requests_count, visits_counts[x].aggregate.count)
+        );
+      } else {
+        return VISIT_TYPES.map(() => 0);
+      }
     },
     average_hosted_visits_across_all_users() {
       var data = [];
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.total_number_of_hosted_visits_across_all_users.faculty_aggregate
             .aggregate.count,
           this.total_number_of_hosted_visits_across_all_users.visit3.aggregate
@@ -915,7 +863,7 @@ export default {
       );
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.total_number_of_hosted_visits_across_all_users.faculty_aggregate
             .aggregate.count,
           this.total_number_of_hosted_visits_across_all_users.visit2.aggregate
@@ -923,7 +871,7 @@ export default {
         )
       );
       data.push(
-        this.getAverage(
+        getRatio(
           this.total_number_of_hosted_visits_across_all_users.faculty_aggregate
             .aggregate.count,
           this.total_number_of_hosted_visits_across_all_users.visit1.aggregate
@@ -938,7 +886,7 @@ export default {
       var data = [];
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_made_across_division_science.faculty_aggregate
             .aggregate.count,
           this.visit_requests_made_across_division_science.visit3.aggregate
@@ -947,7 +895,7 @@ export default {
       );
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_made_across_division_science.faculty_aggregate
             .aggregate.count,
           this.visit_requests_made_across_division_science.visit2.aggregate
@@ -955,7 +903,7 @@ export default {
         )
       );
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_made_across_division_science.faculty_aggregate
             .aggregate.count,
           this.visit_requests_made_across_division_science.visit1.aggregate
@@ -969,7 +917,7 @@ export default {
       var data = [];
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_made_across_division_social_sciences
             .faculty_aggregate.aggregate.count,
           this.visit_requests_made_across_division_social_sciences.visit3
@@ -978,7 +926,7 @@ export default {
       );
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_made_across_division_social_sciences
             .faculty_aggregate.aggregate.count,
           this.visit_requests_made_across_division_social_sciences.visit2
@@ -986,7 +934,7 @@ export default {
         )
       );
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_made_across_division_social_sciences
             .faculty_aggregate.aggregate.count,
           this.visit_requests_made_across_division_social_sciences.visit1
@@ -1000,7 +948,7 @@ export default {
       var data = [];
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_made_across_division_humanities.faculty_aggregate
             .aggregate.count,
           this.visit_requests_made_across_division_humanities.visit3.aggregate
@@ -1009,7 +957,7 @@ export default {
       );
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_made_across_division_humanities.faculty_aggregate
             .aggregate.count,
           this.visit_requests_made_across_division_humanities.visit2.aggregate
@@ -1017,7 +965,7 @@ export default {
         )
       );
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_made_across_division_humanities.faculty_aggregate
             .aggregate.count,
           this.visit_requests_made_across_division_humanities.visit1.aggregate
@@ -1031,7 +979,7 @@ export default {
       var data = [];
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.completed_visit_requests_made_across_division_science
             .faculty_aggregate.aggregate.count,
           this.completed_visit_requests_made_across_division_science.visit3
@@ -1040,7 +988,7 @@ export default {
       );
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.completed_visit_requests_made_across_division_science
             .faculty_aggregate.aggregate.count,
           this.completed_visit_requests_made_across_division_science.visit2
@@ -1048,7 +996,7 @@ export default {
         )
       );
       data.push(
-        this.getAverage(
+        getRatio(
           this.completed_visit_requests_made_across_division_science
             .faculty_aggregate.aggregate.count,
           this.completed_visit_requests_made_across_division_science.visit1
@@ -1062,7 +1010,7 @@ export default {
       var data = [];
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.completed_visit_requests_made_across_division_social_sciences
             .faculty_aggregate.aggregate.count,
           this.completed_visit_requests_made_across_division_social_sciences
@@ -1071,7 +1019,7 @@ export default {
       );
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.completed_visit_requests_made_across_division_social_sciences
             .faculty_aggregate.aggregate.count,
           this.completed_visit_requests_made_across_division_social_sciences
@@ -1079,7 +1027,7 @@ export default {
         )
       );
       data.push(
-        this.getAverage(
+        getRatio(
           this.completed_visit_requests_made_across_division_social_sciences
             .faculty_aggregate.aggregate.count,
           this.completed_visit_requests_made_across_division_social_sciences
@@ -1093,7 +1041,7 @@ export default {
       var data = [];
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.completed_visit_requests_made_across_division_humanities
             .faculty_aggregate.aggregate.count,
           this.completed_visit_requests_made_across_division_humanities.visit3
@@ -1102,7 +1050,7 @@ export default {
       );
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.completed_visit_requests_made_across_division_humanities
             .faculty_aggregate.aggregate.count,
           this.completed_visit_requests_made_across_division_humanities.visit2
@@ -1110,7 +1058,7 @@ export default {
         )
       );
       data.push(
-        this.getAverage(
+        getRatio(
           this.completed_visit_requests_made_across_division_humanities
             .faculty_aggregate.aggregate.count,
           this.completed_visit_requests_made_across_division_humanities.visit1
@@ -1124,7 +1072,7 @@ export default {
       var data = [];
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_received_across_division_science.faculty_aggregate
             .aggregate.count,
           this.visit_requests_received_across_division_science.visit3.aggregate
@@ -1133,7 +1081,7 @@ export default {
       );
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_received_across_division_science.faculty_aggregate
             .aggregate.count,
           this.visit_requests_received_across_division_science.visit2.aggregate
@@ -1141,7 +1089,7 @@ export default {
         )
       );
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_received_across_division_science.faculty_aggregate
             .aggregate.count,
           this.visit_requests_received_across_division_science.visit1.aggregate
@@ -1155,7 +1103,7 @@ export default {
       var data = [];
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_received_across_division_social_sciences
             .faculty_aggregate.aggregate.count,
           this.visit_requests_received_across_division_social_sciences.visit3
@@ -1164,7 +1112,7 @@ export default {
       );
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_received_across_division_social_sciences
             .faculty_aggregate.aggregate.count,
           this.visit_requests_received_across_division_social_sciences.visit2
@@ -1172,7 +1120,7 @@ export default {
         )
       );
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_received_across_division_social_sciences
             .faculty_aggregate.aggregate.count,
           this.visit_requests_received_across_division_social_sciences.visit1
@@ -1186,7 +1134,7 @@ export default {
       var data = [];
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_received_across_division_humanities
             .faculty_aggregate.aggregate.count,
           this.visit_requests_received_across_division_humanities.visit3
@@ -1195,7 +1143,7 @@ export default {
       );
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_received_across_division_humanities
             .faculty_aggregate.aggregate.count,
           this.visit_requests_received_across_division_humanities.visit2
@@ -1203,7 +1151,7 @@ export default {
         )
       );
       data.push(
-        this.getAverage(
+        getRatio(
           this.visit_requests_received_across_division_humanities
             .faculty_aggregate.aggregate.count,
           this.visit_requests_received_across_division_humanities.visit1
@@ -1217,7 +1165,7 @@ export default {
       var data = [];
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.hosted_visits_across_division_science.faculty_aggregate.aggregate
             .count,
           this.hosted_visits_across_division_science.visit3.aggregate.count
@@ -1225,14 +1173,14 @@ export default {
       );
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.hosted_visits_across_division_science.faculty_aggregate.aggregate
             .count,
           this.hosted_visits_across_division_science.visit2.aggregate.count
         )
       );
       data.push(
-        this.getAverage(
+        getRatio(
           this.hosted_visits_across_division_science.faculty_aggregate.aggregate
             .count,
           this.hosted_visits_across_division_science.visit1.aggregate.count
@@ -1241,11 +1189,11 @@ export default {
 
       return data.length == 3 ? data : null;
     },
-    average_hosted_visits_across_divison_social_sciences: function() {
+    average_hosted_visits_across_divison_social_sciences() {
       var data = [];
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.hosted_visits_across_division_social_sciences.faculty_aggregate
             .aggregate.count,
           this.hosted_visits_across_division_social_sciences.visit3.aggregate
@@ -1254,7 +1202,7 @@ export default {
       );
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.hosted_visits_across_division_social_sciences.faculty_aggregate
             .aggregate.count,
           this.hosted_visits_across_division_social_sciences.visit2.aggregate
@@ -1262,7 +1210,7 @@ export default {
         )
       );
       data.push(
-        this.getAverage(
+        getRatio(
           this.hosted_visits_across_division_social_sciences.faculty_aggregate
             .aggregate.count,
           this.hosted_visits_across_division_social_sciences.visit1.aggregate
@@ -1276,7 +1224,7 @@ export default {
       var data = [];
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.hosted_visits_across_division_humanities.faculty_aggregate
             .aggregate.count,
           this.hosted_visits_across_division_humanities.visit3.aggregate.count
@@ -1284,14 +1232,14 @@ export default {
       );
 
       data.push(
-        this.getAverage(
+        getRatio(
           this.hosted_visits_across_division_humanities.faculty_aggregate
             .aggregate.count,
           this.hosted_visits_across_division_humanities.visit2.aggregate.count
         )
       );
       data.push(
-        this.getAverage(
+        getRatio(
           this.hosted_visits_across_division_humanities.faculty_aggregate
             .aggregate.count,
           this.hosted_visits_across_division_humanities.visit1.aggregate.count
@@ -1359,14 +1307,6 @@ export default {
             .average_completed_visit_requests_made_across_all_users[2]
         }
       ];
-    }
-  },
-  methods: {
-    getAverage(count, sum) {
-      count != undefined ? count : 0;
-      sum != undefined ? sum : 0;
-      const average = sum / count;
-      return average.toFixed(1);
     }
   }
 };
