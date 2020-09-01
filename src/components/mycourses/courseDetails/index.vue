@@ -55,7 +55,7 @@
                 showArrow
                 size="large"
                 placeholder="Add existing tags or create your own"
-                @change="updateSelectedTags"
+                v-model="selectedTags"
               >
                 <a-select-option v-for="tag in tags" :key="tag.label">
                   {{ tag.label }}
@@ -224,9 +224,6 @@ export default {
     }
   },
   methods: {
-    updateSelectedTags(tags) {
-      this.selectedTags = tags;
-    },
     async addTags() {
       if (!this.selectedTags || !utils.isNonEmptyArray(this.selectedTags)) {
         return;
@@ -267,6 +264,7 @@ export default {
           key: "addTags success",
           message: "Added tags."
         });
+        this.selectedTags = [];
       } catch (err) {
         this.isAddTagsLoading = false;
         this.$notification.error({
