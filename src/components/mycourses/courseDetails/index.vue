@@ -46,6 +46,7 @@
                 style="margin-bottom:5px"
                 :key="tag.tag_label"
                 :tag_label="tag.tag_label"
+                :course="course"
               />
             </template>
             <template>
@@ -234,12 +235,8 @@ export default {
           tagged_as: {
             data: [
               {
-                module_code: this.course_group
-                  ? this.course_group.course.module_code
-                  : "",
-                semester_code: this.course_group
-                  ? this.course_group.course.semester_code
-                  : ""
+                module_code: this.course ? this.course.module_code : "",
+                semester_code: this.course ? this.course.semester_code : ""
               }
             ],
             on_conflict: {
@@ -249,7 +246,6 @@ export default {
           }
         };
       });
-      console.log(tag_insert_input);
       this.isAddTagsLoading = true;
       try {
         await this.$apollo.mutate({
@@ -269,8 +265,8 @@ export default {
         this.isAddTagsLoading = false;
         this.$notification.error({
           key: "addTags error",
-          message: `Failed to add tags to your course: ${err}`,
-          description: "Please try again."
+          message: "Failed to add tags to your course.",
+          description: err
         });
       }
     },
