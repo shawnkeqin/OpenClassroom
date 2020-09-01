@@ -1,5 +1,5 @@
 <template>
-  <div style="width:60rem;">
+  <div style="width:100%;">
     <h1>Search Classes</h1>
     <div style="padding: 5px 0px 10px 0px">
       <suggestedSearchButton
@@ -19,7 +19,7 @@
     />
 
     <div style="display: flex;">
-      <div style="width: 80%;">
+      <div style="width: 100%;">
         <h4 align="left">
           Results
           <a-spin v-if="$apollo.loading">
@@ -47,7 +47,7 @@
           style="display: flex; flex-direction: column; align-items: center;"
         >
           <template v-if="$apollo.loading">
-            <a-skeleton style="width: 35rem;" active />
+            <a-skeleton style="width: 100%" active />
           </template>
           <template v-else>
             <template v-if="seminarLimited.length">
@@ -60,7 +60,7 @@
               />
             </template>
             <template v-else>
-              <div style="width: 35rem;">
+              <div style="width: 100%">
                 <a-card hoverable>
                   <p>{{ `No results.` }}</p>
                 </a-card>
@@ -301,6 +301,7 @@ export default {
       variables() {
         return this.searchQueryVariables;
       },
+      throttle: "1500",
       error(error, vm, key) {
         this.$notification.error({
           key,
