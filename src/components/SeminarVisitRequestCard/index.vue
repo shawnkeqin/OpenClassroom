@@ -1,10 +1,10 @@
 <template>
-  <div style="width: 35rem; margin-bottom: 30px">
+  <div style="width: 100%; margin-bottom: 30px">
     <div style="display: flex; align-items: center; margin: 0 0 10px 20px">
       <a-avatar
         :src="course_group.faculty.profilePic || '/avatar_default.png'"
       />
-      <p style="margin: 0 5px;">{{ `${faculty.name}'s class` }}</p>
+      <p style="margin: 0px 10px 0px 5px;">{{ `${faculty.name}'s class` }}</p>
       <template v-for="tag in course.tagged_as">
         <ColoredTag :key="tag.tag_label" :tag_label="tag.tag_label" />
       </template>
