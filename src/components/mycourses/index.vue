@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100%; padding: 0 20px;">
-    <h1>My courses</h1>
+    <h1>My Courses</h1>
     <template v-if="$apollo.loading">
       <a-skeleton active />
     </template>
@@ -61,7 +61,10 @@
               <ul style="margin-bottom: 0">
                 <li>open or close individual classes</li>
                 <li>change individual class location, timing, description</li>
-                <li>add or modify course information</li>
+                <li>
+                  add or modify course information such as description,
+                  syllabus, notes for visitors, and tags
+                </li>
               </ul>
             </a-card>
           </div>
