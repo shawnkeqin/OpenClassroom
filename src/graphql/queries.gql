@@ -13,6 +13,17 @@ mutation insertTags($tags: [tag_insert_input!]!) {
   }
 }
 
+mutation removeTagFromCourse($tag_label: String!, $course_id: Int!) {
+  delete_tagged_as(
+    where: {
+      course: { id: { _eq: $course_id } }
+      _and: { tag_label: { _eq: $tag_label } }
+    }
+  ) {
+    affected_rows
+  }
+}
+
 query getCourseList($semester_code: String!) {
   course(
     order_by: { title: asc }
