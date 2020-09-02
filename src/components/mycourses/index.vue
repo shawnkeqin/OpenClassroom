@@ -11,7 +11,7 @@
             <a-card
               v-for="course_group in course_groups"
               :key="course_group.id"
-              style="margin: 0 15px 15px 0; width: 16rem;"
+              style="margin: 0 15px 15px 0; width: 30rem;"
             >
               <h3>{{ course_group.course.title }}</h3>
               <p>{{ course_group.course.module_code }}</p>
@@ -54,7 +54,7 @@
           </div>
           <div>
             <a-card
-              style="width: 13rem;"
+              style="width: 20rem;"
               :bodyStyle="{ background: '#e6f7ff', color: 'black' }"
             >
               Click "Edit course details" to:
