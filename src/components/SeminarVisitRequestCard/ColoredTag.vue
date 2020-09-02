@@ -1,8 +1,9 @@
 <template>
   <a-tag v-if="course" :color="tagColor"
-    >{{ tag_label
-    }}<a-icon type="close" class="close-icon" @click="handleRemoveTag"
-  /></a-tag>
+    >{{ tag_label }}
+    <a-icon v-if="loading" type="loading" class="tag-icon" />
+    <a-icon v-else type="close" class="tag-icon" @click="handleRemoveTag" />
+  </a-tag>
   <a-tag v-else :color="tagColor">{{ tag_label }}</a-tag>
 </template>
 
@@ -84,11 +85,13 @@ export default {
           },
           refetchQueries: ["get_course_group_details"]
         });
-        this.loading = false;
         this.$notification.success({
           key: "removeTag success",
           message: "Removed tag."
         });
+        setTimeout(() => {
+          this.loading = false;
+        }, 500);
       } catch (err) {
         this.loading = false;
         this.$notification.error({
@@ -119,7 +122,7 @@ export default {
   text-transform: uppercase;
   padding: 5px 10px;
 }
-.close-icon {
+.tag-icon {
   font-size: 13px;
   bottom: 0.2em;
   position: relative;
