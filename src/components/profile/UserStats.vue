@@ -24,32 +24,46 @@
             spin
           />
         </a-spin> -->
-      <div v-if="isShowRequestsMade" class="chart">
+      <div
+        v-if="isShowRequestsMade && visit_requests_chart_data.datasets.length"
+        class="chart"
+      >
         <h3>
           Requests Made
         </h3>
-        <LineChart :chart-data="visit_requests_chart_data" :height="200" />
+        <LineChart :chart-data="visit_requests_chart_data" />
       </div>
-      <div v-if="isShowCompletedVisits" class="chart">
+      <div
+        v-if="
+          isShowCompletedVisits && completed_visits_chart_data.datasets.length
+        "
+        class="chart"
+      >
         <h3>
           Completed Visits
         </h3>
-        <LineChart :chart-data="completed_visits_chart_data" :height="400" />
+        <LineChart :chart-data="completed_visits_chart_data" />
       </div>
-      <div v-if="isShowRequestsReceived" class="chart">
+      <div
+        v-if="
+          isShowRequestsReceived &&
+            visit_requests_received_chart_data.datasets.length
+        "
+        class="chart"
+      >
         <h3>
           Requests Received
         </h3>
-        <LineChart
-          :chart-data="visit_requests_received_chart_data"
-          :height="400"
-        />
+        <LineChart :chart-data="visit_requests_received_chart_data" />
       </div>
-      <div v-if="isShowHostedVisits" class="chart">
+      <div
+        v-if="isShowHostedVisits && hosted_visits_chart_data.datasets.length"
+        class="chart"
+      >
         <h3>
           Hosted Visits
         </h3>
-        <LineChart :chart-data="hosted_visits_chart_data" :height="400" />
+        <LineChart :chart-data="hosted_visits_chart_data" />
       </div>
     </div>
     <div class="content-class-wrapper">

@@ -17,7 +17,9 @@
         <a-button key="cancel" @click="requestModalVisible = false"
           >Cancel</a-button
         >
-        <a-button key="submit" @click="handleSubmitRequest">Submit</a-button>
+        <a-button type="primary" key="submit" @click="handleSubmitRequest"
+          >Submit</a-button
+        >
       </template>
       <div v-if="myVisitsOnTheSameDay.length || mySeminarsOnTheSameDay.length">
         <div v-if="myVisitsOnTheSameDay.length" style="margin-bottom: 1rem;">

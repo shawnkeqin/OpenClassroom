@@ -9,7 +9,7 @@
     >
       <template slot="footer">
         <a-button @click="modal2Visible = false">Cancel</a-button>
-        <a-button primary @click="submitUpdateSeminar"
+        <a-button type="primary" @click="submitUpdateSeminar"
           >Confirm changes</a-button
         >
       </template>
@@ -73,6 +73,7 @@
           <a-select
             v-model="edit_seminar.visitor_capacity"
             style="width: 120px;"
+            class="input-field"
           >
             <a-select-option
               v-for="option in visitor_capacity_options"

@@ -9,7 +9,7 @@
       <a-card :bodyStyle="{ padding: '0px' }">
         <a-list item-layout="horizontal" size="small">
           <a-list-item class="preference-item">
-            <p>Email me when new requests for my seminars are created</p>
+            <p>Email me when new requests for my classes are created</p>
             <a-switch
               :checked="faculty.notif_new_request"
               :loading="isToggleNotifNewRequestLoading"

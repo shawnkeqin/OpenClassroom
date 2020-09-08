@@ -1,10 +1,7 @@
 <template>
   <div>
     <a-button @click="consentModalVisible = true">View consent form</a-button>
-    <a-modal v-model="consentModalVisible" width="80vw">
-      <template slot="footer">
-        <div />
-      </template>
+    <a-modal v-model="consentModalVisible" width="80vw" :footer="null">
       <h2>ONLINE PARTICIPANT INFORMATION SHEET</h2>
       <p>(Study: The open classroom app)</p>
       <p>
@@ -146,7 +143,6 @@ export default {
           description: "Please try again."
         });
       }
-
     },
     handleCloseConsentModal() {
       this.consentChecked = false;

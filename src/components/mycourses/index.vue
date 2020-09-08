@@ -1,17 +1,17 @@
 <template>
-  <div style="width: 100%; padding: 0 20px;">
+  <div style="width: 100%; padding: 0 0.5rem;">
     <h1>My Courses</h1>
     <template v-if="$apollo.loading">
       <a-skeleton active />
     </template>
     <template v-else>
       <template v-if="course_groups && course_groups.length">
-        <div style="display: flex;">
+        <div style="display: flex; justify-content: space-between;">
           <div style="display: flex; flex-wrap: wrap;">
             <a-card
               v-for="course_group in course_groups"
               :key="course_group.id"
-              style="margin: 0 15px 15px 0; width: 30rem;"
+              style="margin: 0 15px 15px 0; width: 18rem;"
             >
               <h3>{{ course_group.course.title }}</h3>
               <p>{{ course_group.course.module_code }}</p>
@@ -54,7 +54,7 @@
           </div>
           <div>
             <a-card
-              style="width: 20rem;"
+              style="width: 14rem;"
               :bodyStyle="{ background: '#e6f7ff', color: 'black' }"
             >
               Click "Edit course details" to:

@@ -2,31 +2,18 @@
 import { Line, mixins } from "vue-chartjs";
 const { reactiveProp } = mixins;
 
-const options = {
-  responsive: true,
-  maintainAspectRatio: false
-}
-
 export default {
   extends: Line,
   mixins: [reactiveProp],
   mounted() {
-    this.renderLineChart();
-  },
-  computed: {
-    chartDatasets() {
-      return this.datasets;
-    }
-  },
-  methods: {
-    renderLineChart() {
-      this.renderChart(this.chartData, options);
-    }
+    this.renderChart(this.chartData, {
+      responsive: true,
+      maintainAspectRatio: false
+    });
   },
   watch: {
     datasets() {
-      this.$data._chart.destroy();
-      this.renderLineChart();
+      this.$data._chart.update();
     }
   }
 };

@@ -4,9 +4,11 @@
       <a-skeleton active />
     </template>
     <template v-else>
-      <div style="display: flex; justify-content: space-between;">
-        <div style="width: 100%; min-width: 25rem; margin-right: 20px;">
-          <a-card>
+      <div
+        style="display: flex; justify-content: space-between; flex-wrap: wrap;"
+      >
+        <div style="margin: 0 20px 20px 0;">
+          <a-card style="width: 20rem">
             <div style="margin-bottom: 20px;">
               <h2>{{ course ? course.title : "" }}</h2>
               <h3>
@@ -77,10 +79,7 @@
           </a-card>
         </div>
         <div>
-          <a-card
-            style="width:100%; min-width: 35rem; margin-right: 20px"
-            :bodyStyle="{ padding: 0 }"
-          >
+          <a-card style="width: 30rem;" :bodyStyle="{ padding: 0 }">
             <a-collapse v-model="activeKey" :bordered="false">
               <a-collapse-panel
                 key="1"
