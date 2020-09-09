@@ -134,15 +134,14 @@ export default {
           },
           refetchQueries: ["getFacultyById"]
         });
-        this.consentModalVisible = false;
       } catch (err) {
-        this.consentModalVisible = false;
         this.$notification.error({
           key: "consent_failure",
           message: "Failed to update your consent",
-          description: "Please try again."
+          description: err.toString()
         });
       }
+      this.consentModalVisible = false;
     },
     handleCloseConsentModal() {
       this.consentChecked = false;

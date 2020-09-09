@@ -159,7 +159,8 @@ export default {
       course_group: {},
       isToggleCourseGroupLoading: false,
       isAddTagsLoading: false,
-      selectedTags: []
+      selectedTags: [],
+      error: ""
     };
   },
   apollo: {
@@ -167,12 +168,8 @@ export default {
       return {
         query: queries.getTags,
         update: data => data.tag,
-        error(error, vm, key) {
-          this.$notification.error({
-            key,
-            message: "Failed to obtain data on your course",
-            description: "Please try again."
-          });
+        error(err) {
+          this.error = err;
         }
       };
     },
@@ -191,12 +188,8 @@ export default {
         },
         fetchPolicy: "cache-and-network",
         update: data => data.seminar,
-        error(error, vm, key) {
-          this.$notification.error({
-            key,
-            message: "Failed to obtain data on your classes",
-            description: "Please try again."
-          });
+        error(err) {
+          this.error = err;
         }
       };
     },
@@ -208,12 +201,8 @@ export default {
           course_group_id
         },
         update: data => data.course_group[0],
-        error(error, vm, key) {
-          this.$notification.error({
-            key,
-            message: "Failed to obtain data on your course",
-            description: "Please try again."
-          });
+        error(err) {
+          this.error = err;
         }
       };
     }
@@ -254,20 +243,17 @@ export default {
           },
           refetchQueries: ["get_course_group_details", "getTags"]
         });
-        this.isAddTagsLoading = false;
         this.$notification.success({
-          key: "addTags success",
-          message: "Added tags."
+          message: "Tags added"
         });
         this.selectedTags = [];
       } catch (err) {
-        this.isAddTagsLoading = false;
         this.$notification.error({
-          key: "addTags error",
-          message: "Failed to add tags to your course.",
-          description: err
+          message: "Failed to add tags to your course",
+          description: err.toString()
         });
       }
+      this.isAddTagsLoading = false;
     },
     async toggleCourseGroupIsOpen() {
       this.isToggleCourseGroupLoading = true;
@@ -285,15 +271,22 @@ export default {
             "get_seminars_by_course_group"
           ]
         });
-        this.isToggleCourseGroupLoading = false;
       } catch (err) {
-        this.isToggleCourseGroupLoading = false;
         this.$notification.error({
-          key: "toggle_course_group_is_open_error",
           message: "Failed to update the open status of your course",
-          description: "Please try again."
+          description: err.toString()
         });
       }
+      this.isToggleCourseGroupLoading = false;
+    }
+  },
+  watch: {
+    error(err) {
+      this.$notification.error({
+        message: "Failed to obtain data from database",
+        description: err.toString(),
+        duration: 0
+      });
     }
   }
 };

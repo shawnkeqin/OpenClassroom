@@ -173,15 +173,13 @@ export default {
           },
           refetchQueries: ["get_seminars_by_course_group"]
         });
-        this.isLoading = { seminar_id: seminar.id, isLoading: false };
       } catch (err) {
-        this.isLoading = { seminar_id: seminar.id, isLoading: false };
         this.$notification.error({
-          key: "toggle_course_group_is_open_error",
           message: "Failed to update the open status of your class",
-          description: "Please try again."
+          description: err.toString()
         });
       }
+      this.isLoading = { seminar_id: seminar.id, isLoading: false };
     }
   }
 };

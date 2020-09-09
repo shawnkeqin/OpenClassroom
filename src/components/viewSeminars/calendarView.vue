@@ -207,7 +207,7 @@ export default {
   watch: {
     error(err) {
       this.$notification.error({
-        message: "Error",
+        message: "Failed to obtain data from database",
         description: err.toString(),
         duration: 0
       });

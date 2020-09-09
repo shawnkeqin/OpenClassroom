@@ -83,23 +83,21 @@ export default {
             tag_label: this.tag_label,
             course_id: this.course.id
           },
-          refetchQueries: ["get_course_group_details"]
+          refetchQueries: ["get_course_group_details"],
+          awaitRefetchQueries: true
         });
         this.$notification.success({
           key: "removeTag success",
-          message: "Removed tag."
+          message: "Tag is removed."
         });
-        setTimeout(() => {
-          this.loading = false;
-        }, 500);
       } catch (err) {
-        this.loading = false;
         this.$notification.error({
           key: "removeTag error",
           message: `Failed to remove tag from your course.`,
-          description: err
+          description: err.toString()
         });
       }
+      this.loading = false;
     }
   },
   computed: {

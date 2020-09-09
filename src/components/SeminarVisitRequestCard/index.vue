@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%; margin-bottom: 30px">
+  <div style="width: 35rem; margin-bottom: 30px">
     <div style="display: flex; align-items: center; margin: 0 0 10px 20px">
       <a-avatar
         :src="course_group.faculty.profilePic || '/avatar_default.png'"

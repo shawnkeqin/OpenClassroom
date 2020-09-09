@@ -179,7 +179,8 @@ export default {
       isShowCompletedVisits: false,
       faculty: {},
       my_requests: [],
-      columns
+      columns,
+      error: ""
     };
   },
 
@@ -192,12 +193,8 @@ export default {
         };
       },
       update: data => data.seminar,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     number_of_visit_requests_made_by_user: {
@@ -209,15 +206,10 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
-
     number_of_visit_requests_received_by_user: {
       query: queriesViz.get_total_requests_received_by_user_history,
       variables() {
@@ -227,15 +219,10 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
-
     number_of_hosted_visits_by_user: {
       query: queriesViz.get_total_hosted_visits_by_user_history,
       variables() {
@@ -245,15 +232,10 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
-
     number_of_completed_visit_requests_made_by_user: {
       query: queriesViz.get_total_completed_visits_by_user_history,
       variables() {
@@ -263,15 +245,10 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
-
     total_number_of_visit_requests_across_all_users: {
       query: queriesViz.get_avg_requests_by_division_history,
       variables() {
@@ -281,12 +258,8 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     total_number_of_visit_requests_received_across_all_users: {
@@ -298,12 +271,8 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     total_number_of_hosted_visits_across_all_users: {
@@ -315,12 +284,8 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     total_number_of_completed_visit_requests_across_all_users: {
@@ -332,12 +297,8 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     visit_requests_made_across_division_science: {
@@ -349,12 +310,8 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     visit_requests_made_across_division_social_sciences: {
@@ -366,12 +323,8 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     visit_requests_made_across_division_humanities: {
@@ -383,12 +336,8 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     completed_visit_requests_made_across_division_science: {
@@ -400,12 +349,8 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     completed_visit_requests_made_across_division_social_sciences: {
@@ -417,12 +362,8 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     completed_visit_requests_made_across_division_humanities: {
@@ -434,12 +375,8 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     visit_requests_received_across_division_science: {
@@ -451,12 +388,8 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     visit_requests_received_across_division_social_sciences: {
@@ -468,12 +401,8 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     visit_requests_received_across_division_humanities: {
@@ -485,12 +414,8 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     hosted_visits_across_division_science: {
@@ -502,12 +427,8 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     hosted_visits_across_division_social_sciences: {
@@ -519,12 +440,8 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     hosted_visits_across_division_humanities: {
@@ -536,12 +453,8 @@ export default {
         };
       },
       update: data => data,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     }
   },
@@ -726,14 +639,13 @@ export default {
         return [
           {
             label: "Me",
-            // backgroundColor: "#1E90FF",
             data: VISIT_TYPES.map(x =>
               user_data_point[x].aggregate.count.toFixed(2)
             ),
             lineTension: 0,
             fill: false,
             showLine: true,
-            borderColor: "rgb(0, 255, 0)"
+            borderColor: "#7dcea0"
           },
           {
             label: "All Users",
@@ -742,38 +654,44 @@ export default {
             lineTension: 0,
             fill: false,
             showLine: true,
-            borderColor: "rgb(255, 0, 0)"
+            borderColor: "#85C1E9"
           },
           {
             label: "Science Division",
-            // backgroundColor: "#05ffb0",
             data: science_data_point,
             lineTension: 0,
             fill: false,
             showLine: true,
-            borderColor: "rgb(50, 115, 220)"
+            borderColor: "#F8C471"
           },
           {
             label: "Social Sciences Division",
-            // backgroundColor: "#05ffb0",
             data: social_sciences_data_point,
             lineTension: 0,
             fill: false,
             showLine: true,
-            borderColor: "rgb(50, 115, 220, 0.3)"
+            borderColor: "#73C6B6"
           },
           {
             label: "Humanities Division",
-            // backgroundColor: "#05ffb0",
             data: humanities_data_point,
             lineTension: 0,
             fill: false,
             showLine: true,
-            borderColor: "rgb(255,99,71)"
+            borderColor: "#BB8FCE"
           }
         ];
       }
       return [];
+    }
+  },
+  watch: {
+    error(err) {
+      this.$notification.error({
+        message: "Failed to obtain data from database",
+        description: err.toString(),
+        duration: 0
+      });
     }
   }
 };

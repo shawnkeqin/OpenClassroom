@@ -56,16 +56,14 @@ export default {
           },
           refetchQueries: ["get_course_group_details"]
         });
-        this.isLoading = false;
-        this.modal2Visible = false;
       } catch (err) {
-        this.modal2Visible = false;
         this.$notification.error({
-          key: "update_course_group_notes_error",
           message: "Failed to update notes for visitors",
-          description: "Please try again."
+          description: err.toString()
         });
       }
+      this.isLoading = false;
+      this.modal2Visible = false;
     }
   }
 };

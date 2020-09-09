@@ -50,13 +50,17 @@ export default {
   data() {
     return {
       seminarsWithVisits: [],
-      selectedSemester: [process.env.VUE_APP_SEMESTER_CODE]
+      selectedSemester: [process.env.VUE_APP_SEMESTER_CODE],
+      error: ""
     };
   },
   apollo: {
     semesterNames: {
       query: queries.get_semester_names,
-      update: data => data.semester
+      update: data => data.semester,
+      error(err) {
+        this.error = err;
+      }
     },
     seminarsWithVisits: {
       query: queries.get_seminars_with_visits_by_time_requested,
@@ -68,12 +72,8 @@ export default {
       },
       update: data => data.seminar,
       fetchPolicy: "network-only",
-      error() {
-        this.$notification.error({
-          key: `server_error`,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     }
   },
@@ -125,6 +125,15 @@ export default {
       return this.seminarsGroupBySemester.find(
         semester => semester.semester_code === this.selectedSemester[0]
       ).seminars;
+    }
+  },
+  watch: {
+    error(err) {
+      this.$notification.error({
+        message: "Failed to obtain data from database",
+        description: err.toString(),
+        duration: 0
+      });
     }
   }
 };

@@ -82,13 +82,17 @@ export default {
     return {
       myVisits: [],
       selectedSemester: [process.env.VUE_APP_SEMESTER_CODE], // to use v-model for a-menu, the data must but an array
-      mapVisible: false
+      mapVisible: false,
+      error: ""
     };
   },
   apollo: {
     semesterNames: {
       query: queries.get_semester_names,
-      update: data => data.semester
+      update: data => data.semester,
+      error(err) {
+        this.error = err;
+      }
     },
     myVisits: {
       query: queries.get_my_visits,
@@ -98,12 +102,8 @@ export default {
         };
       },
       update: data => data.visit,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Failed to obtain data on your visits",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     }
   },
@@ -151,26 +151,15 @@ export default {
         semester => semester.semester_code === this.selectedSemester[0]
       ).visits;
     }
-    //   seminarsToVisit() {
-    //     if (!this.myVisits.length) return [];
-    //     return this.myVisits.reduce((acc, cur) => {
-    //       const cur_seminar = cur.seminar;
-    //       const idx =
-    //         acc.length === 0
-    //           ? -1
-    //           : acc.findIndex(
-    //               seminarWithVisits =>
-    //                 seminarWithVisits.seminar.id === cur.seminar_id
-    //             );
-    //       if (idx === -1) {
-    //         acc.push({ seminar: cur_seminar, visits: [cur] });
-    //       } else {
-    //         const curr_seminarWithVisits = acc[idx];
-    //         curr_seminarWithVisits.visits.push(cur);
-    //       }
-    //       return acc;
-    //     }, []);
-    //   }
+  },
+  watch: {
+    error(err) {
+      this.$notification.error({
+        message: "Failed to obtain data from database",
+        description: err.toString(),
+        duration: 0
+      });
+    }
   }
 };
 </script>

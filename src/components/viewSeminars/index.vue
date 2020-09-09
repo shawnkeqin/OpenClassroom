@@ -1,5 +1,5 @@
 <template>
-  <div style="width:100%;">
+  <div>
     <h1>Search Classes</h1>
     <div style="padding: 5px 0px 10px 0px">
       <suggestedSearchButton
@@ -47,7 +47,7 @@
           style="display: flex; flex-direction: column; align-items: center;"
         >
           <template v-if="$apollo.loading">
-            <a-skeleton style="width: 100%" active />
+            <a-skeleton style="width: 35rem;" active />
           </template>
           <template v-else>
             <template v-if="seminarLimited.length">
@@ -70,7 +70,9 @@
         </div>
       </div>
       <div style="margin: 20px 0 0 20px;">
-        <a-card style="position: sticky; top: 20px; padding: 0.4rem;">
+        <a-card
+          style="position: sticky; top: 20px; padding: 0.4rem; width: 16rem;"
+        >
           <a-form>
             <h4 align="left">Filter by</h4>
             <h5 align="left">Date range</h5>
@@ -88,9 +90,7 @@
               class="filter-field"
             />
             <h5 align="left">Time range</h5>
-            <div
-              style="display: flex; flex-direction: row; justify-content: space-between;"
-            >
+            <div style="display: flex; justify-content: space-between;">
               <a-time-picker
                 :minute-step="30"
                 use12-hours
@@ -362,7 +362,7 @@ export default {
     },
     error(err) {
       this.$notification.error({
-        message: "Error",
+        message: "Failed to obtain data from database",
         description: err.toString(),
         duration: 0
       });

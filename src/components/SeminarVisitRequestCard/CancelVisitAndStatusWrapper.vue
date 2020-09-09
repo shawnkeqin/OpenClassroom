@@ -176,23 +176,23 @@ export default {
               }
             },
             "searchSeminarsByFilters",
+            "searchSeminarsByFiltersWithTags",
+            "searchOpenSeminarsByFilters",
+            "searchOpenSeminarsByFiltersWithTags",
             "get_my_visits_by_date"
           ],
           awaitRefetchQueries: true
         });
-        this.isCancelling = false;
         this.$notification.success({
-          key: `cancel_${visit_id}_success`,
           message: "Your visit request has been cancelled."
         });
       } catch (err) {
-        this.isCancelling = false;
         this.$notification.error({
-          key: `cancel_${visit_id}_failure`,
           message: "Failed to cancel your visit request",
-          description: "Please try again."
+          description: err.toString()
         });
       }
+      this.isCancelling = false;
     },
     async handleDeleteRequest() {
       this.deleteRequestModalVisible = false;
@@ -212,23 +212,23 @@ export default {
               }
             },
             "searchSeminarsByFilters",
+            "searchSeminarsByFiltersWithTags",
+            "searchOpenSeminarsByFilters",
+            "searchOpenSeminarsByFiltersWithTags",
             "get_my_visits_by_date"
           ],
           awaitRefetchQueries: true
         });
-        this.isCancelling = false;
         this.$notification.success({
-          key: `delete_${visit_id}_success`,
           message: "Your visit request has been deleted."
         });
       } catch (err) {
-        this.isCancelling = false;
         this.$notification.error({
-          key: `delete_${visit_id}_failure`,
           message: "Failed to delete your visit request",
-          description: "Please try again."
+          description: err.toString()
         });
       }
+      this.isCancelling = false;
     }
   },
   watch: {

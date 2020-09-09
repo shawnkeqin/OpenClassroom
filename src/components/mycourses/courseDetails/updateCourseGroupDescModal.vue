@@ -54,21 +54,16 @@ export default {
             id,
             course_group_desc: new_course_group_desc
           },
-          refetchQueries: [
-            // "get_course_group_new_desc",
-            "get_course_group_details"
-          ]
+          refetchQueries: ["get_course_group_details"]
         });
-        this.isLoading = false;
-        this.modal2Visible = false;
       } catch (err) {
-        this.modal2Visible = false;
         this.$notification.error({
-          key: "update_course_group_desc_error",
           message: "Failed to update course group description",
-          description: "Please try again."
+          description: err.toString()
         });
       }
+      this.isLoading = false;
+      this.modal2Visible = false;
     }
   }
 };

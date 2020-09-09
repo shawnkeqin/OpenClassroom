@@ -75,11 +75,10 @@ export default {
         };
       },
       update: data => data.faculty_by_pk,
-      error() {
+      error(err) {
         this.$notification.error({
-          key: `fetch_faculty_data_failure`,
           message: "Failed to obtain data on your profile",
-          description: "Please try again."
+          description: err.toString()
         });
       }
     }
@@ -105,9 +104,8 @@ export default {
         });
       } catch (err) {
         this.$notification.error({
-          key: `toggle_notif_new_request_error`,
           message: "The server could not update your user profile picture",
-          description: "Please try again."
+          description: err.toString()
         });
       }
       this.isUpdatePicLoading = false;
@@ -120,15 +118,14 @@ export default {
           mutation: queries.update_profile_pic,
           variables: {
             faculty_id: store.state.loggedInUser,
-            profilePic: ''
+            profilePic: ""
           },
           refetchQueries: ["getFacultyById"]
         });
       } catch (err) {
         this.$notification.error({
-          key: `toggle_notif_new_request_error`,
           message: "The server could not update your user profile picture",
-          description: "Please try again."
+          description: err.toString()
         });
       }
       this.isUpdatePicLoading = false;

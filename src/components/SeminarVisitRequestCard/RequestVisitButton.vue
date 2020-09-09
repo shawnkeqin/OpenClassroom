@@ -84,14 +84,15 @@ export default {
       default: false
     }
   },
-  data: function() {
+  data() {
     return {
       utils,
       isRequesting: false,
       requestModalVisible: false,
       request_msg: "",
       myVisitsOnTheSameDay: [],
-      mySeminarsOnTheSameDay: []
+      mySeminarsOnTheSameDay: [],
+      error: ""
     };
   },
   apollo: {
@@ -104,12 +105,8 @@ export default {
         };
       },
       update: data => data.visit,
-      error() {
-        this.$notification.error({
-          key: `server_error`,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     mySeminarsOnTheSameDay: {
@@ -121,12 +118,8 @@ export default {
         };
       },
       update: data => data.seminar,
-      error() {
-        this.$notification.error({
-          key: `server_error`,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     }
   },
@@ -160,19 +153,17 @@ export default {
           ],
           awaitRefetchQueries: true
         });
-        this.isRequesting = false;
         this.$notification.success({
-          key: `request_${seminar_id}_success`,
           message: "Your visit request has been sent."
         });
       } catch (err) {
-        this.isRequesting = false;
         this.$notification.error({
-          key: `request_${seminar_id}_failure`,
-          message: "Failed to make a new request" + err,
-          description: "Please try again."
+          message: "Failed to make a new request",
+          description: err.toString(),
+          duration: 0
         });
       }
+      this.isRequesting = false;
     }
   },
   watch: {
@@ -188,6 +179,13 @@ export default {
       } else {
         this.$notification.close(`request_${seminar_id}_loading`);
       }
+    },
+    error(err) {
+      this.$notification.error({
+        message: "Failed to obtain data from database",
+        description: err.toString(),
+        duration: 0
+      });
     }
   },
   beforeDestroy() {
