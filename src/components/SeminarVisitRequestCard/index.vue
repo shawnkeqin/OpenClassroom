@@ -164,7 +164,6 @@
 <script>
 import utils from "@/utils";
 import moment from "moment";
-// import queries from "@/graphql/queries.gql";
 import ColoredTag from "./ColoredTag";
 import CancelVisitAndStatusWrapper from "./CancelVisitAndStatusWrapper";
 import RequestVisitButton from "./RequestVisitButton";

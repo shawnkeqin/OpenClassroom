@@ -171,15 +171,6 @@ export default {
         this.loggedInUserObj && this.loggedInUserObj.has_consented == false
       );
     }
-    // pendingVisitsCount() {
-    //   const count =
-    //     this.pendingVisitsCount &&
-    //     this.pendingVisitsCount
-    //       .map(seminar => seminar.visits)
-    //       .flat()
-    //       .filter(visit => visit.visit_status === "PENDING").length;
-    //   return count;
-    // }
   },
   watch: {
     pendingVisitsCount(count) {

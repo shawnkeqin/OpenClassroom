@@ -38,28 +38,29 @@
           <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
         </a-input>
       </a-form-item>
-      <a-form-item
-        style="display: flex; justify-content: flex-end; margin-top: 12px;"
+      <div
+        style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 12px;"
       >
         <!-- <a class="login-form-forgot" href="">
         Forgot password
       </a> -->
-        <a-alert
-          v-if="showInvalidCredentials"
-          :message="invalidCredentialsMessage"
-          type="error"
-          show-icon
-        />
         <a-button
           type="primary"
           html-type="submit"
           :loading="loading"
           @click.prevent="login"
-          style="width: 8rem;"
+          style="width: 8rem; margin-bottom: 5px;"
         >
           Next
         </a-button>
-      </a-form-item>
+        <a-alert
+          v-if="showInvalidCredentials"
+          message="Invalid Staff ID or password"
+          type="error"
+          show-icon
+          banner
+        />
+      </div>
     </a-form>
   </a-card>
 </template>
@@ -72,8 +73,7 @@ export default {
     return {
       form: this.$form.createForm(this, { name: "form" }),
       loading: false,
-      showInvalidCredentials: false,
-      invalidCredentialsMessage: ""
+      showInvalidCredentials: false
     };
   },
   methods: {

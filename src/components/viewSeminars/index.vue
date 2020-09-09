@@ -262,7 +262,8 @@ export default {
       },
       SUGGESTED_SEARCH_FILTERS: _.cloneDeep(SUGGESTED_SEARCH_FILTERS),
       constants,
-      mapVisible: false
+      mapVisible: false,
+      error: ""
     };
   },
   apollo: {
@@ -274,24 +275,16 @@ export default {
         };
       },
       update: data => data.faculty_by_pk,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     courses: {
       query: queries.getCourseList,
       variables: { semester_code: process.env.VUE_APP_SEMESTER_CODE },
       update: data => data.course,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     seminar: {
@@ -302,41 +295,26 @@ export default {
         return this.searchQueryVariables;
       },
       throttle: "1500",
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     faculty_list: {
       query: queries.getFacultyList,
       update: data => data.faculty,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     tags_list: {
       query: queries.getTagsList,
       update: data => data.tag,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        if (err) this.error = err;
       }
     }
   },
   watch: {
-    // seminar() {
-    //   this.page = 1;
-    // },
     searchQuery() {
       this.page = 1;
     },
@@ -381,6 +359,13 @@ export default {
       },
       // This observes nested properties of filter.
       deep: true
+    },
+    error(err) {
+      this.$notification.error({
+        message: "Error",
+        description: err.toString(),
+        duration: 0
+      });
     }
   },
   computed: {

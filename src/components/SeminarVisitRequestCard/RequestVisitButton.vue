@@ -136,7 +136,6 @@ export default {
       this.isRequesting = true;
       if (!this.seminar.is_open) return;
       const seminar_id = this.seminar.id;
-      // const seminar = this.seminar;
       const request_msg = this.request_msg;
       try {
         await this.$apollo.mutate({
@@ -146,26 +145,6 @@ export default {
             visitor_id: store.state.loggedInUser,
             request_msg
           },
-          // update: (cache, { data: { insert_visit } }) => {
-          //   console.log(insert_visit);
-          //   const query = {
-          //     query: queries.get_my_visits,
-          //     variables: {
-          //       visitor_id: store.state.loggedInUser
-          //     }
-          //   }
-          //   const new_visit = insert_visit.returning[0];
-          //   const data = cache.readQuery(query);
-          //   data.visit.push({
-          //     ...new_visit,
-          //     visitor_id: store.state.loggedInUser,
-          //     seminar
-          //   });
-          //   cache.writeQuery({
-          //     ...query,
-          //     data
-          //   })
-          // },
           refetchQueries: [
             {
               query: queries.get_my_visits,
@@ -174,7 +153,9 @@ export default {
               }
             },
             "searchSeminarsByFilters",
-            // "searchSeminarsByFiltersWithTags",
+            "searchSeminarsByFiltersWithTags",
+            "searchOpenSeminarsByFilters",
+            "searchOpenSeminarsByFiltersWithTags",
             "get_my_visits_by_date"
           ],
           awaitRefetchQueries: true
@@ -185,7 +166,6 @@ export default {
           message: "Your visit request has been sent."
         });
       } catch (err) {
-        console.log(err);
         this.isRequesting = false;
         this.$notification.error({
           key: `request_${seminar_id}_failure`,

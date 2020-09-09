@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       token: this.$route.query.token,
-      isLoading: false,
+      isLoading: true,
       success: false
     };
   },
@@ -52,12 +52,15 @@ export default {
       }).then(res => res.json());
       if (response.success) {
         this.success = true;
-        this.isLoading = false;
-      } else throw "err";
+      } else throw "Unsuccessful attempt to opt out";
     } catch (err) {
       this.success = false;
-      this.isLoading = false;
+      this.$notification.error({
+        message: "Error",
+        description: err
+      });
     }
+    this.isLoading = false;
   }
 };
 </script>
