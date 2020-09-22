@@ -1,17 +1,17 @@
 <template>
-  <div style="width: 100%; padding: 0 20px;">
+  <div style="width: 100%; padding: 0 0.5rem;">
     <h1>My Courses</h1>
     <template v-if="$apollo.loading">
       <a-skeleton active />
     </template>
     <template v-else>
       <template v-if="course_groups && course_groups.length">
-        <div style="display: flex;">
+        <div style="display: flex; justify-content: space-between;">
           <div style="display: flex; flex-wrap: wrap;">
             <a-card
               v-for="course_group in course_groups"
               :key="course_group.id"
-              style="margin: 0 15px 15px 0; width: 30rem;"
+              style="margin: 0 15px 15px 0; width: 18rem;"
             >
               <h3>{{ course_group.course.title }}</h3>
               <p>{{ course_group.course.module_code }}</p>
@@ -54,7 +54,7 @@
           </div>
           <div>
             <a-card
-              style="width: 20rem;"
+              style="width: 14rem;"
               :bodyStyle="{ background: '#e6f7ff', color: 'black' }"
             >
               Click "Edit course details" to:
@@ -104,11 +104,11 @@ export default {
           };
         },
         update: data => data.course_group,
-        error(error, vm, key) {
+        error(err) {
           this.$notification.error({
-            key,
-            message: "Failed to obtain data on your courses",
-            description: "Please try again."
+            message: "Failed to obtain data from database",
+            description: err.toString(),
+            duration: 0
           });
         }
       };
@@ -122,11 +122,8 @@ export default {
   methods: {
     async toggleCourseGroupIsOpen(id, status) {
       this.isToggleCourseGroupLoading = true;
-
       const course_group_id = id;
       const current_is_open = status;
-      console.log(id);
-      console.log(current_is_open);
       try {
         await this.$apollo.mutate({
           mutation: queries.update_course_group_and_seminars_is_open,
@@ -140,15 +137,14 @@ export default {
             "get_course_group_details"
           ]
         });
-        this.isToggleCourseGroupLoading = false;
       } catch (err) {
-        this.isToggleCourseGroupLoading = false;
         this.$notification.error({
-          key: "toggle_course_group_is_open_error",
           message: "Failed to update the open status of your course",
-          description: "Please try again." + err
+          description: err.toString(),
+          duration: 0
         });
       }
+      this.isToggleCourseGroupLoading = false;
     }
   }
 };

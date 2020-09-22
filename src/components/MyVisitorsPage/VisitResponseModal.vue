@@ -4,26 +4,24 @@
       v-if="this.visit.visit_status === constants.VISIT_STATUS_PENDING"
       type="primary"
       @click="onClickRespond"
-    >Respond</a-button>
+      >Respond</a-button
+    >
     <a-button v-else @click="onClickRespond">Edit response</a-button>
     <a-modal v-model="visible" :title="`${this.visit.visitor.name}'s request`">
       <p>{{ visit.request_msg }}</p>
-      <a-form :form="form">
-        <a-form-model-item label="Your response message (optional)">
-          <a-input
-            v-model="response_msg"
-            type="textarea"
-            placeholder="You have not submitted a message."
-          />
-        </a-form-model-item>
-      </a-form>
+      <h5>Your response message (optional)</h5>
+      <a-input
+        v-model="response_msg"
+        type="textarea"
+        placeholder="You have not submitted a message."
+      />
       <p>
         Send them an email:
         <a :href="'mailto:' + visit.visitor.email">{{ visit.visitor.email }}</a>
       </p>
       <template slot="footer">
         <div>
-          <span style="float: left;color: grey;">{{ responseTime }}</span>
+          <span style="float: left; color: grey;">{{ responseTime }}</span>
           <a-button
             v-if="
               visit.visit_status === constants.VISIT_STATUS_PENDING ||
@@ -32,12 +30,12 @@
             class="respond-button accept-button"
             :loading="loading"
             @click="submitVisitResponse(constants.VISIT_STATUS_ACCEPTED)"
-          >Accept</a-button>
+            >Accept</a-button
+          >
           <a-button
             v-else-if="visit.visit_status === constants.VISIT_STATUS_ACCEPTED"
             class="respond-button accepted-button"
           >
-            <!-- <a-icon type="close-circle" /> -->
             Accepted
           </a-button>
           <a-button
@@ -48,12 +46,12 @@
             class="respond-button decline-button"
             :loading="loading"
             @click="submitVisitResponse(constants.VISIT_STATUS_DECLINED)"
-          >Decline</a-button>
+            >Decline</a-button
+          >
           <a-button
             v-else-if="visit.visit_status === constants.VISIT_STATUS_DECLINED"
             class="respond-button declined-button"
           >
-            <!-- <a-icon type="close-circle" /> -->
             Declined
           </a-button>
         </div>
@@ -71,19 +69,13 @@ export default {
     seminar: Object,
     visit: Object
   },
-  //  mounted() {
-  //    this.form.setFieldsValue({
-  //      response_msg: this.visit.response_msg || null
-  //    });
-  //  },
   data() {
     return {
       utils: utils,
       constants: constants,
       visible: false,
       loading: false,
-      //    form: this.$form.createForm(this, { name: "form" }),
-      response_msg: ""
+      response_msg: this.visit.response_msg
     };
   },
   computed: {
@@ -115,25 +107,16 @@ export default {
             time_responded: moment().format(),
             response_msg
           },
-          update: (store, { data: { update_visit_by_pk } }) => {
-            if (update_visit_by_pk) {
-              setTimeout(() => {
-                this.visible = false;
-              }, 1000);
-              this.loading = false;
-            }
-          },
           refetchQueries: ["get_seminars_with_visits_by_time_requested"]
         });
-        this.loading = false;
       } catch (err) {
-        this.loading = false;
         this.$notification.error({
-          key: `reqsponse_${visit_id}_failure`,
           message: "Failed to respond to the visit request",
-          description: "Please try again."
+          description: err.toString()
         });
       }
+      this.loading = false;
+      this.visible = false;
     }
   }
 };

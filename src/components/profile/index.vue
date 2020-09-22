@@ -9,11 +9,12 @@
       <a-card :bodyStyle="{ padding: '0px' }">
         <a-list item-layout="horizontal" size="small">
           <a-list-item class="preference-item">
-            <p>Email me when new requests for my seminars are created</p>
+            <p>Email me when new requests for my classes are created</p>
             <a-switch
               :checked="faculty.notif_new_request"
               :loading="isToggleNotifNewRequestLoading"
               @click="toggleNotifNewRequest"
+              class="pref-toggle"
             />
           </a-list-item>
           <a-list-item
@@ -28,10 +29,6 @@
               class="pref-toggle"
             />
           </a-list-item>
-          <!-- <a-list-item class="preference-item">
-            <p>Email me 1 hour before the next visit</p>
-            <a-switch default-checked />
-          </a-list-item> -->
         </a-list>
       </a-card>
     </div>
@@ -59,7 +56,6 @@ export default {
       my_requests: []
     };
   },
-
   apollo: {
     faculty: {
       query: queries.getFacultyById,
@@ -69,11 +65,10 @@ export default {
         };
       },
       update: data => data.faculty_by_pk,
-      error() {
+      error(err) {
         this.$notification.error({
-          key: `fetch_faculty_data_failure`,
           message: "Failed to obtain data on your profile",
-          description: "Please try again."
+          description: err.toString()
         });
       }
     }
@@ -91,15 +86,13 @@ export default {
           },
           refetchQueries: ["getFacultyById"]
         });
-        this.isToggleNotifNewRequestLoading = false;
       } catch (err) {
-        this.isToggleNotifRequestUpdateLoading = false;
         this.$notification.error({
-          key: `toggle_notif_new_request_error`,
           message: "The server could not update your user preference",
-          description: "Please try again."
+          description: err.toString()
         });
       }
+      this.isToggleNotifRequestUpdateLoading = false;
     },
     async toggleNotifRequestUpdate() {
       this.isToggleNotifRequestUpdateLoading = true;
@@ -114,15 +107,13 @@ export default {
           },
           refetchQueries: ["getFacultyById"]
         });
-        this.isToggleNotifRequestUpdateLoading = false;
       } catch (err) {
-        this.isToggleNotifRequestUpdateLoading = false;
         this.$notification.error({
-          key: `toggle_notif_request_update_error`,
           message: "The server could not update your user preference",
-          description: "Please try again."
+          description: err.toSting()
         });
       }
+      this.isToggleNotifRequestUpdateLoading = false;
     }
   }
 };

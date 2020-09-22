@@ -75,7 +75,7 @@
       <a-card
         v-for="request in requests"
         :key="request.id"
-        style="margin-bottom: 5px"
+        style="margin-bottom: 5px;"
       >
         <div style="display: flex; flex-direction: column;">
           <div>
@@ -169,8 +169,8 @@
             </a-col>
           </div>
           <div v-if="request" style="margin-top: 20px">
-            <div>{{ "Request message: " + request.request_msg }}</div>
-            <div>{{ "Response message: " + request.response_msg }}</div>
+            <div>{{ "Request message: " + (request.request_msg || "-") }}</div>
+            <div>{{ "Response message: " + (request.response_msg || "-") }}</div>
           </div>
         </div>
       </a-card>

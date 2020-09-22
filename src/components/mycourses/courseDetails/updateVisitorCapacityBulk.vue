@@ -58,18 +58,14 @@ export default {
           refetchQueries: ["get_seminars_by_course_group"]
         });
         this.visitor_capacity = "";
-        this.isLoading = false;
-        this.modal2Visible = false;
       } catch (err) {
-        console.log(err);
-        this.isLoading = false;
-        this.modal2Visible = false;
         this.$notification.error({
-          key: "update_class_error",
           message: "Failed to set visitor capacity",
-          description: "Please try again."
+          description: err.toString()
         });
       }
+      this.isLoading = false;
+      this.modal2Visible = false;
     }
   }
 };

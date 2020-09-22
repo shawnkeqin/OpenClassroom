@@ -17,7 +17,9 @@
         <a-button key="cancel" @click="requestModalVisible = false"
           >Cancel</a-button
         >
-        <a-button key="submit" @click="handleSubmitRequest">Submit</a-button>
+        <a-button type="primary" key="submit" @click="handleSubmitRequest"
+          >Submit</a-button
+        >
       </template>
       <div v-if="myVisitsOnTheSameDay.length || mySeminarsOnTheSameDay.length">
         <div v-if="myVisitsOnTheSameDay.length" style="margin-bottom: 1rem;">
@@ -82,14 +84,15 @@ export default {
       default: false
     }
   },
-  data: function() {
+  data() {
     return {
       utils,
       isRequesting: false,
       requestModalVisible: false,
       request_msg: "",
       myVisitsOnTheSameDay: [],
-      mySeminarsOnTheSameDay: []
+      mySeminarsOnTheSameDay: [],
+      error: ""
     };
   },
   apollo: {
@@ -102,12 +105,8 @@ export default {
         };
       },
       update: data => data.visit,
-      error() {
-        this.$notification.error({
-          key: `server_error`,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     mySeminarsOnTheSameDay: {
@@ -119,12 +118,8 @@ export default {
         };
       },
       update: data => data.seminar,
-      error() {
-        this.$notification.error({
-          key: `server_error`,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     }
   },
@@ -134,7 +129,6 @@ export default {
       this.isRequesting = true;
       if (!this.seminar.is_open) return;
       const seminar_id = this.seminar.id;
-      // const seminar = this.seminar;
       const request_msg = this.request_msg;
       try {
         await this.$apollo.mutate({
@@ -144,26 +138,6 @@ export default {
             visitor_id: store.state.loggedInUser,
             request_msg
           },
-          // update: (cache, { data: { insert_visit } }) => {
-          //   console.log(insert_visit);
-          //   const query = {
-          //     query: queries.get_my_visits,
-          //     variables: {
-          //       visitor_id: store.state.loggedInUser
-          //     }
-          //   }
-          //   const new_visit = insert_visit.returning[0];
-          //   const data = cache.readQuery(query);
-          //   data.visit.push({
-          //     ...new_visit,
-          //     visitor_id: store.state.loggedInUser,
-          //     seminar
-          //   });
-          //   cache.writeQuery({
-          //     ...query,
-          //     data
-          //   })
-          // },
           refetchQueries: [
             {
               query: queries.get_my_visits,
@@ -172,25 +146,24 @@ export default {
               }
             },
             "searchSeminarsByFilters",
-            // "searchSeminarsByFiltersWithTags",
+            "searchSeminarsByFiltersWithTags",
+            "searchOpenSeminarsByFilters",
+            "searchOpenSeminarsByFiltersWithTags",
             "get_my_visits_by_date"
           ],
           awaitRefetchQueries: true
         });
-        this.isRequesting = false;
         this.$notification.success({
-          key: `request_${seminar_id}_success`,
           message: "Your visit request has been sent."
         });
       } catch (err) {
-        console.log(err);
-        this.isRequesting = false;
         this.$notification.error({
-          key: `request_${seminar_id}_failure`,
-          message: "Failed to make a new request" + err,
-          description: "Please try again."
+          message: "Failed to make a new request",
+          description: err.toString(),
+          duration: 0
         });
       }
+      this.isRequesting = false;
     }
   },
   watch: {
@@ -206,6 +179,13 @@ export default {
       } else {
         this.$notification.close(`request_${seminar_id}_loading`);
       }
+    },
+    error(err) {
+      this.$notification.error({
+        message: "Failed to obtain data from database",
+        description: err.toString(),
+        duration: 0
+      });
     }
   },
   beforeDestroy() {

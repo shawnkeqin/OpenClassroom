@@ -79,19 +79,24 @@
         </div>
       </div>
     </div>
-    <div id="footer" class="screen-wrapper">
-      <div style="margin-bottom: 10px;">Contact us</div>
-      <div>
-        Photos used with permission from
-        <a href="https://teaching.yale-nus.edu.sg/" target="_blank"
-          >Yale-NUS Center for Teaching and Learning</a
-        >
+    <div id="footer">
+      <div style="margin-right: 5rem;">
+        <div>Contact us</div>
+        <div>mira.seo@yale-nus.edu.sg</div>
       </div>
       <div>
-        Funded by a grant from
-        <a href="http://nus.edu.sg/cdtl" target="_blank"
-          >NUS Center for Development of Teaching and Learning</a
-        >
+        <div>
+          Photos used with permission from
+          <a href="https://teaching.yale-nus.edu.sg/" target="_blank"
+            >Yale-NUS Center for Teaching and Learning</a
+          >
+        </div>
+        <div>
+          Funded by a grant from
+          <a href="http://nus.edu.sg/cdtl" target="_blank"
+            >NUS Center for Development of Teaching and Learning</a
+          >
+        </div>
       </div>
     </div>
   </div>
@@ -148,7 +153,9 @@ export default {
 }
 #footer {
   background: #e0e0e0;
-  padding: 2rem;
+  padding: 2rem 10rem;
+  display: flex;
+  justify-content: space-between;
 }
 .big-text {
   font-size: 4rem;

@@ -147,14 +147,6 @@
           </p>
         </div>
       </div>
-      <!-- <div style="display: flex; flex-direction: column; align-items: left;">
-        <a
-          href="https://library.yale-nus.edu.sg/wp-content/uploads/2014/01/campus-map_Aug2015.jpg"
-          target="_blank"
-          >View campus map</a
-        >
-        <AddToCalendar :seminar="seminar" />
-      </div> -->
     </template>
   </div>
 </template>
@@ -163,13 +155,9 @@
 import utils from "@/utils";
 import constants from "@/utils/constants";
 import store from "@/store";
-// import AddToCalendar from "./AddToCalendar";
 
 export default {
   name: "CalendarSeminar",
-  // components: {
-  //   AddToCalendar
-  // },
   props: {
     event: {
       type: Object,
@@ -234,11 +222,6 @@ export default {
     course() {
       return this.course_group.course;
     }
-    // confirmedVisits() {
-    //   return this.isMySeminar
-    //     ? this.seminar.visits.filter(visit => visit.visit_status === "ACCEPTED")
-    //     : [];
-    // }
   }
 };
 </script>

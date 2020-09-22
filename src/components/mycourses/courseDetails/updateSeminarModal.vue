@@ -9,9 +9,13 @@
     >
       <template slot="footer">
         <a-button @click="modal2Visible = false">Cancel</a-button>
-        <a-button primary @click="submitUpdateSeminar"
-          >Confirm changes</a-button
+        <a-button
+          type="primary"
+          @click="submitUpdateSeminar"
+          :loading="isLoading"
         >
+          Confirm changes
+        </a-button>
       </template>
       <div>
         <h5>Class title (optional)</h5>
@@ -73,6 +77,7 @@
           <a-select
             v-model="edit_seminar.visitor_capacity"
             style="width: 120px;"
+            class="input-field"
           >
             <a-select-option
               v-for="option in visitor_capacity_options"
@@ -119,7 +124,8 @@ export default {
         start: moment(this.seminar.start, "HH:mm:ss"),
         end: moment(this.seminar.end, "HH:mm:ss")
       }),
-      modal2Visible: false
+      modal2Visible: false,
+      isLoading: false
     };
   },
   apollo: {
@@ -132,6 +138,7 @@ export default {
   },
   methods: {
     async submitUpdateSeminar() {
+      this.isLoading = true;
       const {
         id,
         date,
@@ -159,15 +166,14 @@ export default {
           },
           refetchQueries: ["get_seminars_by_course_group"]
         });
-        this.modal2Visible = false;
       } catch (err) {
-        this.modal2Visible = false;
         this.$notification.error({
-          key: "update_class_error",
           message: "Failed to update course group description",
-          description: "Please try again."
+          description: err.toString()
         });
       }
+      this.isLoading = false;
+      this.modal2Visible = false;
     }
   }
 };
