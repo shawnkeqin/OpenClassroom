@@ -9,18 +9,20 @@ cd OpenClassroom
 # Install dependencies, build and serve frontend distribution. 
 npm install
 npm run build-staging-test
-sudo lsof -iTCP -sTCP:LISTEN -P
-sudo kill -9 1505
+sudo /usr/bin/lsof -iTCP -sTCP:LISTEN -P
+sudo /bin/kill -9 1505
 npm run serve-staging-test
 
 # BACKEND HASURA DOCKER IMAGE + POSTGRES SETUP
 # Install and setup postgres DB.
-wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O- | sudo apt-key add -
-sudo apt-get install postgresql-12
 echo "deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main" | sudo tee /etc/apt/sources.list.d/postgresql.list
+wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O- | sudo /usr/bin/apt-key add -
+sudo apt-get install postgresql-12
 sudo pg_createcluster 12 main --start
-pg_ctlcluster 12 main start
-sudo -u postgres psql
+sudo pg_ctlcluster 12 main start
+#sudo -u postgres psql
+sudo su - postgres
+psql
 #  Configure DB - add users and permissions.
 # Try logging in.
 psql "postgres://hasurauser:<>@localhost/open_classroom"
@@ -37,19 +39,21 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo apt-key fingerprint 0EBFCD88
 sudo add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
+   bionic \
    stable"
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker 
-sudo docker run hello-world
+docker run hello-world
 # Load hasura docker image from tar file in repo. 
 docker load < hasura-graphql-engine.tar.gz
 # Run docker image using script from repo and check that it's running. 
 chmod +x ./docker-run.sh
 ./docker-run.sh
 docker ps
+
+
 
 
 # Install Hasura CLI for migrating metadata + schema. 
@@ -69,7 +73,7 @@ pg_restore --verbose --clean --no-acl --no-owner -h localhost -U hasurauser -d o
 ### DB cluster management 
 pg_lsclusters
 sudo systemctl stop postgresql@12-main
-pg_dropcluster 12 main 
+sudo pg_dropcluster 12 main 
 ## type "y"
 sudo pg_createcluster 12 main --start
 pg_lsclusters
@@ -78,3 +82,8 @@ sudo -u postgres psql
 # Docker management 
 docker stop <>
 docker container rm $(docker container ps –aq)
+
+
+
+Set up nginx on 443, point to 83 node server
+ping openclassroom.yale-nus.edu.sg PING openclassroom.yale-nus.edu.sg (172.25.20.77) 56(84) bytes of data. 64 bytes from 172.25.20.77 (172.25.20.77): icmp_seq=1 ttl=63 time=1.51 m nslookup openclassroom.yale-nus.edu.sg Server:		8.8.8.8 Address:	8.8.8.8#53Non-authoritative answer: Name:	openclassroom.yale-nus.edu.sg@Address: 172.25.20.77
