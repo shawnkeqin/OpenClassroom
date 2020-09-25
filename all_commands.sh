@@ -25,7 +25,7 @@ sudo su - postgres
 psql
 #  Configure DB - add users and permissions.
 # Try logging in.
-psql "postgres://hasurauser:<>@localhost/open_classroom"
+psql postgres://hasurauser:<>@localhost/open_classroom
 
 # Install Docker.
 sudo apt-get update
