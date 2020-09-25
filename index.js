@@ -57,7 +57,11 @@ app.use(function(req, res) {
       res.send(404, "Resource Not Found");
   }
 });
-const PORT = process.env.PORT || 443;
+
+var PORT = process.env.PORT || 443;
+if (process.env.VUE_APP_MODE == "production") {
+  PORT = 83;
+}
 app.listen(PORT, () =>
   console.log(
     `App running on port ${PORT}
