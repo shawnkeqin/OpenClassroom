@@ -1,6 +1,8 @@
 // The server isn't run by vue-cli-service so we need to tell it what mode we want explicitly.
 // require("custom-env").env();
 require("custom-env").env("local");
+process.env.DEBUG="express:*";
+process.env.VUE_APP_MODE = "production";
 require("custom-env").env(process.env.VUE_APP_MODE);
 
 const { resolve } = require("path"),
