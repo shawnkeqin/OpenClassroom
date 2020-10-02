@@ -1,5 +1,7 @@
 sudo /usr/bin/lsof -iTCP -sTCP:LISTEN -P
-sudo /bin/kill -9 1505
+sudo /usr/bin/pkill node
+nohup sudo /home/appuser/.nvm/versions/node/v12.18.2/bin/node /home/appuser/OpenClassroom/index.js 2>&1 | tee ./logs/deployment_300920.log &
+
 sudo /usr/bin/apt-key add -
 sudo /usr/bin/apt-get install postgresql-12
 sudo /usr/bin/tee /etc/apt/sources.list.d/

@@ -10,8 +10,10 @@ cd OpenClassroom
 npm install
 npm run build-staging-test
 sudo /usr/bin/lsof -iTCP -sTCP:LISTEN -P
-sudo /bin/kill -9 1505
-npm run serve-staging-test
+sudo /usr/bin/pkill node
+# npm run serve-staging-test
+# nohup prevents SIGHUP from killing process when terminal is stopped. sudo allows write to file. 2>&1 redirects STDOUT and STDIN. | pipes to next command. tee shows logs on current terminal, and writes into logs file. trailing & means background job - applies to 
+nohup sudo /home/appuser/.nvm/versions/node/v12.18.2/bin/node /home/appuser/OpenClassroom/index.js 2>&1 | tee ./logs/deployment_300920.log &
 
 # BACKEND HASURA DOCKER IMAGE + POSTGRES SETUP
 # Install and setup postgres DB.
