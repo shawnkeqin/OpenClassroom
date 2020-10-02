@@ -4,9 +4,9 @@ library(dplyr)
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 INPUT_FILEPATH <-
-  "~/github/OpenClassroom/data/semester-1-fall-2020-raw-latest-with-id.csv"
+  "semester-1-fall-2020-raw-20200926-with-id.csv"
 CC_LECTURES_FILEPATH <-
-  "~/github/OpenClassroom/data/cc-lectures-sem-1-fall-2020.csv"
+  "cc-lectures-sem-1-fall-2020.csv"
 # Declare some value constants.;
 SEMESTER_CODE <- "AY2021-1"
 TIMEZONE <- "+08:00"
@@ -67,6 +67,9 @@ course_group <- validated %>%
   ) %>%
   distinct(faculty_id, module_code, group_code, .keep_all = TRUE) %>%
   select(COURSE_GROUP_SCHEMA)
+duplicated_course_group <- course_group %>% 
+  group_by(module_code, group_code) %>% 
+  filter(n() > 1)
 write.csv(course_group, "db_course_group.csv", row.names = FALSE)
 
 
@@ -203,7 +206,7 @@ write.csv(tag, "db_tag.csv", row.names = FALSE)
 ################## Get CC lecture course groups..
 # COURSE_GROUP_SCHEMA <-  c("faculty_id", "module_code", "group_code", "semester_code", "teaching_mode")
 lectures_raw <-
-  read.csv(CC_LECTURES_FILEPATH, stringsAsFactors = FALSE)
+  read.csv(CC_LECTURES_FILEPATH, stringsAsFactors = FALSE, fileEncoding = 'UTF-8-BOM')
 lecture_groups <- lectures_raw  %>%
   mutate(semester_code = SEMESTER_CODE) %>%
   rename(
@@ -282,3 +285,4 @@ write.csv(db_semester, "db_semester.csv", row.names = FALSE)
 # course_group remove all NA faculty_id and group code.
 # course_schedule ignores any entry with course_group that does not exist.
 # Account for CC lectures with NA faculty ID.
+
