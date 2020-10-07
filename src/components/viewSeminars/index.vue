@@ -60,7 +60,7 @@
               />
             </template>
             <template v-else>
-              <div style="width: 100%">
+              <div style="width: 35rem;">
                 <a-card hoverable>
                   <p>{{ `No results.` }}</p>
                 </a-card>

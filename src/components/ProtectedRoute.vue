@@ -83,6 +83,7 @@
               <span class="nav-text">Feedback</span>
               <a
                 href="https://docs.google.com/forms/d/e/1FAIpQLScOfSV1ZIChd6IQJ9WLegujtfhlE-E5hG-tyDMBzEL-JUdEUQ/viewform?usp=sf_link"
+                target="_blank"
               ></a>
             </a-menu-item>
             <a-menu-item key="8" class="nav-item" @click="logout">

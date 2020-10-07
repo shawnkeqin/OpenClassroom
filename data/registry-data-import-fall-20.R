@@ -175,6 +175,26 @@ seminar_generator <- function(schedule) {
   return(seminar)
 }
 seminar <- seminar_generator(course_schedule)
+seminar <- seminar %>%
+  mutate(
+    location_code = recode(
+      location_code,
+      "Y-Blackbox" = "Y-BlackBox",
+      "UTSRC- LT53" = "UTSRC-LT53",
+      "UTSRC - LT53" = "UTSRC-LT53",
+      "UTSRC- LT52" = "UTSRC-LT52",
+      "UTSRC - LT52" = "UTSRC-LT52",
+      "UTSRC- LT51" = "UTSRC-LT51",
+      "UTSRC - LT51" = "UTSRC-LT51",
+      "UTSRC- GLR" = "UTSRC-GLR",
+      "UTSRC - GLR" = "UTSRC-GLR",
+      "UTSRC- AUD2" = "UTSRC-AUD2",
+      "UTSRC - AUD2" = "UTSRC-AUD2",
+      "Y-ELMECL" = "Y-ELMCL",
+      "Y-Studio2" = "Y-ArtsStud",
+      "Y-ArtsStud\nY-Studio3" = "Y-ArtsStud"
+    )
+  )
 write.csv(seminar, "db_seminar.csv", row.names = FALSE)
 
 ################# Get tagged_as table.
