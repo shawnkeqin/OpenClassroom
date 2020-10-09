@@ -88,7 +88,7 @@ mutation update_visit_response(
   $visit_id: Int!
   $visit_status: String!
   $time_responded: timestamptz!
-  $response_msg: String!
+  $response_msg: String
 ) {
   update_visit_by_pk(
     pk_columns: { id: $visit_id }
