@@ -11,6 +11,7 @@ const LDAP_CONNECTED =
   process.env.VUE_APP_MODE == "staging-test";
 const notifsRouter = require("./notifsRouter");
 const facultyStatusRouter = require("./facultyStatusRouter");
+const updateCourseDescRouter = require("./updateCourseDescHandler");
 var api = express.Router();
 
 var getLDAPConfiguration = function(req, callback) {
@@ -111,6 +112,7 @@ api.post("/login", (req, res, next) => {
 
 api.use("/notifs", notifsRouter);
 api.use("/faculty-status", facultyStatusRouter);
+api.use("/update-course-desc", updateCourseDescRouter);
 
 api.use(passport.initialize());
 module.exports = app => {
