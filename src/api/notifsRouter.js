@@ -43,7 +43,7 @@ const GET_SEMINAR_BY_ID = gql`
 `;
 
 async function notifMiddleware(req, res, next) {
-  const { seminar_id, visitor_id } = req.body.event.data.new;
+  const { seminar_id, visitor_id } = req.body.event.data.new || req.body.event.data.old;
   const visit_status_old =
     req.body.event.data.old && req.body.event.data.old.visit_status;
   const visit_status_new = req.body.event.data.new.visit_status;
