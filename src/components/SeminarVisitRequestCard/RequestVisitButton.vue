@@ -181,11 +181,12 @@ export default {
       }
     },
     error(err) {
-      this.$notification.error({
-        message: "Failed to obtain data from database",
-        description: err.toString(),
-        duration: 0
-      });
+      if (err.gqlError.extensions.code !== "invalid-jwt")
+        this.$notification.error({
+          message: "Failed to obtain data from database",
+          description: err.toString(),
+          duration: 0
+        });
     }
   },
   beforeDestroy() {

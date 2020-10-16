@@ -76,10 +76,11 @@ export default {
       },
       update: data => data.faculty_by_pk,
       error(err) {
-        this.$notification.error({
-          message: "Failed to obtain data on your profile",
-          description: err.toString()
-        });
+        if (err.gqlError.extensions.code !== "invalid-jwt")
+          this.$notification.error({
+            message: "Failed to obtain data on your profile",
+            description: err.toString()
+          });
       }
     }
   },
