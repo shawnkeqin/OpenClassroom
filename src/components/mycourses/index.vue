@@ -73,7 +73,7 @@
       <template v-else>
         <div>
           <a-card>
-            <p>You don't teach any course this semester</p>
+            <p>You are not teaching any courses this semester</p>
           </a-card>
         </div>
       </template>

@@ -153,8 +153,8 @@
           </a-col>
         </div>
         <div v-if="visit && isMessagesVisible" style="margin-top: 20px">
-          <div>{{ "Request message: " + visit.request_msg }}</div>
-          <div>{{ "Response message: " + visit.response_msg }}</div>
+          <div>{{ `Request message: ${visit.request_msg || '-'}` }}</div>
+          <div>{{ `Response message: ${visit.response_msg || '-'}` }}</div>
         </div>
       </div>
     </a-card>

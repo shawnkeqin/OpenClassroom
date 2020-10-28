@@ -112,7 +112,7 @@
                 <template slot="header">
                   <h4 style="margin: 0;">Notes for visitors</h4>
                 </template>
-                <p>{{ course && (course.notes || "-") }}</p>
+                <p>{{ course && course_group && (course_group.notes || "-") }}</p>
                 <updateCourseGroupNotesModal :course_group="course_group" />
               </a-collapse-panel>
             </a-collapse>
