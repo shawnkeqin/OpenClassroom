@@ -9,7 +9,7 @@ const createApolloClient = () => {
     uri: process.env.VUE_APP_GRAPHQL_HTTP,
     fetch,
     headers: {
-      "x-hasura-admin-secret": process.env.HASURA_ADMIN_SECRET
+      "x-hasura-admin-secret": process.env.HASURA_GRAPHQL_ADMIN_SECRET
     }
   });
   return new ApolloClient({

@@ -1,0 +1,532 @@
+"Instructor","Module.Code","Module.Title","Primary.Major","Affiliated.Majors","Mode.of.Teaching","Section","Day","Start","End","Duration","Room","Round.1.Quota","Round.1.Allocated","Round.2.Quota.tagged.to.Room.Allocated...1.0.metre.SD.","Available.Space.for.R2..1.0.metre.SD.","HoS.DD.Remarks","X","X.1"
+"Steven Green","YCC1111","Literature and Humanities 1","Common Curriculum","-","Remote","L1","Tue","9:00","10:30","1:30",NA,18,18,18,0,NA,NA,NA
+"Steven Green","YCC1111","Literature and Humanities 1","Common Curriculum","-","Remote","L1","Fri","13:00","14:30","1:30",NA,18,18,18,0,NA,NA,NA
+"Kevin Goldstein","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L2","Tue","9:00","10:30","1:30","Y-CR15",18,18,18,0,NA,NA,NA
+"Kevin Goldstein","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L2","Fri","13:00","14:30","1:30","Y-CR15",18,18,18,0,NA,NA,NA
+"Emily Dalton","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L3","Tue","18:00","19:30","1:30","Y-CR17",18,18,18,0,NA,NA,NA
+"Emily Dalton","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L3","Fri","18:00","19:30","1:30","Y-CR17",18,18,18,0,NA,NA,NA
+"Geoffrey Baker","YCC1111","Literature and Humanities 1","Common Curriculum","-","Remote","L4","Tue","9:00","10:30","1:30",NA,18,18,18,0,NA,NA,NA
+"Geoffrey Baker","YCC1111","Literature and Humanities 1","Common Curriculum","-","Remote","L4","Fri","13:00","14:30","1:30",NA,18,18,18,0,NA,NA,NA
+"Andrew Hui","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L5","Tue","19:30","21:00","1:30","Y-TCTLT",18,18,18,0,NA,NA,NA
+"Andrew Hui","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L5","Fri","19:30","21:00","1:30","Y-TCTLT",18,18,18,0,NA,NA,NA
+"Sureshkumar Muthukumaran","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L6","Tue","9:00","10:30","1:30","Y-CR17",18,18,18,0,NA,NA,NA
+"Sureshkumar Muthukumaran","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L6","Fri","13:00","14:30","1:30","Y-CR17",18,18,18,0,NA,NA,NA
+"Clay Eaton ","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L7","Tue","9:00","10:30","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Clay Eaton ","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L7","Sat","9:00","10:30","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Steven Green","YCC1111","Literature and Humanities 1","Common Curriculum","-","Remote","L8","Tue","19:30","21:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Steven Green","YCC1111","Literature and Humanities 1","Common Curriculum","-","Remote","L8","Fri","19:30","21:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Kevin Goldstein","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L9","Tue","14:30","16:00","1:30","Y-CR15",18,18,18,0,NA,NA,NA
+"Kevin Goldstein","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L9","Fri","14:30","16:00","1:30","Y-CR15",18,18,18,0,NA,NA,NA
+"Emily Dalton","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L10","Tue","19:30","21:00","1:30","Y-CR17",18,18,18,0,NA,NA,NA
+"Emily Dalton","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L10","Fri","19:30","21:00","1:30","Y-CR17",18,18,18,0,NA,NA,NA
+"Nienke Boer","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L11","Tue","14:30","16:00","1:30","Y-PerfHall",18,18,18,0,NA,NA,NA
+"Nienke Boer","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L11","Sat","14:30","16:00","1:30","Y-CR15",18,18,18,0,NA,NA,NA
+"Ila Tyagi","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L12","Tue","19:30","21:00","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Ila Tyagi","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L12","Fri","19:30","21:00","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Rajeev Patke","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L13","Tue","14:30","16:00","1:30","Y-CR17",18,18,18,0,NA,NA,NA
+"Rajeev Patke","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L13","Fri","14:30","16:00","1:30","Y-CR17",18,18,18,0,NA,NA,NA
+"Jonathan Vandenberg","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L14","Tue","14:30","16:00","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Jonathan Vandenberg","YCC1111","Literature and Humanities 1","Common Curriculum","-","F2F","L14","Fri","14:30","16:00","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Multiple instructors","YCC1111","Literature and Humanities 1","Common Curriculum","-","Remote","All sections","Fri","9:30","10:30","1:00",NA,250,250,250,0,NA,NA,NA
+"Matthew Walker","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","Remote","L1","Mon","10:30","12:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Matthew Walker","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","Remote","L1","Thu","10:30","12:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Neil Mehta","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","Remote","L2","Mon","10:30","12:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Neil Mehta","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","Remote","L2","Thu","10:30","12:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Elton Chan","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L3","Mon","10:30","12:00","1:30","Y-LT1",18,18,18,0,NA,NA,NA
+"Elton Chan","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L3","Thu","10:30","12:00","1:30","UTSRC-LT51",18,18,18,0,NA,NA,NA
+"Cathay Liu","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L4","Mon","10:30","12:00","1:30","NAK-AUD",18,18,18,0,NA,NA,NA
+"Cathay Liu","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L4","Thu","10:30","12:00","1:30","NAK-AUD",18,18,18,0,NA,NA,NA
+"Scott Cook","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L5","Mon","10:30","12:00","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Scott Cook","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L5","Thu","10:30","12:00","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Lucas Entel","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L6","Mon","19:30","21:00","1:30","Y-ELMCL",18,18,18,0,NA,NA,NA
+"Lucas Entel","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L6","Thu","19:30","21:00","1:30","Y-ELMCL",18,18,18,0,NA,NA,NA
+"Bjorn Gomes","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L7","Mon","19:30","21:00","1:30","TP-GLR",18,18,18,0,NA,NA,NA
+"Bjorn Gomes","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L7","Thu","19:30","21:00","1:30","TP-GLR",18,18,18,0,NA,NA,NA
+"Matthew Walker","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","Remote","L8","Mon","14:30","16:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Matthew Walker","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","Remote","L8","Thu","14:30","16:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Neil Mehta","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","Remote","L9","Mon","14:30","16:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Neil Mehta","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","Remote","L9","Thu","14:30","16:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Cathay Liu","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L10","Mon","14:30","16:00","1:30","ERC-ALR",18,18,18,0,NA,NA,NA
+"Cathay Liu","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L10","Thu","14:30","16:00","1:30","ERC-ALR",18,18,18,0,NA,NA,NA
+"Koh Tsin Yen","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L11","Mon","14:30","16:00","1:30","Y-BlackBox",18,18,18,0,NA,NA,NA
+"Koh Tsin Yen","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L11","Thu","14:30","16:00","1:30","UTSRC-LT52",18,18,18,0,NA,NA,NA
+"Bjorn Gomes","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L12","Mon","18:00","19:30","1:30","TP-GLR",18,18,18,0,NA,NA,NA
+"Bjorn Gomes","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L12","Thu","18:00","19:30","1:30","UTSRC-GLR",18,18,18,0,NA,NA,NA
+"Scott Cook","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L13","Mon","14:30","16:00","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Scott Cook","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L13","Thu","14:30","16:00","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Lucas Entel","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L14","Mon","14:30","16:00","1:30","Y-CR17",18,18,18,0,NA,NA,NA
+"Lucas Entel","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","F2F","L14","Thu","14:30","16:00","1:30","Y-CR17",18,18,18,0,NA,NA,NA
+"Multiple instructors","YCC1113","Philosophy and  Political Thought 1","Common Curriculum","-","Remote","All sections","Mon","9:30","10:30","1:00",NA,250,250,250,0,NA,NA,NA
+"Justin Stern","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L1","Tue","18:00","19:30","1:30","Y-CR15",18,18,18,0,NA,NA,NA
+"Justin Stern","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L1","Fri","18:00","19:30","1:30","Y-CR15",18,18,18,0,NA,NA,NA
+"Michael Maniates ","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L2","Tue","10:30","12:00","1:30","UTSRC-LT53",18,18,18,0,NA,NA,NA
+"Michael Maniates ","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L2","Fri","10:30","12:00","1:30","UTSRC-LT53",18,18,18,0,NA,NA,NA
+"Anthony Medrano","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L3","Tue","18:00","19:30","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Anthony Medrano","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L3","Fri","18:00","19:30","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Pei Gao","YCC1121","Comparative Social Inquiry","Common Curriculum","-","Remote","L4","Tue","10:30","12:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Pei Gao","YCC1121","Comparative Social Inquiry","Common Curriculum","-","Remote","L4","Fri","10:30","12:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Chen Zhang","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L5","Tue","18:00","19:30","1:30","ERC-ALR",18,18,18,0,NA,NA,NA
+"Chen Zhang","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L5","Fri","18:00","19:30","1:30","ERC-ALR",18,18,18,0,NA,NA,NA
+"Parashar Kulkarni","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L6","Tue","10:30","12:00","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Parashar Kulkarni","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L6","Fri","10:30","12:00","1:30","TP-GLR",18,18,18,0,NA,NA,NA
+"Benjamin Schupmann","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L7","Tue","19:30","21:00","1:30","Y-CompLab",18,18,18,0,NA,NA,NA
+"Benjamin Schupmann","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L7","Fri","19:30","21:00","1:30","Y-CompLab",18,18,18,0,NA,NA,NA
+"Parashar Kulkarni","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L8","Tue","16:00","17:30","1:30","Y-CR15",18,18,18,0,NA,NA,NA
+"Parashar Kulkarni","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L8","Fri","16:00","17:30","1:30","Y-CR15",18,18,18,0,NA,NA,NA
+"Michael Maniates ","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L9","Tue","16:00","17:30","1:30","Y-CR17",18,18,18,0,NA,NA,NA
+"Michael Maniates ","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L9","Fri","16:00","17:30","1:30","Y-CR17",18,18,18,0,NA,NA,NA
+"Catherine Sanger","YCC1121","Comparative Social Inquiry","Common Curriculum","-","Remote","L10","Tue","16:00","17:30","1:30",NA,18,18,18,0,NA,NA,NA
+"Catherine Sanger","YCC1121","Comparative Social Inquiry","Common Curriculum","-","Remote","L10","Fri","16:00","17:30","1:30",NA,18,18,18,0,NA,NA,NA
+"Benjamin Schupmann","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L11","Tue","16:00","17:30","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Benjamin Schupmann","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L11","Fri","16:00","17:30","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Chen Zhang","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L12","Tue","19:30","21:00","1:30","ERC-ALR",18,18,18,0,NA,NA,NA
+"Chen Zhang","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L12","Fri","19:30","21:00","1:30","ERC-ALR",18,18,18,0,NA,NA,NA
+"Justin Stern","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L13","Tue","16:00","17:30","1:30","Y-ELMCL",18,18,18,0,NA,NA,NA
+"Justin Stern","YCC1121","Comparative Social Inquiry","Common Curriculum","-","F2F","L13","Fri","16:00","17:30","1:30","Y-ELMCL",18,18,18,0,NA,NA,NA
+"Pei Gao","YCC1121","Comparative Social Inquiry","Common Curriculum","-","Remote","L14","Tue","16:00","17:30","1:30",NA,18,18,18,0,NA,NA,NA
+"Pei Gao","YCC1121","Comparative Social Inquiry","Common Curriculum","-","Remote","L14","Fri","16:00","17:30","1:30",NA,18,18,18,0,NA,NA,NA
+"Multiple instructors","YCC1121","Comparative Social Inquiry","Common Curriculum","-","Remote","All sections","Tue","13:00","14:00","1:00",NA,250,250,250,0,NA,NA,NA
+"Lei Yu-Hsiang","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL1","Mon","12:30","14:30","2:00","NAK-AUD",18,18,18,0,NA,NA,NA
+"Lei Yu-Hsiang","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL1","Thu","12:30","14:30","2:00","NAK-AUD",18,18,18,0,NA,NA,NA
+"Steven Oliver","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL2","Mon","12:30","14:30","2:00","Y-CR15",18,18,18,0,NA,NA,NA
+"Steven Oliver","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL2","Thu","12:30","14:30","2:00","Y-CR15",18,18,18,0,NA,NA,NA
+"Christopher Asplund","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL3","Mon","12:30","14:30","2:00","Y-TCTLT",18,18,18,0,NA,NA,NA
+"Christopher Asplund","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL3","Thu","12:30","14:30","2:00","Y-TCTLT",18,18,18,0,NA,NA,NA
+"David Smith","YCC1122","Quantitative Reasoning","Common Curriculum","-","Remote","EL4","Mon","12:30","14:30","2:00",NA,18,18,18,0,NA,NA,NA
+"David Smith","YCC1122","Quantitative Reasoning","Common Curriculum","-","Remote","EL4","Thu","12:30","14:30","2:00",NA,18,18,18,0,NA,NA,NA
+"Angel Hsu","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL5","Mon","12:30","14:30","2:00","Y-CR17",18,18,18,0,NA,NA,NA
+"Angel Hsu","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL5","Thu","12:30","14:30","2:00","Y-CR17",18,18,18,0,NA,NA,NA
+"Timothy Wertz","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL6","Mon","12:30","14:30","2:00","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Timothy Wertz","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL6","Thu","12:30","14:30","2:00","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Andreas Heinecke","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL7","Mon","12:30","14:30","2:00","Y-BlackBox",18,18,18,0,NA,NA,NA
+"Andreas Heinecke","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL7","Thu","12:30","14:30","2:00","Y-BlackBox",18,18,18,0,NA,NA,NA
+"Lei Yu-Hsiang","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL8","Mon","16:00","18:00","2:00","TP-GLR",18,18,18,0,NA,NA,NA
+"Lei Yu-Hsiang","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL8","Thu","16:00","18:00","2:00","TP-GLR",18,18,18,0,NA,NA,NA
+"Steven Oliver","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL9","Mon","16:00","18:00","2:00","UTSRC-LT52",18,18,18,0,NA,NA,NA
+"Steven Oliver","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL9","Thu","16:00","18:00","2:00","UTSRC-LT52",18,18,18,0,NA,NA,NA
+"Christopher Asplund","YCC1122","Quantitative Reasoning","Common Curriculum","-","Remote","EL10","Mon","16:00","18:00","2:00",NA,18,18,18,0,NA,NA,NA
+"Christopher Asplund","YCC1122","Quantitative Reasoning","Common Curriculum","-","Remote","EL10","Thu","16:00","18:00","2:00",NA,18,18,18,0,NA,NA,NA
+"Michiel Van Breugel","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL11","Mon","16:00","18:00","2:00","Y-CR17",18,18,18,0,NA,NA,NA
+"Michiel Van Breugel","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL11","Thu","16:00","18:00","2:00","Y-CR17",18,18,18,0,NA,NA,NA
+"Michael Gastner ","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL12","Mon","16:00","18:00","2:00","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Michael Gastner ","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL12","Thu","16:00","18:00","2:00","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Andreas Heinecke","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL13","Mon","16:00","18:00","2:00","Y-CompLab",18,18,18,0,NA,NA,NA
+"Andreas Heinecke","YCC1122","Quantitative Reasoning","Common Curriculum","-","F2F","EL13","Thu","16:00","18:00","2:00","Y-CompLab",18,18,18,0,NA,NA,NA
+"Zachary Howlett","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L1","Wed","10:30","12:00","1:30","UTSRC-LT51",18,18,18,0,NA,NA,NA
+"Zachary Howlett","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L1","Sat","10:30","12:00","1:30","Y-CR15",18,18,18,0,NA,NA,NA
+"Rohan Mukherjee","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L2","Wed","10:30","12:00","1:30","Y-CR15",18,18,18,0,NA,NA,NA
+"Rohan Mukherjee","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L2","Fri","10:30","12:00","1:30","Y-CR15",18,18,18,0,NA,NA,NA
+"Christina Tarnopolsky","YCC2121","Modern Social Thought","Common Curriculum","-","Remote","L3","Wed","10:30","12:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Christina Tarnopolsky","YCC2121","Modern Social Thought","Common Curriculum","-","Remote","L3","Fri","10:30","12:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Ricardo Cardoso","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L4","Wed","10:30","12:00","1:30","TP-GLR",18,18,18,0,NA,NA,NA
+"Ricardo Cardoso","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L4","Fri","10:30","12:00","1:30","Y-PerfHall",18,18,18,0,NA,NA,NA
+"Joshua Comaroff","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L5","Wed","10:30","12:00","1:30","Y-CR17",18,18,18,0,NA,NA,NA
+"Joshua Comaroff","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L5","Fri","10:30","12:00","1:30","Y-CR17",18,18,18,0,NA,NA,NA
+"Wannes Dupont","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L6","Wed","10:30","12:00","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Wannes Dupont","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L6","Fri","10:30","12:00","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Sandra Field ","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L7","Wed","10:30","12:00","1:30","Y-BlackBox",18,18,18,0,NA,NA,NA
+"Sandra Field ","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L7","Fri","10:30","12:00","1:30","Y-LT1",18,18,18,0,NA,NA,NA
+"Joshua Comaroff","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L8","Wed","13:00","14:30","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Joshua Comaroff","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L8","Fri","13:00","14:30","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Rohan Mukherjee","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L9","Wed","18:00","19:30","1:30","Y-CompLab",18,18,18,0,NA,NA,NA
+"Rohan Mukherjee","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L9","Fri","18:00","19:30","1:30","Y-CompLab",18,18,18,0,NA,NA,NA
+"Christina Tarnopolsky","YCC2121","Modern Social Thought","Common Curriculum","-","Remote","L10","Wed","13:00","14:30","1:30",NA,18,18,18,0,NA,NA,NA
+"Christina Tarnopolsky","YCC2121","Modern Social Thought","Common Curriculum","-","Remote","L10","Fri","13:00","14:30","1:30",NA,18,18,18,0,NA,NA,NA
+"Zachary Howlett","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L11","Wed","18:00","19:30","1:30","Y-ELMCL",18,18,18,0,NA,NA,NA
+"Zachary Howlett","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L11","Fri","18:00","19:30","1:30","Y-ELMCL",18,18,18,0,NA,NA,NA
+"Ricardo Cardoso","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L12","Wed","13:00","14:30","1:30","Y-ELMCL",18,18,18,0,NA,NA,NA
+"Ricardo Cardoso","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L12","Fri","13:00","14:30","1:30","Y-ELMCL",18,18,18,0,NA,NA,NA
+"Wannes Dupont","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L13","Wed","13:00","14:30","1:30","UTSRC-LT51",18,18,18,0,NA,NA,NA
+"Wannes Dupont","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L13","Fri","13:00","14:30","1:30","UTSRC-LT51",18,18,18,0,NA,NA,NA
+"Liliana Gil","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L14","Wed","13:00","14:30","1:30","Y-CR15",18,18,18,0,NA,NA,NA
+"Liliana Gil","YCC2121","Modern Social Thought","Common Curriculum","-","F2F","L14","Fri","13:00","14:30","1:30","UT-AUD03",18,18,18,0,NA,NA,NA
+"Multiple instructors","YCC2121","Modern Social Thought","Common Curriculum","-","Remote","All sections","Wed","9:30","10:30","1:00",NA,250,250,250,0,NA,NA,NA
+"Chan Kiat Hwa","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L1","Mon","13:00","14:30","1:30","Y-CompLab",18,18,18,0,NA,NA,NA
+"Chan Kiat Hwa","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L1","Thu","13:00","14:30","1:30","Y-CompLab",18,18,18,0,NA,NA,NA
+"Maurice Cheung","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L2","Mon","13:00","14:30","1:30","UT-AUD03",18,18,18,0,NA,NA,NA
+"Maurice Cheung","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L2","Thu","13:00","14:30","1:30","UT-AUD03",18,18,18,0,NA,NA,NA
+"Ben Olsen","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L3","Mon","18:00","19:30","1:30","Y-CR17",18,18,18,0,NA,NA,NA
+"Ben Olsen","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L3","Thu","18:00","19:30","1:30","Y-CR17",18,18,18,0,NA,NA,NA
+"Ben Olsen","YCC2137","Scientific Inquiry 2","Common Curriculum","-","Remote","L4","Mon","19:30","21:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Ben Olsen","YCC2137","Scientific Inquiry 2","Common Curriculum","-","Remote","L4","Thu","19:30","21:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Sebastian Pohl","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L5","Mon","13:00","14:30","1:30","TP-GLR",18,18,18,0,NA,NA,NA
+"Sebastian Pohl","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L5","Thu","13:00","14:30","1:30","Y-LT1",18,18,18,0,NA,NA,NA
+"Aleksandr Rodin","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L6","Mon","18:00","19:30","1:30","ERC-ALR",18,18,18,0,NA,NA,NA
+"Aleksandr Rodin","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L6","Thu","18:00","19:30","1:30","ERC-ALR",18,18,18,0,NA,NA,NA
+"Brian McAdoo","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L7","Mon","13:00","14:30","1:30","ERC-ALR",18,18,18,0,NA,NA,NA
+"Brian McAdoo","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L7","Thu","13:00","14:30","1:30","ERC-ALR",18,18,18,0,NA,NA,NA
+"Chan Kiat Hwa","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L8","Mon","16:00","17:30","1:30","Y-BlackBox",18,18,18,0,NA,NA,NA
+"Chan Kiat Hwa","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L8","Thu","16:00","17:30","1:30","Y-BlackBox",18,18,18,0,NA,NA,NA
+"Chelsea Sharon","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L9","Mon","16:00","17:30","1:30","ERC-ALR",18,18,18,0,NA,NA,NA
+"Chelsea Sharon","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L9","Thu","16:00","17:30","1:30","ERC-ALR",18,18,18,0,NA,NA,NA
+"Maurice Cheung","YCC2137","Scientific Inquiry 2","Common Curriculum","-","Remote","L10","Mon","19:30","21:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Maurice Cheung","YCC2137","Scientific Inquiry 2","Common Curriculum","-","Remote","L10","Thu","19:30","21:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Sebastian Pohl","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L11","Mon","18:00","19:30","1:30","Y-CR15",18,18,18,0,NA,NA,NA
+"Sebastian Pohl","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L11","Thu","18:00","19:30","1:30","Y-CR15",18,18,18,0,NA,NA,NA
+"Eunice Tan","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L12","Mon","16:00","17:30","1:30","Y-PerfHall",18,18,18,0,NA,NA,NA
+"Eunice Tan","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L12","Thu","16:00","17:30","1:30","UTSRC-LT53",18,18,18,0,NA,NA,NA
+"Eunice Tan","YCC2137","Scientific Inquiry 2","Common Curriculum","-","Remote","L13","Mon","19:30","21:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Eunice Tan","YCC2137","Scientific Inquiry 2","Common Curriculum","-","Remote","L13","Thu","19:30","21:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Zhuang Bilin","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L14","Mon","16:00","17:30","1:30","UTSRC-LT51",18,18,18,0,NA,NA,NA
+"Zhuang Bilin","YCC2137","Scientific Inquiry 2","Common Curriculum","-","F2F","L14","Thu","16:00","17:30","1:30","UTSRC-LT51",18,18,18,0,NA,NA,NA
+"Multiple instructors","YCC2137","Scientific Inquiry 2","Common Curriculum","-","Remote","All sections","Mon","11:00","12:00","1:00",NA,250,250,250,0,NA,NA,NA
+"Stuart Strange","YSS2223","Religion, Ritual and Magic","Anthropology","-","F2F","E1","Mon","9:00","10:30","1:30","Y-CR3",18,5,11,6,NA,NA,NA
+"Stuart Strange","YSS2223","Religion, Ritual and Magic","Anthropology","-","F2F","E1","Thu","9:00","10:30","1:30","Y-CR3",18,5,11,6,NA,NA,NA
+"Stuart Strange","YSS3202","Ethnography","Anthropology","Global Affairs 
+Urban Studies","F2F","E1","Mon","14:30","16:00","1:30","UT-AUD03",18,18,18,0,NA,NA,NA
+"Stuart Strange","YSS3202","Ethnography","Anthropology","Global Affairs 
+Urban Studies","F2F","E1","Thu","14:30","16:00","1:30","UT-AUD03",18,18,18,0,NA,NA,NA
+"Gabriele Koch","YSS3277","The Anthropological Imagination","Anthropology","-","F2F","E1","Tue","14:30","16:00","1:30","Y-PgRm1",18,12,16,4,NA,NA,NA
+"Gabriele Koch","YSS3277","The Anthropological Imagination","Anthropology","-","F2F","E1","Fri","14:30","16:00","1:30","Y-PgRm1",18,12,16,4,NA,NA,NA
+"Gabriele Koch","YSS4103","Anthropology Capstone Project","Anthropology","-","F2F","E1","Wed","12:30","15:30","3:00","Y-CR3",11,11,11,0,NA,NA,NA
+"Celine Coderey","YSS4236","Medical Anthropology","Anthropology","Global Affairs","F2F","E1","Wed","18:00","21:00","3:00","Y-CR15",18,16,18,2,NA,NA,NA
+"Balli Kaur","YHU2202","Introduction to Creative Nonfiction","Arts and Humanities","-","Remote","E1","Fri","9:00","12:00","3:00",NA,15,10,15,5,NA,NA,NA
+"Li Churen","YHU2205","Integrative Music Theory 1","Arts and Humanities","-","F2F","E1","Mon","10:30","12:00","1:30","Y-PracRm6",18,0,8,8,NA,NA,NA
+"Li Churen","YHU2205","Integrative Music Theory 1","Arts and Humanities","-","F2F","E1","Thu","10:30","12:00","1:30","Y-PracRm6",18,0,8,8,NA,NA,NA
+"Chan Yanyun","YHU2215","Drawing Methods","Arts and Humanities","-","F2F","E1","Thu","13:00","17:00","4:00","Y-ArtsStud",13,12,12,0,NA,NA,NA
+"Chan Yanyun","YHU2248","Visual Storytelling","Arts and Humanities","-","Remote","E1","Thu","9:00","12:00","3:00",NA,18,18,18,0,NA,NA,NA
+"Lawrence Ypil","YHU2292","Introduction to Writing Poetry","Arts and Humanities","-","F2F","E1","Tue","18:00","21:00","3:00","Y-ELMCL",15,15,15,0,NA,NA,NA
+"Balli Kaur","YHU2293","Introduction to Fiction Writing","Arts and Humanities","-","F2F","E1","Fri","18:00","21:00","3:00","Y-CR16",15,9,14,5,NA,NA,NA
+"Chen Sai Huan Kuan","YHU2317","Sculpting Movement: Artist in Residence (AIR) Special Project","Arts and Humanities","-","F2F","E1","Tue ","13:00","16:00","3:00","Y-Studio3
+Y-Studio4",6,0,6,6,NA,NA,NA
+"Jonathan Vandenberg","YHU2319","Beginning Acting for the Stage","Arts and Humanities","-","F2F","E1","Tue","18:00","19:30","1:30","Y-BlackBox",18,0,18,18,NA,NA,NA
+"Jonathan Vandenberg","YHU2319","Beginning Acting for the Stage","Arts and Humanities","-","F2F","E1","Fri","18:00","19:30","1:30","Y-BlackBox",18,0,18,18,NA,NA,NA
+"Tom White","YHU3216","Photojournalism","Arts and Humanities","Urban Studies","F2F","E1","Wed","9:00","12:00","3:00","ERC-ALR",18,6,18,12,NA,NA,NA
+"Heidi Stalla","YHU3217","Forms of Nonfiction: Literary Journalism from Print to Sound","Arts and Humanities","-","F2F","E1","Mon","13:00","16:00","3:00","Y-CR3",15,6,11,5,NA,NA,NA
+"Maria Taroutina","YHU4104","Arts and Humanities Capstone Project","Arts and Humanities","-","F2F","E1","Wed","13:00","15:00","2:00","TP-GLR",10,10,10,0,NA,NA,NA
+"Nozomi Naoi","YHU4238","The Female Image in Japanese Art and Literature","Arts and Humanities","Literature","F2F","E1","Tue","9:00","12:00","3:00","Y-CompLab",18,18,18,0,NA,NA,NA
+"Ho Chee Kong","MUT1201","Introduction to Classical Music Composition","Arts and Humanities","-","F2F","E1","Thu","14:30","16:30","2:00","Y-PracRm6",20,3,8,5,NA,NA,NA
+"Li Churen","MUT1201","Introduction to Classical Music Composition","Arts and Humanities","-","F2F","E1","Thu","14:30","16:30","2:00","Y-PracRm6",20,3,8,5,NA,NA,NA
+"Kat Agres","MUA3230","Music Cognition","Arts and Humanities","Psychology","Remote","E1","Wed","10:30","12:30","2:00","Y-LT1",20,3,20,17,NA,NA,NA
+"Kat Agres","MUA3230","Music Cognition","Arts and Humanities","Psychology","Remote","E1","Thu","10:30","11:30","1:00","Y-LT1",20,3,20,17,NA,NA,NA
+"Lynette Chua","YSS4248","Conducting Qualitative Socio-legal Research","Combined Law-Liberal Arts","Global Affairs","F2F","E1","Thu","15:00","18:00","3:00","UTSRC-GLR",18,17,18,1,NA,NA,NA
+"John Driffill","YSS1203","Principles of Economics ","Economics","PPE","F2F","E1","Tue","16:00","17:30","1:30","Y-CompLab",18,0,18,18,NA,NA,NA
+"John Driffill","YSS1203","Principles of Economics ","Economics","PPE","F2F","E1","Fri","16:00","17:30","1:30","Y-CompLab",18,0,18,18,NA,NA,NA
+"Benny Lam","YSS2203","Intermediate Microeconomics","Economics","PPE","F2F","E1","Tue","18:00","19:30","1:30","Y-LT1",22,20,22,2,NA,NA,NA
+"Benny Lam","YSS2203","Intermediate Microeconomics","Economics","PPE","F2F","E1","Fri","18:00","19:30","1:30","Y-LT1",22,20,22,2,NA,NA,NA
+"Benny Lam","YSS2203","Intermediate Microeconomics","Economics","PPE","F2F","E2","Tue","16:00","17:30","1:30","Y-LT1",22,20,22,2,NA,NA,NA
+"Benny Lam","YSS2203","Intermediate Microeconomics","Economics","PPE","F2F","E2","Fri","16:00","17:30","1:30","Y-LT1",22,20,22,2,NA,NA,NA
+"Ran Song","YSS2211","Econometrics","Economics","Global Affairs
+PPE
+Urban Studies","F2F","E1","Mon","13:00","14:30","1:30","UTSRC-LT52",18,8,20,12,NA,NA,NA
+"Ran Song","YSS2211","Econometrics","Economics","Global Affairs
+PPE
+Urban Studies","F2F","E1","Tue","13:00","14:00","1:00","Y-CompLab",18,8,20,12,NA,NA,NA
+"Ran Song","YSS2211","Econometrics","Economics","Global Affairs
+PPE
+Urban Studies","F2F","E1","Thu","13:00","14:30","1:30","UTSRC-LT52",18,8,20,12,NA,NA,NA
+"Deng Liuchun","YSS2214","Intermediate Macroeconomics","Economics","PPE","F2F","E1","Tue","9:00","10:30","1:30","Y-BlackBox",18,16,18,2,NA,NA,NA
+"Deng Liuchun","YSS2214","Intermediate Macroeconomics","Economics","PPE","F2F","E1","Fri ","9:00","10:30","1:30","Y-BlackBox",18,16,18,2,NA,NA,NA
+"Deng Liuchun","YSS2214","Intermediate Macroeconomics","Economics","PPE","F2F","E1","Tue ","10:30","11:30","1:00","Y-BlackBox",18,16,18,2,NA,NA,NA
+"Deng Liuchun","YSS2214","Intermediate Macroeconomics","Economics","PPE","F2F","E2","Tue","9:00","10:30","1:30","Y-BlackBox",18,13,18,5,NA,NA,NA
+"Deng Liuchun","YSS2214","Intermediate Macroeconomics","Economics","PPE","F2F","E2","Fri","9:00","10:30","1:30","Y-BlackBox",18,13,18,5,NA,NA,NA
+"Deng Liuchun","YSS2214","Intermediate Macroeconomics","Economics","PPE","F2F","E2","Fri","10:30","11:30","1:00","Y-BlackBox",18,13,18,5,NA,NA,NA
+"Felix Momsen","YSS2233","Investment Analysis and Economics","Economics","PPE","F2F","E1","Tue","9:00","11:00","2:00","Y-TCTLT",30,28,30,2,NA,NA,NA
+"Felix Momsen","YSS2233","Investment Analysis and Economics","Economics","PPE","F2F","E1","Sat","9:00","11:00","2:00","Y-TCTLT",30,28,30,2,NA,NA,NA
+"Ravi Chidambaram","YSS2234","The Good Company","Economics","PPE","F2F","E1","Mon","18:00","19:30","1:30","Y-LT1",20,18,20,2,NA,NA,NA
+"Ravi Chidambaram","YSS2234","The Good Company","Economics","PPE","F2F","E1","Thu","18:00","19:30","1:30","Y-LT1",20,18,20,2,NA,NA,NA
+"Ravi Chidambaram","YSS2234","The Good Company","Economics","PPE","F2F","E2","Mon","14:30","16:00","1:30","NAK-AUD",20,17,22,5,NA,NA,NA
+"Ravi Chidambaram","YSS2234","The Good Company","Economics","PPE","F2F","E2","Thu","14:30","16:00","1:30","NAK-AUD",20,17,22,5,NA,NA,NA
+"Basant Kapur","YSS3224","International Finance","Economics","Global Affairs  
+PPE","Remote","E1","Tue","14:30","16:00","1:30",NA,18,13,18,5,NA,NA,NA
+"Basant Kapur","YSS3224","International Finance","Economics","Global Affairs  
+PPE","Remote","E1","Fri","14:30","16:00","1:30",NA,18,13,18,5,NA,NA,NA
+"Benny Lam","YSS3248","Advanced Macroeconomics","Economics","PPE","Remote","E1","Mon","9:00","10:00","1:30","Y-PerfHall",18,15,18,3,NA,NA,NA
+"Benny Lam","YSS3248","Advanced Macroeconomics","Economics","PPE","F2F","E1","Thu","14:30","16:00","1:30","Y-PerfHall",18,15,18,3,NA,NA,NA
+"Benny Lam","YSS3248","Advanced Macroeconomics","Economics","PPE","F2F","E1","Sat","14:30","16:00","1:30","Y-PerfHall",18,15,18,3,NA,NA,NA
+"Michael Schmertzler","YSS3257","Seminar on Corporate Finance","Economics","PPE","Remote","E1","Mon","21:00","22:30","1:30",NA,20,0,20,20,NA,NA,NA
+"Michael Schmertzler","YSS3257","Seminar on Corporate Finance","Economics","PPE","Remote","E1","Tue","21:00","22:30","1:30",NA,20,0,20,20,NA,NA,NA
+"Michael Schmertzler","YSS3257","Seminar on Corporate Finance","Economics","PPE","Remote","E1","Thu","19:30","20:30","1:00",NA,20,0,20,20,NA,NA,NA
+"Eugene Choo","YSS4104","Economics Capstone Project","Economics","-","F2F","E1","Wed","12:00","14:30","2:30","Y-TCTLT",24,24,24,0,NA,NA,NA
+"Eugene Choo","YSS4227","Topics in Applied Econometrics","Economics","PPE","F2F","E1","Mon","10:30","12:00","1:30","Y-CR17",18,0,18,18,NA,NA,NA
+"Eugene Choo","YSS4227","Topics in Applied Econometrics","Economics","PPE","F2F","E1","Thu","10:30","12:00","1:30","Y-CR17",18,0,18,18,NA,NA,NA
+"Zhang Jianlin","YSS4258","Asset Pricing, Financial Markets and Behavioral Finance","Economics","PPE","F2F","E1","Wed","14:30","17:30","3:00","UTSRC-LT51",22,20,20,0,NA,NA,NA
+"Francis Dennig","YSS4259","The Economics of Climate Change","Economics","PPE","F2F","E1","Wed","9:00","12:00","3:00","Y-TCTLT",18,14,18,4,NA,NA,NA
+"Francis Dennig","YSS4260","The Economics of Inequality","Economics","-","F2F","E1","Thu","13:00","16:00","3:00","TP-GLR",18,16,18,2,NA,NA,NA
+"Michael Maniates ","YID1201","Introduction to Environmental Studies","Environmental Studies","-","F2F","E1","Sat","14:30","16:00","1:30","Y-TCTLT",20,20,20,0,NA,NA,NA
+"Michael Maniates ","YID1201","Introduction to Environmental Studies","Environmental Studies","-","F2F","E1","Thu","14:30","16:00","1:30","Y-TCTLT",20,20,20,0,NA,NA,NA
+"Marvin Montefrio","YID2207","Social Theory and the Environment","Environmental Studies","-","F2F","E1","Thu","14:30","16:00","1:30","Y-LT1",18,16,18,2,NA,NA,NA
+"Marvin Montefrio","YID2207","Social Theory and the Environment","Environmental Studies","-","F2F","E1","Sat","14:30","16:00","1:30","Y-LT1",18,16,18,2,NA,NA,NA
+"Matthew Schneider-Mayerson","YID2208","Foundations of Environmental Humanities","Environmental Studies","Literature","F2F","E1","Mon","16:00","17:30","1:30","Y-TCTLT",18,16,18,2,NA,NA,NA
+"Matthew Schneider-Mayerson","YID2208","Foundations of Environmental Humanities","Environmental Studies","Literature","F2F","E1","Thu","16:00","17:30","1:30","Y-TCTLT",18,16,18,2,NA,NA,NA
+"Brian McAdoo","YID3202G","Special Topics: Planetary Health","Environmental Studies","-","F2F","E1","Mon","9:00","10:30","1:30","Y-CR1",18,5,9,4,NA,NA,NA
+"Brian McAdoo","YID3202G","Special Topics: Planetary Health","Environmental Studies","-","F2F","E1","Thu","9:00","10:30","1:30","Y-CR1",18,5,9,4,NA,NA,NA
+"Marvin Montefrio","YID3211","Ecological Economics","Environmental Studies","-","F2F","E1","Mon","19:30","21:00","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Marvin Montefrio","YID3211","Ecological Economics","Environmental Studies","-","F2F","E1","Thu","19:30","21:00","1:30","Y-GLRm1",18,18,18,0,NA,NA,NA
+"Yew Wei Lit","YID3216","Environment, Development and Mobilisation in Asia","Environmental Studies","-","F2F","E1","Tue","18:00","19:30","1:30","Y-CR3",18,6,11,5,NA,NA,NA
+"Yew Wei Lit","YID3216","Environment, Development and Mobilisation in Asia","Environmental Studies","-","F2F","E1","Fri","18:00","19:30","1:30","Y-CR3",18,6,11,5,NA,NA,NA
+"Anthony Medrano","YID3218","Singapore Biodiversity: Past, Present, and Future","Environmental Studies","History
+Life Sciences
+Urban Studies","F2F","E1","Tue","14:30","16:30","2:00","NAK-AUD",22,20,22,2,NA,NA,NA
+"Anthony Medrano","YID3218","Singapore Biodiversity: Past, Present, and Future","Environmental Studies","History
+Life Sciences
+Urban Studies","F2F","E1","Fri","14:30","16:30","2:00","NAK-AUD",22,20,22,2,NA,NA,NA
+"Eunice Tan","YID3218","Singapore Biodiversity: Past, Present, and Future","Environmental Studies","History
+Life Sciences
+Urban Studies","F2F","E2","Tue","14:30","16:30","2:00","NAK-AUD",22,20,22,2,NA,NA,NA
+"Eunice Tan","YID3218","Singapore Biodiversity: Past, Present, and Future","Environmental Studies","History
+Life Sciences
+Urban Studies","F2F","E2","Fri","14:30","16:30","2:00","NAK-AUD",22,20,22,2,NA,NA,NA
+"Matthew Schneider-Mayerson","YID3220","The Ethics and Politics of Reproduction in the Age of Climate Change","Environmental Studies","Philosophy","F2F","E1","Mon","13:00","14:30","1:30","Y-KChanrai",12,3,12,9,NA,NA,NA
+"Matthew Schneider-Mayerson","YID3220","The Ethics and Politics of Reproduction in the Age of Climate Change","Environmental Studies","Philosophy","F2F","E1","Thu","13:00","14:30","1:30","Y-KChanrai",12,3,12,9,NA,NA,NA
+"Benjamin Wainwright","YID3221","Wildlife Forensics and the Shark Fin Trade","Environmental Studies","-","F2F","E1","Wed","9:00","12:00","3:00","Y-YESLab",18,7,12,5,NA,NA,NA
+"Brian McAdoo","YID4101","Environmental Studies Capstone Project","Environmental Studies","-","F2F","E1","Wed","18:00","19:30","1:30","Y-CR17",18,18,18,0,NA,NA,NA
+"Angel Hsu","YSS2242","Data Science for the Environment","Environmental Studies","-","F2F","E1","Mon","9:00","10:30","1:30","Y-PgRm1",13,0,15,15,NA,NA,NA
+"Angel Hsu","YSS2242","Data Science for the Environment","Environmental Studies","-","F2F","E1","Thu","9:00","10:30","1:30","Y-PgRm1",13,0,15,15,NA,NA,NA
+"Michiel Van Breugel
+","YSS2242","Data Science for the Environment","Environmental Studies","-","F2F","E2","Mon","9:00","10:30","1:30","Y-PgRm1",13,0,15,15,NA,NA,NA
+"Michiel Van Breugel
+","YSS2242","Data Science for the Environment","Environmental Studies","-","F2F","E2","Thu","9:00","10:30","1:30","Y-PgRm1",13,0,15,15,NA,NA,NA
+"Yogesh Joshi","YSS2202","International Relations","Global Affairs","PPE","F2F","E1","Mon","19:30","21:00","1:30","Y-PerfHall",25,24,25,1,NA,NA,NA
+"Yogesh Joshi","YSS2202","International Relations","Global Affairs","PPE","F2F","E1","Thu","19:30","21:00","1:30","Y-PerfHall",25,24,25,1,NA,NA,NA
+"Anju Paul","YSS3201","International Migrations","Global Affairs","Anthropology
+Urban Studies","F2F","E1","Mon","9:00","11:00","2:00","Y-BlackBox",20,20,20,0,NA,NA,NA
+"Anju Paul","YSS3201","International Migrations","Global Affairs","Anthropology
+Urban Studies","F2F","E1","Thu","9:00","11:00","2:00","Y-BlackBox",20,20,20,0,NA,NA,NA
+"Anju Paul","YSS3254","Globalization on the Ground","Global Affairs","Anthropology
+Urban Studies","F2F","E1","Mon","16:00","17:30","1:30","Y-LT1",20,18,20,2,NA,NA,NA
+"Anju Paul","YSS3254","Globalization on the Ground","Global Affairs","Anthropology
+Urban Studies","F2F","E1","Thu","16:00","17:30","1:30","Y-LT1",20,18,20,2,NA,NA,NA
+"Diego Maiorano","YSS3255","International Development","Global Affairs","-","F2F","E1","Tue","14:30","16:00","1:30","Y-LT1",24,24,24,0,NA,NA,NA
+"Diego Maiorano","YSS3255","International Development","Global Affairs","-","F2F","E1","Fri","14:30","16:00","1:30","Y-LT1",24,24,24,0,NA,NA,NA
+"Risa Toha","YSS4101","Global Affairs Capstone Project","Global Affairs","-","F2F","E1","Wed","12:30","15:30","3:00","Y-LT1",17,17,17,0,NA,NA,NA
+"Huang Chin Hao","YSS4205","Chinese Foreign Policy","Global Affairs","Chinese Studies","F2F","E1","Thu","9:00","12:00","3:00","Y-CompLab",18,12,18,6,NA,NA,NA
+"Risa Toha","YSS4223","Politics of Identity in Developing Countries","Global Affairs","PPE","F2F","E1","Wed","9:00","12:00","3:00","Y-CompLab",19,17,18,1,NA,NA,NA
+"Taran Kang","YHU3221","Nietzsche: An Untimely Thinker and His Times","Historical Immersion","History
+Philosophy","F2F","E1","Mon","16:00","17:30","1:30","Y-ELMCL",18,18,18,0,NA,NA,NA
+"Taran Kang","YHU3221","Nietzsche: An Untimely Thinker and His Times","Historical Immersion","History
+Philosophy","F2F","E1","Thu","16:00","17:30","1:30","Y-ELMCL",18,18,18,0,NA,NA,NA
+"Heidi Stalla","YHU3243","Woolf, Historiography, and the Scene of the Modern","Historical Immersion","Literature","F2F","E1","Wed","13:00","16:00","3:00","Y-CompLab",18,8,18,10,NA,NA,NA
+"Nozomi Naoi","YHU3254","From Edo to Modern City: Tokyo","Historical Immersion","Arts and Humanities
+Urban Studies","F2F","E1","Fri","9:00","12:00","3:00","Y-CompLab",18,18,18,0,NA,NA,NA
+"Maria Taroutina","YHU3274","Painting the Orient","Historical Immersion","Arts and Humanities","F2F","E1","Mon","14:30","16:00","1:30","Y-CR16",18,13,14,1,NA,NA,NA
+"Maria Taroutina","YHU3274","Painting the Orient","Historical Immersion","Arts and Humanities","F2F","E1","Thu","14:30","16:00","1:30","Y-CR16",18,13,14,1,NA,NA,NA
+"Lee Chee Keng","YHU3286","Living & Dying as Japanese in WWII Anime and Drama","Historical Immersion","Arts and Humanities","F2F","E1","Wed","9:00","12:00","3:00","UT-AUD03",18,18,18,0,NA,NA,NA
+"Mate Rigo","YHU3314","1989: The End of the Cold War","Historical Immersion","History","Remote","E1","Tue","18:00","21:00","3:00",NA,18,18,18,0,NA,NA,NA
+"Claudine Ang","YHU3317","The Words and World of Lu Xun","Historical Immersion","History","F2F","E1","Mon","10:30","12:00","1:30","Y-ELMCL",18,18,18,0,NA,NA,NA
+"Claudine Ang","YHU3317","The Words and World of Lu Xun","Historical Immersion","History","F2F","E1","Thu","10:30","12:00","1:30","Y-ELMCL",18,18,18,0,NA,NA,NA
+"Malcolm Keating","YHU3330","Hinduism, Nationalism, and the Bhagavad Gita in the 20th  Century","Historical Immersion","Philosophy
+PPE","Remote","E1","Tue","19:30","21:00","1:30",NA,18,10,18,8,NA,NA,NA
+"Malcolm Keating","YHU3330","Hinduism, Nationalism, and the Bhagavad Gita in the 20th  Century","Historical Immersion","Philosophy
+PPE","Remote","E1","Fri","19:30","21:00","1:30",NA,18,10,18,8,NA,NA,NA
+"Kevin Goldstein","YHU3334","Mexican Revolutionary Aesthetics","Historical Immersion","Literature","F2F","E1","Tue","10:30","12:00","1:30","Y-CR3",18,6,11,5,NA,NA,NA
+"Kevin Goldstein","YHU3334","Mexican Revolutionary Aesthetics","Historical Immersion","Literature","F2F","E1","Fri","10:30","12:00","1:30","Y-CR3",18,6,11,5,NA,NA,NA
+"Neil Clarke","YID3219","Volcanos, Climate, and Society in the 19th Century","Historical Immersion","Environmental Studies
+History","F2F","E1","Tue","14:30","16:00","1:30","Y-ELMCL",18,18,18,0,NA,NA,NA
+"Neil Clarke","YID3219","Volcanos, Climate, and Society in the 19th Century","Historical Immersion","Environmental Studies
+History","F2F","E1","Fri","14:30","16:00","1:30","Y-ELMCL",18,18,18,0,NA,NA,NA
+"William Piel","YSC3247","The Genomics of Human History","Historical Immersion","Life Sciences","F2F","E1","Mon","18:00","19:30","1:30","UTSRC-LT51",18,0,18,18,NA,NA,NA
+"William Piel","YSC3247","The Genomics of Human History","Historical Immersion","Life Sciences","F2F","E1","Thu","18:00","19:30","1:30","UTSRC-LT51",18,0,18,18,NA,NA,NA
+"Claudine Ang","YHU2290","History and Culture of Southeast Asia","History","-","F2F","E1","Thu","14:30","16:00","1:30","Y-BlackBox",18,18,18,0,NA,NA,NA
+"Claudine Ang","YHU2290","History and Culture of Southeast Asia","History","-","F2F","E1","Sat","14:30","16:00","1:30","Y-BlackBox",18,18,18,0,NA,NA,NA
+"Mate Rigo","YHU2307","History of Crises: Europe’s 20th Century","History","Global Affairs  
+PPE","Remote","E1","Mon","19:30","21:00","1:30",NA,18,12,18,6,NA,NA,NA
+"Mate Rigo","YHU2307","History of Crises: Europe’s 20th Century","History","Global Affairs  
+PPE","Remote","E1","Thu","19:30","21:00","1:30",NA,18,12,18,6,NA,NA,NA
+"Emanuel Mayer","YHU2314","Rome from City State to Empire","History","PPE
+Global Antiquity","F2F","E1","Mon","13:00","14:30","1:30","Y-CR18",18,7,11,4,NA,NA,NA
+"Emanuel Mayer","YHU2314","Rome from City State to Empire","History","PPE
+Global Antiquity","F2F","E1","Thu","13:00","14:30","1:30","Y-CR18",18,7,11,4,NA,NA,NA
+"Naoko Shimazu","YHU3268","The Japanese Empire in Global History","History","Global Affairs","Remote","E1","Mon","13:00","14:30","1:30",NA,18,11,18,7,NA,NA,NA
+"Naoko Shimazu","YHU3268","The Japanese Empire in Global History","History","Global Affairs","Remote","E1","Thu","13:00","14:30","1:30",NA,18,11,18,7,NA,NA,NA
+"Christine Walker","YHU3276","The Historian's Craft","History","Global Affairs
+Urban Studies","F2F","E1","Wed","10:30","12:00","1:30","Y-ELMCL",18,16,18,2,NA,NA,NA
+"Christine Walker","YHU3276","The Historian's Craft","History","Global Affairs
+Urban Studies","F2F","E1","Fri","10:30","12:00","1:30","Y-ELMCL",18,16,18,2,NA,NA,NA
+"Emanuel Mayer","YHU4101","History Capstone Project","History","-","F2F","E1","Wed","12:30","15:30","3:00","Y-CR1",9,9,9,0,NA,NA,NA
+"Taran Kang","YHU4206","The History of History","History","-","F2F","E1","Thu","9:00","12:00","3:00","TP-GLR",18,13,18,5,NA,NA,NA
+"Prasenjit Dey","YIL1201B","Directed Language Study: Beginning Bangla 1","Language/Bangla","-","Remote","E1","Mon","13:00","14:00","1:00",NA,15,1,12,11,NA,NA,NA
+"Prasenjit Dey","YIL1201B","Directed Language Study: Beginning Bangla 1","Language/Bangla","-","Remote","E1","Tue","13:00","14:30","1:30",NA,15,1,12,11,NA,NA,NA
+"Prasenjit Dey","YIL1201B","Directed Language Study: Beginning Bangla 1","Language/Bangla","-","Remote","E1","Fri","13:00","14:30","1:30",NA,15,1,12,11,NA,NA,NA
+"Khoo Kiak Ern","YLC1202","Beginning Chinese 2","Language/Chinese","-","Remote","E1","Mon","12:00","13:00","1:00",NA,15,5,15,10,NA,NA,NA
+"Khoo Kiak Ern","YLC1202","Beginning Chinese 2","Language/Chinese","-","Remote","E1","Tue","12:00","13:00","1:00",NA,15,5,15,10,NA,NA,NA
+"Khoo Kiak Ern","YLC1202","Beginning Chinese 2","Language/Chinese","-","Remote","E1","Thu","12:00","13:00","1:00",NA,15,5,15,10,NA,NA,NA
+"Khoo Kiak Ern","YLC1202","Beginning Chinese 2","Language/Chinese","-","Remote","E1","Fri","12:00","13:00","1:00",NA,15,5,15,10,NA,NA,NA
+"Tang Dongli","YLC1202","Beginning Chinese 2","Language/Chinese","-","F2F","E2","Mon","13:00","14:00","1:00","Y-PgRm2",15,8,15,7,NA,NA,NA
+"Tang Dongli","YLC1202","Beginning Chinese 2","Language/Chinese","-","F2F","E2","Tue","13:00","14:00","1:00","Y-PgRm2",15,8,15,7,NA,NA,NA
+"Tang Dongli","YLC1202","Beginning Chinese 2","Language/Chinese","-","F2F","E2","Thu","13:00","14:00","1:00","Y-PgRm2",15,8,15,7,NA,NA,NA
+"Tang Dongli","YLC1202","Beginning Chinese 2","Language/Chinese","-","F2F","E2","Fri","13:00","14:00","1:00","Y-PgRm2",15,8,15,7,NA,NA,NA
+"Khoo Kiak Ern","YLC2202","Intermediate Chinese 2","Language/Chinese","Chinese Studies","Remote","E1","Tue","10:30","12:00","1:30",NA,15,8,15,7,NA,NA,NA
+"Khoo Kiak Ern","YLC2202","Intermediate Chinese 2","Language/Chinese","Chinese Studies","Remote","E1","Thu","10:00","11:00","1:00",NA,15,8,15,7,NA,NA,NA
+"Khoo Kiak Ern","YLC2202","Intermediate Chinese 2","Language/Chinese","Chinese Studies","Remote","E1","Fri","10:30","12:00","1:30",NA,15,8,15,7,NA,NA,NA
+"Tang Dongli","YLC3204","Advanced Chinese 2","Language/Chinese","Chinese Studies","F2F","E1","Mon","14:30","16:00","1:30","Y-CR1",15,4,9,5,NA,NA,NA
+"Tang Dongli","YLC3204","Advanced Chinese 2","Language/Chinese","Chinese Studies","F2F","E1","Tue","14:30","15:30","1:00","Y-CR1",15,4,9,5,NA,NA,NA
+"Tang Dongli","YLC3204","Advanced Chinese 2","Language/Chinese","Chinese Studies","F2F","E1","Thu","14:30","16:00","1:30","Y-CR1",15,4,9,5,NA,NA,NA
+"Khoo Kiak Ern","YLC3206","Advanced Readings in Chinese: Modern Chinese Literature ","Language/Chinese","Chinese Studies","Remote","E1","Tue","14:30","16:30","2:00",NA,15,3,15,12,NA,NA,NA
+"Khoo Kiak Ern","YLC3206","Advanced Readings in Chinese: Modern Chinese Literature ","Language/Chinese","Chinese Studies","Remote","E1","Fri","14:30","16:30","2:00",NA,15,3,15,12,NA,NA,NA
+"Eleftheria Lasthiotaki","YLG1201","Beginning Ancient Greek","Language/Greek","Global Antiquity","Remote","E1","Tue","14:30","16:00","1:30",NA,15,7,15,8,NA,NA,NA
+"Eleftheria Lasthiotaki","YLG1201","Beginning Ancient Greek","Language/Greek","Global Antiquity","Remote","E1","Wed","15:30","16:30","1:00",NA,15,7,15,8,NA,NA,NA
+"Eleftheria Lasthiotaki","YLG1201","Beginning Ancient Greek","Language/Greek","Global Antiquity","Remote","E1","Fri","14:30","16:00","1:30",NA,15,7,15,8,NA,NA,NA
+"Mira Seo","YLL2201","Intermediate Latin","Language/Latin","Global Antiquity","F2F","E1","Tue","16:00","17:30","1:30","Y-CR7",15,1,9,8,NA,NA,NA
+"Mira Seo","YLL2201","Intermediate Latin","Language/Latin","Global Antiquity","F2F","E1","Wed","16:30","17:30","1:00","Y-CR7",15,1,9,8,NA,NA,NA
+"Mira Seo","YLL2201","Intermediate Latin","Language/Latin","Global Antiquity","F2F","E1","Fri","16:00","17:30","1:30","Y-CR7",15,1,9,8,NA,NA,NA
+"AIIS","YIL3201S","Directed Language Study: Advanced Sanskrit","Language/Sanskrit","Global Antiquity","Remote in YNC Classroom","E1","Tue","18:00","19:30","1:30","Y-GLRm2",15,2,12,10,NA,NA,NA
+"AIIS","YIL3201S","Directed Language Study: Advanced Sanskrit","Language/Sanskrit","Global Antiquity","Remote in YNC Classroom","E1","Thu","18:00","19:30","1:30","Y-GLRm2",15,2,12,10,NA,NA,NA
+"AIIS","YIL3201S","Directed Language Study: Advanced Sanskrit","Language/Sanskrit","Global Antiquity","Remote in YNC Classroom","E1","Fri","18:00","19:00","1:00","Y-GLRm2",15,2,12,10,NA,NA,NA
+"Amparo Espadas","YLS1202","Beginning Spanish 2","Language/Spanish","-","F2F","E1","Tue","10:30","12:00","1:30","Y-PgRm1",16,16,16,0,NA,NA,NA
+"Amparo Espadas","YLS1202","Beginning Spanish 2","Language/Spanish","-","F2F","E1","Wed","10:30","11:30","1:00","Y-PgRm1",16,16,16,0,NA,NA,NA
+"Amparo Espadas","YLS1202","Beginning Spanish 2","Language/Spanish","-","F2F","E1","Thu","10:30","12:00","1:30","Y-PgRm1",16,16,16,0,NA,NA,NA
+"Amparo Espadas","YLS2201","Intermediate Spanish 1","Language/Spanish","-","F2F","E1","Tue","13:00","14:30","1:30","Y-CR2",15,4,9,5,NA,NA,NA
+"Amparo Espadas","YLS2201","Intermediate Spanish 1","Language/Spanish","-","F2F","E1","Wed","13:00","14:00","1:00","Y-CR2",15,4,9,5,NA,NA,NA
+"Amparo Espadas","YLS2201","Intermediate Spanish 1","Language/Spanish","-","F2F","E1","Thu","13:00","14:30","1:30","Y-CR2",15,4,9,5,NA,NA,NA
+"Amparo Espadas","YLS2202","Intermediate Spanish 2","Language/Spanish","-","F2F","E1","Tue","16:00","17:30","1:30","Y-CR16",15,3,14,11,NA,NA,NA
+"Amparo Espadas","YLS2202","Intermediate Spanish 2","Language/Spanish","-","F2F","E1","Wed","16:00","17:30","1:30","Y-CR16",15,3,14,11,NA,NA,NA
+"Amparo Espadas","YLS2202","Intermediate Spanish 2","Language/Spanish","-","F2F","E1","Thu","12:00","13:00","1:00","Y-CR16",15,3,14,11,NA,NA,NA
+"Philip Johns","YSC2216","Evolutionary Biology","Life Sciences","-","F2F","E1","Mon","14:30","16:00","1:30","Y-CR18",18,7,11,4,NA,NA,NA
+"Philip Johns","YSC2216","Evolutionary Biology","Life Sciences","-","F2F","E1","Wed","14:30","15:30","1:00","Y-CR18",18,7,11,4,NA,NA,NA
+"Philip Johns","YSC2216","Evolutionary Biology","Life Sciences","-","F2F","E1","Thu","14:30","16:00","1:30","Y-CR18",18,7,11,4,NA,NA,NA
+"Ajay Mathuru","YSC2231","Foundations of Neuroscience","Life Sciences","Psychology","F2F","E1","Mon","18:00","20:00","2:00","Y-TCTLT",24,21,24,3,NA,NA,NA
+"Ajay Mathuru","YSC2231","Foundations of Neuroscience","Life Sciences","Psychology","F2F","E1","Thu","18:00","20:00","2:00","Y-TCTLT",24,21,24,3,NA,NA,NA
+"Nicholas Tolwinski","YSC2233","Genetics","Life Sciences","-","Remote","E1","Tue","14:30","16:00","1:30",NA,18,11,18,7,NA,NA,NA
+"Nicholas Tolwinski","YSC2233","Genetics","Life Sciences","-","Remote","E1","Fri","14:30","16:00","1:30",NA,18,11,18,7,NA,NA,NA
+"William Piel","YSC2234","Human Biology","Life Sciences","-","F2F","E1","Mon","9:00","10:30","1:30","Y-CR15",18,17,18,1,NA,NA,NA
+"William Piel","YSC2234","Human Biology","Life Sciences","-","F2F","E1","Thu","9:00","10:30","1:30","Y-CR15",18,17,18,1,NA,NA,NA
+"Nicholas Tolwinski","YSC3215","Research Seminar","Life Sciences","-","Remote","E1","Tue","13:00","14:30","1:30",NA,18,11,18,7,NA,NA,NA
+"Nicholas Tolwinski","YSC3215","Research Seminar","Life Sciences","-","Remote","E1","Fri","13:00","14:30","1:30",NA,18,11,18,7,NA,NA,NA
+"Philip Johns","YSC3251","Conservation Biology","Life Sciences","Environmental Studies","F2F","E1","Mon","10:30","12:00","1:30","Y-CR16",18,9,14,5,NA,NA,NA
+"Philip Johns","YSC3251","Conservation Biology","Life Sciences","Environmental Studies","F2F","E1","Thu","10:30","12:00","1:30","Y-CR16",18,9,14,5,NA,NA,NA
+"Jan Gruber","YSC3255","The Biology of Ageing","Life Sciences","-","F2F","E1","Tue","9:00","10:30","1:30","Y-CR3",18,4,11,7,NA,NA,NA
+"Jan Gruber","YSC3255","The Biology of Ageing","Life Sciences","-","F2F","E1","Fri","9:00","10:30","1:30","Y-CR3",18,4,11,7,NA,NA,NA
+"Khoo Hoon Eng","YSC4102","Life Sciences Capstone Project","Life Sciences","-","F2F","E1","Wed","12:30","15:30","3:00","Y-PgRm2",15,15,15,0,NA,NA,NA
+"Nathan Harmston","YSC4211C","Adv Topics: Computational Biology","Life Sciences","-","F2F","E1","Wed","9:00","12:00","3:00","Y-CR3",18,6,11,5,NA,NA,NA
+"Ma Shao-Ling","YHU2232","Global Science Fiction: Their Worlds, Ourselves","Literature","-","F2F","E1","Mon","13:00","14:30","1:30","Y-CR7",18,5,9,4,NA,NA,NA
+"Ma Shao-Ling","YHU2232","Global Science Fiction: Their Worlds, Ourselves","Literature","-","F2F","E1","Thu","13:00","14:30","1:30","Y-CR7",18,5,9,4,NA,NA,NA
+"Jane Nardin","YHU2295","The Global Short Story","Literature","-","Remote","E1","Mon","8:30","10:30","2:00",NA,18,16,18,2,NA,NA,NA
+"Jane Nardin","YHU2295","The Global Short Story","Literature","-","Remote","E1","Thu","8:30","10:30","2:00",NA,18,16,18,2,NA,NA,NA
+"Carissa Foo","YHU2311","Girlfriends: Narratives of Friendship","Literature","-","F2F","E1","Tue","19:30","21:00","1:30","Y-LT1",18,18,18,0,NA,NA,NA
+"Carissa Foo","YHU2311","Girlfriends: Narratives of Friendship","Literature","-","F2F","E1","Fri","19:30","21:00","1:30","Y-LT1",18,18,18,0,NA,NA,NA
+"Ma Shao-Ling","YHU3210F","Proseminar in Literary Studies","Literature","-","F2F","E1","Thu","16:00","19:00","3:00","Y-PerfHall",18,18,18,0,NA,NA,NA
+"Gretchen Head","YHU3260","Heretics and Deviants: Writing, Rebellion, and Islam","Literature","-","F2F","E1","Mon","10:30","12:00","1:30","Y-PgRm2",18,9,15,6,NA,NA,NA
+"Gretchen Head","YHU3260","Heretics and Deviants: Writing, Rebellion, and Islam","Literature","-","F2F","E1","Thu","10:30","12:00","1:30","Y-PgRm2",18,9,15,6,NA,NA,NA
+"Geoffrey Baker","YHU3272","Literary Activism: Texts, Aesthetics, & Politics","Literature","-","Remote","E1","Tue","14:30","16:00","1:30",NA,18,16,18,2,NA,NA,NA
+"Geoffrey Baker","YHU3272","Literary Activism: Texts, Aesthetics, & Politics","Literature","-","Remote","E1","Fri","14:30","16:00","1:30",NA,18,16,18,2,NA,NA,NA
+"Gretchen Head","YHU4102","Literature Capstone Project","Literature","-","F2F","E1","Wed","13:00","16:00","3:00","Y-KChanrai",10,10,10,0,NA,NA,NA
+"Nienke Boer","YHU4253","The Global South Novel","Literature","-","F2F","E1","Sat","9:00","12:00","3:00","Y-ELMCL",18,13,18,5,NA,NA,NA
+"Aquinas Hobor","YSC1212","Introduction to Computer Science","MCS","Life Sciences","F2F","E1","Wed","18:00","21:00","3:00","Y-LT1",25,13,25,12,NA,NA,NA
+"Matthew Stamps","YSC1216","Calculus","MCS","Physical Sciences","F2F","E1","Tue","16:00","18:00","2:00","Y-TCTLT",25,14,25,11,NA,NA,NA
+"Matthew Stamps","YSC1216","Calculus","MCS","Physical Sciences","F2F","E1","Fri","16:00","18:00","2:00","Y-TCTLT",25,14,25,11,NA,NA,NA
+"Matthew Stamps","YSC1216","Calculus","MCS","Physical Sciences","F2F","E2","Tue","19:30","21:30","2:00","Y-PgRm1",25,8,16,8,NA,NA,NA
+"Matthew Stamps","YSC1216","Calculus","MCS","Physical Sciences","F2F","E2","Fri","19:30","21:30","2:00","Y-PgRm1",25,8,16,8,NA,NA,NA
+"David Smith","YSC2209","Proof","MCS","-","Remote","E1","Tue","9:00","11:00","2:00",NA,25,20,25,5,NA,NA,NA
+"David Smith","YSC2209","Proof","MCS","-","Remote","E1","Fri","9:00","11:00","2:00",NA,25,20,25,5,NA,NA,NA
+"Timothy Wertz","YSC2232","Linear Algebra","MCS","-","F2F","E1","Tue","14:30","16:00","1:30","Y-TCTLT",25,11,25,14,NA,NA,NA
+"Timothy Wertz","YSC2232","Linear Algebra","MCS","-","F2F","E1","Wed","14:30","15:30","1:00","Y-TCTLT",25,11,25,14,NA,NA,NA
+"Timothy Wertz","YSC2232","Linear Algebra","MCS","-","F2F","E1","Fri","14:30","16:00","1:30","Y-TCTLT",25,11,25,14,NA,NA,NA
+"Alexandros Beskos","YSC2239","Introduction to Data Science","MCS","Global Affairs","F2F","E1","Tue","14:30","16:00","1:30","Y-BlackBox",25,25,25,0,NA,NA,NA
+"Alexandros Beskos","YSC2239","Introduction to Data Science","MCS","Global Affairs","F2F","E1","Fri","14:30","16:00","1:30","Y-BlackBox",25,25,25,0,NA,NA,NA
+"Alexandros Beskos","YSC2239","Introduction to Data Science","MCS","Global Affairs","F2F","E2","Tue","10:30","12:00","1:30","NAK-AUD",25,24,25,1,NA,NA,NA
+"Alexandros Beskos","YSC2239","Introduction to Data Science","MCS","Global Affairs","F2F","E2","Fri","10:30","12:00","1:30","Y-TCTLT",25,24,25,1,NA,NA,NA
+"Maria De Iorio","YSC2243","Probability","MCS","Life Sciences","F2F","E1","Mon","14:30","16:00","1:30","Y-TCTLT",25,25,25,0,NA,NA,NA
+"Maria De Iorio","YSC2243","Probability","MCS","Life Sciences","F2F","E1","Thu","9:00","10:30","1:30","Y-TCTLT",25,25,25,0,NA,NA,NA
+"Alexandre Bodin","YSC2244","Programming for Data Science","MCS","-","Remote","E1","Wed","9:00","12:00","3:00",NA,25,18,25,7,NA,NA,NA
+"Francesca Spagnuolo","YSC2252","Multivariable Calculus","MCS","-","F2F","E1","Mon","16:00","18:00","2:00","Y-PgRm1",18,0,16,16,NA,NA,NA
+"Francesca Spagnuolo","YSC2252","Multivariable Calculus","MCS","-","F2F","E1","Thu","16:00","18:00","2:00","Y-PgRm1",18,0,16,16,NA,NA,NA
+"Francesca Spagnuolo","YSC3206","Introduction to Real Analysis","MCS","-","F2F","E1","Mon","10:30","12:30","2:00","Y-TCTLT",18,14,18,4,NA,NA,NA
+"Francesca Spagnuolo","YSC3206","Introduction to Real Analysis","MCS","-","F2F","E1","Thu","10:30","12:30","2:00","Y-TCTLT",18,14,18,4,NA,NA,NA
+"Ilya Sergey","YSC3208","Programming Language Design and Implementation","MCS","-","F2F","E1","Tue","18:00","21:00","3:00","TP-GLR",18,14,18,4,NA,NA,NA
+"Alexandre Bodin","YSC3232","Software Engineering","MCS","-","Remote","E1","Wed","14:30","16:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Alexandre Bodin","YSC3232","Software Engineering","MCS","-","Remote","E1","Fri","14:30","16:00","1:30",NA,18,18,18,0,NA,NA,NA
+"Olivier Danvy","YSC3236","Functional Programming and Proving","MCS","-","F2F","E1","Sat","14:30","17:30","3:00","Y-CR17",18,0,18,18,NA,NA,NA
+"Francesca Spagnuolo","YSC3237","Introduction to Modern Algebra","MCS","-","F2F","E1","Mon","13:00","14:30","1:30","Y-ELMCL",18,11,18,7,NA,NA,NA
+"Francesca Spagnuolo","YSC3237","Introduction to Modern Algebra","MCS","-","F2F","E1","Tue","13:00","14:30","1:30","Y-ELMCL",18,11,18,7,NA,NA,NA
+"Francesca Spagnuolo","YSC3237","Introduction to Modern Algebra","MCS","-","F2F","E1","Thu","13:00","14:30","1:30","Y-ELMCL",18,11,18,7,NA,NA,NA
+"Ilya Sergey","YSC3248","Parallel, Concurrent and Distributed Programming","MCS","-","Remote","E1","Tue","13:00","16:00","3:00",NA,18,12,18,6,NA,NA,NA
+"Maria De Iorio","YSC4103","Maths, Computational & Statistical Sci Capstone Project","MCS","-","F2F","E1","Wed","13:00","14:00","1:00","Y-PerfHall",36,36,36,0,NA,NA,NA
+"Robby Tan","YSC4216","Machine Learning","MCS","-","F2F","E1","Mon","9:00","10:30","1:30","Y-PgRm2",18,10,15,5,NA,NA,NA
+"Robby Tan","YSC4216","Machine Learning","MCS","-","F2F","E1","Thu","9:00","10:30","1:30","Y-PgRm2",18,10,15,5,NA,NA,NA
+"Aquinas Hobor","YSC2221","Introduction to Python","MCS but not count towards the major (service module)","-","F2F","E1","Mon","18:00","21:00","3:00","Y-BlackBox",18,0,18,18,NA,NA,NA
+"Aquinas Hobor","YSC2221","Introduction to Python","MCS but not count towards the major (service module)","-","F2F","E2","Mon","18:00","21:00","3:00","Y-BlackBox",18,0,18,18,NA,NA,NA
+"Robin Zheng","YHU2269","Ethics and Politics of Sex","Philosophy","PPE","F2F","E1","Mon","18:00","19:30","1:30","Y-ELMCL",18,16,18,2,NA,NA,NA
+"Robin Zheng","YHU2269","Ethics and Politics of Sex","Philosophy","PPE","F2F","E1","Thu","18:00","19:30","1:30","Y-ELMCL",18,16,18,2,NA,NA,NA
+"Sandra Field ","YHU2270","Contemporary Egalitarianism","Philosophy","PPE","F2F","E1","Tue","13:00","14:30","1:30","Y-LT1",18,15,18,3,NA,NA,NA
+"Sandra Field ","YHU2270","Contemporary Egalitarianism","Philosophy","PPE","F2F","E1","Fri","13:00","14:30","1:30","Y-LT1",18,15,18,3,NA,NA,NA
+"Robin Zheng","YHU2280","Oppression and Injustice","Philosophy","Combined Law-Liberal Arts
+PPE","F2F","E1","Mon","10:30","12:00","1:30","ERC-ALR",18,0,18,18,NA,NA,NA
+"Robin Zheng","YHU2280","Oppression and Injustice","Philosophy","Combined Law-Liberal Arts
+PPE","F2F","E1","Thu","10:30","12:00","1:30","ERC-ALR",18,0,18,18,NA,NA,NA
+"Simon Duffy","YHU2313","Introduction to the Philosophy of Art","Philosophy","Arts and Humanities
+PPE","Remote","E1","Mon","9:00","10:30","1:30",NA,18,16,18,2,NA,NA,NA
+"Simon Duffy","YHU2313","Introduction to the Philosophy of Art","Philosophy","Arts and Humanities
+PPE","Remote","E1","Thu","9:00","10:30","1:30",NA,18,16,18,2,NA,NA,NA
+"Amber Carpenter","YHU2316","Narrative Ethics: Stories and Self-Improvement","Philosophy","PPE","F2F","E1","Tue","9:00","10:30","1:30","Y-ELMCL",18,16,18,2,NA,NA,NA
+"Amber Carpenter","YHU2316","Narrative Ethics: Stories and Self-Improvement","Philosophy","PPE","F2F","E1","Fri","9:00","10:30","1:30","Y-ELMCL",18,16,18,2,NA,NA,NA
+"Malcolm Keating","YHU3267","Classical Indian Philosophy of Language","Philosophy","PPE
+Global Antiquity","Remote","E1","Tue","9:00","10:30","1:30",NA,18,7,18,11,NA,NA,NA
+"Malcolm Keating","YHU3267","Classical Indian Philosophy of Language","Philosophy","PPE
+Global Antiquity","Remote","E1","Fri","9:00","10:30","1:30",NA,18,7,18,11,NA,NA,NA
+"Simon Duffy","YHU3335","Phenomenology and Existentialism","Philosophy","PPE","Remote","E1","Mon","10:30","12:00","1:30",NA,18,12,18,6,NA,NA,NA
+"Simon Duffy","YHU3335","Phenomenology and Existentialism","Philosophy","PPE","Remote","E1","Thu","10:30","12:00","1:30",NA,18,12,18,6,NA,NA,NA
+"Amber Carpenter","YHU4103","Philosophy Capstone Project","Philosophy","-","F2F","E1","Wed","12:30","15:30","3:00","Y-PgRm1",11,11,11,0,NA,NA,NA
+"Chelsea Sharon","YSC1213","General Physics","Physical Sciences","Life Sciences","F2F","E1","Tue","10:30","12:30","2:00","Y-CR15",30,22,24,2,NA,NA,NA
+"Chelsea Sharon","YSC1213","General Physics","Physical Sciences","Life Sciences","F2F","E1","Thu","10:30","12:30","2:00","Y-CR15",30,22,24,2,NA,NA,NA
+"Steven Bernasek","YSC2225","Physical Chemistry","Physical Sciences","-","F2F","E1","Tue","16:00","17:30","1:30","Y-CR1",18,4,9,5,NA,NA,NA
+"Steven Bernasek","YSC2225","Physical Chemistry","Physical Sciences","-","F2F","E1","Thu","13:00","16:00","3:00","Y-ChemLab",18,4,9,5,NA,NA,NA
+"Steven Bernasek","YSC2225","Physical Chemistry","Physical Sciences","-","F2F","E1","Fri","16:00","17:30","1:30","Y-CR1",18,4,9,5,NA,NA,NA
+"Zhuang Bilin","YSC2248","Analytical Chemistry with Laboratory","Physical Sciences","-","F2F","E1","Mon","13:00","14:30","1:30","Y-CR14",18,3,9,6,NA,NA,NA
+"Zhuang Bilin","YSC2248","Analytical Chemistry with Laboratory","Physical Sciences","-","F2F","E1","Wed","14:30","17:30","3:00","Y-ChemLab",18,3,9,6,NA,NA,NA
+"Zhuang Bilin","YSC2248","Analytical Chemistry with Laboratory","Physical Sciences","-","F2F","E1","Thu","13:00","14:30","1:30","Y-CR14",18,3,9,6,NA,NA,NA
+"Derek Ho","YSC3210","Introduction to Quantum Mechanics","Physical Sciences","-","F2F","E1","Mon","16:00","17:30","1:30","Y-CR7",18,5,9,4,NA,NA,NA
+"Derek Ho","YSC3210","Introduction to Quantum Mechanics","Physical Sciences","-","F2F","E1","Thu","16:00","17:30","1:30","Y-CR7",18,5,9,4,NA,NA,NA
+"Aleksandr Rodin","YSC3211","Introduction to Electrodynamics","Physical Sciences","-","Remote","E1","Mon","8:30","10:30","2:00",NA,18,3,18,15,NA,NA,NA
+"Aleksandr Rodin","YSC3211","Introduction to Electrodynamics","Physical Sciences","-","Remote","E1","Thu","8:30","10:30","2:00",NA,18,3,18,15,NA,NA,NA
+"Ng Hui Khoon","YSC4209","Physical Sciences Research Seminar","Physical Sciences","-","F2F","E1","Wed","13:00","14:30","1:30","Y-CR16",12,12,12,0,NA,NA,NA
+"Andrew Bettiol","YSC1221","Physics of the Electric Guitar","Physical Sciences but not count towards the major (service module)","-","Remote/
+F2F","E1","Tue","9:00","10:30","1:30","Y-PhysLab",18,16,16,0,NA,NA,NA
+"Andrew Bettiol","YSC1221","Physics of the Electric Guitar","Physical Sciences but not count towards the major (service module)","-","Remote/
+F2F","E1","Fri","9:00","10:30","1:30","Y-PhysLab",18,16,16,0,NA,NA,NA
+"Diego Maiorano","YSS1206","Introduction to Comparative Politics","PPE","-","F2F","E1","Tue","13:00","14:30","1:30","Y-TCTLT",24,20,24,4,NA,NA,NA
+"Diego Maiorano","YSS1206","Introduction to Comparative Politics","PPE","-","F2F","E1","Fri","13:00","14:30","1:30","Y-TCTLT",24,20,24,4,NA,NA,NA
+"Elton Chan","YSS3241","Chinese Political Philosophy: Confucianism & its Rivals","PPE","Philosophy
+Chinese Studies
+Global Antiquity","F2F","E1","Mon","16:00","17:30","1:30","NAK-AUD",18,0,18,18,NA,NA,NA
+"Elton Chan","YSS3241","Chinese Political Philosophy: Confucianism & its Rivals","PPE","Philosophy
+Chinese Studies
+Global Antiquity","F2F","E1","Thu","16:00","17:30","1:30","NAK-AUD",18,0,18,18,NA,NA,NA
+"Terry Nardin","YSS3276","International Political Theory","PPE","Global Affairs","Remote","E1","Mon","9:00","11:00","2:00",NA,18,16,18,2,NA,NA,NA
+"Terry Nardin","YSS3276","International Political Theory","PPE","Global Affairs","Remote","E1","Thu","9:00","11:00","2:00",NA,18,16,18,2,NA,NA,NA
+"John Driffill","YSS4106","Philosophy, Politics and Economics Capstone Project","PPE","-","F2F","E1","Wed","12:30","15:30","3:00","UT-AUD03",35,35,35,0,NA,NA,NA
+"Jean Liu","YSS2201","Introduction to Psychology ","Psychology","-","Remote","E1","Tue","10:30","12:30","2:00",NA,20,13,20,7,NA,NA,NA
+"Jean Liu","YSS2201","Introduction to Psychology ","Psychology","-","Remote","E1","Fri","10:30","12:30","2:00",NA,20,13,20,7,NA,NA,NA
+"Jean Liu","YSS2201","Introduction to Psychology ","Psychology","-","Remote","E2","Tue","16:00","18:00","2:00",NA,20,12,20,8,NA,NA,NA
+"Jean Liu","YSS2201","Introduction to Psychology ","Psychology","-","Remote","E2","Fri","16:00","18:00","2:00",NA,20,12,20,8,NA,NA,NA
+"Vania Yip","YSS2216","Statistics and Research Methods for Psychology","Psychology","-","F2F","E1","Mon","9:00","10:30","1:30","Y-CR17",20,20,20,0,NA,NA,NA
+"Vania Yip","YSS2216","Statistics and Research Methods for Psychology","Psychology","-","F2F","E1","Thu","9:00","10:30","1:30","Y-CR17",20,20,20,0,NA,NA,NA
+"Keng Shian Ling","YSS3214","Abnormal Psychology","Psychology","-","Remote","E1","Fri","14:30","17:30","3:00",NA,18,0,18,18,NA,NA,NA
+"Paul O'keefe","YSS3279","Social Psychology Lab","Psychology","-","F2F","E1","Thu","13:00","16:00","3:00","UTSRC-LT51",18,15,18,3,NA,NA,NA
+"Vania Yip","YSS4102","Psychology Capstone Project","Psychology","-","F2F","E1","Wed","12:30","14:30","2:00","Y-BlackBox",21,21,21,0,NA,NA,NA
+"Vania Yip","YSS4102","Psychology Capstone Project","Psychology","-","F2F","E1","Fri","12:30","14:30","2:00","Y-BlackBox",21,21,21,0,NA,NA,NA
+"Paul O'keefe","YSS4202","Goals and Motivation","Psychology","-","F2F","E1","Tue","13:00","16:00","3:00","UT-AUD03",18,15,18,3,NA,NA,NA
+"Vania Yip","YSS4206C","Topics in Psychology: The Pursuit of Happiness","Psychology","-","F2F","E1","Mon","13:00","16:00","3:00","Y-LT1",20,20,20,0,NA,NA,NA
+"Keng Shian Ling","YSS4240","Advanced Clinical Psychology","Psychology","-","Remote","E1","Wed","9:30","12:30","3:00",NA,18,0,18,18,NA,NA,NA
+"Valentina Zuin","YSS3231","Methods in the Social Sciences","Social Sciences","Anthropology
+Global Affairs 
+PPE
+Urban Studies","F2F","E1","Tue","16:00","17:30","1:30","ERC-ALR",18,17,18,1,NA,NA,NA
+"Valentina Zuin","YSS3231","Methods in the Social Sciences","Social Sciences","Anthropology
+Global Affairs 
+PPE
+Urban Studies","F2F","E1","Fri","16:00","17:30","1:30","ERC-ALR",18,17,18,1,NA,NA,NA
+"Valentina Zuin","YSS3231","Methods in the Social Sciences","Social Sciences","Anthropology
+Global Affairs 
+PPE
+Urban Studies","F2F","E2","Mon","14:30","16:00","1:30","Y-ELMCL",18,16,18,2,NA,NA,NA
+"Valentina Zuin","YSS3231","Methods in the Social Sciences","Social Sciences","Anthropology
+Global Affairs 
+PPE
+Urban Studies","F2F","E2","Thu","14:30","16:00","1:30","Y-ELMCL",18,16,18,2,NA,NA,NA
+"Chen Zhang","YSS2220","Adelaide to Zhuhai: Cities in Comparative Perspective","Urban Studies","-","F2F","E1","Tue","14:30","16:00","1:30","UTSRC-LT53",20,20,22,2,NA,NA,NA
+"Chen Zhang","YSS2220","Adelaide to Zhuhai: Cities in Comparative Perspective","Urban Studies","-","F2F","E1","Fri","14:30","16:00","1:30","UTSRC-LT53",20,20,22,2,NA,NA,NA
+"Jane Jacobs","YSS2220","Adelaide to Zhuhai: Cities in Comparative Perspective","Urban Studies","-","F2F","E2","Tue","14:30","16:00","1:30","UTSRC-LT53",20,20,22,2,NA,NA,NA
+"Jane Jacobs","YSS2220","Adelaide to Zhuhai: Cities in Comparative Perspective","Urban Studies","-","F2F","E2","Fri","14:30","16:00","1:30","UTSRC-LT53",20,20,22,2,NA,NA,NA
+"Justin Stern","YSS3218","Urban ASEAN: The Changing Southeast Asian City","Urban Studies","-","F2F","E3","Tue","9:00","10:30","1:30","Y-KChanrai",18,7,13,6,NA,NA,NA
+"Justin Stern","YSS3218","Urban ASEAN: The Changing Southeast Asian City","Urban Studies","-","F2F","E3","Fri","9:00","10:30","1:30","Y-KChanrai",18,7,13,6,NA,NA,NA
+"Valentina Zuin","YSS3246","Cities of the Global South","Urban Studies","Global Affairs  
+PPE","F2F","E1","Tue","13:00","14:30","1:30","ERC-ALR",18,17,18,1,NA,NA,NA
+"Valentina Zuin","YSS3246","Cities of the Global South","Urban Studies","Global Affairs  
+PPE","F2F","E1","Fri","13:00","14:30","1:30","ERC-ALR",18,17,18,1,NA,NA,NA
+"Victoria Marshall","YSS3250","Cityscapes and Urban Form","Urban Studies","-","F2F","E1","Thu","9:00","12:00","3:00","UT-AUD03",18,14,18,4,NA,NA,NA
+"Jane Jacobs","YSS3282","Architecture and Society","Urban Studies","-","F2F","E1","Tue","10:30","12:00","1:30","ERC-ALR",18,16,24,8,NA,NA,NA
+"Jane Jacobs","YSS3282","Architecture and Society","Urban Studies","-","F2F","E1","Fri","10:30","12:00","1:30","ERC-ALR",18,16,24,8,NA,NA,NA
+"Joshua Comaroff","YSS3297","“Green” Cities and Urban Natures","Urban Studies","-","F2F","E1","Thu","13:00","16:00","3:00","UTSRC-LT53",20,18,20,2,NA,NA,NA
+"Jane Jacobs","YSS4105","Urban Studies Capstone Project","Urban Studies","-","F2F","E1","Wed","12:30","15:30","3:00","Y-CR17",20,20,20,0,NA,NA,NA
+"Chua Beng Huat","YSS4220","Housing and Social Inequality","Urban Studies","-","F2F","E1","Thu","18:00","21:00","3:00","Y-BlackBox",25,24,25,1,NA,NA,NA

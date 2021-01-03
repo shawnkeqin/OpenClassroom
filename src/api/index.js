@@ -1,16 +1,17 @@
 var passport = require("passport"),
-  bodyParser = require("body-parser"),
   express = require("express"),
   LdapStrategy = require("passport-ldapauth"),
   jwt = require("jsonwebtoken"),
   moment = require("moment"),
-  cors = require("cors");
+  cors = require("cors"),
+  bodyParser = require("body-parser");
 
 const LDAP_CONNECTED =
   process.env.VUE_APP_MODE == "production" ||
   process.env.VUE_APP_MODE == "staging-test";
 const notifsRouter = require("./notifsRouter");
 const facultyStatusRouter = require("./facultyStatusRouter");
+// const updateCourseDescRouter = require("./updateCourseDescHandler");
 var api = express.Router();
 
 var getLDAPConfiguration = function(req, callback) {
@@ -32,10 +33,6 @@ var getLDAPConfiguration = function(req, callback) {
 if (LDAP_CONNECTED) {
   passport.use(new LdapStrategy(getLDAPConfiguration));
 }
-
-api.get("/", function(req, res) {
-  res.send("API home");
-});
 
 api.post("/login", (req, res, next) => {
   if (!LDAP_CONNECTED) {
@@ -115,33 +112,28 @@ api.post("/login", (req, res, next) => {
 
 api.use("/notifs", notifsRouter);
 api.use("/faculty-status", facultyStatusRouter);
+// api.use("/update-course-desc", updateCourseDescRouter);
 
-api.use(bodyParser.urlencoded({ extended: false }));
 api.use(passport.initialize());
-api.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
 module.exports = app => {
   app.use(cors());
   app.use(bodyParser.json());
-  app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    next();
-  });
+  // app.use(function customAPIHeaders(req, res, next) {
+  //   res.header(
+  //     "Access-Control-Allow-Headers",
+  //     "Origin, X-Requested-With, Content-Type, Accept"
+  //   );
+  //   res.header("X-Frame-Options", "DENY");
+  //   switch (process.env.VUE_APP_MODE) {
+  //     case "staging-test":
+  //     case "production":
+  //       res.header("Access-Control-Allow-Origin", process.env.VUE_APP_BASE_URL);
+  //       res.header(
+  //         "Content-Security-Policy",
+  //         `default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https://toppng.com; frame-ancestors 'none'; connect-src ${process.env.VUE_APP_AUTH_ENDPOINT} ${process.env.VUE_APP_GRAPHQL_HTTP} `
+  //       );
+  //   }
+  //   next();
+  // });
   app.use("/api", api);
-  // app.use("/notifs", notifsRouter);
 };
-// middleware that is specific to this router
-// api.use(function timeLog(req, res, next) {
-//   console.log("Time: ", Date.now());
-//   next();
-// });

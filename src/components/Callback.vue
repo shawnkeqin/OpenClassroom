@@ -1,4 +1,3 @@
-  
 <template>
   <div class="spinner">
     <!--   <img src="../assets/loading.svg" alt="Loading"> -->
@@ -10,7 +9,7 @@
 export default {
   methods: {
     handleLoginEvent(data) {
-       this.$router.push(data.state.target || "/");
+      this.$router.push(data.state.target || "/");
       //window.location.href = data.state.target || "/";
     }
   },

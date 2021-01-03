@@ -51,6 +51,9 @@
   - name: faculty
     using:
       foreign_key_constraint_on: faculty_id
+  - name: semester
+    using:
+      foreign_key_constraint_on: semester_code
   array_relationships:
   - name: seminars
     using:
@@ -192,6 +195,13 @@
         table:
           schema: public
           name: course
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - code
+      - full_name
+      filter: {}
 - table:
     schema: public
     name: seminar
@@ -209,6 +219,9 @@
   - name: location
     using:
       foreign_key_constraint_on: location_code
+  - name: semester
+    using:
+      foreign_key_constraint_on: semester_code
   array_relationships:
   - name: visits
     using:
@@ -221,22 +234,23 @@
   - role: user
     permission:
       columns:
-      - is_archived
-      - is_open
-      - date
-      - id
-      - visitor_capacity
-      - week
-      - desc
-      - title
-      - end
-      - start
       - area
       - conference_link
+      - date
+      - desc
+      - end
       - group_code
+      - id
+      - is_archived
+      - is_open
       - location_code
       - module_code
       - semester_code
+      - start
+      - teaching_mode
+      - title
+      - visitor_capacity
+      - week
       filter: {}
       allow_aggregations: true
   update_permissions:
@@ -251,6 +265,7 @@
       - is_open
       - location_code
       - start
+      - teaching_mode
       - title
       - visitor_capacity
       filter:
@@ -298,6 +313,12 @@
 - table:
     schema: public
     name: teaching_mode
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - label
+      filter: {}
 - table:
     schema: public
     name: visit
@@ -399,3 +420,9 @@
 - table:
     schema: public
     name: visit_status
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - status
+      filter: {}

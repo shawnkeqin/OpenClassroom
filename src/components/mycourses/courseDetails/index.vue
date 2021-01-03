@@ -4,9 +4,11 @@
       <a-skeleton active />
     </template>
     <template v-else>
-      <div style="display: flex; justify-content: space-between;">
-        <div style="width: 15rem; margin-right: 20px;">
-          <a-card>
+      <div
+        style="display: flex; justify-content: space-between; flex-wrap: wrap;"
+      >
+        <div style="margin: 0 20px 20px 0;">
+          <a-card style="width: 20rem">
             <div style="margin-bottom: 20px;">
               <h2>{{ course ? course.title : "" }}</h2>
               <h3>
@@ -42,17 +44,47 @@
               </div>
             </div>
             <template v-for="tag in course.tagged_as">
-              <ColoredTag :key="tag.tag_label" :tag_label="tag.tag_label" />
+              <ColoredTag
+                style="margin-bottom:5px"
+                :key="tag.tag_label"
+                :tag_label="tag.tag_label"
+                :course="course"
+              />
             </template>
+            <template>
+              <a-select
+                mode="tags"
+                style="width: 100%; margin-top: 20px"
+                showArrow
+                size="large"
+                placeholder="Add existing tags or create your own"
+                v-model="selectedTags"
+              >
+                <a-select-option v-for="tag in tags" :key="tag.label">
+                  {{ tag.label }}
+                </a-select-option>
+              </a-select>
+            </template>
+            <h5 style="margin-top: 10px">
+              Please use existing tags if applicable.
+            </h5>
+            <a-button
+              :loading="isAddTagsLoading"
+              type="primary"
+              style="width: 8rem; margin-top: 10px;"
+              @click="addTags"
+              icon="tags"
+              >Add tags</a-button
+            >
           </a-card>
         </div>
         <div>
-          <a-card
-            style="width:35rem; margin-right: 20px;"
-            :bodyStyle="{ padding: 0 }"
-          >
+          <a-card style="width: 30rem;" :bodyStyle="{ padding: 0 }">
             <a-collapse v-model="activeKey" :bordered="false">
-              <a-collapse-panel key="1">
+              <a-collapse-panel
+                key="1"
+                style="background-color: rgb(256, 256, 256)"
+              >
                 <template slot="header">
                   <h4 style="margin: 0;">Course description</h4>
                 </template>
@@ -63,18 +95,24 @@
                 <p>{{ course_group.course_group_desc || "-" }}</p>
                 <updateCourseGroupDescModal :course_group="course_group" />
               </a-collapse-panel>
-              <a-collapse-panel key="2">
+              <a-collapse-panel
+                key="2"
+                style="background-color: rgb(256, 256, 256)"
+              >
                 <template slot="header">
                   <h4 style="margin: 0;">Course syllabus</h4>
                 </template>
                 <p>{{ course_group.syllabus || "-" }}</p>
                 <updateCourseGroupSyllabusModal :course_group="course_group" />
               </a-collapse-panel>
-              <a-collapse-panel key="3">
+              <a-collapse-panel
+                key="3"
+                style="background-color: rgb(256, 256, 256)"
+              >
                 <template slot="header">
                   <h4 style="margin: 0;">Notes for visitors</h4>
                 </template>
-                <p>{{ course && (course.notes || "-") }}</p>
+                <p>{{ course && course_group && (course_group.notes || "-") }}</p>
                 <updateCourseGroupNotesModal :course_group="course_group" />
               </a-collapse-panel>
             </a-collapse>
@@ -99,6 +137,7 @@ import updateCourseGroupNotesModal from "./updateCourseGroupNotesModal";
 import updateCourseGroupSyllabusModal from "./updateCourseGroupSyllabusModal";
 import SeminarsTable from "./SeminarsTable";
 import ColoredTag from "../../SeminarVisitRequestCard/ColoredTag";
+import utils from "@/utils";
 // import updateCourseGroupScheduleDescModal from "./updateCourseGroupScheduleDescModal";
 
 export default {
@@ -118,10 +157,22 @@ export default {
       activeKey: ["1", "2", "3"],
       seminars: [],
       course_group: {},
-      isToggleCourseGroupLoading: false
+      isToggleCourseGroupLoading: false,
+      isAddTagsLoading: false,
+      selectedTags: [],
+      error: ""
     };
   },
   apollo: {
+    tags() {
+      return {
+        query: queries.getTags,
+        update: data => data.tag,
+        error(err) {
+          this.error = err;
+        }
+      };
+    },
     seminars() {
       const course_group_id = this.id;
       const date_lower_bound = new Date(Date.now())
@@ -137,12 +188,8 @@ export default {
         },
         fetchPolicy: "cache-and-network",
         update: data => data.seminar,
-        error(error, vm, key) {
-          this.$notification.error({
-            key,
-            message: "Failed to obtain data on your classes",
-            description: "Please try again."
-          });
+        error(err) {
+          this.error = err;
         }
       };
     },
@@ -154,12 +201,8 @@ export default {
           course_group_id
         },
         update: data => data.course_group[0],
-        error(error, vm, key) {
-          this.$notification.error({
-            key,
-            message: "Failed to obtain data on your course",
-            description: "Please try again."
-          });
+        error(err) {
+          this.error = err;
         }
       };
     }
@@ -170,6 +213,48 @@ export default {
     }
   },
   methods: {
+    async addTags() {
+      if (!this.selectedTags || !utils.isNonEmptyArray(this.selectedTags)) {
+        return;
+      }
+      const tag_insert_input = this.selectedTags.map(label => {
+        return {
+          label,
+          tagged_as: {
+            data: [
+              {
+                module_code: this.course ? this.course.module_code : "",
+                semester_code: this.course ? this.course.semester_code : ""
+              }
+            ],
+            on_conflict: {
+              constraint: "tagged_as_pkey",
+              update_columns: ["module_code", "semester_code"]
+            }
+          }
+        };
+      });
+      this.isAddTagsLoading = true;
+      try {
+        await this.$apollo.mutate({
+          mutation: queries.insertTags,
+          variables: {
+            tags: tag_insert_input
+          },
+          refetchQueries: ["get_course_group_details", "getTags"]
+        });
+        this.$notification.success({
+          message: "Tags added"
+        });
+        this.selectedTags = [];
+      } catch (err) {
+        this.$notification.error({
+          message: "Failed to add tags to your course",
+          description: err.toString()
+        });
+      }
+      this.isAddTagsLoading = false;
+    },
     async toggleCourseGroupIsOpen() {
       this.isToggleCourseGroupLoading = true;
       const course_group_id = this.id;
@@ -186,15 +271,23 @@ export default {
             "get_seminars_by_course_group"
           ]
         });
-        this.isToggleCourseGroupLoading = false;
       } catch (err) {
-        this.isToggleCourseGroupLoading = false;
         this.$notification.error({
-          key: "toggle_course_group_is_open_error",
           message: "Failed to update the open status of your course",
-          description: "Please try again."
+          description: err.toString()
         });
       }
+      this.isToggleCourseGroupLoading = false;
+    }
+  },
+  watch: {
+    error(err) {
+      if (err.gqlError.extensions.code !== "invalid-jwt")
+        this.$notification.error({
+          message: "Failed to obtain data from database",
+          description: err.toString(),
+          duration: 0
+        });
     }
   }
 };

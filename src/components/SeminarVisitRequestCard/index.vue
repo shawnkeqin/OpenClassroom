@@ -1,14 +1,10 @@
 <template>
   <div style="width: 35rem; margin-bottom: 30px">
     <div style="display: flex; align-items: center; margin: 0 0 10px 20px">
-      <img
-        class="avatar-medium"
-        :src="
-          course_group.faculty.profilePic ||
-            'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
-        "
+      <a-avatar
+        :src="course_group.faculty.profilePic || '/avatar_default.png'"
       />
-      <p style="margin: 0 5px;">{{ `${faculty.name}'s class` }}</p>
+      <p style="margin: 0px 10px 0px 5px;">{{ `${faculty.name}'s class` }}</p>
       <template v-for="tag in course.tagged_as">
         <ColoredTag :key="tag.tag_label" :tag_label="tag.tag_label" />
       </template>
@@ -157,8 +153,8 @@
           </a-col>
         </div>
         <div v-if="visit && isMessagesVisible" style="margin-top: 20px">
-          <div>{{ "Request message: " + visit.request_msg }}</div>
-          <div>{{ "Response message: " + visit.response_msg }}</div>
+          <div>{{ `Request message: ${visit.request_msg || '-'}` }}</div>
+          <div>{{ `Response message: ${visit.response_msg || '-'}` }}</div>
         </div>
       </div>
     </a-card>
@@ -168,7 +164,6 @@
 <script>
 import utils from "@/utils";
 import moment from "moment";
-// import queries from "@/graphql/queries.gql";
 import ColoredTag from "./ColoredTag";
 import CancelVisitAndStatusWrapper from "./CancelVisitAndStatusWrapper";
 import RequestVisitButton from "./RequestVisitButton";

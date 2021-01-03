@@ -1,5 +1,10 @@
 <template>
-  <a-tag :color="tagColor">{{ tag_label }}</a-tag>
+  <a-tag v-if="course" :color="tagColor"
+    >{{ tag_label }}
+    <a-icon v-if="loading" type="loading" class="tag-icon" />
+    <a-icon v-else type="close" class="tag-icon" @click="handleRemoveTag" />
+  </a-tag>
+  <a-tag v-else :color="tagColor">{{ tag_label }}</a-tag>
 </template>
 
 <script>
@@ -7,7 +12,7 @@ const tagStyles = [
   {
     tag_labels: ["Common Curriculum", "Intro Class", "Methods Class"],
     backgroundColor: "#85C1E9" // light blue
-  }, 
+  },
   {
     tag_labels: ["Major Requirement", "Capstone", "Advanced Class"],
     backgroundColor: "#7FB3D5" // dark blue
@@ -15,7 +20,7 @@ const tagStyles = [
   {
     tag_labels: ["Chinese Studies", "Anthropology", "Language"],
     backgroundColor: "#F1948A" // pink
-  }, 
+  },
   {
     tag_labels: [
       "Arts and Humanities",
@@ -37,7 +42,7 @@ const tagStyles = [
   {
     tag_labels: ["MCS", "Physical Sciences", "Economics"],
     backgroundColor: "#F8C471" // orange
-  }, 
+  },
   {
     tag_labels: [
       "Environmental Studies",
@@ -45,9 +50,9 @@ const tagStyles = [
       "Life Sciences"
     ],
     backgroundColor: "#7dcea0" // green
-  },
-]
-
+  }
+];
+import queries from "@/graphql/queries.gql";
 export default {
   name: "ColoredTag",
   props: {
@@ -55,18 +60,55 @@ export default {
       type: String,
       default: ""
     },
+    course: {
+      type: Object,
+      default: () => {}
+    }
   },
-  data: function() {
-    return {};
+  data() {
+    return {
+      loading: false
+    };
+  },
+  methods: {
+    async handleRemoveTag() {
+      if (!this.course) {
+        return;
+      }
+      this.loading = true;
+      try {
+        await this.$apollo.mutate({
+          mutation: queries.removeTagFromCourse,
+          variables: {
+            tag_label: this.tag_label,
+            course_id: this.course.id
+          },
+          refetchQueries: ["get_course_group_details"],
+          awaitRefetchQueries: true
+        });
+        this.$notification.success({
+          key: "removeTag success",
+          message: "Tag is removed."
+        });
+      } catch (err) {
+        this.$notification.error({
+          key: "removeTag error",
+          message: `Failed to remove tag from your course.`,
+          description: err.toString()
+        });
+      }
+      this.loading = false;
+    }
   },
   computed: {
     tagColor() {
       const tagStyle = tagStyles.find(
         tagStyle =>
-          tagStyle.tag_labels.findIndex(label => this.tag_label.includes(label)) !==
-          -1
+          tagStyle.tag_labels.findIndex(label =>
+            this.tag_label.includes(label)
+          ) !== -1
       );
-      return tagStyle ? tagStyle.backgroundColor : 'grey';
+      return tagStyle ? tagStyle.backgroundColor : "grey";
     }
   }
 };
@@ -77,5 +119,11 @@ export default {
   font-weight: bold;
   text-transform: uppercase;
   padding: 5px 10px;
+}
+.tag-icon {
+  font-size: 13px;
+  bottom: 0.2em;
+  position: relative;
+  padding-left: 5px;
 }
 </style>

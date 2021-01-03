@@ -3,10 +3,13 @@
     <a-alert v-if="showConsent" type="info" show-icon>
       <template slot="message">
         <div>
-          View and agree to the terms of the app to start making visits requests.
+          View and agree to the terms of the app to start making visits
+          requests.
         </div>
         <div style="margin-bottom: 5px;">
-          Once you agree, visitors will be able to submit visit requests for your classes: please CLOSE your classroom to visits under My Courses if you do not wish to receive these requests.
+          Once you agree, visitors will be able to submit visit requests for
+          your classes: please CLOSE your classroom to visits under My Courses
+          if you do not wish to receive these requests.
         </div>
         <ConsentForm />
       </template>
@@ -16,12 +19,9 @@
         <a-layout-sider width="12rem" style="background: #fff;">
           <div id="mini-user-info">
             <template v-if="loggedInUserObj">
-              <img
-                class="avatar-medium"
-                :src="
-                  loggedInUserObj.profilePic ||
-                    'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
-                "
+              <a-avatar
+                :src="loggedInUserObj.profilePic || '/avatar_default.png'"
+                size="large"
                 style="margin-right: 15px;"
               />
               <div style="font-weight: bold; color: #004b8d;">
@@ -44,41 +44,50 @@
               <router-link to="/profile" />
             </a-menu-item>
             <a-menu-item :ey="2" class="nav-item">
-              <a-icon type="container" />
+              <a-icon type="unordered-list" />
               <span class="nav-text">My Courses</span>
               <router-link to="/my-courses" />
             </a-menu-item>
             <a-menu-item key="3" class="nav-item">
-              <a-icon type="file-search" />
+              <a-icon type="search" />
               <span class="nav-text">Search Classes</span>
               <router-link to="/search-courses" />
             </a-menu-item>
             <a-menu-item key="4" class="nav-item">
-              <a-icon type="file-search" />
+              <a-icon type="calendar" />
               <span class="nav-text">My Calendar</span>
               <router-link to="/calendar-view" />
             </a-menu-item>
             <a-menu-item key="5" class="nav-item">
-              <a-badge :count="pendingVisitsCount" :offset="[10, 5]">
-                <a-icon type="download" />
+              <a-icon type="import" />
+              <a-badge
+                :count="pendingVisitsCount"
+                :offset="[10, 5]"
+                :number-style="{
+                  backgroundColor: '#ffb74d',
+                  color: 'white',
+                  boxShadow: 'transparent'
+                }"
+              >
                 <span class="nav-text">My Visitors</span>
               </a-badge>
               <router-link to="/my-visitors" />
             </a-menu-item>
             <a-menu-item key="6" class="nav-item">
-              <a-icon type="solution" />
+              <a-icon type="export" />
               <span class="nav-text">My Visits</span>
               <router-link to="/my-visits" />
             </a-menu-item>
             <a-menu-item key="7" class="nav-item">
-              <a-icon type="book" />
+              <a-icon type="form" />
               <span class="nav-text">Feedback</span>
               <a
                 href="https://docs.google.com/forms/d/e/1FAIpQLScOfSV1ZIChd6IQJ9WLegujtfhlE-E5hG-tyDMBzEL-JUdEUQ/viewform?usp=sf_link"
+                target="_blank"
               ></a>
             </a-menu-item>
             <a-menu-item key="8" class="nav-item" @click="logout">
-              <a-icon type="logout" />
+              <a-icon type="logout" class="icon" />
               <span class="nav-text">Log out</span>
             </a-menu-item>
           </a-menu>
@@ -106,7 +115,8 @@ export default {
       constants: constants,
       queries: queries,
       loggedInUserObj: null,
-      loggedInUser: store.state.loggedInUser
+      loggedInUser: store.state.loggedInUser,
+      error: ""
     };
   },
   beforeCreate() {
@@ -129,6 +139,9 @@ export default {
     }
   },
   apollo: {
+    $skipAll() {
+      return !this.loggedInUser;
+    },
     loggedInUserObj: {
       query: queries.getFacultyById,
       variables() {
@@ -137,14 +150,10 @@ export default {
       update: data => data.faculty_by_pk,
       skip() {
         return this.loggedInUser === null;
+      },
+      error(err) {
+        this.error = err;
       }
-      // error(error, vm, key) {
-      //   this.$notification.error({
-      //     key,
-      //     message: "Server error",
-      //     description: "Please try again."
-      //   });
-      // }
     },
     pendingVisitsCount: {
       query: queries.getPendingVisitsCount,
@@ -155,14 +164,10 @@ export default {
         };
       },
       update: data => data.visit_aggregate.aggregate.count,
-      fetchPolicy: "network-only"
-      // error(error, vm, key) {
-      //   this.$notification.error({
-      //     key,
-      //     message: "Server error",
-      //     description: "Please try again."
-      //   });
-      // }
+      fetchPolicy: "network-only",
+      error(err) {
+        this.error = err;
+      }
     }
   },
   computed: {
@@ -171,15 +176,6 @@ export default {
         this.loggedInUserObj && this.loggedInUserObj.has_consented == false
       );
     }
-    // pendingVisitsCount() {
-    //   const count =
-    //     this.pendingVisitsCount &&
-    //     this.pendingVisitsCount
-    //       .map(seminar => seminar.visits)
-    //       .flat()
-    //       .filter(visit => visit.visit_status === "PENDING").length;
-    //   return count;
-    // }
   },
   watch: {
     pendingVisitsCount(count) {
@@ -193,15 +189,24 @@ export default {
           duration: 0
         });
       }
+    },
+    error(err) {
+      if (err.gqlError.extensions.code !== "invalid-jwt")
+        this.$notification.error({
+          message: "Failed to obtain data from database",
+          description: err.toString(),
+          duration: 0
+        });
     }
   }
 };
 </script>
-<style>
+<style scoped>
 li.nav-item.ant-menu-item {
   display: flex;
   align-items: center;
   margin: 0;
+  padding: 1rem;
 }
 .ant-menu-item-selected.nav-item {
   color: #004b8d;
@@ -210,19 +215,14 @@ li.nav-item.ant-menu-item {
   font-family: "Open Sans", sans-serif;
   font-size: 1rem;
 }
-.ant-scroll-number-only-unit {
-  color: white;
-}
-.ant-scroll-number.ant-badge-count {
-  background-color: #ffb74d;
-}
-.ant-badge-count {
-  box-shadow: transparent;
-}
 #mini-user-info {
   display: flex;
   align-items: center;
   padding: 20px;
   background-image: linear-gradient(315deg, #f3c9bc 0%, #f5e4b3 74%);
+}
+.anticon > svg {
+  width: 1.2rem;
+  height: 1.2rem;
 }
 </style>

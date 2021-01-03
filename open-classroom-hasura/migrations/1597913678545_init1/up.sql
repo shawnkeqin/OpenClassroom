@@ -17,7 +17,7 @@ CREATE TABLE public.course_group (
     semester_code character varying NOT NULL,
     is_open boolean DEFAULT true NOT NULL,
     course_group_desc text,
-    teaching_mode bpchar,
+    teaching_mode character varying,
     visitor_capacity integer DEFAULT 2 NOT NULL
 );
 CREATE SEQUENCE public.course_id_seq
@@ -46,7 +46,8 @@ CREATE TABLE public.course_schedule (
     "end" time without time zone NOT NULL,
     location_code character varying NOT NULL,
     id integer NOT NULL,
-    area character varying
+    area character varying,
+    teaching_mode character varying
 );
 CREATE SEQUENCE public.course_schedule_id_seq
     AS integer
@@ -96,7 +97,8 @@ CREATE TABLE public.seminar (
     week integer NOT NULL,
     conference_link character varying,
     is_archived boolean DEFAULT false NOT NULL,
-    area character varying
+    area character varying,
+    teaching_mode character varying
 );
 CREATE SEQUENCE public.seminar_id_seq
     AS integer
@@ -182,11 +184,15 @@ ALTER TABLE ONLY public.visit_status
 ALTER TABLE ONLY public.course_group
     ADD CONSTRAINT course_faculty_id_fkey FOREIGN KEY (faculty_id) REFERENCES public.faculty(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE ONLY public.course_group
+    ADD CONSTRAINT course_group_semester_code_fkey FOREIGN KEY (semester_code) REFERENCES public.semester(code) ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE ONLY public.course_group
     ADD CONSTRAINT course_group_semester_code_module_code_fkey FOREIGN KEY (semester_code, module_code) REFERENCES public.course(semester_code, module_code) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE ONLY public.course_group
     ADD CONSTRAINT course_group_teaching_mode_fkey FOREIGN KEY (teaching_mode) REFERENCES public.teaching_mode(label) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE ONLY public.course_schedule
     ADD CONSTRAINT course_schedule_module_code_semester_code_group_code_fkey FOREIGN KEY (module_code, semester_code, group_code) REFERENCES public.course_group(module_code, semester_code, group_code) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE ONLY public.course_schedule
+    ADD CONSTRAINT course_schedule_teaching_mode_fkey FOREIGN KEY (teaching_mode) REFERENCES public.teaching_mode(label) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE ONLY public.course
     ADD CONSTRAINT course_semester_code_fkey FOREIGN KEY (semester_code) REFERENCES public.semester(code) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE ONLY public.faculty
@@ -194,7 +200,11 @@ ALTER TABLE ONLY public.faculty
 ALTER TABLE ONLY public.seminar
     ADD CONSTRAINT seminar_location_code_fkey FOREIGN KEY (location_code) REFERENCES public.location(code) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE ONLY public.seminar
+    ADD CONSTRAINT seminar_semester_code_fkey FOREIGN KEY (semester_code) REFERENCES public.semester(code) ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE ONLY public.seminar
     ADD CONSTRAINT seminar_semester_code_group_code_module_code_fkey FOREIGN KEY (semester_code, group_code, module_code) REFERENCES public.course_group(semester_code, group_code, module_code) ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE ONLY public.seminar
+    ADD CONSTRAINT seminar_teaching_mode_fkey FOREIGN KEY (teaching_mode) REFERENCES public.teaching_mode(label) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE ONLY public.tagged_as
     ADD CONSTRAINT tagged_as_semester_code_module_code_fkey FOREIGN KEY (semester_code, module_code) REFERENCES public.course(semester_code, module_code) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE ONLY public.tagged_as

@@ -1,5 +1,5 @@
 <template>
-  <div style="width:60rem;">
+  <div>
     <h1>Search Classes</h1>
     <div style="padding: 5px 0px 10px 0px">
       <suggestedSearchButton
@@ -19,7 +19,7 @@
     />
 
     <div style="display: flex;">
-      <div style="width: 80%;">
+      <div style="width: 100%;">
         <h4 align="left">
           Results
           <a-spin v-if="$apollo.loading">
@@ -70,7 +70,9 @@
         </div>
       </div>
       <div style="margin: 20px 0 0 20px;">
-        <a-card style="position: sticky; top: 20px; padding: 0.4rem;">
+        <a-card
+          style="position: sticky; top: 20px; padding: 0.4rem; width: 16rem;"
+        >
           <a-form>
             <h4 align="left">Filter by</h4>
             <h5 align="left">Date range</h5>
@@ -88,9 +90,7 @@
               class="filter-field"
             />
             <h5 align="left">Time range</h5>
-            <div
-              style="display: flex; flex-direction: row; justify-content: space-between;"
-            >
+            <div style="display: flex; justify-content: space-between;">
               <a-time-picker
                 :minute-step="30"
                 use12-hours
@@ -262,7 +262,8 @@ export default {
       },
       SUGGESTED_SEARCH_FILTERS: _.cloneDeep(SUGGESTED_SEARCH_FILTERS),
       constants,
-      mapVisible: false
+      mapVisible: false,
+      error: ""
     };
   },
   apollo: {
@@ -274,24 +275,16 @@ export default {
         };
       },
       update: data => data.faculty_by_pk,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     courses: {
       query: queries.getCourseList,
       variables: { semester_code: process.env.VUE_APP_SEMESTER_CODE },
       update: data => data.course,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     seminar: {
@@ -301,41 +294,27 @@ export default {
       variables() {
         return this.searchQueryVariables;
       },
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      throttle: "1500",
+      error(err) {
+        this.error = err;
       }
     },
     faculty_list: {
       query: queries.getFacultyList,
       update: data => data.faculty,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     tags_list: {
       query: queries.getTagsList,
       update: data => data.tag,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        if (err) this.error = err;
       }
     }
   },
   watch: {
-    // seminar() {
-    //   this.page = 1;
-    // },
     searchQuery() {
       this.page = 1;
     },
@@ -380,6 +359,14 @@ export default {
       },
       // This observes nested properties of filter.
       deep: true
+    },
+    error(err) {
+      if (err.gqlError.extensions.code !== "invalid-jwt")
+        this.$notification.error({
+          message: "Failed to obtain data from database",
+          description: err.toString(),
+          duration: 0
+        });
     }
   },
   computed: {

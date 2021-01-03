@@ -1,3 +1,29 @@
+query getTags {
+  tag(order_by: { label: asc }) {
+    label
+  }
+}
+
+mutation insertTags($tags: [tag_insert_input!]!) {
+  insert_tag(
+    objects: $tags
+    on_conflict: { constraint: tag_pkey, update_columns: label }
+  ) {
+    affected_rows
+  }
+}
+
+mutation removeTagFromCourse($tag_label: String!, $course_id: Int!) {
+  delete_tagged_as(
+    where: {
+      course: { id: { _eq: $course_id } }
+      _and: { tag_label: { _eq: $tag_label } }
+    }
+  ) {
+    affected_rows
+  }
+}
+
 query getCourseList($semester_code: String!) {
   course(
     order_by: { title: asc }
@@ -62,7 +88,7 @@ mutation update_visit_response(
   $visit_id: Int!
   $visit_status: String!
   $time_responded: timestamptz!
-  $response_msg: String!
+  $response_msg: String
 ) {
   update_visit_by_pk(
     pk_columns: { id: $visit_id }
@@ -131,6 +157,7 @@ query get_seminars_with_visits_by_time_requested($faculty_id: String) {
         id
         name
         is_active
+        profilePic
       }
     }
     course_group {
@@ -198,6 +225,7 @@ query get_my_visits($visitor_id: String!) {
           email
           is_active
           has_consented
+          profilePic
         }
         course {
           id
@@ -296,6 +324,7 @@ query get_course_group_details($course_group_id: Int!) {
       id
       title
       module_code
+      semester_code
       module_brief_link
       desc
       tagged_as {
@@ -457,30 +486,6 @@ query get_my_visited_request_seminars($visitor_id: String!) {
       }
     }
     id
-  }
-}
-
-query getSeminarById($seminar_id: Int!) {
-  seminar_by_pk(id: $seminar_id) {
-    id
-    date
-    start
-    end
-    title
-    desc
-    course_group {
-      id
-      course {
-        id
-        module_code
-        title
-      }
-      faculty {
-        id
-        email
-        name
-      }
-    }
   }
 }
 
@@ -926,7 +931,10 @@ query average_hosted_visits_across_division(
 }
 
 mutation update_profile_pic($faculty_id: String!, $profilePic: String!) {
-  update_faculty_by_pk(pk_columns: {id: $faculty_id}, _set: {profilePic: $profilePic}) {
+  update_faculty_by_pk(
+    pk_columns: { id: $faculty_id }
+    _set: { profilePic: $profilePic }
+  ) {
     id
   }
 }

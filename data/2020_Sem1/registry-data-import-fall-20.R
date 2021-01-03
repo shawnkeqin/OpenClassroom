@@ -4,9 +4,9 @@ library(dplyr)
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 INPUT_FILEPATH <-
-  "~/github/OpenClassroom/data/semester-1-fall-2020-formatted-20200708.csv"
+  "semester-1-fall-2020-raw-20200926-with-id.csv"
 CC_LECTURES_FILEPATH <-
-  "~/github/OpenClassroom/data/cc-lectures-sem-1-fall-2020.csv"
+  "cc-lectures-sem-1-fall-2020.csv"
 # Declare some value constants.;
 SEMESTER_CODE <- "AY2021-1"
 TIMEZONE <- "+08:00"
@@ -18,15 +18,16 @@ WEEK_MAPPING <-
        "1-6, 7-13" = c(1:6, 7:13))
 
 ################# Get faculty table.
-FACULTY_SCHEMA <- c("id", "name", "email")
+FACULTY_SCHEMA <- c("id", "name", "email", "division")
 validated <- read.csv(INPUT_FILEPATH, stringsAsFactors = FALSE) %>%
   filter(!is.na(Staff.ID)) %>%
-  filter(nchar(Staff.ID) > 0) %>%
-  mutate(across(where(is.character), trimws))
+  mutate(across(where(is.character), trimws)) %>%
+  filter(nchar(Staff.ID) > 0) 
 faculty <- validated %>%
   rename(id = Staff.ID, name = Instructor) %>%
   distinct(id, name, .keep_all = TRUE) %>%
   mutate(email = paste(id, "@nus.edu.sg", sep = "")) %>%
+  mutate("division" = NA) %>%
   select(FACULTY_SCHEMA)
 write.csv(faculty, "db_faculty.csv", row.names = FALSE)
 
@@ -66,6 +67,9 @@ course_group <- validated %>%
   ) %>%
   distinct(faculty_id, module_code, group_code, .keep_all = TRUE) %>%
   select(COURSE_GROUP_SCHEMA)
+duplicated_course_group <- course_group %>% 
+  group_by(module_code, group_code) %>% 
+  filter(n() > 1)
 write.csv(course_group, "db_course_group.csv", row.names = FALSE)
 
 
@@ -80,7 +84,7 @@ COURSE_SCHEDULE_SCHEMA <-
     "start",
     "end",
     "location_code",
-    "area",
+    # "area",
     "teaching_mode"
   )
 
@@ -94,7 +98,7 @@ course_schedule <- validated %>%
     start = Start,
     end = End,
     location_code = Room,
-    area = Location,
+    # area = Location,
     teaching_mode = Mode.of.Teaching
   ) %>%
   mutate(day = recode(
@@ -106,6 +110,14 @@ course_schedule <- validated %>%
     "Fri" = 5,
     "Sat" = 6
   )) %>%
+  mutate(
+    teaching_mode = recode(
+      teaching_mode,
+      "Remote" = "REMOTE",
+      "Remote/\nF2F" = "REMOTE_F2F",
+      "Remote in YNC Classroom" = "REMOTE_IN_YNC_CLASSROOM"
+    )
+  ) %>%
   select(COURSE_SCHEDULE_SCHEMA)
 write.csv(course_schedule, "db_course_schedule.csv", row.names = FALSE)
 
@@ -132,7 +144,7 @@ SEMINAR_SCHEMA <-
     "start",
     "end",
     "location_code",
-    "area",
+    # "area",
    "teaching_mode"
   )
 seminar_generator <- function(schedule) {
@@ -163,6 +175,26 @@ seminar_generator <- function(schedule) {
   return(seminar)
 }
 seminar <- seminar_generator(course_schedule)
+seminar <- seminar %>%
+  mutate(
+    location_code = recode(
+      location_code,
+      "Y-Blackbox" = "Y-BlackBox",
+      "UTSRC- LT53" = "UTSRC-LT53",
+      "UTSRC - LT53" = "UTSRC-LT53",
+      "UTSRC- LT52" = "UTSRC-LT52",
+      "UTSRC - LT52" = "UTSRC-LT52",
+      "UTSRC- LT51" = "UTSRC-LT51",
+      "UTSRC - LT51" = "UTSRC-LT51",
+      "UTSRC- GLR" = "UTSRC-GLR",
+      "UTSRC - GLR" = "UTSRC-GLR",
+      "UTSRC- AUD2" = "UTSRC-AUD2",
+      "UTSRC - AUD2" = "UTSRC-AUD2",
+      "Y-ELMECL" = "Y-ELMCL",
+      "Y-Studio2" = "Y-ArtsStud",
+      "Y-ArtsStud\nY-Studio3" = "Y-ArtsStud"
+    )
+  )
 write.csv(seminar, "db_seminar.csv", row.names = FALSE)
 
 ################# Get tagged_as table.
@@ -194,7 +226,7 @@ write.csv(tag, "db_tag.csv", row.names = FALSE)
 ################## Get CC lecture course groups..
 # COURSE_GROUP_SCHEMA <-  c("faculty_id", "module_code", "group_code", "semester_code", "teaching_mode")
 lectures_raw <-
-  read.csv(CC_LECTURES_FILEPATH, stringsAsFactors = FALSE)
+  read.csv(CC_LECTURES_FILEPATH, stringsAsFactors = FALSE, fileEncoding = 'UTF-8-BOM')
 lecture_groups <- lectures_raw  %>%
   mutate(semester_code = SEMESTER_CODE) %>%
   rename(
@@ -227,8 +259,8 @@ lecture_schedule <- lectures_raw %>%
     start = Start,
     end = End,
     location_code = Room,
-    area = Location,
-    teaching_mode = Mode.of.Teaching;
+    # area = Location,
+    teaching_mode = Mode.of.Teaching
   ) %>%
   mutate(day = recode(
     day,
@@ -249,14 +281,28 @@ write.csv(lectures, "db_lectures.csv", row.names = FALSE)
 location <-
   read.csv(
     "~/github/OpenClassroom/data/room-legend-formatted.csv",
-    stringsAsFactors = FALSE,
-    header = FALSE
+    stringsAsFactors = FALSE
   ) %>% mutate(across(where(is.character), trimws))
 write.csv(location, "db_location.csv", row.names = FALSE)
 
+db_teaching_mode <- course_group %>% 
+  distinct(teaching_mode) 
+write.csv(db_teaching_mode, "db_teaching_mode.csv", row.names = FALSE)
+
+db_semester <-data.frame(code=c("AY2021-1", 
+                                "AY2021-2",
+                                "AY2122-1",
+                                "AY2122-2"), 
+                         full_name=c("AY20/21 Semester 1",
+                                     "AY20/21 Semester 2",
+                                     "AY21/22 Semester 1",
+                                     "AY21/22 Semester 2"
+                                     ))
+write.csv(db_semester, "db_semester.csv", row.names = FALSE)
 # TODO:
 # course_group ignores any entry with faculty_id that does not exist.
 # course_group ignores any entry with course that does not exist.
 # course_group remove all NA faculty_id and group code.
 # course_schedule ignores any entry with course_group that does not exist.
 # Account for CC lectures with NA faculty ID.
+

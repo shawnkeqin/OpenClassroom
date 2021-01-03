@@ -1,17 +1,17 @@
 <template>
-  <div style="width: 100%; padding: 0 20px;">
-    <h1>My courses</h1>
+  <div style="width: 100%; padding: 0 0.5rem;">
+    <h1>My Courses</h1>
     <template v-if="$apollo.loading">
       <a-skeleton active />
     </template>
     <template v-else>
       <template v-if="course_groups && course_groups.length">
-        <div style="display: flex;">
+        <div style="display: flex; justify-content: space-between;">
           <div style="display: flex; flex-wrap: wrap;">
             <a-card
               v-for="course_group in course_groups"
               :key="course_group.id"
-              style="margin: 0 15px 15px 0; width: 16rem;"
+              style="margin: 0 15px 15px 0; width: 18rem;"
             >
               <h3>{{ course_group.course.title }}</h3>
               <p>{{ course_group.course.module_code }}</p>
@@ -23,7 +23,7 @@
               </p>
               <div style="display: flex;">
                 <p style="margin-right: 5px;">
-                {{ `Toggle here to open/close this course to all visitors` }}
+                  {{ `Toggle here to open/close this course to all visitors` }}
                 </p>
                 <div style="display: flex; align-items: center;">
                   <a-switch
@@ -32,7 +32,10 @@
                     un-checked-children="closed"
                     :loading="isToggleCourseGroupLoading"
                     @click="
-                      toggleCourseGroupIsOpen(course_group.id, course_group.is_open)
+                      toggleCourseGroupIsOpen(
+                        course_group.id,
+                        course_group.is_open
+                      )
                     "
                     style="margin-right: 5px;"
                   />
@@ -51,14 +54,17 @@
           </div>
           <div>
             <a-card
-              style="width: 13rem;"
+              style="width: 14rem;"
               :bodyStyle="{ background: '#e6f7ff', color: 'black' }"
             >
               Click "Edit course details" to:
               <ul style="margin-bottom: 0">
                 <li>open or close individual classes</li>
                 <li>change individual class location, timing, description</li>
-                <li>add or modify course information</li>
+                <li>
+                  add or modify course information such as description,
+                  syllabus, notes for visitors, and tags
+                </li>
               </ul>
             </a-card>
           </div>
@@ -67,7 +73,7 @@
       <template v-else>
         <div>
           <a-card>
-            <p>You don't teach any course this semester</p>
+            <p>You are not teaching any courses this semester</p>
           </a-card>
         </div>
       </template>
@@ -98,12 +104,13 @@ export default {
           };
         },
         update: data => data.course_group,
-        error(error, vm, key) {
-          this.$notification.error({
-            key,
-            message: "Failed to obtain data on your courses",
-            description: "Please try again."
-          });
+        error(err) {
+          if (err.gqlError.extensions.code !== "invalid-jwt")
+            this.$notification.error({
+              message: "Failed to obtain data from database",
+              description: err.toString(),
+              duration: 0
+            });
         }
       };
     }
@@ -116,11 +123,8 @@ export default {
   methods: {
     async toggleCourseGroupIsOpen(id, status) {
       this.isToggleCourseGroupLoading = true;
-
       const course_group_id = id;
       const current_is_open = status;
-      console.log(id);
-      console.log(current_is_open);
       try {
         await this.$apollo.mutate({
           mutation: queries.update_course_group_and_seminars_is_open,
@@ -134,15 +138,14 @@ export default {
             "get_course_group_details"
           ]
         });
-        this.isToggleCourseGroupLoading = false;
       } catch (err) {
-        this.isToggleCourseGroupLoading = false;
         this.$notification.error({
-          key: "toggle_course_group_is_open_error",
           message: "Failed to update the open status of your course",
-          description: "Please try again." + err
+          description: err.toString(),
+          duration: 0
         });
       }
+      this.isToggleCourseGroupLoading = false;
     }
   }
 };

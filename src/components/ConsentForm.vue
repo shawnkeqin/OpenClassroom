@@ -1,10 +1,7 @@
 <template>
   <div>
     <a-button @click="consentModalVisible = true">View consent form</a-button>
-    <a-modal v-model="consentModalVisible" width="80vw">
-      <template slot="footer">
-        <div />
-      </template>
+    <a-modal v-model="consentModalVisible" width="80vw" :footer="null">
       <h2>ONLINE PARTICIPANT INFORMATION SHEET</h2>
       <p>(Study: The open classroom app)</p>
       <p>
@@ -137,16 +134,14 @@ export default {
           },
           refetchQueries: ["getFacultyById"]
         });
-        this.consentModalVisible = false;
       } catch (err) {
-        this.consentModalVisible = false;
         this.$notification.error({
           key: "consent_failure",
           message: "Failed to update your consent",
-          description: "Please try again."
+          description: err.toString()
         });
       }
-
+      this.consentModalVisible = false;
     },
     handleCloseConsentModal() {
       this.consentChecked = false;

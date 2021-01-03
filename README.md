@@ -55,7 +55,7 @@ The custom environment file (as well as the automatically set `NODE_ENV`) was on
 ### Frontend Deployment
 1. Connect to NUS VPN.
 2. `ssh -i ~/.ssh/open-classroom/id_rsa -xvv jeremy@172.25.20.25`, enter passcode. 
-3. Add all env variables, including JWT secret.
+3. Add/update `.env.local` file with latest vars.
 4. Run these commands. 
 ```bash
 # Install exact version of NPM. 
@@ -86,7 +86,8 @@ Remember to set admin secret and DB password in docker-compose file manually! An
 wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O- | sudo apt-key add -
 sudo apt-get install postgresql-12
 echo "deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main" | sudo tee /etc/apt/sources.list.d/postgresql.list
-sudo service postgresql start
+sudo pg_createcluster 12 main --start
+pg_ctlcluster 12 main start
 sudo -u postgres psql
 #  Configure DB. 
 # Try logging in.
@@ -116,61 +117,40 @@ docker load < hasura-graphql-engine.tar.gz
 chmod +x ./docker-run.sh
 ./docker-run.sh
 docker ps
-```
-
-
-
-### Backend Deployment
-See 
-- https://github.com/hasura/graphql-engine/blob/master/server/CONTRIBUTING.md.
-- https://tableplus.com/blog/2018/10/how-to-start-stop-restart-postgresql-server.html
-- - https://github.com/haskell/cabal/issues/4898
-```
-sudo apt-get install postgresql
-sudo apt install cabal-install
-sudo apt install zlib1g-dev
-curl https://sdk.cloud.google.com | bash
-cabal install Cabal cabal-install
-alias cabal="~/.cabal/bin/cabal"
-cabal user-config update
-cabal install
-sudo service postgresql start
-sudo -u postgres psql -c "CREATE DATABASE public;"
-sudo -u postgres psql -c "CREATE USER admin;"
-sudo -u postgres psql -c "ALTER USER admin PASSWORD '<>';"
-cd ~
-git clone https://github.com/hasura/graphql-engine.git
-cd graphql-engine
-cd console
-sudo chown -R jeremy .
-sudo npm install
-sudo npm run server-build
-cd ../server
-DATABASE_URL=postgresql://admin:<>@localhost
-cabal new-run -- exe:graphql-engine --database-url=$DATABASE_URL serve --enable-console --console-assets-dir=../console/static/dist
+# To check why the instance failed to initialize, run docker command without the detached -d command.
+docker stop <>
 ```
 
 ### DB Migration
 See https://hasura.io/docs/1.0/graphql/manual/migrations/basics.html#migrations-basics. 
-1. `hasura init`
-2. `cd` into project directory. 
-3. Add admin secret and endpoint to `config.yaml`.
-4. `hasura console`
-5. Create SQL migration files and heroku metadata.
 
-```
+Note this is done remotely (not inside deployment server).
+
+Note also the docs are misleading, the `config.yaml` defines where migrations and metadata are applied, and the files to apply are from the current directory. Whereas the --endpoint flag defines where migations are created from. Better off not using --endpoint, its confusing.
+
+```bash
 # Install Hasura CLI for migrating metadata + schema. 
 curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
-hasura migrate apply
-hasura metadata apply
-# Dump from pg_dump archive from demo app.
+cd open-classroom-hasura
+hasura init
+# Update admin secret and endpoint in config.yaml to point to where you are applying migrations/pulling migrations from.
+# Create new. 
+hasura migrate create
+hasura migrate status
+# Apply migrations first (create table) then apply metadata. You need to specify the exact version if there are multiple migrations, otherwise all will be applied in order.
+hasura migrate apply --version 1597913678545 --envfile ../.env.local --log-level debug
+hasura metadata apply --envfile ../.env.local --log-level debug
+```
+Next we have to do pg_dump, from inside deployment server. 
+```bash
+# Dump from pg_dump archive from demo app (need to update this to the test2 pg_dump). You will be prompted for password.
 pg_restore --verbose --clean --no-acl --no-owner -h localhost -U hasurauser -d open_classroom data/1fb44c77-68e8-4f07-b987-f368025bc02b
 ```
 
 
 ### DB config
 ```sql
-CREATE USER hasurauser WITH PASSWORD 'OCsecret2020!';
+CREATE USER hasurauser WITH PASSWORD '';
 CREATE DATABASE open_classroom;
 ALTER USER hasurauser WITH SUPERUSER;
 -- SWITCH TO open_classroom
@@ -216,7 +196,20 @@ GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO hasurauser;
 -- GRANT ALL ON ALL SEQUENCES IN SCHEMA <schema-name> TO hasurauser;
 -- GRANT ALL ON ALL FUNCTIONS IN SCHEMA <schema-name> TO hasurauser;
 ```
-#### DB Remote access 
+
+### DB cluster management 
+To completely wipe DB cluster and restart fresh.
+```bash
+pg_lsclusters
+sudo systemctl stop postgresql@12-main
+pg_dropcluster 12 main 
+## type "y"
+sudo pg_createcluster 12 main --start
+pg_lsclusters
+sudo -u postgres psql
+```
+
+### DB remote access 
 Allow remote access to postgres DB container temporarily (connecting with GUI for importing data):
 - https://www.cyberciti.biz/faq/postgresql-remote-access-or-connection/#:~:text=First%20make%20sure%20PostgreSQL%20server%20has%20been%20started%20to%20remote%20server.&text=If%20it%20is%20running%20and,the%20local%20machine%20or%20localhost.
 ```bash
@@ -232,4 +225,17 @@ sudo service postgresql restart
 - https://github.com/scipag/vulscan
 ```bash
 nmap -sV --script=vulscan/vulscan.nse 172.25.20.25 > logs/vulscan_output.txt --script-args vulscanoutput=details
+```
+
+### Docker management
+Note: You can probably stop and start a Hasura docker instance with no issues. But if you want to rebuild (e.g. with diff env variables) you need to wipe the DB (backup first)...otherwise it won't be able to initialize the DB with internal schemas properly. Then you have to migrate hasura metadata and data and pg_dump.
+
+We need to find another way to change env vars within a running Docker instance, and if that actually will apply to the running Hasura instance. 
+
+If you want to check why 
+```bash
+### Stop 
+docker stop <id>
+# Remove all stopped containers
+docker container rm $(docker container ps –aq)
 ```

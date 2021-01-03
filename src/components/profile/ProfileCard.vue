@@ -1,38 +1,41 @@
 <template>
   <a-card>
-    <div style="display: flex;">
-      <div class="profile-pic-wrapper">
+    <div style="display: flex; align-items: center;">
+      <div style="margin-right: 25px;">
         <a-avatar
           :size="150"
-          :src="
-            faculty.profilePic ||
-              'https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png'
-          "
+          :src="faculty.profilePic || '/avatar_default.png'"
           style="color: #004b8d;"
         />
-
-        <div class="overlay">
-          <clipper-upload v-model="uploadPic">
-            <div class="overlay-text"><a-icon type="camera" /></div>
-          </clipper-upload>
-        </div>
       </div>
       <div>
         <h3>{{ faculty.name }}</h3>
         <p>{{ `Staff ID: ${faculty.id}` }}</p>
-        <p style="margin: 0">{{ faculty.email }}</p>
+        <p>{{ faculty.email }}</p>
+        <a-button @click="isUploadPicModalVisible = true"
+          >Update profile picture</a-button
+        >
       </div>
     </div>
-    <a-modal v-model="isUploadPicModalVisible">
+    <a-modal v-model="isUploadPicModalVisible" title="Update profile picture">
       <template slot="footer">
         <a-button @click="isUploadPicModalVisible = false">Cancel</a-button>
         <a-button
           @click="confirmUploadPic"
           type="primary"
           :loading="isUpdatePicLoading"
+          :disabled="isPicUploaded"
           >Confirm</a-button
         >
       </template>
+      <div style="display: flex;">
+        <clipper-upload v-model="uploadPic" style="margin-right: 10px;">
+          <a-button type="primary">Upload from computer</a-button>
+        </clipper-upload>
+        <a-button @click="handleDeleteProfilePic"
+          >Remove profile picture</a-button
+        >
+      </div>
       <clipper-fixed
         :src="uploadPic"
         ref="clipper"
@@ -72,18 +75,18 @@ export default {
         };
       },
       update: data => data.faculty_by_pk,
-      error() {
-        this.$notification.error({
-          key: `fetch_faculty_data_failure`,
-          message: "Failed to obtain data on your profile",
-          description: "Please try again."
-        });
+      error(err) {
+        if (err.gqlError.extensions.code !== "invalid-jwt")
+          this.$notification.error({
+            message: "Failed to obtain data on your profile",
+            description: err.toString()
+          });
       }
     }
   },
-  watch: {
-    uploadPic() {
-      this.isUploadPicModalVisible = true;
+  computed: {
+    isPicUploaded() {
+      return !this.uploadPic;
     }
   },
   methods: {
@@ -101,51 +104,35 @@ export default {
           refetchQueries: ["getFacultyById"]
         });
       } catch (err) {
-        console.log(err);
         this.$notification.error({
-          key: `toggle_notif_new_request_error`,
           message: "The server could not update your user profile picture",
-          description: "Please try again."
+          description: err.toString()
         });
       }
       this.isUpdatePicLoading = false;
       this.isUploadPicModalVisible = false;
     },
-    resizeImage() {}
+    async handleDeleteProfilePic() {
+      this.isUpdatePicLoading = true;
+      try {
+        await this.$apollo.mutate({
+          mutation: queries.update_profile_pic,
+          variables: {
+            faculty_id: store.state.loggedInUser,
+            profilePic: ""
+          },
+          refetchQueries: ["getFacultyById"]
+        });
+      } catch (err) {
+        this.$notification.error({
+          message: "The server could not update your user profile picture",
+          description: err.toString()
+        });
+      }
+      this.isUpdatePicLoading = false;
+      this.isUploadPicModalVisible = false;
+    }
   }
 };
 </script>
-
-<style scoped>
-.profile-pic-wrapper {
-  margin-right: 20px;
-  position: relative;
-}
-.overlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
-  opacity: 0;
-  transition: 0.5s ease;
-  background-color: black;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-.profile-pic-wrapper:hover .overlay {
-  opacity: 0.2;
-}
-.overlay-text {
-  color: white;
-  font-size: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-</style>
+<style scoped></style>

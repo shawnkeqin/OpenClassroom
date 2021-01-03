@@ -114,7 +114,8 @@ export default {
       my_seminars: [],
       legendData,
       isModalVisible: false,
-      modalData: null
+      modalData: null,
+      error: ""
     };
   },
   components: { Fullcalendar, calendarSeminarModal },
@@ -134,12 +135,8 @@ export default {
             visit.visit_status === "PENDING" ||
             visit.visit_status === "ACCEPTED"
         ),
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     },
     my_seminars: {
@@ -151,12 +148,8 @@ export default {
         };
       },
       update: data => data.seminar,
-      error(error, vm, key) {
-        this.$notification.error({
-          key,
-          message: "Server error",
-          description: "Please try again."
-        });
+      error(err) {
+        this.error = err;
       }
     }
   },
@@ -169,7 +162,6 @@ export default {
           end: a.seminar.date.toString() + "T" + a.seminar.end.toString(),
           title: a.seminar.course_group.course.title,
           id: a.id,
-          // className: "my_visits",
           color: this.getVisitColor(a.visit_status),
           extendedProps: {
             faculty: a.seminar.course_group.faculty,
@@ -191,7 +183,6 @@ export default {
           start: a.date.toString() + "T" + a.start.toString(),
           end: a.date.toString() + "T" + a.end.toString(),
           title: a.course_group.course.title,
-          // className: "my_seminars",
           color: a.visits.length > 0 ? WITH_VISITORS_COLOR : NO_VISITORS_COLOR,
           id: a.id,
           extendedProps: {
@@ -211,6 +202,16 @@ export default {
       const seminars = this.show.seminars ? this.Seminars : null;
       const visits = this.show.visits ? this.Visits : null;
       return [seminars, visits].filter(x => x);
+    }
+  },
+  watch: {
+    error(err) {
+      if (err.gqlError.extensions.code !== "invalid-jwt")
+        this.$notification.error({
+          message: "Failed to obtain data from database",
+          description: err.toString(),
+          duration: 0
+        });
     }
   },
   methods: {
